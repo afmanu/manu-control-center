@@ -1,21 +1,36 @@
 {
+  "kind": "eval_fixture",
+  "schema_version": "0.1.0-draft",
   "fixture_id": "meeting-no-decisions",
-  "fixture_version": "0.1.0-draft",
+  "fixture_version": "0.2.0-draft",
   "synthetic": true,
-  "source": {
-    "id": "meeting-no-decisions",
-    "revision": "1",
-    "segments": [
-      {
-        "id": "s1",
-        "text": "Podríamos hacer una página o una presentación. No hemos elegido todavía."
-      }
-    ]
+  "input": {
+    "project": {
+      "id": "project-demo",
+      "purpose": "Elegir el primer entregable de un proyecto ficticio"
+    },
+    "source": {
+      "id": "meeting-no-decisions",
+      "revision": "1",
+      "segments": [
+        {
+          "id": "s1",
+          "text": "Podríamos hacer una página o una presentación. No hemos elegido todavía.",
+          "speaker": null
+        }
+      ],
+      "observed_at": "2026-09-08T10:00:00Z"
+    }
   },
   "expected": {
     "decisions": [],
     "open_questions": [
-      "Qué entregable elegir"
-    ]
+      {
+        "meaning": "Qué entregable elegir",
+        "source_segment": "s1"
+      }
+    ],
+    "proposals": [],
+    "must_not_assert": []
   }
 }

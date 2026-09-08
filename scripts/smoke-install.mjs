@@ -16,7 +16,7 @@ const run = (command, args, cwd) => execFileSync(command, args, { cwd, encoding:
 try {
   mkdirSync(source);
   mkdirSync(consumer);
-  for (const name of ['package.json', 'package-lock.json', 'tsconfig.json', '.npmrc', 'README.md', 'LICENSE', 'core', 'cli', 'adapters', 'schemas', 'examples', 'tests', 'docs', 'references']) {
+  for (const name of ['package.json', 'package-lock.json', 'tsconfig.json', '.npmrc', 'README.md', 'LICENSE', 'core', 'cli', 'adapters', 'evals', 'schemas', 'examples', 'tests', 'docs', 'references']) {
     cpSync(join(root, name), join(source, name), { recursive: true });
   }
   process.stdout.write(run(npm, ['ci', '--offline', ...common], source));
@@ -30,6 +30,9 @@ try {
   assert.equal(run(process.execPath, [cli, '--version'], consumer).trim(), version);
   assert.equal(JSON.parse(run(process.execPath, [cli, 'doctor'], consumer)).ok, true);
   assert.equal(JSON.parse(run(process.execPath, [cli, 'validate-record', join(installed, 'examples', 'record-envelope.json')], consumer)).ok, true);
+  assert.equal(JSON.parse(run(process.execPath, [cli, 'validate-bundle', join(installed, 'examples', 'contracts', 'construction-bundle.json')], consumer)).ok, true);
+  assert.equal(JSON.parse(run(process.execPath, [cli, 'validate', 'eval_fixture', join(installed, 'examples', 'meeting.json')], consumer)).ok, true);
+  run(process.execPath, ['--input-type=module', '-e', "import {assertContract} from 'manu-control-center'; import {SqliteBackend} from 'manu-control-center/sqlite'; import {prepareEvalInput} from 'manu-control-center/evals'; if(typeof assertContract!=='function'||typeof prepareEvalInput!=='function')throw new Error('Missing public exports'); const store=new SqliteBackend(':memory:'); store.close();"], consumer);
   if (process.platform !== 'win32') {
     assert.equal(run(join(consumer, 'node_modules', '.bin', 'manu-control-center'), ['--version'], consumer).trim(), version);
   }

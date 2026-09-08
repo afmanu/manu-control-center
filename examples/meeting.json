@@ -1,37 +1,41 @@
 {
+  "kind": "eval_fixture",
+  "schema_version": "0.1.0-draft",
   "fixture_id": "meeting-explicit-decisions",
-  "fixture_version": "0.1.0-draft",
+  "fixture_version": "0.2.0-draft",
   "synthetic": true,
-  "project": {
-    "id": "project-demo",
-    "purpose": "Preparar una página informativa para un servicio ficticio"
-  },
-  "source": {
-    "id": "meeting-demo",
-    "revision": "1",
-    "observed_at": "2026-09-08T10:00:00Z",
-    "segments": [
-      {
-        "id": "s1",
-        "speaker": "Responsable",
-        "text": "Decidimos que el primer entregable será una página informativa."
-      },
-      {
-        "id": "s2",
-        "speaker": "Colaborador",
-        "text": "Propongo añadir un chatbot; todavía no lo hemos aprobado."
-      },
-      {
-        "id": "s3",
-        "speaker": "Responsable",
-        "text": "Acordamos revisar el texto antes de publicarlo."
-      },
-      {
-        "id": "s4",
-        "speaker": "Colaborador",
-        "text": "¿Qué presupuesto tenemos? Todavía no lo sabemos."
-      }
-    ]
+  "input": {
+    "project": {
+      "id": "project-demo",
+      "purpose": "Preparar una página informativa para un servicio ficticio"
+    },
+    "source": {
+      "id": "meeting-demo",
+      "revision": "1",
+      "observed_at": "2026-09-08T10:00:00Z",
+      "segments": [
+        {
+          "id": "s1",
+          "speaker": "Responsable",
+          "text": "Decidimos que el primer entregable será una página informativa."
+        },
+        {
+          "id": "s2",
+          "speaker": "Colaborador",
+          "text": "Propongo añadir un chatbot; todavía no lo hemos aprobado."
+        },
+        {
+          "id": "s3",
+          "speaker": "Responsable",
+          "text": "Acordamos revisar el texto antes de publicarlo."
+        },
+        {
+          "id": "s4",
+          "speaker": "Colaborador",
+          "text": "¿Qué presupuesto tenemos? Todavía no lo sabemos."
+        }
+      ]
+    }
   },
   "expected": {
     "decisions": [

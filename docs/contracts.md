@@ -1,14 +1,16 @@
 # Contratos de construcción e información
 
-Versión propuesta: `0.1.0-draft`. Especificación para convertir en esquemas y operaciones ejecutables en M1. M0 implementa únicamente el [validador de metadatos RecordEnvelope](../schemas/record-envelope.schema.json); el resto de contratos sigue pendiente. Complementa [la arquitectura](architecture.md) sin sustituirla.
+Versión adoptada en M1: `0.1.0-draft`. Existen 22 [esquemas](../schemas/contracts.schema.json), tipos, validadores, comprobación de composición y backend SQLite de referencia. [M1 implementado](m1-implementation.md) detalla campos exactos, mecanismos y límites. Las operaciones de construcción, ejecución y exportación descritas aquí siguen el roadmap M2–M4. Complementa [la arquitectura](architecture.md) sin sustituirla.
 
 ## Convenciones comunes
 
 Los registros persistentes usan `schema_version`, `id`, `instance_id` cuando corresponda, `revision`, `created_at` y `updated_at`. Identidad y revisión son distintas: editar no cambia el ID. Los tiempos llevan zona y se normalizan a UTC para comparación. Las referencias vinculan ID y revisión cuando el resultado depende de una versión exacta.
 
+En M1, `StoredRecord` añade `kind`, `access` y `data` a los metadatos; el backend genera revisión y fechas. `InstanceSpec` tiene revisión propia para fijar la configuración aplicada. Los hashes de objetos usan JSON canónico; los de artefactos se calculan sobre contenido UTF-8 exacto.
+
 Las escrituras reciben `expected_revision` o una precondición de ausencia. Un conflicto devuelve la revisión actual y no sobrescribe silenciosamente. Los IDs no deben derivarse únicamente del título ni de una ruta física. La representación de revisiones puede variar por adaptador, con comparación opaca por el núcleo.
 
-Una operación devuelve éxito con datos y evidencia, o error con `code`, `message`, `retryable`, `details`, `evidence_refs` y, si hubo un intento de escritura, `effect_status`. Datos vacíos, falta de acceso y fuente indisponible tienen resultados distintos.
+Una operación devuelve éxito con datos y evidencia, o error con `code`, `message`, `retryable`, `details`, `evidence_refs` y, si hubo un intento de escritura, `effect_status`. La API de M1 usa `DomainError` serializable; `effect_status` corresponderá al resultado de invocación del coordinador. Una consulta vacía devuelve una página vacía. Para un registro individual, `NOT_FOUND` agrupa ausencia y falta de lectura en ese alcance para no revelar existencia; una escritura sin permiso sobre un registro legible devuelve `FORBIDDEN`.
 
 Errores mínimos: `INVALID_INPUT`, `NOT_FOUND`, `CONFLICT`, `FORBIDDEN`, `AUTH_REQUIRED`, `CAPABILITY_UNAVAILABLE`, `INCOMPATIBLE_VERSION`, `STALE_PLAN`, `VALIDATION_FAILED`, `RATE_LIMITED`, `TIMEOUT`, `EFFECT_UNKNOWN`, `BUDGET_EXCEEDED`, `CANCELLED`. `retryable` no autoriza por sí solo a repetir un efecto.
 
@@ -54,7 +56,7 @@ Actualización compara tres elementos: versión gestionada anterior, estado obse
 | Artefacto | Tipo, contenido o referencia inmutable, hash, versión, estado de aceptación y evidencia. |
 | Relación | ID origen/destino, tipo, procedencia y revisión; no inferir identidad por similitud de nombres. |
 
-Estados epistemológicos propuestos: declarado, hipótesis, propuesto, confirmado, refutado. Son distintos del procesamiento de una captura (pendiente, integrado, descartado con motivo) y del estado de una decisión (vigente, sustituida, revocada).
+Estados epistemológicos adoptados en M1 (enums ingleses en el esquema): declarado, hipótesis, propuesto, confirmado, refutado. Son distintos del procesamiento de una captura (pendiente, integrado, descartado con motivo) y del estado de una decisión (vigente, sustituida, revocada).
 
 Una fuente de autoridad declara entidad/campo/pregunta a la que aplica, propietario, prioridad o regla de resolución, periodo válido, momento de observación y política de actualización. La consulta histórica distingue fecha de validez y fecha en que el sistema conoció el dato. Si el backend no conserva la historia requerida, devolver cobertura insuficiente.
 
@@ -64,7 +66,7 @@ La promoción de conocimiento exige evidencia y autoridad pertinentes; una orden
 
 ## Backend y exportación — C24
 
-Interfaz mínima propuesta: `capabilities`, `get`, `query`, `create`, `update(expected_revision)`, `link`, `export`, `import`, `verify`. La consulta usa criterios lógicos, filtros, paginación y cobertura. Extensiones específicas del backend se declaran, no se filtran como requisitos generales.
+Interfaz implementada en M1: `capabilities`, `forScope`, `get`, `query`, `create`, `update(record, expectedRevision)`, `history`, `link` y `close`. La consulta filtra tipo e identidad con paginación por ID. `export`, `import` y la verificación funcional de instancias quedan para sus hitos posteriores; las capacidades no implementadas se anuncian como falsas. Extensiones específicas del backend se declaran, no se filtran como requisitos generales.
 
 Matriz de capacidades: revisiones, escritura condicional, atomicidad, exclusión de escritor, historial, relaciones, búsqueda, exportación, límites y aislamiento. Si falta una garantía del coordinador, elegir un almacén de estado adecuado o modo de un único escritor comprobable; no simular transacciones mediante una instrucción al agente.
 

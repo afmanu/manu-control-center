@@ -1,6 +1,6 @@
 # Roadmap de implementación
 
-Actualizado: 2026-09-08. **Estado: M0 completado con pruebas locales; M1–M6 pendientes.** Desarrollo en [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). Este plan conserva sus identificadores para mantener la trazabilidad con arquitectura, componentes y aceptación. La [evidencia de M0](m0-verification.json) y el [handoff](handoff.md) registran el alcance real de la primera entrega.
+Actualizado: 2026-09-08. **Estado: M0 y M1 completados; M2–M6 pendientes.** Desarrollo en [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). Este plan conserva sus identificadores para mantener la trazabilidad con arquitectura, componentes y aceptación. La [evidencia de M1](m1-verification.json) y el [handoff](handoff.md) registran el alcance actual; se conserva la [evidencia de M0](m0-verification.json).
 
 ## Resultado que vamos a entregar
 
@@ -69,6 +69,8 @@ Trabajo, en orden:
 **Cierre:** esquemas válidos e inválidos ejercitados; transiciones imposibles y revisiones obsoletas rechazadas; aislamiento comprobado; el ejecutor de evaluación no recibe `expected`. Las pruebas de mecanismo usan expectativas deterministas, separadas de las evaluaciones semánticas.
 
 **Entrega:** contratos ejecutables, almacén mínimo e interfaces de backend/runtime/herramientas que no importan convenciones de un proveedor al núcleo. Primer cierre de A27; base contractual de A08, A10 y A21–A25.
+
+**Cierre registrado:** M1.1–M1.6 implementados: 22 contratos, bundle coherente, backend SQLite con revisiones/historial/acceso, transiciones y políticas, identidad de efectos, contrato de traslado y harness A27. Pasan 74 tests e instalación limpia con imports del paquete. La prueba de A27 cubre separación de API; los recorridos con runtime, leases y efectos reales siguen en M3/M4. Véanse [alcance M1](m1-implementation.md) y [evidencia](m1-verification.json).
 
 ## M2 — Constructor operativo
 
@@ -165,6 +167,6 @@ El código se incorpora cuando tiene comportamiento útil: `core` define contrat
 
 Cada cierre actualiza [handoff.md](handoff.md) con versión/commit si existe, tareas realizadas, comandos reales, resultados, evidencia, limitaciones, decisiones y próxima tarea. Una fase puede estar pendiente, en curso, parcialmente verificada o completada. Solo se completa si pasan sus criterios aplicables; una simulación nunca acredita una integración real.
 
-**Siguiente acción de desarrollo: M1.1.** Completar los contratos de construcción con validadores y fixtures sobre la base ejecutable de M0. Continuar con entidades, ejecución y persistencia según sus dependencias, sin repetir el análisis de origen ni abrir otro proceso de definición general.
+**Siguiente acción de desarrollo: M2.1.** Implementar el catálogo mínimo y el resolver sobre los contratos y el backend de M1; inspeccionar capacidades reales y continuar con planificación, aplicación, verificación y adopción. No repetir el análisis de origen ni abrir otro proceso de definición general.
 
 [Entrada](../README.md)

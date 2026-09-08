@@ -17,7 +17,7 @@ test('CLI help and version work without importing the SQLite adapter', () => {
   assert.equal(help.stderr, '');
   const version = run(['--version']);
   assert.equal(version.status, 0);
-  assert.match(version.stdout, /^0\.1\.0-dev\.0\n$/);
+  assert.match(version.stdout, /^0\.1\.0-dev\.1\n$/);
 });
 
 test('CLI validates metadata and rejects unsupported commands without claiming installation', () => {
@@ -62,4 +62,15 @@ test('doctor probes temporary storage without creating a private instance direct
   } finally {
     rmSync(directory, { recursive: true, force: true });
   }
+});
+
+test('CLI exposes all contracts and validates bundles without echoing fixture expectations', () => {
+  const contracts=run(['contracts']);assert.equal(contracts.status,0);assert.equal(JSON.parse(contracts.stdout).kinds.length,22);
+  const meeting=fileURLToPath(new URL('../../examples/meeting.json',import.meta.url));
+  const validated=run(['validate','eval_fixture',meeting]);assert.equal(validated.status,0,validated.stderr);assert.equal(validated.stdout.includes('expected'),false);
+  const bundle=fileURLToPath(new URL('../../examples/contracts/construction-bundle.json',import.meta.url));
+  const checked=run(['validate-bundle',bundle]);assert.equal(checked.status,0,checked.stdout);assert.equal(JSON.parse(checked.stdout).scope,'declared_construction_coherence');
+  assert.equal(run(['validate','unknown',meeting]).status,2);
+  const invalid=fileURLToPath(new URL('../../examples/contracts/invalid-plan.json',import.meta.url));
+  assert.equal(run(['validate','plan',invalid]).status,2);
 });

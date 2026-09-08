@@ -13,7 +13,15 @@
     "sourceMap": true,
     "rootDir": ".",
     "outDir": "dist",
-    "types": ["node"]
+    "types": [
+      "node"
+    ]
   },
-  "include": ["core/**/*.ts", "cli/**/*.ts", "adapters/**/*.ts", "tests/**/*.ts"]
+  "include": [
+    "core/**/*.ts",
+    "cli/**/*.ts",
+    "adapters/**/*.ts",
+    "tests/**/*.ts",
+    "evals/**/*.ts"
+  ]
 }

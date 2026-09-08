@@ -35,11 +35,11 @@ El primer caso propuesto es un proyecto sintético que transforma una reunión e
 | Elección | Criterio | Punto de resolución |
 |---|---|---|
 | Lenguaje y empaquetado | TypeScript/Node, npm y pruebas nativas; dependencias fijadas. | Adoptado en M0, D14. |
-| Primer backend | SQLite local, con prueba de persistencia y actualización condicional. Backend completo de instancia pendiente. | Motor seleccionado en M0; garantías completas M1; instancia M2. |
+| Primer backend | SQLite local con alcance por instancia/actor, revisión condicional, historial y atomicidad. | Motor M0; referencia implementada M1, D17; instancia M2. |
 | Segundo backend | El roadmap propone documentos frente a registros. No cuenta cambiar solo el motor de una misma fachada. Separar almacenamiento de conocimiento y estado si el adaptador lo requiere. | Diseñar prueba en M1; implementar M4. |
 | Primer runtime | Codex como candidato; ejecutable observado, adaptador e invocación del producto pendientes. | Candidato M0; demostración M3. |
 | Segundo runtime | Claude Code como candidato; host distinto con pruebas reales de handoff. | Candidato M0; demostración M4. |
-| Esquemas y versionado | JSON Schema draft-07 y Ajv, contrato mínimo `0.1.0-draft`; ampliar modelos y referencias. | Base adoptada M0; contratos completos M1. |
+| Esquemas y versionado | JSON Schema draft-07 y Ajv, 22 contratos `0.1.0-draft`; fixtures de eval `0.2.0-draft`. | Base M0; modelos e invariantes M1, D16 y D18. |
 | Licencia, nombre y remoto | Se conserva MIT y el nombre operativo del repositorio indicado por Manu: `afmanu/manu-control-center`, privado. Publicación npm desactivada. | Resuelto para el repositorio en M0, D13; distribución pública futura separada. |
 | Gateway, scheduler y UI adicional | Solo con un caso que los necesite y su aceptación definida. | M6. |
 
@@ -72,6 +72,30 @@ Estado: **adoptada para el piloto; integraciones pendientes**, 2026-09-08. Los d
 Codex será el primer candidato y Claude Code el segundo: se observaron sus ejecutables y versiones. M3 debe implementar y probar el primer adaptador; M4 el segundo. No se presupone autenticación, acceso a modelos, permisos de herramientas ni compatibilidad por tener un ejecutable. Segundo backend propuesto: documentos con identidades explícitas, resolviendo almacenamiento operativo aparte si lo requiere. Alternativas: imponer un vault o ejecutar trabajos desde varias copias sincronizadas; se conserva la separación del núcleo y se parte de un host responsable.
 
 Comprobaciones actuales: resolución de ruta, rechazo de overrides relativos y diagnóstico sin creación de datos privados. Verificaciones pendientes: acceso real del runtime, contexto/salidas, mediación de efectos y portabilidad con los escenarios de M3/M4.
+
+## Decisiones de implementación — M1
+
+### D16 — Contratos ejecutables, referencias y hashes
+
+Estado: **adoptada**, 2026-09-08. Contexto: M2 necesita componer una configuración y un plan sobre entidades identificables. Elección: tipos TypeScript, 22 esquemas draft-07 cerrados generados desde una fuente de código, validación semántica y comprobación conjunta de construcción. El paquete pasa a `0.1.0-dev.1`; los contratos permanecen `0.1.0-draft`, sin promesa de API estable. `InstanceSpec` incorpora revisión para fijar el manifiesto a una versión exacta. Los registros separan metadatos, acceso y datos del tipo.
+
+Los hashes de JSON ordenan claves y rechazan valores ajenos a JSON; los artefactos conservan el hash UTF-8 exacto. La identidad de un efecto depende de instancia/job/paso/nombre, sin run, intento ni contenido; reutilizarla con otro payload o destino es conflicto. Varias ocurrencias intencionadas necesitan identidad lógica distinta. Alternativas descartadas: títulos/rutas como identidad, incorporar el intento a la clave o duplicar esquemas editables manualmente. Consecuencia: el CLI valida declaraciones, pero M2 debe inspeccionar capacidades reales. Pruebas: contratos válidos/negativos, grafos, composición, hashes y coherencia del esquema generado.
+
+### D17 — Backend SQLite con alcance confiable y escrituras condicionales
+
+Estado: **adoptada**, 2026-09-08. Elección: `node:sqlite` encapsulado en un backend local con transacciones, historial inmutable por revisión, filtros de instancia/actor en SQL antes de paginar, y control de escritura por propietario/ACL. El acceso histórico sigue el permiso actual. Las autorizaciones solo las emite un host con `can_authorize`; promociones y comienzo de efectos verifican el grant persistido y su revisión vigente.
+
+Alternativas descartadas: filtrar resultados después de recuperarlos, reescribir documentos sin revisión esperada o derivar autoridad de texto de una fuente. Consecuencias: el host debe autenticar el alcance; el backend no es un sandbox ni una barrera contra acceso directo al archivo. Se anuncian `export_import: false` y `distributed_fencing: false`. La monotonía de un token no sustituye el coordinador/lease de M3. Pruebas: aislamiento, permisos y revocación, historial, referencias, grants, deduplicación, reapertura y carrera entre dos conexiones en workers distintos.
+
+### D18 — Fixtures normalizados y separación del harness
+
+Estado: **adoptada**, 2026-09-08. Elección: fixture `0.2.0-draft` con `input` uniforme y `expected` reservado al evaluador. `runEvalCase` valida y clona antes de invocar; el ejecutor recibe exclusivamente `input`. Se añaden fuentes contradictorias e instrucciones maliciosas junto a los ejemplos con/sin decisiones. Alternativa descartada: pasar el fixture completo al ejecutor. Consecuencia: A27 pasa como frontera de API; ni el aislamiento de código hostil ni la calidad semántica del modelo quedan acreditados. Pruebas: marca exclusiva en expectativas, mutación de copias y formatos inválidos que nunca alcanzan el ejecutor. M3 debe integrar el runtime y la evaluación semántica.
+
+### D19 — Diseño de traslado con autoridad y definiciones exactas
+
+Estado: **adoptada como contrato; traslado pendiente**, 2026-09-08. Elección: `transfer_plan` distingue migración, copia y restauración; incluye autoridad declarada, revisiones, referencias a secretos y definiciones ejecutables con versiones/hash, contenido o localizador y cierre de dependencias. Copiar exige identidad nueva y trabajos inactivos; activar exige origen declarado congelado. Alternativa descartada: copiar únicamente registros y asumir que el destino dispone de las mismas capacidades.
+
+Consecuencia: los validadores detectan contradicciones del plan, pero no congelan un host ni prueban disponibilidad remota. M4 implementará exportación/importación, transferencia efectiva de autoridad y bloqueo ante dependencias ausentes. Pruebas actuales: modos, identidades, activación, integridad de contenido y grafos de dependencias.
 
 ## Cómo registrar nuevas decisiones
 

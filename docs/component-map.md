@@ -1,6 +1,6 @@
 # Mapa de componentes y cobertura
 
-Los treinta componentes están definidos en [architecture.md](architecture.md), cada uno con entradas/salidas, estado/dependencias, límite/fallo y comprobación. Este mapa conecta las responsabilidades con la preparación técnica y el desarrollo. Ninguna fila significa que su implementación ya exista.
+Los treinta componentes están definidos en [architecture.md](architecture.md), cada uno con entradas/salidas, estado/dependencias, límite/fallo y comprobación. Este mapa conecta las responsabilidades con la preparación técnica y el desarrollo. La presencia de una fila no significa que la responsabilidad esté completada. M0–M1 aportan CLI, contratos, persistencia de referencia y harness; [alcance M1](m1-implementation.md) identifica el código y los límites de esas entregas.
 
 | ID | Componente | Plano | Contrato complementario | Hito previsto |
 |---|---|---|---|---|
@@ -55,6 +55,6 @@ Los hitos indican entregas incrementales de una responsabilidad, no su cierre co
 
 La [revisión de la conversación](../references/shared-conversation-review.md) conserva el agrupamiento de los sesenta apartados originales y trece ajustes. El conjunto se reorganizó por responsabilidades y se amplió el constructor; no son sesenta servicios que haya que implementar.
 
-La sección 17 de la arquitectura organiza carpetas del futuro código. Su ausencia física en este paquete no significa que se haya excluido el componente; significa que aún no existe implementación que guardar allí.
+La sección 17 de la arquitectura organiza carpetas del futuro código. Las carpetas de núcleo, adaptadores, CLI y evals ya contienen la implementación M0–M1; las responsabilidades restantes incorporarán código conforme avance el roadmap.
 
 [Entrada](../README.md)

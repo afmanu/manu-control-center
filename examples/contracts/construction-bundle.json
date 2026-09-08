@@ -1,0 +1,164 @@
+{
+  "need": {
+    "kind": "need",
+    "schema_version": "0.1.0-draft",
+    "id": "need-demo",
+    "instance_id": "instance-demo",
+    "purpose": "Preserve project knowledge",
+    "preferences": {},
+    "allowed_effects": [
+      "record.write"
+    ]
+  },
+  "blueprint": {
+    "kind": "blueprint",
+    "schema_version": "0.1.0-draft",
+    "id": "blueprint-demo",
+    "version": "0.1.0-draft",
+    "purpose": "Synthetic contract example",
+    "modules": [
+      {
+        "id": "module-demo",
+        "version": "0.1.0-draft"
+      }
+    ],
+    "required_capabilities": [
+      "records.read"
+    ],
+    "required_configuration": [],
+    "entity_kinds": [
+      "project",
+      "source"
+    ],
+    "acceptance": [
+      "A03"
+    ]
+  },
+  "plan": {
+    "kind": "plan",
+    "schema_version": "0.1.0-draft",
+    "id": "plan-demo",
+    "instance_id": "instance-demo",
+    "spec_hash": "0034e559d55ac9e343df3ad6a5bf74ef04f2a1dc7a0a7626e2e22fd5d6d39927",
+    "observations": [],
+    "operations": [
+      {
+        "id": "create-project",
+        "operation": "create",
+        "resource_id": "project-demo",
+        "adapter_id": "sqlite-reference",
+        "depends_on": [],
+        "ownership": "managed",
+        "expected_revision": null,
+        "required_effect": "record.write",
+        "evidence_requirements": [
+          "record.exists"
+        ],
+        "recovery": "reconcile logical identity"
+      }
+    ],
+    "authorization_scope": [
+      "record.write"
+    ],
+    "verification": [
+      "record.exists"
+    ],
+    "recovery": "resume after checkpoint"
+  },
+  "manifest": {
+    "kind": "manifest",
+    "schema_version": "0.1.0-draft",
+    "id": "manifest-demo",
+    "instance_id": "instance-demo",
+    "revision": "r1",
+    "spec_hash": "0034e559d55ac9e343df3ad6a5bf74ef04f2a1dc7a0a7626e2e22fd5d6d39927",
+    "applied_spec": {
+      "id": "instance_spec-demo",
+      "revision": "r1"
+    },
+    "state": "installed_unverified",
+    "resources": [],
+    "overrides": {},
+    "verification": [
+      {
+        "capability": "workflow.invoke",
+        "required": true,
+        "status": "not_run",
+        "evidence_refs": []
+      }
+    ]
+  },
+  "modules": [
+    {
+      "kind": "module",
+      "schema_version": "0.1.0-draft",
+      "id": "module-demo",
+      "version": "0.1.0-draft",
+      "purpose": "Synthetic contract example",
+      "dependencies": [],
+      "requires_capabilities": [
+        "records.read"
+      ],
+      "exports": [
+        "project-context"
+      ]
+    }
+  ],
+  "spec": {
+    "kind": "instance_spec",
+    "schema_version": "0.1.0-draft",
+    "id": "instance_spec-demo",
+    "revision": "r1",
+    "instance_id": "instance-demo",
+    "purpose": "Synthetic project instance",
+    "blueprint": {
+      "id": "blueprint-demo",
+      "version": "0.1.0-draft"
+    },
+    "modules": [
+      {
+        "id": "module-demo",
+        "version": "0.1.0-draft"
+      }
+    ],
+    "kernel": {
+      "id": "kernel",
+      "version": "0.1.0-draft"
+    },
+    "targets": {
+      "backend": {
+        "adapter_id": "sqlite-reference",
+        "version": "0.1.0-draft",
+        "capabilities": [
+          "records.read"
+        ],
+        "configuration": {}
+      },
+      "runtime": {
+        "adapter_id": "runtime-unverified",
+        "version": "0.1.0-draft",
+        "capabilities": [
+          "records.read"
+        ],
+        "configuration": {}
+      },
+      "interface": {
+        "adapter_id": "local-cli",
+        "version": "0.1.0-draft",
+        "capabilities": [
+          "records.read"
+        ],
+        "configuration": {}
+      }
+    },
+    "policy": {
+      "allowed_effects": [
+        "record.write"
+      ],
+      "source_policy": "snapshot"
+    },
+    "secret_refs": [],
+    "configuration": {},
+    "overrides": {}
+  }
+}

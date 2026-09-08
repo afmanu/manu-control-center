@@ -1,0 +1,144 @@
+{
+  "milestone": "M1",
+  "status": "passed_local",
+  "date": "2026-09-08",
+  "package_version": "0.1.0-dev.1",
+  "contract_version": "0.1.0-draft",
+  "fixture_version": "0.2.0-draft",
+  "environment": {
+    "os": "macOS",
+    "architecture": "arm64",
+    "node": "24.14.1",
+    "npm": "11.11.0",
+    "typescript": "7.0.2",
+    "sqlite": "3.51.2"
+  },
+  "checks": [
+    {
+      "command": "npm test",
+      "status": "passed",
+      "tests": 74,
+      "failed": 0,
+      "skipped": 0,
+      "scope": "contracts, construction coherence, state guards, authorization, SQLite persistence and scope, CLI and A27 API separation"
+    },
+    {
+      "command": "npm run smoke:install --cache /tmp/manu-control-center-npm-cache",
+      "status": "passed",
+      "tests": 74,
+      "scope": "clean source npm ci offline and compilation; tarball installed with isolated empty consumer cache and registry access; installed CLI, contract and bundle validation, public core/sqlite/evals imports"
+    },
+    {
+      "command": "node dist/cli/main.js validate-bundle examples/contracts/construction-bundle.json",
+      "status": "passed",
+      "scope": "declared construction coherence, without inspecting or applying real adapters"
+    },
+    {
+      "command": "node dist/cli/main.js validate eval_fixture examples/meeting.json",
+      "status": "passed",
+      "scope": "schema and semantic structure of normalized fixture"
+    },
+    {
+      "command": "JavaScript example extracted from docs/development.md, executed with local compiled SQLite export",
+      "status": "passed",
+      "scope": "create, conditional update and two history entries in an in-memory database"
+    },
+    {
+      "command": "npm run check",
+      "status": "passed",
+      "tests": 74,
+      "scope": "tests, generated contract schema equality, documentation inventory, 173 local links, 16 JSON files, 30 components, 27 acceptance scenarios and 7 phases"
+    }
+  ],
+  "milestone_tasks": {
+    "M1.1": "passed: 22 contract schemas include construction documents; coherent bundle, pinned references, dependency closure, declared capabilities, ownership and invalid cases",
+    "M1.2": "passed: knowledge entities, identity, access, revisions, evidence and relations",
+    "M1.3": "passed: definitions and execution records, transition guards, budgets, cancellation, checkpoints and pinned versions; coordinator pending M3",
+    "M1.4": "passed: reference create/get/query/update/history/link with transactions, scoped access and two independent Worker connections racing the same revision",
+    "M1.5": "passed: logical effect identity, mismatch rejection, granted decision promotion, snapshot/fresh selection; transfer and executable dependency contract only, implementation M4",
+    "M1.6": "passed: four normalized fixtures and A27 input/expected separation, invalid inputs rejected before execution"
+  },
+  "acceptance_scenarios": {
+    "A01-A26": "not_run as full system scenarios; mechanism tests do not complete end-to-end acceptance",
+    "A27": {
+      "status": "passed",
+      "scope": "M1 API-level harness baseline",
+      "fixture_cases": [
+        "meeting",
+        "no-decisions",
+        "conflicting-source",
+        "injected-source"
+      ],
+      "invalid_case": "rejected before execute callback",
+      "evidence": "tests/evals.test.ts: expectations sentinel absent from execute input, retained for evaluate; original fixture unchanged",
+      "real_runtime_integration": "not_run; M3"
+    }
+  },
+  "partial_mechanism_coverage": {
+    "A08": "CAS race and monotonic fencing guard; no real lease/coordinator",
+    "A10": "current grant reuse and actor/resource/destination/content/time/revocation checks; runtime mediation pending",
+    "A19": "SQL instance/actor filtering before pagination and history permission revocation; no search index or runtime yet",
+    "A21": "same effect key across runs and payload/destination mismatch rejection; no remote invocation",
+    "A22": "persisted grant required for decision promotion and server-stamped provenance",
+    "A23": "snapshot/fresh selection and exact approved artifact preservation; workflow resume pending",
+    "A24-A25": "transfer plan and executable definition closure validation only; no actual data transfer or host authority handoff"
+  },
+  "limitations": [
+    "No deployed user instance, builder apply operation, runtime invocation or complete workflow",
+    "AccessScope and can_authorize are trusted host inputs, not authentication; direct database file access is outside the adapter boundary",
+    "No distributed leases/fencing, scheduler or measurement/cancellation of external operations",
+    "Receipt references and reconciliation classification are validated structurally; destination evidence verification remains M3/M6",
+    "Construction capabilities and transfer authority are declarations; no actual capability inspection or host freeze",
+    "export_import and distributed_fencing are false on the reference backend",
+    "A27 is API input separation, not hostile-code sandboxing or LLM semantic reliability",
+    "node:sqlite is experimental in the pinned Node version",
+    "Local macOS results are recorded here; remote CI results and their exact head SHA are recorded in GitHub Actions"
+  ],
+  "remote_ci": "https://github.com/afmanu/manu-control-center/actions",
+  "source_sha256": {
+    ".github/workflows/ci.yml": "06c0338b7edeebea29fcf9b587eb510af8f3bc40569636ee42bb877b7ee50f48",
+    ".npmrc": "3b88d1057add6f92ec23dc22dd017e312ded13a042deb0ba6f08bad85d936456",
+    ".nvmrc": "51849cee918b92b09b95121b54380f6124c0f578d8c2323221c0d75bbbadb08d",
+    "adapters/backends/sqlite/probe.ts": "061525d27747d3c95aa4fc439fb429f14c86b519e0ffd1be0efc8e0122bef1f4",
+    "adapters/backends/sqlite/store.ts": "cb767c6322fb5d98be1666443e5e1279183d7ca912833e7b7315f5e9805dec26",
+    "adapters/interfaces/local/data-directory.ts": "d78b5e98503067656ba98e730f95771eddf840d4c09d094680342dcada8b42c9",
+    "cli/main.ts": "14717b00679762157c3116c1c9b5fbe606b580dd9535bfa156d0acfdcfacc937",
+    "core/adapters.ts": "832c162033d6bc836b0ba1dade3fa99e8a1f440f301060c468a385c1a50e8ed0",
+    "core/construction.ts": "7c52ae0219fa5a9691dc1e054957dba9a1148ee5a058e08a1d8fc469b87a440d",
+    "core/errors.ts": "140f0d240cbcd2b8c0e842a3f62e4ce5d36f439294f987d0bc303178d0cc9fc4",
+    "core/hashing.ts": "d2025ba6947cfd3b616f1bdacb238ea465bb944024dd647dd8a7a521cd0c1be7",
+    "core/index.ts": "1129af718aaa50b252f862b5d05be96f2801c6839a308138c852f0d4968723fe",
+    "core/models.ts": "5428a5d48f801014e053f86beaedf7c29852281b87b5b0c352933229656a80fa",
+    "core/policy.ts": "3ba33e2408bd6dd90620705b8b85fb8f587762af67c42caaec9b61ffc3397aeb",
+    "core/record.ts": "cfc04b623d0c645665e79ae37ec7b1975971d8626b1b7094eba15f3cacf84df8",
+    "core/schema-definitions.ts": "6f398df33b2f4d71a50e71a6c0cb9b619f27b1a73b4ad32bff121a1b3e20ac36",
+    "core/state.ts": "e187f90ae3342ba14f887b6b7272f31e1ac111863f439d987603e295e68691c1",
+    "core/validation.ts": "4fcd048e5f50c7799b59eac4a3c7c92c913fe4c6daa132f4be1678f1974d9aa6",
+    "evals/harness.ts": "d1ff987b0c5eda87439ba7025e6ef3c2e3606eff44b5ced6033211a751471fcd",
+    "examples/conflicting-source.json": "e3c3294330eee642b3d342d6d2e9843f1757d03ffbfa33343eeb8d59758dbc04",
+    "examples/contracts/construction-bundle.json": "d8a18b740e4d1fde9d12f659f6bd45103299dd07c555d3f2a6d183bffe7c2576",
+    "examples/contracts/invalid-plan.json": "32671b8e2de7a5f8a29438a431ac6198dd1dba8c7bfcfc3cbb5a0b6f151bce0e",
+    "examples/contracts/valid.json": "b7c9c3644a595710c187ee717b63576fb1acdcccde710f6495c99def18388dae",
+    "examples/injected-source.json": "4df5e34e1b76898eb5f7f9f3a05baad19e94f4b5ba6937477387c68bc374e41c",
+    "examples/instance.example.json": "7856d50b413873afffff1500facccdf8ea6c5211c8c9ee63018f10164445ac72",
+    "examples/meeting.json": "302f141f8341e32da5441cba46c051747fe4b45cf7e0f73395effd260d06d3a5",
+    "examples/no-decisions.json": "005dcf2d76f9fdaf9a19e69a9a1f637735d80740e7d9304be03c2a062469f143",
+    "examples/record-envelope.json": "6d5b08c92c396942e064db1701aa79ede564c5b4b8d26f16d3d75359aeb09252",
+    "package-lock.json": "81b0baec9621a3a523bd7714a803866afe3e3c6f90d7578c899099acb7a06ca8",
+    "package.json": "3187430aff009ed3d28eabe91e8d15afe97ee758cd2998b022717689b9e5fca9",
+    "schemas/contracts.schema.json": "ff57a3fbb5d9d1a1a73c96f65b9991d5b4b96e16b477691d94c86c4b65f4d8f9",
+    "schemas/record-envelope.schema.json": "bf8493e1bb888de54d31968466660a44baca342b41a6e18f49a0ba652dfa555a",
+    "scripts/check-docs.mjs": "db13b6971c829dd55c99184f9d5e9783f1087517d5cb604c389c3ac8431dac14",
+    "scripts/export-schemas.mjs": "d28f751275bd7522bac1dfa65bb91eb9aa22f902a6a2bf5b24701d488ce1c78d",
+    "scripts/smoke-install.mjs": "009546f21585cae6390cd5c41a3a5068f469b929867dbb472c08efd34315b44f",
+    "tests/backend.test.ts": "a54eedf596572a28b44e190791d65bc90a3f6075ecd50fa8a6e52aaf3c1b3690",
+    "tests/cli.test.ts": "b9357d28e4f43b107a0e88b15bebf2a17d44c113e69c80db6347da0a34a355a1",
+    "tests/contracts.test.ts": "8868f9c01f285d45910fe8276fc2ffe67b63fc9e046897d379e34c697b5633c1",
+    "tests/evals.test.ts": "9becf25e5a001a8366077c97b0b5a6d8b890d76a492b180c47c21e79ccdbe3e4",
+    "tests/fixtures.ts": "64265a5f3eeb72e9f7e1bf926c5654069759eabf3a7f99fa912e948943f05f7b",
+    "tests/record.test.ts": "0393ea17e308658b48c3120c97d4d6c9d219ebeb4491b8400f743e61acdeeeb8",
+    "tests/state.test.ts": "f4c7c2f5beed7ae852d5896748460da92facb461edc2923651dea88c28eb244b",
+    "tests/storage.test.ts": "a411821197a4904bc3bf703eefbd7cf82099b8682005802bb519ed4af67f10fd",
+    "tsconfig.json": "fe29648d55c1b62408e62c43993e4f849fa7c9d59b111480c09017d809bd8065"
+  }
+}

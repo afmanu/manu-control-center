@@ -1,6 +1,6 @@
 # Plan de aceptación y evals
 
-Estos son casos que se deben implementar; ninguno se presenta como ejecutado por el producto en este paquete. Los criterios obligatorios relevantes para un perfil son puertas individuales: una puntuación agregada no puede ocultar un fallo de permisos, identidad o efectos.
+A27 tiene una primera comprobación ejecutada en el harness de M1; su integración con runtime real queda para M3. A01–A26 siguen pendientes como recorridos completos, aunque M1 prueba parte de sus mecanismos. Los criterios obligatorios relevantes para un perfil son puertas individuales: una puntuación agregada no puede ocultar un fallo de permisos, identidad o efectos.
 
 ## Matriz de escenarios
 
@@ -34,13 +34,13 @@ Estos son casos que se deben implementar; ninguno se presenta como ejecutado por
 | A26 | Ejecutar reunión → brief y resumen de estado sobre el mismo proyecto; abrir una sesión nueva del runtime real inicial. | Ambos reutilizan entidades y capacidades comunes; contexto, decisiones, resultado y siguiente acción se recuperan con fuentes, sin historial del chat. | M3 |
 | A27 | Ejecutar fixtures positivos/negativos del mismo esquema y observar la entrada entregada al ejecutor. | Solo recibe inputs autorizados; `expected` y la respuesta de referencia permanecen en el evaluador. Formatos inválidos se rechazan antes de ejecutar. | M1; integración M3 |
 
-A01–A15 concretan los quince criterios de la arquitectura. A16–A20 añaden pruebas específicas de sus invariantes. A21–A27 se incorporan al roadmap del 2026-09-08 para cubrir identidad de efectos, autoridad, tiempo, migración, dependencias ejecutables, composición y aislamiento de las evaluaciones. Todos siguen pendientes de implementación. Los casos no aplicables al perfil deben tener motivo; una capacidad anunciada no puede declararlos no aplicables para evitar probarla.
+A01–A15 concretan los quince criterios de la arquitectura. A16–A20 añaden pruebas específicas de sus invariantes. A21–A27 se incorporan al roadmap del 2026-09-08 para cubrir identidad de efectos, autoridad, tiempo, migración, dependencias ejecutables, composición y aislamiento de las evaluaciones. La [evidencia M1](m1-verification.json) registra A27 y relaciona las pruebas de mecanismos con los escenarios posteriores, sin dar estos últimos por aprobados. Los casos no aplicables al perfil deben tener motivo; una capacidad anunciada no puede declararlos no aplicables para evitar probarla.
 
 ## Eval del brief
 
 El fixture [meeting.json](../examples/meeting.json) incluye la evidencia y expectativas semánticas. El informe debe separar las dos decisiones explícitas, la propuesta sin aprobar y la pregunta abierta. No puede inventar presupuesto, fecha o responsable. Las citas apuntan al fragmento y revisión correctos.
 
-En M1 se normalizarán los formatos de ambos fixtures y se separarán entradas de expectativas; el fichero completo de prueba no se entrega al runtime como contexto. A27 debe observar esa frontera en el harness y volver a comprobarla con el adaptador real de M3.
+M1 normaliza cuatro fixtures a `fixture_version: 0.2.0-draft`: reunión, ausencia de decisiones, fuentes contradictorias y fuente con instrucciones maliciosas. Todos tienen `input` y `expected` separados. [runEvalCase](../evals/harness.ts) entrega únicamente una copia de `input` al ejecutor y reserva otra copia de `expected` al evaluador. Los tests de A27 observan esa frontera con una marca exclusiva de expectativas y rechazan fixtures inválidos antes de ejecutar. Esto acredita separación de argumentos de API, sin aislamiento de código hostil ni evaluación semántica de un LLM. M3 debe repetirlo con el adaptador real.
 
 Comprobaciones deterministas: esquema, referencias existentes, revisión de fuente, IDs válidos, hash de artefacto y transiciones autorizadas. Comprobaciones semánticas: fidelidad de cada afirmación, completitud de acuerdos y tratamiento de incertidumbre. Un judge LLM puede ayudar con rúbrica registrada; no es autoridad única para permisos, hashes o éxito de un efecto.
 

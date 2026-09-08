@@ -1,6 +1,6 @@
 # Kernel, skills, workflows y estado de ejecución
 
-Contrato técnico propuesto `0.1.0-draft`; estados y nombres deben fijarse en M1. La separación de responsabilidades proviene de [la arquitectura](architecture.md).
+Contratos y transiciones `0.1.0-draft` adoptados en M1. Existen guards de estado, presupuestos, versiones y autorización, junto con persistencia de referencia. El coordinador, leases, medición de consumo e invocaciones se implementarán en M3. El [alcance M1](m1-implementation.md) delimita las garantías comprobadas. La separación de responsabilidades proviene de [la arquitectura](architecture.md).
 
 ## Kernel y política
 
@@ -24,7 +24,7 @@ Workflow: ID/version, trigger, entrada, pasos, dependencias, condiciones, polít
 
 Todos se mantienen bajo la autoridad de C19. C21 opera sobre Action; C23 solicita transiciones de recuperación; C28 observa. Un resumen de handoff no es otro registro canónico editable de la ejecución.
 
-## Estados propuestos de run
+## Estados de run
 
 | Desde | A | Condición |
 |---|---|---|
@@ -38,6 +38,8 @@ Todos se mantienen bajo la autoridad de C19. C21 opera sobre Action; C23 solicit
 | No terminal | `cancel_requested` | Solicitud de cancelación registrada; no planificar pasos nuevos. |
 | `cancel_requested` | `cancelled` | Finalizado control de operaciones en vuelo; conservar acciones inciertas para reconciliación. |
 
+La tabla combina aristas validadas en M1 con condiciones que debe ejecutar el coordinador de M3. Una revisión condicional no acredita por sí sola elegibilidad del ejecutor, adquisición de lease ni aceptación semántica.
+
 Estados terminales no se reabren para ocultar intentos: un nuevo intento referencia el anterior. El estado del job deriva de runs y política de reintentos mediante el coordinador. Una cancelación no afirma que un efecto ya iniciado haya sido deshecho.
 
 ## Estados de acción y protocolo de efecto
@@ -49,6 +51,8 @@ Estados terminales no se reabren para ocultar intentos: un nuevo intento referen
 3. Registrar intento y llamar al destino usando idempotency key si la implementa.
 4. Guardar recibo y comprobar resultado; solo entonces confirmar.
 5. Ante respuesta perdida, reconciliar por referencia remota o clave. Si no es resoluble, bloquear esa dependencia sin repetirla.
+
+M1 exige `reconciliation: no_effect_proven` y recibos para declarar fallo desde `in_flight` o `unknown`. Solo `failed → prepared` permite volver a intentar; al entrar en `in_flight` incrementa el contador exactamente una vez y comprueba el grant actual. Resolver `unknown → confirmed` exige `effect_confirmed`. El backend valida referencias de recibo y estados; M3/M6 deben comprobar la evidencia del destino y mediar la llamada.
 
 No hay transacción universal entre base local y servicio remoto. La deduplicación de jobs, exclusión del escritor e idempotencia del destino son mecanismos diferentes y complementarios.
 

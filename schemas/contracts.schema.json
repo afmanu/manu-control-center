@@ -1,0 +1,3025 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:manu-control-center:contracts:0.1.0-draft",
+  "oneOf": [
+    {
+      "$ref": "#/definitions/need"
+    },
+    {
+      "$ref": "#/definitions/module"
+    },
+    {
+      "$ref": "#/definitions/blueprint"
+    },
+    {
+      "$ref": "#/definitions/instance_spec"
+    },
+    {
+      "$ref": "#/definitions/plan"
+    },
+    {
+      "$ref": "#/definitions/manifest"
+    },
+    {
+      "$ref": "#/definitions/project"
+    },
+    {
+      "$ref": "#/definitions/source"
+    },
+    {
+      "$ref": "#/definitions/capture"
+    },
+    {
+      "$ref": "#/definitions/claim"
+    },
+    {
+      "$ref": "#/definitions/decision"
+    },
+    {
+      "$ref": "#/definitions/artifact"
+    },
+    {
+      "$ref": "#/definitions/relation"
+    },
+    {
+      "$ref": "#/definitions/authorization"
+    },
+    {
+      "$ref": "#/definitions/job"
+    },
+    {
+      "$ref": "#/definitions/run"
+    },
+    {
+      "$ref": "#/definitions/step"
+    },
+    {
+      "$ref": "#/definitions/action"
+    },
+    {
+      "$ref": "#/definitions/skill"
+    },
+    {
+      "$ref": "#/definitions/workflow"
+    },
+    {
+      "$ref": "#/definitions/transfer_plan"
+    },
+    {
+      "$ref": "#/definitions/eval_fixture"
+    }
+  ],
+  "definitions": {
+    "json": {
+      "anyOf": [
+        {
+          "type": [
+            "null",
+            "boolean",
+            "number",
+            "string"
+          ]
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/json"
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/json"
+          }
+        }
+      ]
+    },
+    "reference": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "id",
+        "revision"
+      ],
+      "additionalProperties": false
+    },
+    "version_ref": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?$"
+        }
+      },
+      "required": [
+        "id",
+        "version"
+      ],
+      "additionalProperties": false
+    },
+    "access": {
+      "type": "object",
+      "properties": {
+        "owner_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "readers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "writers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "owner_id",
+        "readers",
+        "writers"
+      ],
+      "additionalProperties": false
+    },
+    "evidence": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "$ref": "#/definitions/reference"
+        },
+        "segment_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "source",
+        "segment_id"
+      ],
+      "additionalProperties": false
+    },
+    "budget": {
+      "type": "object",
+      "properties": {
+        "max_steps": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_attempts": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timeout_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_tokens": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "max_cost": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "max_steps",
+        "max_attempts",
+        "timeout_ms",
+        "max_tokens",
+        "max_cost"
+      ],
+      "additionalProperties": false
+    },
+    "target": {
+      "type": "object",
+      "properties": {
+        "adapter_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S",
+          "not": {
+            "enum": [
+              "TO_BE_SELECTED"
+            ]
+          }
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?$"
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "configuration": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/json"
+          }
+        }
+      },
+      "required": [
+        "adapter_id",
+        "version",
+        "capabilities",
+        "configuration"
+      ],
+      "additionalProperties": false
+    },
+    "segment": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "speaker": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "text",
+        "speaker"
+      ],
+      "additionalProperties": false
+    },
+    "need": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "need"
+        },
+        "schema_version": {
+          "const": "0.1.0-draft"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "instance_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "preferences": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/json"
+          }
+        },
+        "allowed_effects": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "kind",
+        "schema_version",
+        "id",
+        "instance_id",
+        "purpose",
+        "preferences",
+        "allowed_effects"
+      ],
+      "additionalProperties": false
+    },
+    "module": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "module"
+        },
+        "schema_version": {
+          "const": "0.1.0-draft"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?$"
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/version_ref"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "requires_capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "exports": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "kind",
+        "schema_version",
+        "id",
+        "version",
+        "purpose",
+        "dependencies",
+        "requires_capabilities",
+        "exports"
+      ],
+      "additionalProperties": false
+    },
+    "blueprint": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "blueprint"
+        },
+        "schema_version": {
+          "const": "0.1.0-draft"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?$"
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "modules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/version_ref"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "required_capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "required_configuration": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "entity_kinds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "project",
+              "source",
+              "capture",
+              "claim",
+              "decision",
+              "artifact",
+              "relation"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "acceptance": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "kind",
+        "schema_version",
+        "id",
+        "version",
+        "purpose",
+        "modules",
+        "required_capabilities",
+        "required_configuration",
+        "entity_kinds",
+        "acceptance"
+      ],
+      "additionalProperties": false
+    },
+    "instance_spec": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "instance_spec"
+        },
+        "schema_version": {
+          "const": "0.1.0-draft"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "instance_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "blueprint": {
+          "$ref": "#/definitions/version_ref"
+        },
+        "modules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/version_ref"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "kernel": {
+          "$ref": "#/definitions/version_ref"
+        },
+        "targets": {
+          "type": "object",
+          "properties": {
+            "backend": {
+              "$ref": "#/definitions/target"
+            },
+            "runtime": {
+              "$ref": "#/definitions/target"
+            },
+            "interface": {
+              "$ref": "#/definitions/target"
+            }
+          },
+          "required": [
+            "backend",
+            "runtime",
+            "interface"
+          ],
+          "additionalProperties": false
+        },
+        "policy": {
+          "type": "object",
+          "properties": {
+            "allowed_effects": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "minItems": 0,
+              "uniqueItems": true
+            },
+            "source_policy": {
+              "type": "string",
+              "enum": [
+                "snapshot",
+                "fresh"
+              ]
+            }
+          },
+          "required": [
+            "allowed_effects",
+            "source_policy"
+          ],
+          "additionalProperties": false
+        },
+        "secret_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "configuration": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/json"
+          }
+        },
+        "overrides": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/json"
+          }
+        }
+      },
+      "required": [
+        "kind",
+        "schema_version",
+        "id",
+        "revision",
+        "instance_id",
+        "purpose",
+        "blueprint",
+        "modules",
+        "kernel",
+        "targets",
+        "policy",
+        "secret_refs",
+        "configuration",
+        "overrides"
+      ],
+      "additionalProperties": false
+    },
+    "plan": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "plan"
+        },
+        "schema_version": {
+          "const": "0.1.0-draft"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "instance_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "spec_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "observations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/reference"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "operations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "operation": {
+                "type": "string",
+                "enum": [
+                  "inspect",
+                  "create",
+                  "reuse",
+                  "update",
+                  "verify"
+                ]
+              },
+              "resource_id": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "adapter_id": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "depends_on": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                "minItems": 0,
+                "uniqueItems": true
+              },
+              "ownership": {
+                "type": "string",
+                "enum": [
+                  "managed",
+                  "shared",
+                  "user_owned"
+                ]
+              },
+              "expected_revision": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "\\S"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "required_effect": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "evidence_requirements": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                "minItems": 1,
+                "uniqueItems": true
+              },
+              "recovery": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              }
+            },
+            "required": [
+              "id",
+              "operation",
+              "resource_id",
+              "adapter_id",
+              "depends_on",
+              "ownership",
+              "expected_revision",
+              "required_effect",
+              "evidence_requirements",
+              "recovery"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "authorization_scope": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "verification": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "recovery": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "kind",
+        "schema_version",
+        "id",
+        "instance_id",
+        "spec_hash",
+        "observations",
+        "operations",
+        "authorization_scope",
+        "verification",
+        "recovery"
+      ],
+      "additionalProperties": false
+    },
+    "manifest": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "manifest"
+        },
+        "schema_version": {
+          "const": "0.1.0-draft"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "instance_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "spec_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "applied_spec": {
+          "$ref": "#/definitions/reference"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "partial",
+            "installed_unverified",
+            "verified"
+          ]
+        },
+        "resources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "adapter_id": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "physical_ref": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "ownership": {
+                "type": "string",
+                "enum": [
+                  "managed",
+                  "shared",
+                  "user_owned"
+                ]
+              },
+              "revision": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "baseline_hash": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            },
+            "required": [
+              "id",
+              "adapter_id",
+              "physical_ref",
+              "ownership",
+              "revision",
+              "baseline_hash"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "overrides": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/json"
+          }
+        },
+        "verification": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "capability": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "required": {
+                "type": "boolean"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "passed",
+                  "failed",
+                  "not_run"
+                ]
+              },
+              "evidence_refs": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                "minItems": 0,
+                "uniqueItems": true
+              }
+            },
+            "required": [
+              "capability",
+              "required",
+              "status",
+              "evidence_refs"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "kind",
+        "schema_version",
+        "id",
+        "instance_id",
+        "revision",
+        "spec_hash",
+        "applied_spec",
+        "state",
+        "resources",
+        "overrides",
+        "verification"
+      ],
+      "additionalProperties": false
+    },
+    "project": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "project"
+        },
+        "schema_version": {
+          "const": "0.1.0-draft"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "instance_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "access": {
+          "$ref": "#/definitions/access"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "purpose": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "active",
+                "paused",
+                "completed"
+              ]
+            },
+            "responsible": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "next_action": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "decision_refs": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/reference"
+              },
+              "minItems": 0,
+              "uniqueItems": true
+            },
+            "source_refs": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/reference"
+              },
+              "minItems": 0,
+              "uniqueItems": true
+            }
+          },
+          "required": [
+            "purpose",
+            "status",
+            "responsible",
+            "next_action",
+            "decision_refs",
+            "source_refs"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "kind",
+        "schema_version",
+        "id",
+        "instance_id",
+        "revision",
+        "created_at",
+        "updated_at",
+        "access",
+        "data"
+      ],
+      "additionalProperties": false
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "source"
+        },
+        "schema_version": {
+          "const": "0.1.0-draft"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "instance_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "access": {
+          "$ref": "#/definitions/access"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "project_ref": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/reference"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "locator": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "scope": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "observed_at": {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "Z$"
+            },
+            "valid_from": {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "Z$"
+            },
+            "valid_to": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "Z$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "authority": {
+              "type": "string",
+              "enum": [
+                "primary",
+                "secondary",
+                "unverified"
+              ]
+            },
+            "segments": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/segment"
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            }
+          },
+          "required": [
+            "project_ref",
+            "locator",
+            "scope",
+            "observed_at",
+            "valid_from",
+            "valid_to",
+            "authority",
+            "segments"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "kind",
+        "schema_version",
+        "id",
+        "instance_id",
+        "revision",
+        "created_at",
+        "updated_at",
+        "access",
+        "data"
+      ],
+      "additionalProperties": false
+    },
+    "capture": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "capture"
+        },
+        "schema_version": {
+          "const": "0.1.0-draft"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "instance_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "access": {
+          "$ref": "#/definitions/access"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "project_ref": {
+              "$ref": "#/definitions/reference"
+            },
+            "source_ref": {
+              "$ref": "#/definitions/reference"
+            },
+            "segment_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "processing_status": {
+              "type": "string",
+              "enum": [
+                "pending",
+                "integrated",
+                "discarded"
+              ]
+            },
+            "dedup_key": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "reason": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "project_ref",
+            "source_ref",
+            "segment_ids",
+            "processing_status",
+            "dedup_key",
+            "reason"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "kind",
+        "schema_version",
+        "id",
+        "instance_id",
+        "revision",
+        "created_at",
+        "updated_at",
+        "access",
+        "data"
+      ],
+      "additionalProperties": false
+    },
+    "claim": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "claim"
+        },
+        "schema_version": {
+          "const": "0.1.0-draft"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "instance_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "access": {
+          "$ref": "#/definitions/access"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "project_ref": {
+              "$ref": "#/definitions/reference"
+            },
+            "content": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "epistemic_status": {
+              "type": "string",
+              "enum": [
+                "declared",
+                "hypothesis",
+                "proposed",
+                "confirmed",
+                "refuted"
+              ]
+            },
+            "evidence": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/evidence"
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            }
+          },
+          "required": [
+            "project_ref",
+            "content",
+            "epistemic_status",
+            "evidence"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "kind",
+        "schema_version",
+        "id",
+        "instance_id",
+        "revision",
+        "created_at",
+        "updated_at",
+        "access",
+        "data"
+      ],
+      "additionalProperties": false
+    },
+    "decision": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "decision"
+        },
+        "schema_version": {
+          "const": "0.1.0-draft"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "instance_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "access": {
+          "$ref": "#/definitions/access"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "project_ref": {
+              "$ref": "#/definitions/reference"
+            },
+            "choice": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "proposed",
+                "active",
+                "superseded",
+                "revoked"
+              ]
+            },
+            "actor_id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "alternatives": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "minItems": 0,
+              "uniqueItems": true
+            },
+            "evidence": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/evidence"
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "review_criterion": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "promotion": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "grant_ref": {
+                      "$ref": "#/definitions/reference"
+                    },
+                    "at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "pattern": "Z$"
+                    }
+                  },
+                  "required": [
+                    "grant_ref",
+                    "at"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "project_ref",
+            "choice",
+            "status",
+            "actor_id",
+            "alternatives",
+            "evidence",
+            "review_criterion",
+            "promotion"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "kind",
+        "schema_version",
+        "id",
+        "instance_id",
+        "revision",
+        "created_at",
+        "updated_at",
+        "access",
+        "data"
+      ],
+      "additionalProperties": false
+    },
+    "artifact": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "artifact"
+        },
+        "schema_version": {
+          "const": "0.1.0-draft"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "instance_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "access": {
+          "$ref": "#/definitions/access"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "project_ref": {
+              "$ref": "#/definitions/reference"
+            },
+            "content": {
+              "type": "string"
+            },
+            "content_hash": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "draft",
+                "approved"
+              ]
+            },
+            "source_refs": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/reference"
+              },
+              "minItems": 0,
+              "uniqueItems": true
+            },
+            "accepted_at": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "Z$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "project_ref",
+            "content",
+            "content_hash",
+            "status",
+            "source_refs",
+            "accepted_at"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "kind",
+        "schema_version",
+        "id",
+        "instance_id",
+        "revision",
+        "created_at",
+        "updated_at",
+        "access",
+        "data"
+      ],
+      "additionalProperties": false
+    },
+    "relation": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "relation"
+        },
+        "schema_version": {
+          "const": "0.1.0-draft"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "instance_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "access": {
+          "$ref": "#/definitions/access"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "from": {
+              "$ref": "#/definitions/reference"
+            },
+            "to": {
+              "$ref": "#/definitions/reference"
+            },
+            "relation_type": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "evidence": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/evidence"
+              },
+              "minItems": 0,
+              "uniqueItems": true
+            }
+          },
+          "required": [
+            "from",
+            "to",
+            "relation_type",
+            "evidence"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "kind",
+        "schema_version",
+        "id",
+        "instance_id",
+        "revision",
+        "created_at",
+        "updated_at",
+        "access",
+        "data"
+      ],
+      "additionalProperties": false
+    },
+    "authorization": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "authorization"
+        },
+        "schema_version": {
+          "const": "0.1.0-draft"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "instance_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "access": {
+          "$ref": "#/definitions/access"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "actor_id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "operation": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "resource_id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "destination": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "content_hash": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "valid_from": {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "Z$"
+            },
+            "valid_until": {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "Z$"
+            },
+            "revoked": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "actor_id",
+            "operation",
+            "resource_id",
+            "destination",
+            "content_hash",
+            "valid_from",
+            "valid_until",
+            "revoked"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "kind",
+        "schema_version",
+        "id",
+        "instance_id",
+        "revision",
+        "created_at",
+        "updated_at",
+        "access",
+        "data"
+      ],
+      "additionalProperties": false
+    },
+    "job": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "job"
+        },
+        "schema_version": {
+          "const": "0.1.0-draft"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "instance_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "access": {
+          "$ref": "#/definitions/access"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "workflow": {
+              "$ref": "#/definitions/version_ref"
+            },
+            "input_refs": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/reference"
+              },
+              "minItems": 0,
+              "uniqueItems": true
+            },
+            "dedup_key": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "source_policy": {
+              "type": "string",
+              "enum": [
+                "snapshot",
+                "fresh"
+              ]
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "queued",
+                "active",
+                "succeeded",
+                "failed",
+                "cancelled"
+              ]
+            },
+            "budget": {
+              "$ref": "#/definitions/budget"
+            }
+          },
+          "required": [
+            "workflow",
+            "input_refs",
+            "dedup_key",
+            "source_policy",
+            "status",
+            "budget"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "kind",
+        "schema_version",
+        "id",
+        "instance_id",
+        "revision",
+        "created_at",
+        "updated_at",
+        "access",
+        "data"
+      ],
+      "additionalProperties": false
+    },
+    "run": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "run"
+        },
+        "schema_version": {
+          "const": "0.1.0-draft"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "instance_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "access": {
+          "$ref": "#/definitions/access"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "job_ref": {
+              "$ref": "#/definitions/reference"
+            },
+            "workflow": {
+              "$ref": "#/definitions/version_ref"
+            },
+            "previous_run": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/reference"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "queued",
+                "running",
+                "waiting_input",
+                "blocked",
+                "paused",
+                "succeeded",
+                "failed",
+                "cancel_requested",
+                "cancelled"
+              ]
+            },
+            "executor_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "checkpoint": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/definitions/json"
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "output_refs": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/reference"
+              },
+              "minItems": 0,
+              "uniqueItems": true
+            },
+            "action_refs": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/reference"
+              },
+              "minItems": 0,
+              "uniqueItems": true
+            },
+            "accepted": {
+              "type": "boolean"
+            },
+            "cause": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "job_ref",
+            "workflow",
+            "previous_run",
+            "status",
+            "executor_id",
+            "checkpoint",
+            "output_refs",
+            "action_refs",
+            "accepted",
+            "cause"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "kind",
+        "schema_version",
+        "id",
+        "instance_id",
+        "revision",
+        "created_at",
+        "updated_at",
+        "access",
+        "data"
+      ],
+      "additionalProperties": false
+    },
+    "step": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "step"
+        },
+        "schema_version": {
+          "const": "0.1.0-draft"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "instance_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "access": {
+          "$ref": "#/definitions/access"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "run_ref": {
+              "$ref": "#/definitions/reference"
+            },
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "pending",
+                "running",
+                "waiting_input",
+                "succeeded",
+                "failed",
+                "skipped"
+              ]
+            },
+            "input_refs": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/reference"
+              },
+              "minItems": 0,
+              "uniqueItems": true
+            },
+            "output_refs": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/reference"
+              },
+              "minItems": 0,
+              "uniqueItems": true
+            },
+            "owner_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "fencing_token": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "checkpoint": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/definitions/json"
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "run_ref",
+            "step_id",
+            "status",
+            "input_refs",
+            "output_refs",
+            "owner_id",
+            "fencing_token",
+            "checkpoint"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "kind",
+        "schema_version",
+        "id",
+        "instance_id",
+        "revision",
+        "created_at",
+        "updated_at",
+        "access",
+        "data"
+      ],
+      "additionalProperties": false
+    },
+    "action": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "action"
+        },
+        "schema_version": {
+          "const": "0.1.0-draft"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "instance_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "access": {
+          "$ref": "#/definitions/access"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "job_ref": {
+              "$ref": "#/definitions/reference"
+            },
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "effect_name": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "logical_key": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "destination": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "payload": {
+              "$ref": "#/definitions/json"
+            },
+            "payload_hash": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "grant_ref": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/reference"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "prepared",
+                "in_flight",
+                "confirmed",
+                "failed",
+                "unknown",
+                "rejected"
+              ]
+            },
+            "attempts": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "receipt_refs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "minItems": 0,
+              "uniqueItems": true
+            },
+            "reconciliation": {
+              "type": "string",
+              "enum": [
+                "not_checked",
+                "effect_confirmed",
+                "no_effect_proven"
+              ]
+            }
+          },
+          "required": [
+            "job_ref",
+            "step_id",
+            "effect_name",
+            "logical_key",
+            "destination",
+            "payload",
+            "payload_hash",
+            "grant_ref",
+            "status",
+            "attempts",
+            "receipt_refs",
+            "reconciliation"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "kind",
+        "schema_version",
+        "id",
+        "instance_id",
+        "revision",
+        "created_at",
+        "updated_at",
+        "access",
+        "data"
+      ],
+      "additionalProperties": false
+    },
+    "skill": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "skill"
+        },
+        "schema_version": {
+          "const": "0.1.0-draft"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?$"
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "input_schema": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/json"
+          }
+        },
+        "output_schema": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/json"
+          }
+        },
+        "allowed_sources": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "allowed_tools": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/version_ref"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "effects": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/version_ref"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "limits": {
+          "$ref": "#/definitions/budget"
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "evals": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "kind",
+        "schema_version",
+        "id",
+        "version",
+        "purpose",
+        "input_schema",
+        "output_schema",
+        "allowed_sources",
+        "allowed_tools",
+        "effects",
+        "dependencies",
+        "limits",
+        "errors",
+        "evals"
+      ],
+      "additionalProperties": false
+    },
+    "workflow": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "workflow"
+        },
+        "schema_version": {
+          "const": "0.1.0-draft"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?$"
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "input_schema": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/json"
+          }
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "deterministic",
+                  "agent",
+                  "human"
+                ]
+              },
+              "capability": {
+                "$ref": "#/definitions/version_ref"
+              },
+              "depends_on": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                "minItems": 0,
+                "uniqueItems": true
+              },
+              "input_bindings": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "\\S"
+                    },
+                    "from_step": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "minLength": 1,
+                          "pattern": "\\S"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "output": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "\\S"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "from_step",
+                    "output"
+                  ],
+                  "additionalProperties": false
+                },
+                "minItems": 0,
+                "uniqueItems": true
+              },
+              "outputs": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                "minItems": 1,
+                "uniqueItems": true
+              },
+              "effects": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                "minItems": 0,
+                "uniqueItems": true
+              },
+              "recovery": {
+                "type": "string",
+                "enum": [
+                  "retry",
+                  "pause",
+                  "fail"
+                ]
+              },
+              "acceptance": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                "minItems": 1,
+                "uniqueItems": true
+              }
+            },
+            "required": [
+              "id",
+              "type",
+              "capability",
+              "depends_on",
+              "input_bindings",
+              "outputs",
+              "effects",
+              "recovery",
+              "acceptance"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "output_refs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "step_id": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "output": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              }
+            },
+            "required": [
+              "step_id",
+              "output"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "acceptance": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "source_policy": {
+          "type": "string",
+          "enum": [
+            "snapshot",
+            "fresh"
+          ]
+        },
+        "limits": {
+          "$ref": "#/definitions/budget"
+        }
+      },
+      "required": [
+        "kind",
+        "schema_version",
+        "id",
+        "version",
+        "purpose",
+        "input_schema",
+        "steps",
+        "output_refs",
+        "acceptance",
+        "source_policy",
+        "limits"
+      ],
+      "additionalProperties": false
+    },
+    "transfer_plan": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "transfer_plan"
+        },
+        "schema_version": {
+          "const": "0.1.0-draft"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "source_instance_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "target_instance_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "move",
+            "copy",
+            "restore"
+          ]
+        },
+        "authority": {
+          "type": "object",
+          "properties": {
+            "source_host": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "destination_host": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "generation": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "source_frozen": {
+              "type": "boolean"
+            },
+            "activate_jobs": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "source_host",
+            "destination_host",
+            "generation",
+            "source_frozen",
+            "activate_jobs"
+          ],
+          "additionalProperties": false
+        },
+        "records": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/reference"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "secret_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "definitions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ref": {
+                "$ref": "#/definitions/version_ref"
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "skill",
+                  "workflow",
+                  "validator"
+                ]
+              },
+              "hash": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "content": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": {
+                      "$ref": "#/definitions/json"
+                    }
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "locator": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "\\S"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "dependencies": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/version_ref"
+                },
+                "minItems": 0,
+                "uniqueItems": true
+              }
+            },
+            "required": [
+              "ref",
+              "kind",
+              "hash",
+              "content",
+              "locator",
+              "dependencies"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "kind",
+        "schema_version",
+        "id",
+        "source_instance_id",
+        "target_instance_id",
+        "mode",
+        "authority",
+        "records",
+        "secret_refs",
+        "definitions"
+      ],
+      "additionalProperties": false
+    },
+    "eval_fixture": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "eval_fixture"
+        },
+        "schema_version": {
+          "const": "0.1.0-draft"
+        },
+        "fixture_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "fixture_version": {
+          "const": "0.2.0-draft"
+        },
+        "synthetic": {
+          "const": true
+        },
+        "input": {
+          "type": "object",
+          "properties": {
+            "project": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                "purpose": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                }
+              },
+              "required": [
+                "id",
+                "purpose"
+              ],
+              "additionalProperties": false
+            },
+            "source": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                "revision": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                "observed_at": {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "Z$"
+                },
+                "segments": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/segment"
+                  },
+                  "minItems": 1,
+                  "uniqueItems": true
+                }
+              },
+              "required": [
+                "id",
+                "revision",
+                "observed_at",
+                "segments"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "project",
+            "source"
+          ],
+          "additionalProperties": false
+        },
+        "expected": {
+          "type": "object",
+          "properties": {
+            "decisions": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/expected_claim"
+              },
+              "minItems": 0,
+              "uniqueItems": true
+            },
+            "proposals": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/expected_claim"
+              },
+              "minItems": 0,
+              "uniqueItems": true
+            },
+            "open_questions": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/expected_claim"
+              },
+              "minItems": 0,
+              "uniqueItems": true
+            },
+            "must_not_assert": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "minItems": 0,
+              "uniqueItems": true
+            }
+          },
+          "required": [
+            "decisions",
+            "proposals",
+            "open_questions",
+            "must_not_assert"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "kind",
+        "schema_version",
+        "fixture_id",
+        "fixture_version",
+        "synthetic",
+        "input",
+        "expected"
+      ],
+      "additionalProperties": false
+    },
+    "expected_claim": {
+      "type": "object",
+      "properties": {
+        "meaning": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "source_segment": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "meaning",
+        "source_segment"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

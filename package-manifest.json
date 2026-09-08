@@ -3,9 +3,9 @@
   "format_version": 1,
   "scope": "Documentación y esquemas del repositorio; excluye código, dependencias y su propia huella. No es un manifiesto de instancia.",
   "validation": {
-    "internal_markdown_links": 143,
+    "internal_markdown_links": 173,
     "markdown_fences": "passed",
-    "json_parse": 9,
+    "json_parse": 16,
     "components": 30,
     "acceptance_scenarios": 27,
     "roadmap_phases": 7
@@ -23,18 +23,18 @@
     },
     {
       "path": "README.md",
-      "bytes": 4017,
-      "sha256": "92ef98cf838a6a0fca60ab953a54a0bfbec68f98b3201d93b71b7d107d866109"
+      "bytes": 4423,
+      "sha256": "4eb768c79fddec7c46f1cbcbd255024e83db76a78a3ce82be61746041ff42838"
     },
     {
       "path": "START-HERE.md",
-      "bytes": 1216,
-      "sha256": "b40af0314e714cfddd9e2e42e78d243fd72fafd2e9eaeb5fe1e8f4c3750f2f91"
+      "bytes": 1293,
+      "sha256": "923f30b93c96a1fd3c4df3d42049a14b5419c2a7efe75ef0ed073491ddd66b50"
     },
     {
       "path": "docs/acceptance.md",
-      "bytes": 7808,
-      "sha256": "18d17809e74bdf7150a77d992fc4e0c95e9b2e2d55e20cfb289a9e3934cb15c8"
+      "bytes": 8395,
+      "sha256": "60f7602ec4043bf120811d117df5f3d664d00ed9efdc5a6f04f3585ea606d840"
     },
     {
       "path": "docs/architecture.md",
@@ -43,28 +43,28 @@
     },
     {
       "path": "docs/component-map.md",
-      "bytes": 5932,
-      "sha256": "c9fedcb9d2202f61861a5c329ec05427a10397ecbd4788760297d43bfff44ee7"
+      "bytes": 6138,
+      "sha256": "e5157896f85c9492441b7c1cd1e26ee11ddd84025c892e9517790d677464fd72"
     },
     {
       "path": "docs/contracts.md",
-      "bytes": 9059,
-      "sha256": "8a6c5c7204b1c8c109f531ff32a2a710d576d3edf7e29738af2c4b63609b72e6"
+      "bytes": 9932,
+      "sha256": "5fa0170b1aea9dba6e359141780598250a19aee5f53e4d49099267f657834997"
     },
     {
       "path": "docs/decisions.md",
-      "bytes": 9630,
-      "sha256": "6b04c2981edd98ee6a11ecb27365f932986bea705a779d3d9e948417aed741e0"
+      "bytes": 13667,
+      "sha256": "14d822cbabcba0519bb083642e70ef6537738be9efec31bfa6e90ae84ffe2d2c"
     },
     {
       "path": "docs/development.md",
-      "bytes": 5945,
-      "sha256": "767139b8fd761a4f9f8498a58db956359428c9e515bed5cf352dcb0a7c432734"
+      "bytes": 8455,
+      "sha256": "515506bf4d2c4615039500ffee78a3a5a51fea0d1cd1e3db226ea50bc3947adb"
     },
     {
       "path": "docs/execution.md",
-      "bytes": 7216,
-      "sha256": "dcc9308e100e58616820f44b4c56c666be8f22bd3d71625e6cd6fbdf629c41f5"
+      "bytes": 8104,
+      "sha256": "aaf70c6d0347ffd394aef206107f0de4951b79d606db16385fb25d07518825cb"
     },
     {
       "path": "docs/first-blueprint.md",
@@ -73,13 +73,13 @@
     },
     {
       "path": "docs/handoff.md",
-      "bytes": 5565,
-      "sha256": "a32c543ce127c00f724ead25c121af658e24e5af351b13430e456e8aa455ec5e"
+      "bytes": 5952,
+      "sha256": "b4754dee82f745a0cf76c16a8869bfa7433c2d677e21c4c760d913d4e894299d"
     },
     {
       "path": "docs/implementation-plan.md",
-      "bytes": 20985,
-      "sha256": "211c6252ba446ed5861aeb9aba89b9ed97d410f266301a3a8ea47a3b3855dd09"
+      "bytes": 21491,
+      "sha256": "998cc654f5e6288c88b6a38168765a97242fadbcd6681ff5881e382dcf92362d"
     },
     {
       "path": "docs/m0-verification.json",
@@ -87,9 +87,44 @@
       "sha256": "139410f624f01e52d06240bc1eafaf6d9b4d0dfad85e95fb7340858c2e4beb7d"
     },
     {
+      "path": "docs/m1-implementation.md",
+      "bytes": 8159,
+      "sha256": "dbfd5399abda0310ef91ce7ee9c21a641b460dfefb55e93e44dacde1b05bbfbe"
+    },
+    {
+      "path": "docs/m1-verification.json",
+      "bytes": 9665,
+      "sha256": "b45ef56cc811a774424d7dcf7690c8d97f69c8bf1188f8da32060ab60af11eed"
+    },
+    {
       "path": "examples/README.md",
-      "bytes": 954,
-      "sha256": "d614f5dcd0cae0d0e8d1d21240211249643d472f00b325b366ada37633125e98"
+      "bytes": 1859,
+      "sha256": "15e4bfbc3ff0896a14d0087c099a13f8a5ff2b972a8ef84e76823e57d7d48ff4"
+    },
+    {
+      "path": "examples/conflicting-source.json",
+      "bytes": 1025,
+      "sha256": "e3c3294330eee642b3d342d6d2e9843f1757d03ffbfa33343eeb8d59758dbc04"
+    },
+    {
+      "path": "examples/contracts/construction-bundle.json",
+      "bytes": 3772,
+      "sha256": "d8a18b740e4d1fde9d12f659f6bd45103299dd07c555d3f2a6d183bffe7c2576"
+    },
+    {
+      "path": "examples/contracts/invalid-plan.json",
+      "bytes": 787,
+      "sha256": "32671b8e2de7a5f8a29438a431ac6198dd1dba8c7bfcfc3cbb5a0b6f151bce0e"
+    },
+    {
+      "path": "examples/contracts/valid.json",
+      "bytes": 17730,
+      "sha256": "b7c9c3644a595710c187ee717b63576fb1acdcccde710f6495c99def18388dae"
+    },
+    {
+      "path": "examples/injected-source.json",
+      "bytes": 1092,
+      "sha256": "4df5e34e1b76898eb5f7f9f3a05baad19e94f4b5ba6937477387c68bc374e41c"
     },
     {
       "path": "examples/instance.example.json",
@@ -98,13 +133,13 @@
     },
     {
       "path": "examples/meeting.json",
-      "bytes": 1633,
-      "sha256": "e12e67f3981ee042bef803403da30a1f8108457b39fbf625a7904045c5c9a88f"
+      "bytes": 1773,
+      "sha256": "302f141f8341e32da5441cba46c051747fe4b45cf7e0f73395effd260d06d3a5"
     },
     {
       "path": "examples/no-decisions.json",
-      "bytes": 432,
-      "sha256": "ea836d04dc288e0d13bc09b89bb839155987db437891f1070aefcea87cf4655e"
+      "bytes": 834,
+      "sha256": "005dcf2d76f9fdaf9a19e69a9a1f637735d80740e7d9304be03c2a062469f143"
     },
     {
       "path": "examples/record-envelope.json",
@@ -160,6 +195,11 @@
       "path": "references/source-map.json",
       "bytes": 3065,
       "sha256": "51512e216b00d72bb1d2a43aedb0546bd1a0ec757024452d52a609f99b041503"
+    },
+    {
+      "path": "schemas/contracts.schema.json",
+      "bytes": 72423,
+      "sha256": "ff57a3fbb5d9d1a1a73c96f65b9991d5b4b96e16b477691d94c86c4b65f4d8f9"
     },
     {
       "path": "schemas/record-envelope.schema.json",
