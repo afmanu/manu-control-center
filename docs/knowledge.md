@@ -1,6 +1,6 @@
 # Local capture and source queries — M3.1
 
-M3.1 adds explicit text/file capture, revision retrieval, literal search and project context to an existing foundation. M3.2 extends these APIs with temporal selectors and a separate [review entry point](review.md) for claims, decisions and artifacts. It works from the CLI without a model. Sources remain unverified and captures remain pending; decision authority and structured temporal queries are available in M3.2; interpretation and workflows follow in M3.3–M3.7. See [roadmap](implementation-plan.md) and [verification evidence](m3.1-verification.json).
+M3.1 adds explicit text/file capture, revision retrieval, literal search and project context to an existing foundation. M3.2 extends these APIs with temporal selectors and a separate [review entry point](review.md) for claims, decisions and artifacts. It works from the CLI without a model. Sources remain unverified and standalone captures remain pending. M3.3 [local workflows](workflows.md) can integrate a capture into an exact approved artifact after explicit human classification and semantic review. Runtime interpretation follows in M3.5. See [roadmap](implementation-plan.md) and [verification evidence](m3.1-verification.json).
 
 ## Try it with synthetic data
 

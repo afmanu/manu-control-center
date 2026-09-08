@@ -31,6 +31,10 @@ async function main(args: string[]): Promise<void> {
     const { runReview } = await import('./review.js');
     output(runReview(args)); return;
   }
+  if (['workflow-prepare', 'workflow-read', 'workflow-complete'].includes(args[0]!)) {
+    const { runWorkflow } = await import('./workflows.js');
+    output(runWorkflow(args)); return;
+  }
   if (args.length === 1 && args[0] === 'doctor') {
     const dataDirectory = resolveDataDirectory();
     const { probeSqlite } = await import('../adapters/backends/sqlite/probe.js');

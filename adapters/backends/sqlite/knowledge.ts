@@ -54,6 +54,7 @@ export class SqliteKnowledgeBackend extends SqliteBackend {
     };
   }
   protected snapshot<T>(work: () => T): T {
+    if (this.db.isTransaction) return work();
     this.db.exec('BEGIN');
     try { const result = work(); this.db.exec('COMMIT'); return result; }
     catch (error) { this.db.exec('ROLLBACK'); throw error; }

@@ -1,18 +1,18 @@
 # Development handoff
 
-Updated: 2026-09-08. Primary repository: [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). **M0–M2 and M3.1–M3.2 complete; next step: M3.3.**
+Updated: 2026-09-08. Primary repository: [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). **M0–M2 and M3.1–M3.3 complete; next step: M3.4.**
 
 ## Current instruction
 
 Manu requests a system he can use and has selected this repository as its destination. Verified work and GitHub delivery are authorized. Preserve the initial history and MIT license; earlier documentation folders are snapshots, without automatic synchronization with this repository or the source vault. Another discovery interview is unnecessary.
 
-Manu authorized the next roadmap step after the English-repository update. M3.1 and the subsequently authorized M3.2 are delivered here. Keep repository content in English; runtime interaction and user content may remain Spanish (D24 and [language.md](language.md)).
+Manu authorized the next roadmap step after the English-repository update. M3.1, M3.2 and the subsequently authorized M3.3 local workflow profile are delivered here. Keep repository content in English; runtime interaction and user content may remain Spanish (D24 and [language.md](language.md)).
 
 M3 delivers first agent use; M4 demonstrates another representation and runtime; M5 adds maintenance. Essential M6 integrations may be brought forward from M3.
 
 ## Executable status
 
-Private package `manu-control-center@0.1.0-dev.5`, TypeScript/Node 24, exact dependencies and a lockfile. M3.2 adds no dependencies or database migration. Claim validity is an optional draft-schema addition; prior records remain readable. The 22 M1 contracts, SQLite backend with access/revisions/history, and A27 harness remain in place.
+Private package `manu-control-center@0.1.0-dev.6`, TypeScript/Node 24, exact dependencies and a lockfile. M3.2 adds no dependencies or database migration. Claim validity is an optional draft-schema addition; prior records remain readable. The 22 M1 contracts, SQLite backend with access/revisions/history, and A27 harness remain in place.
 
 M2 adds the `project-knowledge-foundation@0.1.0-draft` catalog, two modules, validated request, resolver and reproducible plan. The adapter checks the real backend in disposable databases, inspects destinations without writes, and applies operations with atomic checkpoints. Adoption reuses MCC SQLite projects with pinned revisions and ownership, preserving content/history.
 
@@ -24,7 +24,7 @@ New plans have English catalog descriptions. Original M2 plans remain supported 
 
 M3.1 supplies owner-operated local text/UTF-8 capture (1 MiB maximum), one exact body segment, stable request-key replay and conditional source updates. Source/project/capture records and histories commit atomically. Search is a literal case-sensitive substring over current accessible sources, with bounded excerpts and exact provenance. Source history and revision reads require current project/source access. Context includes purpose/status/responsible/next action and sources, not decisions or generated summaries. See [knowledge guide](knowledge.md).
 
-The capture commands use the trusted M1 knowledge boundary. They do not activate a runtime or expand the M2 construction grant/profile. Captured sources remain unverified; captures remain pending. No personal source import, model invocation or workflow execution occurred. Original catalogs, plan digests, schemas and manifest verification scope remain intact.
+The capture commands use the trusted M1 knowledge boundary. They do not activate a runtime or expand the M2 construction grant/profile. Captured sources remain unverified; standalone captures remain pending, while M3.3 can integrate them through reviewed workflows. No personal source import or model invocation occurred. Original catalogs, plan digests, schemas and manifest verification scope remain intact.
 
 M3.2 adds `claim`, `decision-propose`, `decision-grant`, `decision-revoke-grant`, `decision-set`, `artifact-draft`, `artifact-approve`, `artifact-fork`, `sources-check`, `knowledge` and `knowledge-record`. Source queries accept `--as-of`/`--valid-at`; claim queries independently select recorded history and explicit validity. `context` remains source-only; review queries expose decisions and artifacts. [Review guide](review.md) defines JSON payloads and the runnable [synthetic demo](../examples/review-demo.mjs).
 
@@ -46,7 +46,7 @@ It contains only the initial purpose of building this system. No personal source
 
 M2 passed 92 tests, including concurrent installers, stale plans, adoption, actual process exit inside a transaction and after a checkpoint, CLI recovery and isolation. Its clean test repeated the 92 tests, installed the package with an empty consumer cache, created/verified an instance from it and checked public exports.
 
-A01, A02, A16 and A17 pass for the supported local target. A15/A19 pass for the installation profile and need expansion with runtimes/other backends. A27 still passes as a harness API boundary. Other system workflows remain pending.
+A01, A02, A16 and A17 pass for the supported local target. A15/A19 pass for the installation profile and need expansion with runtimes/other backends. A27 still passes as a harness API boundary. At M2, system workflows remained pending; subsequent local workflow evidence is recorded below.
 
 [M2 evidence](m2-verification.json), [historical M1](m1-verification.json), [historical M0](m0-verification.json) and [GitHub Actions](https://github.com/afmanu/manu-control-center/actions). Historical hashes belong to their original releases. Subsequent language verification is recorded separately; remote results identify the exact commit without a circular hash embedded in that commit.
 
@@ -76,6 +76,22 @@ Review testing found an ACL inheritance issue before release: historical sources
 
 Read-only review, temporal source queries, source preflight and English/Spanish CLI reads preserve Manu's request, original plan, database bytes, project content and directory listing. No claims, decisions, artifacts or sources were added to his instance; the original plan/digest and foundation evidence are unchanged.
 
+## M3.3 verification and implementation
+
+176 tests and clean tarball installation pass. The installed CLI demo prepares, reads and completes meeting-to-brief and project-status workflows across fresh processes; no model is invoked. [Guide](workflows.md), [evidence](m3.3-verification.json).
+
+New commands: `workflow-prepare`, `workflow-read`, `workflow-complete`. Public exports: `./workflows`, `./sqlite-workflows`, and neutral types/extraction/definitions from the core. Fixed contracts use `0.1.0-local-human`; the owner supplies transcript classification and a four-criterion semantic review with evidence notes. The extractor verifies full non-whitespace coverage, exact quote ranges and provenance. Held-out category/segment evaluations reuse the four existing fixtures without exposing expected answers to the executor. They do not certify semantic truth or automatic model quality.
+
+Both workflows reuse bounded permission-scoped decisions/claims, project context and exact artifact review. Workflow artifacts and metadata stay owner-private; derived knowledge must be owned by the project owner. Context overflow or conflicting source revisions fails explicitly. Snapshot preserves pinned evidence; fresh checks source/project/knowledge revisions and newly added knowledge at acceptance. Source instructions remain quoted data. Meeting agreements never promote decisions or authorize delivery.
+
+Preparation and completion use atomic transactions over the existing C19 Job/Run/capture/artifact records, with persisted next action and exact review attestation. No parallel state file, schema migration, new dependency or catalog activation. Request keys and exact completion payloads replay safely. Rejection records concrete failures and preserves the draft/pending capture. Tests cover forged/stale review, owner/source access, rollback at the final write, concurrent preparation/completion, context overflow and fresh-process recovery of a pending review. Nested read snapshots now join an existing SQLite transaction so shared APIs see coherent state.
+
+Testing caught a freshness gap: checking only pinned revisions misses newly created claims. Acceptance now compares the complete bounded current knowledge membership as well as pinned versions. This has a dedicated regression test. Existing M0–M3.2 checks pass unchanged apart from the development-version assertion.
+
+The general coordinator, step persistence/invalidations, effective fencing, cancellation, runtime budgets and effect mediation remain M3.4. Job/definition budgets are declarations, not enforced asynchronous timeouts. Real runtime invocation and agent continuity remain M3.5–M3.6. Workflow reads already work across local processes but do not complete A26/A27 runtime scenarios. Direct editing or separate approval of a generated artifact invalidates workflow acceptance; prepare corrected work under a new key.
+
+Read-only regression with the new backend preserves Manu's request, original plan, database bytes and directory entries. Replanning retains the original catalog/spec, foundation verification remains, and the instance still contains no sources, claims, decisions, artifacts, jobs, runs or actions. English/Spanish context reads agree. Runtime integration remains not_run.
+
 ## Boundaries M3 must preserve
 
 - The host authenticates and sets `AccessScope`, `can_authorize` and construction authority. These arguments never come from sources or LLM responses. The CLI is a trusted local host without remote authentication.
@@ -86,14 +102,13 @@ Read-only review, temporal source queries, source preflight and English/Spanish 
 - Replanning does not change ownership or overwrite different managed configurations. M3 must explicitly define any foundation evolution needed to activate capabilities; M5 expands general maintenance.
 - `node:sqlite` emits an experimental warning in Node 24.14.1. Other platforms' path rules do not prove compatibility: local evidence is macOS; CI records its own runs.
 
-D20–D26 record these choices, initial deployment and language policy in [decisions.md](decisions.md).
+D20–D27 record these choices, initial deployment and language policy in [decisions.md](decisions.md).
 
 ## Next work: M3
 
-1. M3.3: implement meeting → brief and project summary using shared capture/retrieval/review capabilities and the isolated evaluator. Start with synthetic cases and preserve proposal/decision authority.
-2. M3.4: durable coordinator, checkpoints, cancellation, budgets and effect control; consume source preflight and persist invalidation rather than treating it as already implemented.
-3. M3.5–M3.7: real runtime adapter, continuity from another session and first use of Manu's foundation instance.
-4. Check M3 scenarios in the [roadmap](implementation-plan.md), extending A15/A19/A27 to the actually invoked target.
+1. M3.4: durable coordinator, checkpoints, cancellation, budgets and effect control; consume source preflight and persist invalidation rather than treating it as already implemented.
+2. M3.5–M3.7: real runtime adapter, continuity from another session and first use of Manu's foundation instance.
+3. Check M3 scenarios in the [roadmap](implementation-plan.md), extending A15/A19/A27 to the actually invoked target.
 
 At session completion, record the phase, actual commands, results and limits; update handoff, decisions and evidence, and regenerate the documentation inventory. Keep user knowledge and instance state outside the distribution.
 

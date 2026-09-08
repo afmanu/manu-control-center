@@ -60,10 +60,13 @@ try {
   run(process.execPath, ['--input-type=module', '-e', "import {SqliteReviewBackend} from 'manu-control-center/sqlite-review'; import {queryLocalKnowledge,grantLocalDecision} from 'manu-control-center/review'; if(typeof queryLocalKnowledge!=='function'||typeof grantLocalDecision!=='function') throw new Error('Missing review exports'); const backend=new SqliteReviewBackend(':memory:');backend.close();"], consumer);
   const reviewDemo = JSON.parse(run(process.execPath, [join(installed, 'examples', 'review-demo.mjs')], consumer));
   assert.equal(reviewDemo.ok, true); assert.equal(reviewDemo.approved_artifact_exact, true); assert.equal(reviewDemo.temporal_retrieval, true);
+  run(process.execPath, ['--input-type=module', '-e', "import {SqliteWorkflowBackend} from 'manu-control-center/sqlite-workflows'; import {prepareLocalWorkflow,completeLocalWorkflow} from 'manu-control-center/workflows'; if(typeof prepareLocalWorkflow!=='function'||typeof completeLocalWorkflow!=='function') throw new Error('Missing workflow exports'); const backend=new SqliteWorkflowBackend(':memory:');backend.close();"], consumer);
+  const workflowDemo = JSON.parse(run(process.execPath, [join(installed, 'examples', 'workflow-demo.mjs')], consumer));
+  assert.equal(workflowDemo.ok, true); assert.equal(workflowDemo.meeting_to_brief, true); assert.equal(workflowDemo.project_status, true); assert.equal(workflowDemo.model_invoked, false);
   if (process.platform !== 'win32') {
     assert.equal(run(join(consumer, 'node_modules', '.bin', 'manu-control-center'), ['--version'], consumer).trim(), version);
   }
-  process.stdout.write(JSON.stringify({ ok: true, clean_source_install: true, source_tests: true, packed_cli_install: true, packed_instance_create_verify: true, packed_knowledge_capture_query: true, packed_authority_time_review: true, version }) + '\n');
+  process.stdout.write(JSON.stringify({ ok: true, clean_source_install: true, source_tests: true, packed_cli_install: true, packed_instance_create_verify: true, packed_knowledge_capture_query: true, packed_authority_time_review: true, packed_local_human_workflows: true, version }) + '\n');
 } catch (error) {
   process.stderr.write(error.stdout?.toString() ?? '');
   process.stderr.write(error.stderr?.toString() ?? '');

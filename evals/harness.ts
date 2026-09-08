@@ -10,3 +10,4 @@ export async function runEvalCase<T>(fixture: unknown, execute: (input: MeetingI
   const output = await execute(cloneJson(validated.input));
   return evaluate(output, expected);
 }
+export { evaluateMeetingCategories } from './workflows.js';

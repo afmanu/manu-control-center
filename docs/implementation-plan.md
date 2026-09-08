@@ -1,6 +1,6 @@
 # Implementation roadmap
 
-Updated: 2026-09-08. **Status: M0–M2 and M3.1–M3.2 complete; M3 in progress; M4–M6 pending.** Development in [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). Identifiers remain stable for architecture/component/acceptance traceability. [M2 evidence](m2-verification.json) and the [handoff](handoff.md) record current scope; historical [M0](m0-verification.json) and [M1](m1-verification.json) evidence is preserved.
+Updated: 2026-09-08. **Status: M0–M2 and M3.1–M3.3 complete; M3 in progress; M4–M6 pending.** Development in [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). Identifiers remain stable for architecture/component/acceptance traceability. [M2 evidence](m2-verification.json) and the [handoff](handoff.md) record current scope; historical [M0](m0-verification.json) and [M1](m1-verification.json) evidence is preserved.
 
 ## Intended delivery
 
@@ -107,6 +107,8 @@ Work, in order:
 
 **M3.2 completed:** constrained assertion/proposal intake, exact content-bound decision grants and transitions, grant revocation, recorded-time source/knowledge queries, optional explicit claim validity, trusted owner artifact approval, immutable approved versions and atomic related drafts. Source preflight implements snapshot/fresh selection and invalidation reporting; coordinator consumption remains M3.4. 152 tests and the installed CLI demo pass. A05/A06/A22 cover local structured review and A19 derived retrieval; full runtime scenarios remain pending. [Guide](review.md), [D26](decisions.md), [evidence](m3.2-verification.json).
 
+**M3.3 completed for the local human profile:** meeting capture/pinning, complete transcript classification, exact quote extraction, shared bounded project context, canonical artifacts, deterministic evaluation, explicit semantic review and atomic run/job completion. Project status reuses the same context/draft/review path. Definitions and state remain distinct; no model, general coordinator or external delivery is claimed. 176 tests and installed demonstrations cover both workflows, fresh/snapshot behavior, source permissions, rollback, concurrent replay and held-out fixture categories. Human classification and semantic review are explicit dependencies of this profile; M3.5 must supply and evaluate the real runtime. [Guide](workflows.md), [D27](decisions.md), [evidence](m3.3-verification.json).
+
 **Delivery:** usable local pilot: install → add a source → query → run a workflow → review a result → resume another day. Includes real-runtime evidence, known limits and verified usage steps. Personal-data use does not imply migrating the entire vault.
 
 ## M4 — Demonstrated portability
@@ -173,4 +175,4 @@ Add code when it has useful behavior: `core` defines contracts; `builder`, `life
 
 Each completion updates [handoff.md](handoff.md) with version/commit if available, completed tasks, actual commands, results, evidence, limits, decisions and next task. A phase may be pending, in progress, partially verified or complete. Completion requires all applicable criteria to pass; a simulation never proves a real integration.
 
-**Next development action: M3.3.** Build meeting-to-brief and project-status workflows on the shared capture, retrieval, proposal/decision and artifact APIs. Separate executor input from evaluator expectations, retain exact evidence, and check negative cases without inventing agreements, owners or dates. Coordinate durable runs/effects in M3.4 and prove real runtime invocation in M3.5. Preserve the existing instance and original construction plan; keep the repository in English (D24).
+**Next development action: M3.4.** Extend the existing C19 Job/Run state into a coordinator with atomic claims, effective fencing, durable steps, cancellation, budgets and recovery. Consume freshness checks to invalidate/recompute affected steps and mediate effects through the same Action authority. Verify uncertain delivery with an identified simulator. Reuse the two local workflow compositions and keep their human-profile evidence separate from real runtime invocation in M3.5. Preserve the existing instance and original construction plan; keep the repository in English (D24).

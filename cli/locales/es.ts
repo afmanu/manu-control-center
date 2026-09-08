@@ -32,15 +32,18 @@ Uso:
   manu-control-center artifact-fork <solicitud.json> <directorio-absoluto> <operacion.json> --actor <id>
   manu-control-center sources-check <solicitud.json> <directorio-absoluto> <operacion.json> --actor <id>
   manu-control-center knowledge <solicitud.json> <directorio-absoluto> <claim|decision|artifact> --actor <id> [--as-of <timestamp>] [--text <text>] [--limit <n>] [--after <id>] [--valid-at <timestamp>]
+  manu-control-center workflow-prepare <request.json> <absolute-directory> <operation.json> --actor <id>
+  manu-control-center workflow-read <request.json> <absolute-directory> <run-id> --actor <id>
+  manu-control-center workflow-complete <request.json> <absolute-directory> <review.json> --actor <id>
   manu-control-center knowledge-record <solicitud.json> <directorio-absoluto> <id> --actor <id> --kind <claim|decision|artifact> [--revision <revision> | --as-of <timestamp>]
 
 doctor comprueba SQLite con datos temporales y muestra la ubicación prevista de datos.
 validate-record valida únicamente metadatos RecordEnvelope (0.1.0-draft).
 El constructor local está disponible. Planificar no escribe en el destino.
-La captura local UTF-8 y las consultas con procedencia están disponibles. Agentes y workflows pendientes en M3.
+La captura local UTF-8 y las consultas con procedencia están disponibles. La invocación de agentes está pendiente en M3.5.
 Los comandos de revisión registran decisiones explícitas del propietario; las fuentes no conceden aprobación.
 Opciones temporales: --as-of <fecha-UTC> consulta el historial registrado; --valid-at filtra la vigencia explícita de afirmaciones o la disponibilidad declarada de fuentes.
-Workflows e invocación real del runtime siguen pendientes.
+Los workflows locales de reunión a brief y estado de proyecto están disponibles con revisión humana. La invocación real del runtime sigue pendiente.
 Idioma: --lang en|es o MANU_CONTROL_CENTER_LANG (predeterminado: en).
 El idioma afecta a la ayuda y al resumen de errores; claves JSON, diagnósticos y datos se conservan.
 `;

@@ -1,5 +1,7 @@
 # First blueprint: project knowledge and work
 
+M3.3 implements the two [local human workflow compositions](workflows.md) without activating this operational blueprint. M3.4–M3.5 still provide the coordinator and real runtime.
+
 Pilot proposal `project-knowledge-operations@0.1.0-draft`. It implements one complete architectural path without defining every future blueprint.
 
 M2 implements an earlier installable profile: `project-knowledge-foundation@0.1.0-draft`, with `project-context` and `installation-verification` modules. It installs configuration, catalog and project without claiming executed workflows. The operational blueprint below continues in M3. See [installation](installation.md).

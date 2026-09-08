@@ -1,6 +1,6 @@
 # Kernel, skills, workflows and execution state
 
-Contracts and transitions `0.1.0-draft` were adopted in M1. State, budget, version and authorization guards exist with reference persistence. The coordinator, leases, usage measurement and invocations arrive in M3. [M1 scope](m1-implementation.md) bounds verified guarantees. Responsibility separation follows [the architecture](architecture.md).
+Contracts and transitions `0.1.0-draft` were adopted in M1. State, budget, version and authorization guards exist with reference persistence. M3.3 adds fixed local human-reviewed workflow compositions over Job/Run checkpoints; the coordinator, leases and usage enforcement remain M3.4 and real runtime invocation M3.5. See [local workflow scope](workflows.md). [M1 scope](m1-implementation.md) bounds verified guarantees. Responsibility separation follows [the architecture](architecture.md).
 
 ## Kernel and policy
 
