@@ -1,6 +1,6 @@
 # Implementation roadmap
 
-Updated: 2026-09-08. **Status: M0–M2 and M3.1 complete; M3 in progress; M4–M6 pending.** Development in [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). Identifiers remain stable for architecture/component/acceptance traceability. [M2 evidence](m2-verification.json) and the [handoff](handoff.md) record current scope; historical [M0](m0-verification.json) and [M1](m1-verification.json) evidence is preserved.
+Updated: 2026-09-08. **Status: M0–M2 and M3.1–M3.2 complete; M3 in progress; M4–M6 pending.** Development in [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). Identifiers remain stable for architecture/component/acceptance traceability. [M2 evidence](m2-verification.json) and the [handoff](handoff.md) record current scope; historical [M0](m0-verification.json) and [M1](m1-verification.json) evidence is preserved.
 
 ## Intended delivery
 
@@ -105,6 +105,8 @@ Work, in order:
 
 **M3.1 completed:** explicit local text/UTF-8 file capture, atomic source/project/capture writes, request-key replay, conditional updates, exact historical reads, literal search and project context. Queries filter current instance/project/source access before matching and pagination. 119 tests and clean package capture/query checks pass; the existing foundation is unchanged. This does not complete all M3 scenarios. See [usage and limits](knowledge.md), [D25](decisions.md) and [evidence](m3.1-verification.json).
 
+**M3.2 completed:** constrained assertion/proposal intake, exact content-bound decision grants and transitions, grant revocation, recorded-time source/knowledge queries, optional explicit claim validity, trusted owner artifact approval, immutable approved versions and atomic related drafts. Source preflight implements snapshot/fresh selection and invalidation reporting; coordinator consumption remains M3.4. 152 tests and the installed CLI demo pass. A05/A06/A22 cover local structured review and A19 derived retrieval; full runtime scenarios remain pending. [Guide](review.md), [D26](decisions.md), [evidence](m3.2-verification.json).
+
 **Delivery:** usable local pilot: install → add a source → query → run a workflow → review a result → resume another day. Includes real-runtime evidence, known limits and verified usage steps. Personal-data use does not imply migrating the entire vault.
 
 ## M4 — Demonstrated portability
@@ -171,6 +173,4 @@ Add code when it has useful behavior: `core` defines contracts; `builder`, `life
 
 Each completion updates [handoff.md](handoff.md) with version/commit if available, completed tasks, actual commands, results, evidence, limits, decisions and next task. A phase may be pending, in progress, partially verified or complete. Completion requires all applicable criteria to pass; a simulation never proves a real integration.
 
-**Next development action: M3.2.** Add authority and time to the M3.1 capture/query path: distinguish claims and proposals from active decisions, support explicit current/historical questions, preserve exact approved artifacts and define source freshness requirements. Then implement both workflows, coordination, real runtime and foundation-instance use. Preserve the existing instance and original construction plan; keep the repository in English (D24).
-
-[Home](../README.md)
+**Next development action: M3.3.** Build meeting-to-brief and project-status workflows on the shared capture, retrieval, proposal/decision and artifact APIs. Separate executor input from evaluator expectations, retain exact evidence, and check negative cases without inventing agreements, owners or dates. Coordinate durable runs/effects in M3.4 and prove real runtime invocation in M3.5. Preserve the existing instance and original construction plan; keep the repository in English (D24).

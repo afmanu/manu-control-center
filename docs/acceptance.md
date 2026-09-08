@@ -1,6 +1,6 @@
 # Acceptance and evaluation plan
 
-M2 executes A01, A02, A16 and A17 on the local construction profile. A15/A19 cover that profile's available capabilities, and A27 retains M1's harness check. M3.1 extends A19 to local source search, context, exact revision and history retrieval. Workflow, runtime and integration scenarios remain pending. Required criteria relevant to a profile are individual gates: an aggregate score cannot hide a permission, identity or effect failure.
+M2 executes A01, A02, A16 and A17 on the local construction profile. A15/A19 cover that profile's available capabilities, and A27 retains M1's harness check. M3.1 extends A19 to local source search, context, exact revision and history retrieval. M3.2 demonstrates A05/A06/A22 for local structured review and extends A19 to derived knowledge. Workflow, runtime and integration scenarios remain pending. Required criteria relevant to a profile are individual gates: an aggregate score cannot hide a permission, identity or effect failure.
 
 ## Scenario matrix
 
@@ -41,6 +41,12 @@ A01–A15 specify the architecture's fifteen criteria. A16–A20 add targeted in
 [Local retrieval tests](../tests/knowledge.test.ts) demonstrate A19 for instance isolation, source/project ACL intersection, current permission revocation, historical access and filtering before pagination. [Local CLI tests](../tests/local-knowledge.test.ts) demonstrate fresh-process capture/query and read-only behavior. [Evidence](m3.1-verification.json) records 119 tests and a clean installed-package path.
 
 Exact source versions and current project context are prerequisites for A03/A05, not complete decision-aware or temporal question answering. Capturing malicious instructions leaves them unverified/pending and creates no decision, authorization or action; the real-runtime A18 test is still pending. Local atomic capture/retry tests do not certify the future coordinator, distributed fencing or external effects (A08/A21). A15 remains foundation-only; A27 remains the harness boundary until runtime integration.
+
+## M3.2 evidence boundary
+
+[Review tests](../tests/review.test.ts) and [fresh-process CLI tests](../tests/local-review.test.ts) demonstrate A05 (recorded history and explicit validity, with unknown coverage), A06 (exact approved artifact plus independently edited fork), A22 (proposal vs authorized transition) and A19 for derived records with pinned source dependencies. The [installed synthetic demo](../examples/review-demo.mjs) exercises the public CLI. [Evidence](m3.2-verification.json) records 152 tests and clean installation.
+
+A04 has manual typed intake checks, without a semantic extractor yet. A23 has persisted-source preflight and freshness-gated artifact approval, not coordinator invalidation/resumption. A08 has a local transition race without distributed leases; A18/A26/A27 still require runtime integration. Passing these local profiles does not mark all M3 complete or establish semantic accuracy.
 
 ## Brief evaluation
 

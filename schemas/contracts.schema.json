@@ -1380,6 +1380,33 @@
               },
               "minItems": 1,
               "uniqueItems": true
+            },
+            "validity": {
+              "type": "object",
+              "properties": {
+                "valid_from": {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "Z$"
+                },
+                "valid_to": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "format": "date-time",
+                      "pattern": "Z$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "valid_from",
+                "valid_to"
+              ],
+              "additionalProperties": false
             }
           },
           "required": [

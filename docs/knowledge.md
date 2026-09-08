@@ -1,6 +1,6 @@
 # Local capture and source queries — M3.1
 
-M3.1 adds explicit text/file capture, revision retrieval, literal search and project context to an existing foundation. It works from the CLI without a model. Sources remain unverified and captures remain pending; interpretation, decision authority and workflows follow in M3.2–M3.7. See [roadmap](implementation-plan.md) and [verification evidence](m3.1-verification.json).
+M3.1 adds explicit text/file capture, revision retrieval, literal search and project context to an existing foundation. M3.2 extends these APIs with temporal selectors and a separate [review entry point](review.md) for claims, decisions and artifacts. It works from the CLI without a model. Sources remain unverified and captures remain pending; decision authority and structured temporal queries are available in M3.2; interpretation and workflows follow in M3.3–M3.7. See [roadmap](implementation-plan.md) and [verification evidence](m3.1-verification.json).
 
 ## Try it with synthetic data
 
@@ -38,7 +38,7 @@ All commands take the original installation request and the absolute instance di
 
 Page size defaults to 20 and is limited to 1–100. For search/context, pass `next_cursor` as `--after`; for history pass it as `--after-revision`. A null cursor means no next page in that query snapshot. Each call reads a coherent database snapshot; later pages observe later state if another process writes between requests.
 
-Search uses a literal, case-sensitive substring, without stemming, embeddings, ranking or wildcard syntax. `%`, `_` and quotes are ordinary characters. Each match includes an exact source revision, project association revision, segment ID, locator, observation time and authority. Excerpts are at most 240 Unicode characters, starting up to 80 characters before the first match. Use `source --revision` to retrieve the complete evidence. Context returns the first segment of each source; it does not generate a summary or retrieve decisions yet.
+Without temporal flags, search uses current sources. The [M3.2 temporal guide](review.md) explains `--as-of` and `--valid-at`, including their coverage limits. Search uses a literal, case-sensitive substring, without stemming, embeddings, ranking or wildcard syntax. `%`, `_` and quotes are ordinary characters. Each match includes an exact source revision, project association revision, segment ID, locator, observation time and authority. Excerpts are at most 240 Unicode characters, starting up to 80 characters before the first match. Use `source --revision` to retrieve the complete evidence. Context returns the first segment of each source; it does not generate a summary or retrieve decisions yet.
 
 Results declare their coverage as current accessible project sources. No matches means no literal match within that scope; it does not prove global absence or that older versions have no match. Sources outside the caller's access are filtered in SQL before matching and pagination. Source/history reads also require current project and source access. Project context omits raw reference lists whose targets may be restricted. Historical reads do not restore revoked permissions.
 
@@ -84,9 +84,9 @@ Reads use a read-only connection. Local entry points reject WAL and pending jour
 
 ## Library entry points
 
-`manu-control-center/knowledge` exports `captureLocalSource`, `readLocalSource`, `readLocalSourceHistory`, `searchLocalSources`, `readLocalContext`, `readLocalTextFile` and the `LocalCaptureInput` type. Local operations validate the original installation request and destination before using the backend.
+`manu-control-center/knowledge` exports `captureLocalSource`, `readLocalSource`, `readLocalSourceHistory`, `readLocalSourceAt`, `searchLocalSources`, `readLocalContext`, `readLocalTextFile` and the `LocalCaptureInput` type. Local operations validate the original installation request and destination before using the backend.
 
-`manu-control-center/sqlite-knowledge` exports `SqliteKnowledgeBackend`. Its `forKnowledge({instance_id, actor_id})` returns synchronous `capture`, `source`, `history`, `search` and `context` operations. The host supplies this trusted scope; never derive it from a source or model response. `manu-control-center` exports the knowledge request/result types. A read-only backend uses `new SqliteKnowledgeBackend(path, undefined, {readOnly: true})`; always close it after use. The direct backend can serve M1 projects without a builder installation, whereas local commands deliberately require one.
+`manu-control-center/sqlite-knowledge` exports `SqliteKnowledgeBackend`. Its `forKnowledge({instance_id, actor_id})` returns synchronous `capture`, `source`, `sourceAt`, `history`, `search` and `context` operations. The host supplies this trusted scope; never derive it from a source or model response. `manu-control-center` exports the knowledge request/result types. A read-only backend uses `new SqliteKnowledgeBackend(path, undefined, {readOnly: true})`; always close it after use. The direct backend can serve M1 projects without a builder installation, whereas local commands deliberately require one.
 
 Contracts remain draft APIs. [Tests](../tests/knowledge.test.ts) cover access, references, concurrent writes and rollback; [local tests](../tests/local-knowledge.test.ts) cover actual files, fresh CLI processes, installation boundaries and process interruption. [Development](development.md) explains the full suite and clean package installation.
 

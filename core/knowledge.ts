@@ -12,19 +12,20 @@ export interface CaptureInput {
 export interface CaptureReceipt {
   source_ref: Ref; capture_ref: Ref; project_ref: Ref; content_hash: string; replayed: boolean;
 }
-export interface SourceQuery { text?: string; limit?: number; after_id?: string }
+export interface SourceQuery { text?: string; limit?: number; after_id?: string; as_of?: string; valid_at?: string }
 export interface SourceMatch {
   source_ref: Ref; project_ref: Ref; locator: string; observed_at: string;
   authority: StoredRecord<'source'>['data']['authority']; segment_id: string; excerpt: string;
 }
 export interface SourcePage {
   matches: SourceMatch[]; next_cursor: string | null;
-  coverage: { scope: 'current_accessible_project_sources'; matching: 'literal_case_sensitive'; query: string | null; excerpt_characters: number };
+  coverage: { scope: 'current_accessible_project_sources' | 'historical_accessible_project_sources'; matching: 'literal_case_sensitive'; query: string | null; excerpt_characters: number; temporal?: { recorded_as_of: string; valid_at: string | null; validity_scope: 'source_availability_not_claim_truth' } };
 }
 export interface SourceVersion { source_ref: Ref; locator: string; observed_at: string; recorded_at: string }
 export interface KnowledgeStore {
   capture(input: CaptureInput): CaptureReceipt;
   source(projectId: string, sourceId: string, revision?: string): StoredRecord<'source'>;
+  sourceAt(projectId: string, sourceId: string, asOf: string): StoredRecord<'source'>;
   history(projectId: string, sourceId: string, options?: { limit?: number; after_revision?: string }): { versions: SourceVersion[]; next_cursor: string | null };
   search(projectId: string, query?: SourceQuery): SourcePage;
   context(projectId: string, query?: SourceQuery): { project: { ref: Ref; purpose: string; status: string; responsible: string; next_action: string | null }; sources: SourcePage };

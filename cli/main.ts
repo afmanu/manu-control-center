@@ -27,6 +27,10 @@ async function main(args: string[]): Promise<void> {
     const { runKnowledge } = await import('./knowledge.js');
     output(runKnowledge(args)); return;
   }
+  if (['claim', 'decision-propose', 'artifact-draft', 'decision-grant', 'decision-revoke-grant', 'decision-set', 'artifact-approve', 'artifact-fork', 'sources-check', 'knowledge', 'knowledge-record'].includes(args[0]!)) {
+    const { runReview } = await import('./review.js');
+    output(runReview(args)); return;
+  }
   if (args.length === 1 && args[0] === 'doctor') {
     const dataDirectory = resolveDataDirectory();
     const { probeSqlite } = await import('../adapters/backends/sqlite/probe.js');

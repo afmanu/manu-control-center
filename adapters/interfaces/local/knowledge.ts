@@ -1,12 +1,10 @@
 import { closeSync, constants, fstatSync, openSync, readSync, realpathSync } from 'node:fs';
-import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { DomainError } from '../../../core/errors.js';
 import { MAX_CAPTURE_BYTES, requiredText, validateCaptureText } from '../../../core/knowledge.js';
 import type { KnowledgeStore, SourceQuery } from '../../../core/knowledge.js';
-import { assertRequest } from '../../../builder/planner.js';
 import { SqliteKnowledgeBackend } from '../../backends/sqlite/knowledge.js';
-import { inspectLocalInstallation, readLocalManifest, readLocalPlan } from './installation.js';
+import { existingLocalKnowledge } from './knowledge-instance.js';
 
 export interface LocalCaptureInput {
   source_id: string; request_key: string; expected_revision: string | null;
@@ -35,18 +33,9 @@ export function readLocalTextFile(path: string): { content: string; locator: str
     throw new DomainError('INVALID_INPUT', 'Cannot read a regular UTF-8 source file.');
   } finally { if (file !== undefined) closeSync(file); }
 }
-function existing(input: unknown, directory: string, actor: string) {
-  const request = assertRequest(input);
-  requiredText(actor, 'actor');
-  if (actor !== request.owner_id) throw new DomainError('FORBIDDEN', 'Local knowledge commands require the installation owner.');
-  const inspection = inspectLocalInstallation(request, directory);
-  if (!inspection.store_exists || !inspection.installation_revision) throw new DomainError('NOT_FOUND', 'Create or resume the foundation before using knowledge commands.');
-  const plan = readLocalPlan(request, inspection.destination), manifest = readLocalManifest(request, inspection.destination);
-  if (!plan || !manifest || manifest.state === 'partial') throw new DomainError('CONFLICT', 'Resume the incomplete foundation before using knowledge commands.');
-  return { request, path: join(inspection.destination, 'store.sqlite') };
-}
+
 function read<T>(input: unknown, directory: string, actor: string, work: (store: KnowledgeStore, projectId: string) => T): T {
-  const { request, path } = existing(input, directory, actor);
+  const { request, path } = existingLocalKnowledge(input, directory, actor);
   const backend = new SqliteKnowledgeBackend(path, undefined, { readOnly: true });
   try { return work(backend.forKnowledge({ instance_id: request.instance_id, actor_id: actor }), request.project.id); }
   finally { backend.close(); }
@@ -55,7 +44,7 @@ export function captureLocalSource(input: unknown, directory: string, actor: str
   if (!capture || typeof capture !== 'object' || Object.keys(capture).some(key => !['source_id', 'request_key', 'expected_revision', 'text', 'file'].includes(key)) || (capture.text === undefined) === (capture.file === undefined)) throw new DomainError('INVALID_INPUT', 'Specify exactly one source: text or file.');
   requiredText(capture.source_id, 'source_id'); requiredText(capture.request_key, 'request_key');
   if (capture.expected_revision !== null) requiredText(capture.expected_revision, 'expected_revision');
-  const { request, path } = existing(input, directory, actor);
+  const { request, path } = existingLocalKnowledge(input, directory, actor);
   const source = capture.file !== undefined ? readLocalTextFile(capture.file) : { content: capture.text!, locator: `text:${encodeURIComponent(capture.source_id)}` };
   validateCaptureText(source.content);
   const backend = new SqliteKnowledgeBackend(path);
@@ -66,3 +55,5 @@ export const readLocalSource = (input: unknown, directory: string, actor: string
 export const readLocalSourceHistory = (input: unknown, directory: string, actor: string, sourceId: string, options?: { limit?: number; after_revision?: string }) => read(input, directory, actor, (store, project) => store.history(project, sourceId, options));
 export const searchLocalSources = (input: unknown, directory: string, actor: string, query: SourceQuery) => read(input, directory, actor, (store, project) => store.search(project, query));
 export const readLocalContext = (input: unknown, directory: string, actor: string, query?: SourceQuery) => read(input, directory, actor, (store, project) => store.context(project, query));
+
+export const readLocalSourceAt = (input: unknown, directory: string, actor: string, sourceId: string, asOf: string) => read(input, directory, actor, (store, project) => store.sourceAt(project, sourceId, asOf));

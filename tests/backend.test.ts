@@ -120,9 +120,11 @@ test('revoked or stale grant revisions cannot authorize a later promotion',()=>d
   assert.throws(()=>scope.update(proposed,proposed.revision),error=>code(error,'FORBIDDEN'));
   assert.equal(scope.history(proposed.id).length,1);
 }));
-test('approved artifacts preserve exact bytes and acceptance history',()=>database((_store,scope)=>{
+test('approved artifacts preserve exact bytes and acceptance history',()=>database((store,scope)=>{
   const records=seed(scope,['project','source']);let artifact=scope.create(replaceRefs(newRecord('artifact'),records)) as StoredRecord<'artifact'>;
-  artifact.data.status='approved';artifact.data.accepted_at=now;artifact=scope.update(artifact,artifact.revision) as StoredRecord<'artifact'>;
+  artifact.data.status='approved';artifact.data.accepted_at=now;
+  assert.throws(()=>scope.update(artifact,artifact.revision),error=>code(error,'FORBIDDEN'));
+  artifact=store.forScope({...identity,can_authorize:true}).update(artifact,artifact.revision) as StoredRecord<'artifact'>;
   const altered=structuredClone(artifact);altered.data.content='Regenerated approximation';altered.data.content_hash=hashText(altered.data.content);
   assert.throws(()=>scope.update(altered,artifact.revision),error=>code(error,'CONFLICT'));
   assert.equal((scope.get(artifact.id,artifact.revision) as StoredRecord<'artifact'>).data.content,'Exact draft');

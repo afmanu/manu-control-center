@@ -58,6 +58,8 @@ Updates compare three inputs: previous managed version, observed state and new d
 
 M1 epistemic states: declared, hypothesis, proposed, confirmed, refuted. These differ from capture processing (pending, integrated, discarded with a reason) and decision state (active, superseded, revoked).
 
+M3.2 adds optional `claim.data.validity` (`valid_from`, nullable `valid_to`) without rewriting older claims; omission means unknown. Structured queries select the recorded version before an optional explicit validity filter. Review intake cannot set confirmed/refuted states. Artifact approval requires trusted owner scope; a draft cannot carry acceptance time. [Implemented authority/time profile](review.md).
+
 An authoritative source declares the entity/field/question it governs, owner, priority or resolution rule, validity period, observation time and update policy. Historical queries distinguish valid time from when the system learned the fact. If the backend lacks required history, return insufficient coverage.
 
 Search returns results with references/revisions, coverage and currency. Filter permissions before exposing content. No matches do not prove nonexistence. Context selection preserves why sources are relevant without recording the model's internal reasoning.

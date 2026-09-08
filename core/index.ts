@@ -9,3 +9,4 @@ export { validateRecordEnvelope } from './record.js';
 export { contractKinds } from './schema-definitions.js';
 export * from './construction.js';
 export type { CaptureInput, CaptureReceipt, KnowledgeStore, SourceQuery, SourceMatch, SourcePage, SourceVersion } from './knowledge.js';
+export type * from './review.js';

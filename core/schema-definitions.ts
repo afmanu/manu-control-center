@@ -9,7 +9,7 @@ const integer = (minimum = 0): Schema => ({ type: 'integer', minimum });
 const enumeration = (...values: string[]): Schema => ({ type: 'string', enum: values });
 const nullable = (schema: Schema): Schema => ({ anyOf: [schema, { type: 'null' }] });
 const array = (items: Schema, minItems = 0): Schema => ({ type: 'array', items, minItems, uniqueItems: true });
-const object = (properties: Record<string, Schema>): Schema => ({ type: 'object', properties, required: Object.keys(properties), additionalProperties: false });
+const object = (properties: Record<string, Schema>, optional: Record<string, Schema> = {}): Schema => ({ type: 'object', properties: { ...properties, ...optional }, required: Object.keys(properties), additionalProperties: false });
 const ref = (name: string): Schema => ({ $ref: `#/definitions/${name}` });
 const strings = array(text);
 const nonempty = array(text, 1);
@@ -51,7 +51,7 @@ export const contractSchema = {
     project: record('project', object({ purpose: text, status: enumeration('active', 'paused', 'completed'), responsible: text, next_action: nullable(text), decision_refs: references, source_refs: references })),
     source: record('source', object({ project_ref: nullable(reference), locator: text, scope: text, observed_at: date, valid_from: date, valid_to: nullable(date), authority: enumeration('primary', 'secondary', 'unverified'), segments: array(ref('segment'), 1) })),
     capture: record('capture', object({ project_ref: reference, source_ref: reference, segment_ids: nonempty, processing_status: enumeration('pending', 'integrated', 'discarded'), dedup_key: text, reason: nullable(text) })),
-    claim: record('claim', object({ project_ref: reference, content: text, epistemic_status: enumeration('declared', 'hypothesis', 'proposed', 'confirmed', 'refuted'), evidence })),
+    claim: record('claim', object({ project_ref: reference, content: text, epistemic_status: enumeration('declared', 'hypothesis', 'proposed', 'confirmed', 'refuted'), evidence }, { validity: object({ valid_from: date, valid_to: nullable(date) }) })),
     decision: record('decision', object({ project_ref: reference, choice: text, status: enumeration('proposed', 'active', 'superseded', 'revoked'), actor_id: text, alternatives: strings, evidence, review_criterion: text, promotion: nullable(object({ grant_ref: reference, at: date })) })),
     artifact: record('artifact', object({ project_ref: reference, content: { type: 'string' }, content_hash: hash, status: enumeration('draft', 'approved'), source_refs: references, accepted_at: nullable(date) })),
     relation: record('relation', object({ from: reference, to: reference, relation_type: text, evidence: array(ref('evidence')) })),

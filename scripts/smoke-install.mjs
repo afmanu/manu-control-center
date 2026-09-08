@@ -57,10 +57,13 @@ try {
   assert.equal(JSON.parse(run(process.execPath, [cli, '--lang', 'es', 'context', request, instance, '--actor', 'local-user'], consumer)).sources.matches.length, 1);
   assert.deepEqual(JSON.parse(run(process.execPath, [cli, 'source', request, instance, 'synthetic-notes', '--actor', 'local-user', '--revision', captured.source_ref.revision], consumer)), initialSource);
   assert.equal(JSON.parse(run(process.execPath, [cli, 'verify', request, instance], consumer)).ok, true);
+  run(process.execPath, ['--input-type=module', '-e', "import {SqliteReviewBackend} from 'manu-control-center/sqlite-review'; import {queryLocalKnowledge,grantLocalDecision} from 'manu-control-center/review'; if(typeof queryLocalKnowledge!=='function'||typeof grantLocalDecision!=='function') throw new Error('Missing review exports'); const backend=new SqliteReviewBackend(':memory:');backend.close();"], consumer);
+  const reviewDemo = JSON.parse(run(process.execPath, [join(installed, 'examples', 'review-demo.mjs')], consumer));
+  assert.equal(reviewDemo.ok, true); assert.equal(reviewDemo.approved_artifact_exact, true); assert.equal(reviewDemo.temporal_retrieval, true);
   if (process.platform !== 'win32') {
     assert.equal(run(join(consumer, 'node_modules', '.bin', 'manu-control-center'), ['--version'], consumer).trim(), version);
   }
-  process.stdout.write(JSON.stringify({ ok: true, clean_source_install: true, source_tests: true, packed_cli_install: true, packed_instance_create_verify: true, packed_knowledge_capture_query: true, version }) + '\n');
+  process.stdout.write(JSON.stringify({ ok: true, clean_source_install: true, source_tests: true, packed_cli_install: true, packed_instance_create_verify: true, packed_knowledge_capture_query: true, packed_authority_time_review: true, version }) + '\n');
 } catch (error) {
   process.stderr.write(error.stdout?.toString() ?? '');
   process.stderr.write(error.stderr?.toString() ?? '');

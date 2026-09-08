@@ -1,13 +1,13 @@
 import { readFileSync } from 'node:fs';
 import { DomainError } from '../core/errors.js';
-import { captureLocalSource, readLocalContext, readLocalSource, readLocalSourceHistory, searchLocalSources } from '../adapters/interfaces/local/knowledge.js';
+import { captureLocalSource, readLocalContext, readLocalSource, readLocalSourceHistory, readLocalSourceAt, searchLocalSources } from '../adapters/interfaces/local/knowledge.js';
 
 const flags: Record<string, string[]> = {
   capture: ['actor', 'key', 'file', 'text', 'expected-revision'],
-  source: ['actor', 'revision'],
+  source: ['actor', 'revision', 'as-of'],
   'source-history': ['actor', 'limit', 'after-revision'],
-  search: ['actor', 'limit', 'after'],
-  context: ['actor', 'limit', 'after'],
+  search: ['actor', 'limit', 'after', 'as-of', 'valid-at'],
+  context: ['actor', 'limit', 'after', 'as-of', 'valid-at'],
 };
 export function runKnowledge(args: string[]): unknown {
   const command = args[0]!, positionalCount = command === 'context' ? 3 : 4;
@@ -34,10 +34,14 @@ export function runKnowledge(args: string[]): unknown {
     source_id: id, request_key: values['--key']!, expected_revision: values['--expected-revision'] ?? null,
     ...(values['--file'] === undefined ? {} : { file: values['--file'] }), ...(values['--text'] === undefined ? {} : { text: values['--text'] }),
   });
+  if (command === 'source' && values['--as-of'] !== undefined) {
+    if (values['--revision'] !== undefined) throw new DomainError('INVALID_INPUT', 'Choose --revision or --as-of.');
+    return readLocalSourceAt(request, directory, actor, id, values['--as-of']);
+  }
   if (command === 'source') return readLocalSource(request, directory, actor, id, values['--revision']);
   const paging = limit === undefined ? {} : { limit };
   if (command === 'source-history') return readLocalSourceHistory(request, directory, actor, id, { ...paging, ...(values['--after-revision'] === undefined ? {} : { after_revision: values['--after-revision'] }) });
-  const query = { ...paging, ...(values['--after'] === undefined ? {} : { after_id: values['--after'] }) };
+  const query = { ...paging, ...(values['--as-of'] === undefined ? {} : { as_of: values['--as-of'] }), ...(values['--valid-at'] === undefined ? {} : { valid_at: values['--valid-at'] }), ...(values['--after'] === undefined ? {} : { after_id: values['--after'] }) };
   if (command === 'search') return searchLocalSources(request, directory, actor, { ...query, text: id });
   return readLocalContext(request, directory, actor, query);
 }

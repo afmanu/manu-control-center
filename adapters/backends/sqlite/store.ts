@@ -117,6 +117,10 @@ export class SqliteBackend implements BackendAdapter {
     const record = assertRecord({ ...cloneJson(input), revision: randomUUID(), updated_at: this.clock() } as StoredRecord);
     if (Date.parse(record.updated_at) < Date.parse(before.updated_at)) throw new DomainError('CONFLICT', 'Store clock moved backwards.');
     assertMutation(before, record);
+    if (before.kind === 'artifact' && record.kind === 'artifact' && before.data.status === 'draft' && record.data.status === 'approved') {
+      if (!scope.can_authorize || scope.actor_id !== before.access.owner_id) throw new DomainError('FORBIDDEN', 'Only the trusted artifact owner can approve exact content.');
+      record.data.accepted_at = record.updated_at;
+    }
     if (scope.actor_id !== before.access.owner_id && hashJson(before.access) !== hashJson(record.access)) throw new DomainError('FORBIDDEN', 'Only the owner can change access.');
     if (record.kind === 'authorization' && !scope.can_authorize) throw new DomainError('FORBIDDEN', 'Only a trusted grant issuer can change authorization.');
     this.validateReferences(scope, record);

@@ -36,7 +36,7 @@ export interface EntityData {
   project: { purpose: string; status: 'active' | 'paused' | 'completed'; responsible: string; next_action: string | null; decision_refs: Ref[]; source_refs: Ref[] };
   source: { project_ref: Ref | null; locator: string; scope: string; observed_at: string; valid_from: string; valid_to: string | null; authority: 'primary' | 'secondary' | 'unverified'; segments: { id: string; text: string; speaker: string | null }[] };
   capture: { project_ref: Ref; source_ref: Ref; segment_ids: string[]; processing_status: 'pending' | 'integrated' | 'discarded'; dedup_key: string; reason: string | null };
-  claim: { project_ref: Ref; content: string; epistemic_status: 'declared' | 'hypothesis' | 'proposed' | 'confirmed' | 'refuted'; evidence: Evidence[] };
+  claim: { project_ref: Ref; content: string; epistemic_status: 'declared' | 'hypothesis' | 'proposed' | 'confirmed' | 'refuted'; evidence: Evidence[]; validity?: { valid_from: string; valid_to: string | null } };
   decision: { project_ref: Ref; choice: string; status: 'proposed' | 'active' | 'superseded' | 'revoked'; actor_id: string; alternatives: string[]; evidence: Evidence[]; review_criterion: string; promotion: { grant_ref: Ref; at: string } | null };
   artifact: { project_ref: Ref; content: string; content_hash: string; status: 'draft' | 'approved'; source_refs: Ref[]; accepted_at: string | null };
   relation: { from: Ref; to: Ref; relation_type: string; evidence: Evidence[] };

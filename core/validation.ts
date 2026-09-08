@@ -72,6 +72,12 @@ function semantic(input: ContractMap[ContractKind]): void {
       if (input.data.valid_to !== null && Date.parse(input.data.valid_to) <= Date.parse(input.data.valid_from)) throw new DomainError('INVALID_INPUT', 'Invalid source validity interval.');
       break;
     case 'capture': if (input.data.processing_status === 'discarded' && input.data.reason === null) throw new DomainError('INVALID_INPUT', 'Discarding a capture requires a reason.'); break;
+    case 'claim':
+      if (input.data.validity) {
+        dates(input.data.validity);
+        if (input.data.validity.valid_to !== null && Date.parse(input.data.validity.valid_to) <= Date.parse(input.data.validity.valid_from)) throw new DomainError('INVALID_INPUT', 'Invalid claim validity interval.');
+      }
+      break;
     case 'decision':
       if (input.data.status === 'proposed' && input.data.promotion !== null) throw new DomainError('INVALID_INPUT', 'Proposed decision cannot claim promotion.');
       if (input.data.status !== 'proposed' && input.data.promotion === null) throw new DomainError('INVALID_INPUT', 'An effective decision requires promotion provenance.');
@@ -80,6 +86,7 @@ function semantic(input: ContractMap[ContractKind]): void {
     case 'artifact':
       if (input.data.content_hash !== hashText(input.data.content)) throw new DomainError('INVALID_INPUT', 'Artifact hash does not match exact content.');
       if (input.data.status === 'approved' && input.data.accepted_at === null) throw new DomainError('INVALID_INPUT', 'Approved artifact requires acceptance timestamp.');
+      if (input.data.status === 'draft' && input.data.accepted_at !== null) throw new DomainError('INVALID_INPUT', 'A draft cannot claim acceptance.');
       break;
     case 'authorization': if (Date.parse(input.data.valid_until) <= Date.parse(input.data.valid_from)) throw new DomainError('INVALID_INPUT', 'Invalid authorization interval.'); break;
     case 'run':

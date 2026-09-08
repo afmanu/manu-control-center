@@ -18,15 +18,29 @@ Uso:
   manu-control-center adopt <solicitud.json> <directorio-absoluto> --actor <id>
   manu-control-center resume <solicitud.json> <directorio-absoluto> --actor <id>
   manu-control-center capture <solicitud.json> <directorio-absoluto> <source-id> --actor <id> --key <key> (--file <path> | --text <texto>) [--expected-revision <revision>]
-  manu-control-center source <solicitud.json> <directorio-absoluto> <source-id> --actor <id> [--revision <revision>]
+  manu-control-center source <solicitud.json> <directorio-absoluto> <source-id> --actor <id> [--revision <revision> | --as-of <timestamp>]
   manu-control-center source-history <solicitud.json> <directorio-absoluto> <source-id> --actor <id> [--limit <n>] [--after-revision <revision>]
-  manu-control-center search <solicitud.json> <directorio-absoluto> <texto> --actor <id> [--limit <n>] [--after <source-id>]
-  manu-control-center context <solicitud.json> <directorio-absoluto> --actor <id> [--limit <n>] [--after <source-id>]
+  manu-control-center search <solicitud.json> <directorio-absoluto> <texto> --actor <id> [--limit <n>] [--after <source-id>] [--valid-at <timestamp>] [--as-of <timestamp>]
+  manu-control-center context <solicitud.json> <directorio-absoluto> --actor <id> [--limit <n>] [--after <source-id>] [--valid-at <timestamp>] [--as-of <timestamp>]
+  manu-control-center claim <solicitud.json> <directorio-absoluto> <operacion.json> --actor <id>
+  manu-control-center decision-propose <solicitud.json> <directorio-absoluto> <operacion.json> --actor <id>
+  manu-control-center decision-grant <solicitud.json> <directorio-absoluto> <operacion.json> --actor <id>
+  manu-control-center decision-revoke-grant <solicitud.json> <directorio-absoluto> <operacion.json> --actor <id>
+  manu-control-center decision-set <solicitud.json> <directorio-absoluto> <operacion.json> --actor <id>
+  manu-control-center artifact-draft <solicitud.json> <directorio-absoluto> <operacion.json> --actor <id>
+  manu-control-center artifact-approve <solicitud.json> <directorio-absoluto> <operacion.json> --actor <id>
+  manu-control-center artifact-fork <solicitud.json> <directorio-absoluto> <operacion.json> --actor <id>
+  manu-control-center sources-check <solicitud.json> <directorio-absoluto> <operacion.json> --actor <id>
+  manu-control-center knowledge <solicitud.json> <directorio-absoluto> <claim|decision|artifact> --actor <id> [--as-of <timestamp>] [--text <text>] [--limit <n>] [--after <id>] [--valid-at <timestamp>]
+  manu-control-center knowledge-record <solicitud.json> <directorio-absoluto> <id> --actor <id> --kind <claim|decision|artifact> [--revision <revision> | --as-of <timestamp>]
 
 doctor comprueba SQLite con datos temporales y muestra la ubicación prevista de datos.
 validate-record valida únicamente metadatos RecordEnvelope (0.1.0-draft).
 El constructor local está disponible. Planificar no escribe en el destino.
 La captura local UTF-8 y las consultas con procedencia están disponibles. Agentes y workflows pendientes en M3.
+Los comandos de revisión registran decisiones explícitas del propietario; las fuentes no conceden aprobación.
+Opciones temporales: --as-of <fecha-UTC> consulta el historial registrado; --valid-at filtra la vigencia explícita de afirmaciones o la disponibilidad declarada de fuentes.
+Workflows e invocación real del runtime siguen pendientes.
 Idioma: --lang en|es o MANU_CONTROL_CENTER_LANG (predeterminado: en).
 El idioma afecta a la ayuda y al resumen de errores; claves JSON, diagnósticos y datos se conservan.
 `;
