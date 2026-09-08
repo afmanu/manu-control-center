@@ -62,3 +62,5 @@ External delivery is a separate `deliver-approved-artifact` extension. It takes 
 Initial data: [synthetic meeting](../examples/meeting.json). Illustrative configuration: [instance.example.json](../examples/instance.example.json). Criteria: [acceptance.md](acceptance.md).
 
 [Home](../README.md)
+
+The [M3.5 Codex profile](codex-runtime.md) now synthesizes drafts for both reference workflows. Conversational continuity and Manu's operational activation remain M3.6–M3.7.

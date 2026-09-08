@@ -1,6 +1,6 @@
 {
   "name": "manu-control-center",
-  "version": "0.1.0-dev.7",
+  "version": "0.1.0-dev.8",
   "private": true,
   "description": "Portable builder for AI knowledge and work systems.",
   "type": "module",
@@ -30,7 +30,8 @@
     "./sqlite-workflows": "./dist/adapters/backends/sqlite/workflows.js",
     "./coordinator": "./dist/adapters/interfaces/local/coordinator.js",
     "./sqlite-coordinator": "./dist/adapters/backends/sqlite/coordinator.js",
-    "./simulated-mailbox": "./dist/adapters/effects/simulated-mailbox.js"
+    "./simulated-mailbox": "./dist/adapters/effects/simulated-mailbox.js",
+    "./codex": "./dist/adapters/runtimes/codex.js"
   },
   "types": "dist/core/index.d.ts",
   "files": [
@@ -54,7 +55,8 @@
     "start": "node dist/cli/main.js",
     "smoke:install": "node scripts/smoke-install.mjs",
     "prepack": "npm run build",
-    "schemas:write": "npm run build && node scripts/export-schemas.mjs --write"
+    "schemas:write": "npm run build && node scripts/export-schemas.mjs --write",
+    "verify:codex": "npm run build && node scripts/verify-codex.mjs"
   },
   "dependencies": {
     "ajv": "8.20.0",

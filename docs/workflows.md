@@ -117,3 +117,5 @@ The A27 harness still withholds `expected` from executor input. `evaluateMeeting
 See [verification evidence](m3.3-verification.json), [decisions](decisions.md) and [roadmap](implementation-plan.md). Full M3 and A26/A27 real-runtime integration remain pending.
 
 [Home](../README.md)
+
+M3.5 adds [Codex synthesis](codex-runtime.md) over the coordinator. The original local human profile described above remains compatible.

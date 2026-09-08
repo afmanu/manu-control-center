@@ -32,6 +32,7 @@ Uso:
   manu-control-center artifact-fork <solicitud.json> <directorio-absoluto> <operacion.json> --actor <id>
   manu-control-center sources-check <solicitud.json> <directorio-absoluto> <operacion.json> --actor <id>
   manu-control-center knowledge <solicitud.json> <directorio-absoluto> <claim|decision|artifact> --actor <id> [--as-of <timestamp>] [--text <text>] [--limit <n>] [--after <id>] [--valid-at <timestamp>]
+Síntesis con agente: añade runtime {id: "codex", version: "0.146.0-mcc.1"} al flujo de conocimiento. Consulta docs/codex-runtime.md.
   manu-control-center coordinator-<submit|claim|renew|pause|advance|review|revise|authorize|cancel|reconcile|retry> <request.json> <absolute-directory> <operation.json> --actor <id>
   manu-control-center coordinator-read <request.json> <absolute-directory> <run-id> --actor <id>
   manu-control-center workflow-prepare <request.json> <absolute-directory> <operation.json> --actor <id>

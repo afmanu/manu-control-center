@@ -66,10 +66,13 @@ try {
   run(process.execPath, ['--input-type=module', '-e', "import {SqliteCoordinatorBackend} from 'manu-control-center/sqlite-coordinator'; import {operateLocalCoordinator} from 'manu-control-center/coordinator'; import {SimulatedMailbox} from 'manu-control-center/simulated-mailbox'; if(typeof operateLocalCoordinator!=='function') throw new Error('Missing coordinator exports'); const backend=new SqliteCoordinatorBackend(':memory:'); backend.close(); const target=new SimulatedMailbox(':memory:');target.close();"], consumer);
   const coordinatorDemo = JSON.parse(run(process.execPath, [join(installed, 'examples', 'coordinator-demo.mjs')], consumer));
   assert.equal(coordinatorDemo.ok, true); assert.equal(coordinatorDemo.durable_steps, true); assert.equal(coordinatorDemo.simulated_deliveries, 1); assert.equal(coordinatorDemo.real_external_deliveries, 0);
+  run(process.execPath, ['--input-type=module', '-e', "import {CodexRuntime} from 'manu-control-center/codex'; if(typeof CodexRuntime!=='function') throw new Error('Missing Codex export');"], consumer);
+  const agentDemo = JSON.parse(run(process.execPath, [join(installed, 'examples', 'agent-demo.mjs')], consumer));
+  assert.equal(agentDemo.ok, true); assert.equal(agentDemo.real_runtime_invoked, false);
   if (process.platform !== 'win32') {
     assert.equal(run(join(consumer, 'node_modules', '.bin', 'manu-control-center'), ['--version'], consumer).trim(), version);
   }
-  process.stdout.write(JSON.stringify({ ok: true, clean_source_install: true, source_tests: true, packed_cli_install: true, packed_instance_create_verify: true, packed_knowledge_capture_query: true, packed_authority_time_review: true, packed_local_human_workflows: true, packed_coordinator_and_simulated_effects: true, version }) + '\n');
+  process.stdout.write(JSON.stringify({ ok: true, clean_source_install: true, source_tests: true, packed_cli_install: true, packed_instance_create_verify: true, packed_knowledge_capture_query: true, packed_authority_time_review: true, packed_local_human_workflows: true, packed_coordinator_and_simulated_effects: true, packed_agent_contracts_with_mock: true, version }) + '\n');
 } catch (error) {
   process.stderr.write(error.stdout?.toString() ?? '');
   process.stderr.write(error.stderr?.toString() ?? '');

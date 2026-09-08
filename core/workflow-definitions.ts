@@ -19,3 +19,10 @@ export function localWorkflowDefinition(id: 'meeting-to-brief' | 'project-status
     output_refs: [{ step_id: 'complete', output: 'result' }], acceptance: ['exact-approved-artifact', 'human-semantic-review', 'no-implicit-decision-or-delivery'], source_policy: policy,
     limits: { max_steps: 7, max_attempts: 1, timeout_ms: 30000, max_tokens: null, max_cost: null } };
 }
+
+/** Agent synthesis is a bounded computation; the host validates and writes its draft through local effects. */
+export function agentWorkflowDefinition(id: 'meeting-to-brief' | 'project-status', policy: SourcePolicy): WorkflowDefinition {
+  const base = localWorkflowDefinition(id, policy), version = '0.1.0-agent';
+  const runtime: WorkflowStep = { id: 'runtime', type: 'agent', capability: { id: 'knowledge.synthesize', version: '0.1.0' }, depends_on: [], input_bindings: [{ name: 'context', from_step: null, output: 'authorized_snapshot' }], outputs: ['validated_synthesis'], effects: [], recovery: 'fail', acceptance: ['closed-output-schema', 'exact-quotes-and-coverage', 'authorized-citation-identities', 'human-semantic-review-still-required'] };
+  return { ...base, version, input_schema: { ...base.input_schema, required: [...base.input_schema['required'] as string[], 'runtime'], properties: { ...base.input_schema['properties'] as object, runtime: { type: 'object', additionalProperties: false, required: ['id', 'version'], properties: { id: { type: 'string', minLength: 1 }, version: { type: 'string', minLength: 1 } } } } }, purpose: `Generate a cited ${id} draft through a registered runtime, then validate and obtain exact human approval.`, steps: [runtime, ...base.steps.map((step, index) => ({ ...step, ...(index === 0 ? { depends_on: ['runtime'], input_bindings: [{ name: 'input', from_step: 'runtime', output: 'validated_synthesis' }] } : {}), ...(step.id === 'extract' ? { type: 'deterministic' as const, capability: { id: 'validated-runtime-classification', version } } : {}) }))], limits: { ...base.limits, max_steps: 8, max_attempts: 3, timeout_ms: 180000 } };
+}

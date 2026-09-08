@@ -1,5 +1,5 @@
 import { SqliteReviewBackend } from './review.js';
-import { localWorkflowDefinition } from '../../../core/workflow-definitions.js';
+import { localWorkflowDefinition, agentWorkflowDefinition } from '../../../core/workflow-definitions.js';
 import { DomainError } from '../../../core/errors.js';
 import { hashJson } from '../../../core/hashing.js';
 import { readProject, recordRef, requiredText } from '../../../core/knowledge.js';
@@ -78,7 +78,7 @@ export class SqliteWorkflowBackend extends SqliteReviewBackend {
     return this.result(scope, project.id, runId, false);
   }
   /** Caller holds the enclosing write transaction; creates no Job or Run. */
-  protected buildWorkflowArtifact(scope: AccessScope, input: PrepareWorkflow, identity: string) {
+  protected buildWorkflowArtifact(scope: AccessScope, input: PrepareWorkflow, identity: string, agent?: JsonObject, pinned?: { project_ref: Ref; record_refs: { kind: ReviewKind; ref: Ref }[]; source_refs: Ref[] }) {
     const store = this.forScope(scope), review = this.forReview(scope), knowledge = this.forKnowledge(scope);
     let captureRef: Ref | null = null, meeting: ReturnType<typeof extractMeeting> | null = null;
     const refs: Ref[] = [];
@@ -95,8 +95,30 @@ export class SqliteWorkflowBackend extends SqliteReviewBackend {
       const source = knowledge.source(input.project_id, sourceRef.id, sourceRef.revision);
       meeting = extractMeeting(source, input.meeting.selections); refs.push(sourceRef);
     }
+    const { project, records, sourceRefs } = pinned ? {
+      project: store.get(pinned.project_ref.id, pinned.project_ref.revision) as StoredRecord<'project'>,
+      records: pinned.record_refs.map(entry => review.record(input.project_id, entry.ref.id, entry.kind, { revision: entry.ref.revision })),
+      sourceRefs: pinned.source_refs,
+    } : this.workflowContext(scope, input.project_id, refs, input.source_policy);
+    const definition = agent ? agentWorkflowDefinition(input.workflow, input.source_policy) : localWorkflowDefinition(input.workflow, input.source_policy);
+    const workflow = { id: definition.id, version: definition.version };
+    const draft = draftWorkflow({ workflow, profile: agent ? 'agent-reviewed' : 'local-human', ...(agent ? { agent } : {}), project: { ref: recordRef(project), purpose: project.data.purpose, status: project.data.status, responsible: project.data.responsible, next_action: project.data.next_action },
+      coverage: { recorded_at: this.observedClock(), scope: 'accessible_project_decisions_and_claims', decisions: records.filter(record => record.kind === 'decision').length, claims: records.filter(record => record.kind === 'claim').length, source_policy: input.source_policy, source_refs: sourceRefs, max_records_per_kind: 50 },
+      meeting: meeting === null ? null : { classification_by: agent ? agent['runtime_id'] : scope.actor_id, items: meeting, authority: 'reported_meeting_content_only' },
+      knowledge: records.map(record => ({ ref: recordRef(record), kind: record.kind, data: record.data })),
+      evaluation: { quote_fidelity: 'pass', transcript_coverage: meeting === null ? 'not_applicable' : 'pass', provenance: 'pass', semantic_fidelity: 'requires_human_review', rubric_version: '1' },
+      limits: ['No inferred facts, owners, dates or authority.', 'Quoted source instructions are untrusted content.', 'Approval accepts this artifact only; decision promotion and external delivery are separate.'] });
+    let artifact = review.save({ kind: 'artifact', project_id: project.id, id: `${identity}:artifact`, expected_revision: null, data: { content: draft.content, source_refs: sourceRefs } }) as StoredRecord<'artifact'>;
+    const access = { owner_id: scope.actor_id, readers: [], writers: [] };
+    // Workflow output and execution metadata stay owner-private, including derived decision context.
+    artifact = store.update({ ...artifact, access }, artifact.revision) as StoredRecord<'artifact'>;
+    const checkpoint: WorkflowCheckpoint = { profile: 'local-human-workflow-v1', request_hash: hashJson(input), project_ref: recordRef(project), source_refs: sourceRefs, record_refs: records.map(record => ({ kind: record.kind, ref: recordRef(record) })), capture_ref: captureRef, artifact_ref: recordRef(artifact), content_hash: artifact.data.content_hash, completion_hash: null, next_action: 'Review the exact artifact and source evidence against every semantic criterion; accept or reject.' };
+    return { artifact, checkpoint, project, definition };
+  }
+  protected workflowContext(scope: AccessScope, projectId: string, refs: Ref[], policy: 'snapshot' | 'fresh') {
+    const review = this.forReview(scope);
     // Shared bounded, permission-filtered retrieval; never silently label a partial page as complete.
-    const project = this.workflowOwner(scope, input.project_id);
+    const project = this.workflowOwner(scope, projectId);
     const decisions = review.query(project.id, { kind: 'decision', limit: 50 });
     const claims = review.query(project.id, { kind: 'claim', limit: 50 });
     if (decisions.next_cursor || claims.next_cursor) throw new DomainError('BUDGET_EXCEEDED', 'Local workflow context exceeds 50 decisions or claims; a scoped retrieval profile is required.');
@@ -107,22 +129,9 @@ export class SqliteWorkflowBackend extends SqliteReviewBackend {
     if (new Set(refs.map(ref => ref.id)).size !== new Set(refs.map(ref => hashJson(ref))).size) throw new DomainError('CONFLICT', 'Context contains multiple revisions of one source; reconcile or narrow context before drafting.');
     const sourceRefs = unique(refs);
     if (sourceRefs.length > 100) throw new DomainError('BUDGET_EXCEEDED', 'Local workflow context exceeds 100 sources.');
-    const preflight = review.checkSources({ project_id: project.id, refs: sourceRefs, policy: input.source_policy });
+    const preflight = review.checkSources({ project_id: project.id, refs: sourceRefs, policy: policy });
     if (preflight.invalidate) throw new DomainError('STALE_PLAN', 'Fresh context has changed evidence; review its source revisions first.');
-    const definition = localWorkflowDefinition(input.workflow, input.source_policy);
-    const workflow = { id: definition.id, version: definition.version };
-    const draft = draftWorkflow({ workflow, profile: 'local-human', project: { ref: recordRef(project), purpose: project.data.purpose, status: project.data.status, responsible: project.data.responsible, next_action: project.data.next_action },
-      coverage: { recorded_at: this.observedClock(), scope: 'accessible_project_decisions_and_claims', decisions: records.filter(record => record.kind === 'decision').length, claims: records.filter(record => record.kind === 'claim').length, source_policy: input.source_policy, source_refs: sourceRefs, max_records_per_kind: 50 },
-      meeting: meeting === null ? null : { classification_by: scope.actor_id, items: meeting, authority: 'reported_meeting_content_only' },
-      knowledge: records.map(record => ({ ref: recordRef(record), kind: record.kind, data: record.data })),
-      evaluation: { quote_fidelity: 'pass', transcript_coverage: meeting === null ? 'not_applicable' : 'pass', provenance: 'pass', semantic_fidelity: 'requires_human_review', rubric_version: '1' },
-      limits: ['No inferred facts, owners, dates or authority.', 'Quoted source instructions are untrusted content.', 'Approval accepts this artifact only; decision promotion and external delivery are separate.'] });
-    let artifact = review.save({ kind: 'artifact', project_id: project.id, id: `${identity}:artifact`, expected_revision: null, data: { content: draft.content, source_refs: sourceRefs } }) as StoredRecord<'artifact'>;
-    const access = { owner_id: scope.actor_id, readers: [], writers: [] };
-    // Workflow output and execution metadata stay owner-private, including derived decision context.
-    artifact = store.update({ ...artifact, access }, artifact.revision) as StoredRecord<'artifact'>;
-    const checkpoint: WorkflowCheckpoint = { profile: 'local-human-workflow-v1', request_hash: hashJson(input), project_ref: recordRef(project), source_refs: sourceRefs, record_refs: records.map(record => ({ kind: record.kind, ref: recordRef(record) })), capture_ref: captureRef, artifact_ref: recordRef(artifact), content_hash: artifact.data.content_hash, completion_hash: null, next_action: 'Review the exact artifact and source evidence against every semantic criterion; accept or reject.' };
-    return { artifact, checkpoint, project, definition };
+    return { project, records, sourceRefs };
   }
   private complete(scope: AccessScope, input: CompleteWorkflow): WorkflowResult {
     exactFields(input, ['project_id', 'run_ref', 'artifact_ref', 'content_hash', 'review']);

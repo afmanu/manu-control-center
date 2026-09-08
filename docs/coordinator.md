@@ -1,6 +1,6 @@
 # Coordinated local work and simulated effects
 
-M3.4 adds an owner-operated coordinator at `0.1.0-dev.7`. It persists Job, Run, Step and Action records in the existing C19 SQLite store, acquires expiring leases atomically, fences stale workers, reserves work before execution, and mediates fixed local effects. It supports the two [human-reviewed knowledge workflows](workflows.md) plus `deliver-approved-artifact` against an identified durable simulator. Real runtime invocation remains M3.5; real external delivery remains M6.
+M3.4 adds an owner-operated coordinator at `0.1.0-dev.7`. It persists Job, Run, Step and Action records in the existing C19 SQLite store, acquires expiring leases atomically, fences stale workers, reserves work before execution, and mediates fixed local effects. It supports the two [human-reviewed knowledge workflows](workflows.md) plus `deliver-approved-artifact` against an identified durable simulator. M3.5 adds the [Codex synthesis profile](codex-runtime.md); real external delivery remains M6. The local human and simulator behavior documented here remains compatible.
 
 The original `workflow-*` commands and existing pending runs remain compatible. New `coordinator-*` requests use the coordinated profile; older runs are not silently migrated. The M2 foundation catalog, saved installation plan and verification scope remain unchanged.
 

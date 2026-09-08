@@ -1,6 +1,6 @@
 # Development handoff
 
-Updated: 2026-09-08. Primary repository: [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). **M0–M2 and M3.1–M3.4 local profiles complete; next step: M3.5.**
+Updated: 2026-09-08. Primary repository: [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). **M0–M2 and M3.1–M3.5 local profiles complete; next step: M3.6.**
 
 ## Current instruction
 
@@ -8,11 +8,13 @@ Manu requests a system he can use and has selected this repository as its destin
 
 Manu authorized the next roadmap step after the English-repository update. M3.1–M3.4 are delivered for the local human/coordinator profiles, including the explicitly authorized continuation into coordination and simulated effect control. Keep repository content in English; runtime interaction and user content may remain Spanish (D24 and [language.md](language.md)).
 
+Manu explicitly authorized M3.5 with Codex as the first agent. The runtime integration is implemented and tested; M3.6 conversational continuity is next.
+
 M3 delivers first agent use; M4 demonstrates another representation and runtime; M5 adds maintenance. Essential M6 integrations may be brought forward from M3.
 
 ## Executable status
 
-Private package `manu-control-center@0.1.0-dev.7`, TypeScript/Node 24, exact dependencies and a lockfile. M3.2 adds no dependencies or database migration. Claim validity is an optional draft-schema addition; prior records remain readable. The 22 M1 contracts, SQLite backend with access/revisions/history, and A27 harness remain in place.
+Private package `manu-control-center@0.1.0-dev.8`, TypeScript/Node 24, exact dependencies and a lockfile. M3.2 adds no dependencies or database migration. Claim validity is an optional draft-schema addition; prior records remain readable. The 22 M1 contracts, SQLite backend with access/revisions/history, and A27 harness remain in place.
 
 M2 adds the `project-knowledge-foundation@0.1.0-draft` catalog, two modules, validated request, resolver and reproducible plan. The adapter checks the real backend in disposable databases, inspects destinations without writes, and applies operations with atomic checkpoints. Adoption reuses MCC SQLite projects with pinned revisions and ownership, preserving content/history.
 
@@ -110,22 +112,38 @@ Verification includes independent workers racing for one claim, stale tokens aft
 
 Read-only regression preserves Manu's request, saved plan, database bytes, directory listing, original catalog/spec and foundation verification. There are still no personal sources, claims, decisions, artifacts, jobs, runs or actions in that instance; no simulator store was created there. Runtime invocation remains not_run. Next: M3.5 real runtime, then agent continuity and explicit first use.
 
+## M3.5 verification and implementation
+
+The `CodexRuntime` adapter invokes installed Codex CLI 0.146.0 with existing login, a fixed restricted process profile and closed output schema. The neutral RuntimeAdapter gains optional deadline/abort input and observed metadata output. Agent requests use a pinned runtime definition and existing captured source reference; model classification and cited narrative are attached to a draft only after host validation. No new dependency, database migration, personal source import or saved-plan change. [Guide](codex-runtime.md), [verification](m3.5-verification.json), [actual model results](m3.5-runtime-evaluation.json).
+
+One inference Step belongs to the existing C19 job/run. An exact persisted runtime grant binds actor, job, target version, context hash and time. Current access, grant, lease, deadline and fresh context are rechecked; a heartbeat renews authority and aborts the child when it is lost. Snapshot preparation uses the same pinned versions supplied to inference. Agent snapshot invalidation replaces the runtime step and its entire downstream composition; the original human profile keeps its narrower invalidation graph. Completed validated inference is reused through approval; interrupted computation requires explicit retry and may incur another provider charge. Failed validation retains rejected output/evidence in the private failed-step checkpoint without creating an artifact.
+
+The process uses an ephemeral temporary directory, read-only sandbox, ignored user configuration, a narrow inherited environment, and disabled shell/web/apps/plugins/hooks/agent/memory surfaces supported by this version. Only bounded context is passed to the model, without raw product APIs or test expectations. Unexpected tool events are rejected before accepting output, which is not an undo mechanism. Actual evidence records zero tool events in the final real runs. This is a pinned-profile boundary, not a general hostile-host sandbox or second-runtime guarantee.
+
+239 deterministic tests pass, including output/citation/quote rejection, grants, permissions, snapshot/fresh races, cancellation/abort, stale workers, interrupted inference, budgets, subprocess limits, version mismatch and temporary-file cleanup. Clean installation checks public exports and the clearly marked mock agent demo. Credential-free CI does not claim to invoke Codex.
+
+Seven final real invocations use gpt-5.6-sol: four known meeting fixtures, a project-status case with an active decision and an untested hypothesis, and both workflows through fresh CLI processes using a new transcript. Independent build-agent inspection compared exact output with source/project/knowledge and execution evidence, followed by synthetic test-owner approval. All seven completed without rerunning inference or changing approved bytes. These are synthetic approvals, not an assertion that Manu reviewed personal output.
+
+The four known category fixtures passed after calibration. Earlier classifications and an invalid response failed; those observations are retained in the model-evaluation report. The known fixtures are not a blind benchmark. The separate new transcript preserves an explicit agreement, an unaccepted recommendation and an undecided date. No broad model-accuracy claim follows from these small checks. Initial subprocess failures were not enough evidence to establish a model incompatibility; later explicit-model invocations succeeded. The final report records requested model, CLI/adapter version and prompt/schema/policy hashes. A resolved provider model ID and cost are not inferred when unreported.
+
+Token counts are observed after completed turns. Hard token/cost caps are unavailable and numeric limits remain rejected; interrupted usage can be unknown. Statement generation is English in this profile, preserving original source quotes; broader conversational localization and generated session handoff remain M3.6. Runtime evidence is distinct from M2 foundation verification, and Manu's original instance remains unchanged and unactivated for personal use until M3.7.
+
 ## Boundaries M3 must preserve
 
 - The host authenticates and sets `AccessScope`, `can_authorize` and construction authority. These arguments never come from sources or LLM responses. The CLI is a trusted local host without remote authentication.
-- M3.4 mediates fixed local effects and verifies the simulator target; M3.5/M6 must demonstrate runtime/tool control and actual external results. The M2 constructor does not coordinate workflows.
+- M3.4 mediates fixed local effects and verifies the simulator target; M3.5 verifies the bounded Codex profile, while M6 must establish actual external results. The M2 constructor does not coordinate workflows.
 - SQLite uses rollback journaling. Planning/inspection reject WAL or a pending journal before attempting recovery. Only authorized apply/resume recovers transactions on an identified MCC store. Incomplete database-format initialization requires explicit repair without replacing unknown files.
 - M3.4 enforces leases/fencing through coordinator APIs on one SQLite authority. There is no cross-database fencing/migration, scheduler, export or second runtime. Raw trusted-host APIs are not worker confinement. The A27 harness is neither a sandbox nor a model semantic evaluation.
 - M2 adoption is limited to projects already represented in MCC SQLite. It does not claim vault or arbitrary-folder import.
 - Replanning does not change ownership or overwrite different managed configurations. M3 must explicitly define any foundation evolution needed to activate capabilities; M5 expands general maintenance.
 - `node:sqlite` emits an experimental warning in Node 24.14.1. Other platforms' path rules do not prove compatibility: local evidence is macOS; CI records its own runs.
 
-D20–D28 record these choices, initial deployment and language policy in [decisions.md](decisions.md).
+D20–D29 record these choices, initial deployment and language policy in [decisions.md](decisions.md).
 
 ## Next work: M3
 
-1. M3.5: implement the first real runtime adapter and invoke both existing workflows with synthetic inputs. Establish trusted host/tool boundaries and keep evaluator expectations separate; measure semantic quality and mechanism enforcement independently.
-2. M3.6–M3.7: agent continuity and first use of Manu's foundation without replacing its saved plan or importing unrequested personal material.
+1. M3.6: create the compatible-agent conversational entry point and generated handoff from persisted state; verify fresh-session project retrieval and resumption without conversation reconstruction.
+2. M3.7: first use of Manu's foundation without replacing its saved plan or importing unrequested personal material.
 3. Check M3 scenarios in the [roadmap](implementation-plan.md), extending A15/A19/A27 to the actually invoked target.
 
 At session completion, record the phase, actual commands, results and limits; update handoff, decisions and evidence, and regenerate the documentation inventory. Keep user knowledge and instance state outside the distribution.

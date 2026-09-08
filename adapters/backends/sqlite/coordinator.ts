@@ -4,13 +4,21 @@ import { effectKey, hashJson } from '../../../core/hashing.js';
 import { assertInstant } from '../../../core/time.js';
 import { recordRef, requiredText } from '../../../core/knowledge.js';
 import { assertSemanticReview, exactFields, extractMeeting, workflowRef } from '../../../core/workflows.js';
-import { affectedStages, assertCoordinatorInput, coordinatorVersion, knowledgeStages } from '../../../core/coordinator.js';
+import { agentCapability, validateAgentOutput } from '../../../core/agent-workflows.js';
+import type { AgentContext, AgentOutput } from '../../../core/agent-workflows.js';
+import type { ReviewKind } from '../../../core/review.js';
+import { agentCoordinatorVersion, affectedStages, assertCoordinatorInput, coordinatorVersion, knowledgeStages } from '../../../core/coordinator.js';
 import type { ClaimRequest, CoordinatedRequest, CoordinatorInput, CoordinatorResult, CoordinatorStore, EffectObservation, EffectRequest, EffectTarget, GrantRequest, Lease, ReviseRequest, RunRequest } from '../../../core/coordinator.js';
-import type { CompleteWorkflow } from '../../../core/workflows.js';
-import type { AccessScope } from '../../../core/adapters.js';
+import type { CompleteWorkflow, Selection } from '../../../core/workflows.js';
+import type { AccessScope, RuntimeAdapter } from '../../../core/adapters.js';
 import type { JsonObject, NewRecord, RecordData, RecordKind, Ref, StoredRecord } from '../../../core/models.js';
 
+interface AgentState {
+  context: AgentContext; project_ref: Ref; record_refs: { kind: ReviewKind; ref: Ref }[]; source_refs: Ref[]; grant_ref: Ref | null;
+  result: { output: AgentOutput; selections: Selection[]; evidence_refs: string[]; metadata: JsonObject } | null;
+}
 interface State {
+  agent?: AgentState | null;
   profile: 'coordinator-v1'; request_hash: string; request: CoordinatedRequest; attempt: number; generation: number;
   deadline: string; lease: { executor_id: string; token: number; expires_at: string } | null; epoch: number;
   started_steps: number; steps: Record<string, string>; invalidated: { refs: Ref[]; reason: string; at: string }[];
@@ -24,7 +32,7 @@ const nowMs = (value: string) => { assertInstant(value, 'coordinator clock'); re
 
 /** One SQLite authority and fixed registered handlers. Raw host APIs are not worker capabilities. */
 export class SqliteCoordinatorBackend extends SqliteWorkflowBackend {
-  constructor(path: string, clock = () => new Date().toISOString(), private readonly targets: ReadonlyMap<string, EffectTarget> = new Map(), options: { readOnly?: boolean } = {}) { super(path, clock, options); }
+  constructor(path: string, clock = () => new Date().toISOString(), private readonly targets: ReadonlyMap<string, EffectTarget> = new Map(), options: { readOnly?: boolean } = {}, private readonly runtimes: ReadonlyMap<string, RuntimeAdapter> = new Map()) { super(path, clock, options); }
   forCoordinator(input: AccessScope): CoordinatorStore {
     const scope = Object.freeze({ ...input });
     return {
@@ -42,6 +50,107 @@ export class SqliteCoordinatorBackend extends SqliteWorkflowBackend {
       retry: value => this.transaction(() => this.retry(scope, value)),
     };
   }
+  private agentSnapshot(ctx: Context): AgentState {
+    const request = ctx.state.request;
+    if (request.workflow === 'deliver-approved-artifact' || !request.runtime) throw new DomainError('INVALID_INPUT', 'This run has no synthesis runtime.');
+    const source = request.workflow === 'meeting-to-brief' && 'ref' in request.meeting.source ? this.forKnowledge(ctx.scope).source(request.project_id, request.meeting.source.ref.id, request.meeting.source.ref.revision) : null;
+    const { project, records, sourceRefs } = this.workflowContext(ctx.scope, request.project_id, source ? [recordRef(source)] : [], request.source_policy);
+    const sources = sourceRefs.map(ref => this.forKnowledge(ctx.scope).source(request.project_id, ref.id, ref.revision));
+    const context: AgentContext = { workflow: request.workflow,
+      evidence: [{ id: 'project', ref: recordRef(project), text: JSON.stringify({ purpose: project.data.purpose, status: project.data.status, responsible: project.data.responsible, next_action: project.data.next_action }) },
+        ...records.map((record, i) => ({ id: `knowledge-${i}`, ref: recordRef(record), text: JSON.stringify({ kind: record.kind, data: record.data }) })),
+        ...sources.map((record, i) => ({ id: `source-${i}`, ref: recordRef(record), text: record.data.segments.map(segment => segment.text).join('\n') }))],
+      meeting: source ? { ref: recordRef(source), segments: source.data.segments.map(segment => ({ id: segment.id, text: segment.text })) } : null };
+    if (Buffer.byteLength(JSON.stringify(context)) > 65536) throw new DomainError('BUDGET_EXCEEDED', 'Agent context exceeds 64 KiB; narrow the project.');
+    return { context, project_ref: recordRef(project), record_refs: records.map(record => ({ kind: record.kind, ref: recordRef(record) })), source_refs: sourceRefs, result: null, grant_ref: null };
+  }
+  private agentAccess(ctx: Context) {
+    const agent = ctx.state.agent; if (!agent) return;
+    for (const ref of agent.source_refs) this.forKnowledge(ctx.scope).source(ctx.state.request.project_id, ref.id, ref.revision);
+    for (const entry of agent.record_refs) this.forReview(ctx.scope).record(ctx.state.request.project_id, entry.ref.id, entry.kind, { revision: entry.ref.revision });
+  }
+  private agentFresh(ctx: Context) {
+    const agent = ctx.state.agent; if (!agent || ctx.job.data.source_policy !== 'fresh') return;
+    const current = this.agentSnapshot(ctx);
+    if (hashJson([agent.project_ref, agent.record_refs, agent.source_refs]) !== hashJson([current.project_ref, current.record_refs, current.source_refs])) throw new DomainError('STALE_PLAN', 'Agent context changed. Submit fresh work under a new request key.');
+  }
+  private agentGrant(ctx: Context, id = `${ctx.run.id}:g${ctx.state.generation}:runtime-grant`, until = ctx.state.deadline) {
+    const request = ctx.state.request, agent = ctx.state.agent;
+    if (!agent || !('runtime' in request) || !request.runtime || !ctx.scope.can_authorize) throw new DomainError('FORBIDDEN', 'Runtime authorization requires the trusted owner.');
+    assertInstant(until, 'valid_until'); if (nowMs(until) <= this.time() || nowMs(until) > nowMs(ctx.state.deadline)) throw new DomainError('INVALID_INPUT', 'Runtime grant expiry must remain inside the job deadline.');
+    const grant = this.createRecord(ctx.scope, 'authorization', id, { actor_id: ctx.scope.actor_id, operation: 'runtime.synthesize', resource_id: ctx.job.id, destination: `runtime:${request.runtime.id}@${request.runtime.version}`, content_hash: hashJson(agent.context), valid_from: this.observedClock(), valid_until: until, revoked: false });
+    agent.grant_ref = recordRef(grant);
+  }
+  private checkAgentGrant(ctx: Context) {
+    const request = ctx.state.request, agent = ctx.state.agent;
+    if (!agent?.grant_ref || !('runtime' in request) || !request.runtime) throw new DomainError('AUTH_REQUIRED', 'Authorize this runtime context before invocation.');
+    const grant = this.forScope(ctx.scope).get(agent.grant_ref.id);
+    if (grant.kind !== 'authorization' || grant.revision !== agent.grant_ref.revision || grant.data.revoked || grant.data.actor_id !== ctx.scope.actor_id || grant.data.operation !== 'runtime.synthesize' || grant.data.resource_id !== ctx.job.id || grant.data.destination !== `runtime:${request.runtime.id}@${request.runtime.version}` || grant.data.content_hash !== hashJson(agent.context) || this.time() < nowMs(grant.data.valid_from) || this.time() >= nowMs(grant.data.valid_until)) throw new DomainError('FORBIDDEN', 'Runtime grant changed, expired or was revoked.');
+  }
+  private async advanceAgent(scope: AccessScope, project: string, lease: Lease): Promise<CoordinatorResult | null> {
+    let work: { adapter: RuntimeAdapter; context: AgentContext; source_refs: Ref[]; timeout_ms: number } | null = null;
+    const stopped = this.transaction(() => {
+      const ctx = this.ownedLease(scope, project, lease), request = ctx.state.request;
+      if (!('runtime' in request) || !request.runtime || ctx.run.data.status === 'cancel_requested') return null;
+      if (!ctx.state.agent) return null; // Fresh invalidation is handled by the normal preparation path.
+      const step = this.step(ctx, 'runtime');
+      if (ctx.state.agent.result) {
+        if (step.data.status !== 'succeeded' && !this.budget(ctx, 1)) return this.stop(ctx, 'blocked', 'BUDGET_EXCEEDED: cached runtime step cannot be reserved.');
+        if (step.data.status !== 'succeeded') this.succeedStep(ctx, 'runtime', ctx.state.agent.source_refs, []);
+        this.save(ctx); return null;
+      }
+      if (step.data.status === 'running') {
+        if (step.data.fencing_token === lease.fencing_token) throw new DomainError('CONFLICT', 'This runtime invocation is already running.');
+        this.updateRecord(scope, step, { ...step.data, status: 'failed', owner_id: lease.executor_id, fencing_token: lease.fencing_token, checkpoint: { outcome: 'interrupted', provider_usage: 'unknown' } });
+        return this.stop(ctx, 'failed', 'Runtime execution was interrupted. Inspect provider usage; explicit retry may incur another inference charge.');
+      }
+      try {
+        if (!this.budget(ctx, 1)) return this.stop(ctx, 'blocked', 'BUDGET_EXCEEDED: runtime synthesis cannot start.');
+        this.agentFresh(ctx); this.checkAgentGrant(ctx);
+        const adapter = this.runtimes.get(request.runtime.id);
+        if (!adapter || hashJson(adapter.definition) !== hashJson(request.runtime)) throw new DomainError('CAPABILITY_UNAVAILABLE', 'The pinned runtime adapter is not registered.');
+        this.reserve(ctx, ['runtime']); this.save(ctx);
+        work = { adapter, context: ctx.state.agent.context, source_refs: ctx.state.agent.source_refs, timeout_ms: Math.min(180000, nowMs(ctx.state.deadline) - this.time()) };
+        return null;
+      } catch (error) {
+        if (!(error instanceof DomainError)) throw error;
+        return this.stop(ctx, 'blocked', `${error.code}: ${error.message}`);
+      }
+    });
+    if (stopped || !work) return stopped;
+    const invocation = work as { adapter: RuntimeAdapter; context: AgentContext; source_refs: Ref[]; timeout_ms: number }, controller = new AbortController();
+    const heartbeat = setInterval(() => {
+      try { this.transaction(() => { const ctx = this.ownedLease(scope, project, lease); this.checkAgentGrant(ctx); if (!this.budget(ctx, 0)) throw new DomainError('BUDGET_EXCEEDED', 'Deadline expired.'); ctx.state.lease!.expires_at = new Date(this.time() + 60000).toISOString(); this.save(ctx); }); }
+      catch { controller.abort(); }
+    }, 1000);
+    let response: Awaited<ReturnType<RuntimeAdapter['invoke']>>;
+    try {
+      response = await invocation.adapter.invoke({ scope: { instance_id: scope.instance_id, actor_id: scope.actor_id }, capability: agentCapability, input: json(invocation.context), source_refs: invocation.source_refs, timeout_ms: invocation.timeout_ms, signal: controller.signal });
+    } catch (error) {
+      clearInterval(heartbeat);
+      return this.transaction(() => {
+        const ctx = this.ownedLease(scope, project, lease), step = this.step(ctx, 'runtime');
+        this.updateRecord(scope, step, { ...step.data, status: 'failed', checkpoint: { outcome: 'runtime_failed', code: error instanceof DomainError ? error.code : 'RUNTIME_FAILED', detail: error instanceof DomainError ? error.message : 'Runtime adapter failed.', provider_usage: 'unknown' } });
+        return this.stop(ctx, 'failed', `${error instanceof DomainError ? error.code : 'CAPABILITY_UNAVAILABLE'}: ${error instanceof DomainError ? error.message : 'Runtime returned no usable output.'} Explicit retry may incur another inference charge.`);
+      });
+    } finally { clearInterval(heartbeat); }
+    return this.transaction(() => {
+      const ctx = this.ownedLease(scope, project, lease), agent = ctx.state.agent!;
+      try {
+        this.checkAgentGrant(ctx); this.agentFresh(ctx);
+        if (!this.budget(ctx, 0)) throw new DomainError('BUDGET_EXCEEDED', 'Runtime exceeded the job deadline.');
+        const source = agent.context.meeting ? this.forKnowledge(scope).source(project, agent.context.meeting.ref.id, agent.context.meeting.ref.revision) : null;
+        const valid = validateAgentOutput(agent.context, response.output, source);
+        agent.result = { ...valid, evidence_refs: response.evidence_refs, metadata: response.metadata ?? {} };
+        this.succeedStep(ctx, 'runtime', agent.source_refs, []); this.save(ctx);
+        return this.stop(ctx, 'paused', 'Runtime output is validated and checkpointed. Claim to prepare the artifact for human review.');
+      } catch (error) {
+        const step = this.step(ctx, 'runtime');
+        this.updateRecord(scope, step, { ...step.data, status: 'failed', checkpoint: { outcome: 'output_rejected', code: error instanceof DomainError ? error.code : 'VALIDATION_FAILED', detail: error instanceof DomainError ? error.message : 'Output validation failed.', rejected_output: response.output, evidence_refs: response.evidence_refs, metadata: response.metadata ?? {} } });
+        return this.stop(ctx, 'failed', `${error instanceof DomainError ? error.code : 'VALIDATION_FAILED'}: runtime output was rejected; no artifact was written.`);
+      }
+    });
+  }
   private time() { return nowMs(this.observedClock()); }
   private createRecord<K extends RecordKind>(scope: AccessScope, kind: K, id: string, data: RecordData[K]): StoredRecord<K> {
     return this.forScope(scope).create({ kind, id, schema_version: '0.1.0-draft', instance_id: scope.instance_id, access: { owner_id: scope.actor_id, readers: [], writers: [] }, data } as NewRecord) as StoredRecord<K>;
@@ -56,7 +165,7 @@ export class SqliteCoordinatorBackend extends SqliteWorkflowBackend {
   private context(scope: AccessScope, project: string, runId: string, current = false, dependencies = true): Context {
     this.workflowOwner(scope, project);
     const store = this.forScope(scope), run = store.get(runId);
-    if (run.kind !== 'run' || run.data.workflow.version !== coordinatorVersion || run.access.owner_id !== scope.actor_id) throw new DomainError('NOT_FOUND', 'Coordinated run is unavailable.');
+    if (run.kind !== 'run' || ![coordinatorVersion, agentCoordinatorVersion].includes(run.data.workflow.version) || run.access.owner_id !== scope.actor_id) throw new DomainError('NOT_FOUND', 'Coordinated run is unavailable.');
     const state = run.data.checkpoint as unknown as State;
     if (state?.profile !== 'coordinator-v1' || state.request.project_id !== project) throw new DomainError('NOT_FOUND', 'Run does not belong to this project/profile.');
     const job = store.get(run.data.job_ref.id);
@@ -64,6 +173,7 @@ export class SqliteCoordinatorBackend extends SqliteWorkflowBackend {
     const ctx = { scope, run, job, state }; if (dependencies) this.access(ctx); return ctx;
   }
   private access(ctx: Context) {
+    this.agentAccess(ctx);
     const request = ctx.state.request, review = this.forReview(ctx.scope);
     if (request.workflow === 'deliver-approved-artifact') review.record(request.project_id, request.delivery.artifact_ref.id, 'artifact', { revision: request.delivery.artifact_ref.revision });
     if (request.workflow === 'meeting-to-brief' && 'ref' in request.meeting.source) this.forKnowledge(ctx.scope).source(request.project_id, request.meeting.source.ref.id, request.meeting.source.ref.revision);
@@ -144,11 +254,12 @@ export class SqliteCoordinatorBackend extends SqliteWorkflowBackend {
     } else if (request.workflow === 'meeting-to-brief' && 'ref' in request.meeting.source) {
       const ref = request.meeting.source.ref; this.forKnowledge(scope).source(project.id, ref.id, ref.revision); refs.push(ref);
     }
-    let job = this.createRecord(scope, 'job', jobId, { workflow: { id: input.workflow, version: coordinatorVersion }, input_refs: refs, dedup_key: jobId, source_policy: input.source_policy, status: 'queued', budget });
+    let job = this.createRecord(scope, 'job', jobId, { workflow: { id: input.workflow, version: 'runtime' in request && request.runtime ? agentCoordinatorVersion : coordinatorVersion }, input_refs: refs, dedup_key: jobId, source_policy: input.source_policy, status: 'queued', budget });
     job = this.updateRecord(scope, job, { ...job.data, status: 'active' });
     const state: State = { profile: 'coordinator-v1', request_hash: hashJson(input), request, attempt: 1, generation: 0, deadline: new Date(this.time() + budget.timeout_ms).toISOString(), lease: null, epoch: 0, started_steps: 0, steps: {}, invalidated: [], prepared: null, review: null, review_hash: null, local_grant: null, needs_classification: false, next_action: 'Claim this run to perform the next permitted step.' };
     const run = this.createRecord(scope, 'run', `${job.id}:run:1`, { job_ref: recordRef(job), workflow: job.data.workflow, previous_run: null, status: 'queued', executor_id: null, checkpoint: json(state), output_refs: [], action_refs: [], accepted: false, cause: null });
     const ctx = { scope, run, job, state }; this.makeSteps(ctx, request.workflow === 'deliver-approved-artifact' ? ['deliver', 'complete'] : knowledgeStages);
+    if ('runtime' in request && request.runtime) { state.agent = this.agentSnapshot(ctx); this.makeSteps(ctx, ['runtime']); this.agentGrant(ctx); }
     if (request.workflow === 'deliver-approved-artifact') { this.deliveryAction(ctx); state.next_action = 'Authorize the exact simulated delivery, then claim the run.'; }
     else this.prepareGrant(ctx);
     this.save(ctx); return this.view(ctx);
@@ -205,6 +316,7 @@ export class SqliteCoordinatorBackend extends SqliteWorkflowBackend {
     const ctx = this.context(scope, input.project_id, input.run_ref.id, true); this.matching(ctx, input.run_ref);
     if (terminal(ctx.run.data.status) || ctx.run.data.status === 'cancel_requested') throw new DomainError('CONFLICT', 'This run cannot authorize new effects.');
     const action = ctx.state.request.workflow === 'deliver-approved-artifact' ? this.deliveryAction(ctx) : this.prepareAction(ctx);
+    if ('runtime' in ctx.state.request && ctx.state.request.runtime && !ctx.state.agent?.result && !ctx.state.needs_classification) { ctx.state.agent ??= this.agentSnapshot(ctx); this.agentGrant(ctx, `${input.grant_id}:runtime`, input.valid_until); this.save(ctx); }
     return this.issue(ctx, action, input.grant_id, input.valid_until);
   }
   private startAction(ctx: Context, initial: StoredRecord<'action'>) {
@@ -237,12 +349,13 @@ export class SqliteCoordinatorBackend extends SqliteWorkflowBackend {
     const meetingSource = ctx.state.request.workflow === 'meeting-to-brief' ? prepared.source_refs[0] : null;
     const transcriptChanged = !!meetingSource && changed.includes(meetingSource.id);
     const names = affectedStages(transcriptChanged ? ['input'] : ['context']);
+    if (ctx.state.agent) for (const name of ['runtime', ...knowledgeStages]) if (!names.includes(name)) names.push(name);
     const old = names.map(name => recordRef(this.step(ctx, name)));
     const abandoned = this.actions(ctx).filter(action => action.data.status === 'prepared');
     for (const action of abandoned) old.push(recordRef(this.updateRecord(ctx.scope, action, { ...action.data, status: 'rejected' })));
     ctx.run = this.updateRecord(ctx.scope, ctx.run, { ...ctx.run.data, action_refs: ctx.run.data.action_refs.filter(ref => !abandoned.some(action => action.id === ref.id)) });
     ctx.state.generation++; ctx.state.invalidated.push({ refs: old, reason: transcriptChanged ? 'Meeting source revision changed; new human classification required.' : 'Project or supporting knowledge changed.', at: this.observedClock() });
-    this.makeSteps(ctx, names); ctx.state.prepared = null; ctx.state.review = null; ctx.state.review_hash = null; ctx.state.local_grant = null;
+    this.makeSteps(ctx, names); if (ctx.state.agent) ctx.state.agent = null; ctx.state.prepared = null; ctx.state.review = null; ctx.state.review_hash = null; ctx.state.local_grant = null;
     ctx.state.needs_classification = transcriptChanged;
     // Preserve historical artifacts; no old review or grant is applied to replacement output.
     ctx.run = this.updateRecord(ctx.scope, ctx.run, { ...ctx.run.data, output_refs: [] });
@@ -276,8 +389,10 @@ export class SqliteCoordinatorBackend extends SqliteWorkflowBackend {
     const previous = 'ref' in request.meeting.source ? request.meeting.source.ref.id : request.meeting.source.capture.source_id;
     const source = this.forKnowledge(scope).source(input.project_id, input.source_ref.id);
     if (source.id !== previous || source.revision !== input.source_ref.revision) throw new DomainError('CONFLICT', 'Supply the current revision of the original meeting source.');
-    extractMeeting(source, input.selections);
+    if (request.runtime) { if (!Array.isArray(input.selections) || input.selections.length) throw new DomainError('INVALID_INPUT', 'Agent reclassification requires empty selections.'); }
+    else extractMeeting(source, input.selections);
     ctx.state.request = { ...request, meeting: { source: { ref: input.source_ref }, selections: input.selections } }; ctx.state.needs_classification = false;
+    if (request.runtime) { ctx.state.agent = this.agentSnapshot(ctx); this.agentGrant(ctx); }
     this.prepareGrant(ctx); ctx.state.next_action = 'Claim this run to prepare a new artifact from the revised classification.';
     this.save(ctx, 'queued', null); return this.view(ctx);
   }
@@ -312,7 +427,7 @@ export class SqliteCoordinatorBackend extends SqliteWorkflowBackend {
     if (this.actions(previous).some(action => ['unknown', 'in_flight'].includes(action.data.status))) throw new DomainError('EFFECT_UNKNOWN', 'Uncertain effects must be reconciled before retry.');
     const state: State = { ...previous.state, attempt: previous.state.attempt + 1, steps: {}, lease: null, epoch: previous.state.epoch + 1, review: null, review_hash: null, next_action: 'Claim the new attempt. Logical action identities and consumed budgets are preserved.' };
     const run = this.createRecord(scope, 'run', `${previous.job.id}:run:${state.attempt}`, { ...previous.run.data, job_ref: recordRef(previous.job), previous_run: recordRef(previous.run), status: 'queued', executor_id: null, checkpoint: json(state), output_refs: [], accepted: false, cause: null });
-    const ctx: Context = { scope, run, job: previous.job, state }; this.makeSteps(ctx, state.request.workflow === 'deliver-approved-artifact' ? ['deliver', 'complete'] : knowledgeStages); this.save(ctx); return this.view(ctx);
+    const ctx: Context = { scope, run, job: previous.job, state }; this.makeSteps(ctx, state.request.workflow === 'deliver-approved-artifact' ? ['deliver', 'complete'] : knowledgeStages); if (state.agent) this.makeSteps(ctx, ['runtime']); this.save(ctx); return this.view(ctx);
   }
   private reserve(ctx: Context, names: string[]) {
     for (const name of names) {
@@ -322,6 +437,7 @@ export class SqliteCoordinatorBackend extends SqliteWorkflowBackend {
     }
   }
   private async advance(scope: AccessScope, project: string, lease: Lease): Promise<CoordinatorResult> {
+    const generated = await this.advanceAgent(scope, project, lease); if (generated) return generated;
     let dispatch: { action: StoredRecord<'action'>; operation: 'prepare' | 'accept' | 'deliver'; stages: string[] } | null = null;
     const preliminary = this.transaction(() => {
       const ctx = this.ownedLease(scope, project, lease);
@@ -363,7 +479,10 @@ export class SqliteCoordinatorBackend extends SqliteWorkflowBackend {
             if (!checkpoint || checkpoint.profile !== 'local-human-workflow-v1') throw new DomainError('CONFLICT', 'Local preparation receipt is unavailable.');
             ctx.state.prepared = checkpoint; this.access(ctx);
           } else {
-            const prepared = this.buildWorkflowArtifact(scope, ctx.state.request, `${ctx.job.id}:g${ctx.state.generation}`);
+            this.agentFresh(ctx);
+            const request = ctx.state.request, generated = ctx.state.agent?.result;
+            const preparedInput = request.workflow === 'meeting-to-brief' && generated ? { ...request, meeting: { ...request.meeting, selections: generated.selections } } : request;
+            const prepared = this.buildWorkflowArtifact(scope, preparedInput, `${ctx.job.id}:g${ctx.state.generation}`, generated ? json({ runtime_id: request.runtime!.id, runtime: request.runtime, ...generated, evidence: ctx.state.agent!.context.evidence }) : undefined, generated ? ctx.state.agent! : undefined);
             ctx.state.prepared = prepared.checkpoint;
             this.confirmLocal(ctx, action, { prepared: json(prepared.checkpoint), transaction_scope: 'atomic_local_preparation' });
           }

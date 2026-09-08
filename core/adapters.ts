@@ -15,7 +15,7 @@ export interface BackendAdapter { capabilities: BackendCapabilities; forScope(sc
 export interface RuntimeAdapter {
   definition: VersionRef;
   inspect(): Promise<{ availability: 'available' | 'unavailable' | 'not_verified'; capabilities: string[]; evidence_refs: string[] }>;
-  invoke(input: { scope: AccessScope; capability: VersionRef; input: JsonObject; source_refs: Ref[] }): Promise<{ output: Json; evidence_refs: string[] }>;
+  invoke(input: { scope: AccessScope; capability: VersionRef; input: JsonObject; source_refs: Ref[]; timeout_ms?: number; signal?: AbortSignal }): Promise<{ output: Json; evidence_refs: string[]; metadata?: JsonObject }>;
 }
 export interface ToolAdapter {
   definition: VersionRef; effects: string[]; idempotency: 'destination_key' | 'reconcile' | 'none';

@@ -71,3 +71,7 @@ Each result retains scenario ID/version, implementation/commit when available, c
 A structural documentation check does not establish this plan's acceptance. A passing synthetic suite does not automatically prove every real condition. The compatibility matrix uses scenarios and dates actually executed.
 
 [Home](../README.md)
+
+## M3.5 verification scope
+
+The [Codex profile](codex-runtime.md) supplies actual invocation evidence for both workflows (A26 invocation portion), runtime-scoped access and exact grants (A15/A19), current lease/permission/freshness rejection (A08/A10/A20/A23) and A27 expectation separation. The [model evaluation](m3.5-runtime-evaluation.json) records four calibrated category fixtures, a status case and a new-transcript CLI path, with independent build-agent inspection and synthetic owner approvals. Calibration history is retained; these cases are not a blind accuracy benchmark. A26 full conversational continuity remains M3.6, personal foundation activation M3.7, and actual external delivery M6. A09 remains simulator-only. Runtime process and output controls are scoped to Codex CLI 0.146.0; hard token/cost limits and general hostile-host isolation are not claimed.

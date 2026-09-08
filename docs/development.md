@@ -123,3 +123,7 @@ In Node 24.14.1, `node:sqlite` emits an experimental warning. It is isolated in 
 Codex is the first candidate and Claude Code the second because their executables were observed. Models have not been invoked, sessions verified or product runtime adapters implemented. Default paths on other platforms do not establish tested installation there; evidence lists only environments actually exercised.
 
 [Home](../README.md)
+
+## Codex synthesis development
+
+The optional `./codex` export implements RuntimeAdapter for the pinned Codex CLI. `node examples/agent-demo.mjs` and clean package checks use a marked mock; `npm run verify:codex -- /absolute/evidence-directory [model]` and `node examples/codex-demo.mjs /absolute/new-directory [model]` invoke the real runtime and retain synthetic drafts for independent review. They are opt-in and are not part of credential-free CI. See the [runtime guide](codex-runtime.md) and [M3.5 evidence](m3.5-verification.json).
