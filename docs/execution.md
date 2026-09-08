@@ -1,6 +1,6 @@
 # Kernel, skills, workflows and execution state
 
-Contracts and transitions `0.1.0-draft` were adopted in M1. State, budget, version and authorization guards exist with reference persistence. M3.3 adds fixed local human-reviewed workflow compositions over Job/Run checkpoints; the coordinator, leases and usage enforcement remain M3.4 and real runtime invocation M3.5. See [local workflow scope](workflows.md). [M1 scope](m1-implementation.md) bounds verified guarantees. Responsibility separation follows [the architecture](architecture.md).
+Contracts and transitions `0.1.0-draft` were adopted in M1. State, budget, version and authorization guards exist with reference persistence. M3.3 adds fixed local human-reviewed workflow compositions. M3.4 adds the [local coordinator](coordinator.md), durable steps, current leases/fencing, reservation/retry/deadline enforcement and verified simulated effects. Real runtime invocation and metered model use remain M3.5. See [local workflow scope](workflows.md). [M1 scope](m1-implementation.md) bounds verified guarantees. Responsibility separation follows [the architecture](architecture.md).
 
 ## Kernel and policy
 
@@ -38,7 +38,7 @@ C19 owns all these records. C21 operates on Action; C23 requests recovery transi
 | Nonterminal | `cancel_requested` | Cancellation recorded; schedule no new steps. |
 | `cancel_requested` | `cancelled` | In-flight operations handled; retain uncertain actions for reconciliation. |
 
-This table combines M1-validated edges with conditions the M3 coordinator must enforce. A conditional revision alone proves neither executor eligibility, lease acquisition nor semantic acceptance.
+This table combines M1-validated edges with conditions enforced by the M3.4 local coordinator; real runtime controls remain to be demonstrated. A conditional revision alone proves neither executor eligibility, lease acquisition nor semantic acceptance.
 
 Terminal states do not reopen to hide attempts: a new attempt references its predecessor. The coordinator derives job state from runs and retry policy. Cancellation does not claim that an already-started effect was undone.
 
@@ -52,7 +52,7 @@ Terminal states do not reopen to hide attempts: a new attempt references its pre
 4. Save the receipt and check the result; only then confirm.
 5. After a lost response, reconcile by remote reference or key. If unresolved, block the dependency without repeating it.
 
-M1 requires `reconciliation: no_effect_proven` and receipts to declare failure from `in_flight` or `unknown`. Only `failed → prepared` permits another attempt; entering `in_flight` increments the counter exactly once and checks the current grant. Resolving `unknown → confirmed` requires `effect_confirmed`. The backend validates receipt references/states; M3/M6 must verify target evidence and mediate invocation.
+M1 requires `reconciliation: no_effect_proven` and receipts to declare failure from `in_flight` or `unknown`. Only `failed → prepared` permits another attempt; entering `in_flight` increments the counter exactly once and checks the current grant. Resolving `unknown → confirmed` requires `effect_confirmed`. The backend validates receipt references/states; M3.4 mediates local operations and verifies its simulator ledger; M6 must establish the actual external target semantics.
 
 There is no universal transaction between a local database and a remote service. Job deduplication, writer exclusion and target idempotency are distinct, complementary mechanisms.
 

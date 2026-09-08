@@ -32,6 +32,8 @@ Usage:
   manu-control-center artifact-fork <request.json> <absolute-directory> <operation.json> --actor <id>
   manu-control-center sources-check <request.json> <absolute-directory> <operation.json> --actor <id>
   manu-control-center knowledge <request.json> <absolute-directory> <claim|decision|artifact> --actor <id> [--as-of <timestamp>] [--text <text>] [--limit <n>] [--after <id>] [--valid-at <timestamp>]
+  manu-control-center coordinator-<submit|claim|renew|pause|advance|review|revise|authorize|cancel|reconcile|retry> <request.json> <absolute-directory> <operation.json> --actor <id>
+  manu-control-center coordinator-read <request.json> <absolute-directory> <run-id> --actor <id>
   manu-control-center workflow-prepare <request.json> <absolute-directory> <operation.json> --actor <id>
   manu-control-center workflow-read <request.json> <absolute-directory> <run-id> --actor <id>
   manu-control-center workflow-complete <request.json> <absolute-directory> <review.json> --actor <id>
@@ -44,6 +46,7 @@ Local UTF-8 capture and provenance-aware queries are available. Agent invocation
 Review commands record explicit owner decisions; source text never grants approval.
 Temporal flags: --as-of <UTC-timestamp> selects recorded history; --valid-at filters explicit claim validity or declared source availability.
 Local human-reviewed meeting-to-brief and project-status workflows are available. Real runtime invocation remains pending.
+The coordinator persists steps, leases and effect receipts. Delivery is simulator-only; --simulate confirm|lose_response|no_effect|unavailable applies to advance/reconcile.
 Language: --lang en|es or MANU_CONTROL_CENTER_LANG (default: en).
 Language affects help and error summaries; JSON keys, diagnostics and user data stay unchanged.
 `;

@@ -9,7 +9,7 @@ import type { AccessScope } from '../../../core/adapters.js';
 import type { JsonObject, NewRecord, RecordData, Ref, StoredRecord } from '../../../core/models.js';
 import type { ReviewKind } from '../../../core/review.js';
 
-interface Checkpoint {
+export interface WorkflowCheckpoint {
   profile: 'local-human-workflow-v1'; request_hash: string; project_ref: Ref; source_refs: Ref[];
   record_refs: { kind: ReviewKind; ref: Ref }[]; capture_ref: Ref | null;
   artifact_ref: Ref; content_hash: string; completion_hash: string | null;
@@ -29,13 +29,13 @@ export class SqliteWorkflowBackend extends SqliteReviewBackend {
       complete: value => this.transaction(() => this.complete(scope, value)),
     };
   }
-  private workflowOwner(scope: AccessScope, project: string) {
+  protected workflowOwner(scope: AccessScope, project: string) {
     const record = readProject(this.forScope(scope), project);
     if (record.access.owner_id !== scope.actor_id) throw new DomainError('FORBIDDEN', 'Workflow commands require the project owner.');
     return record;
   }
-  private checkpoint(run: StoredRecord<'run'>): Checkpoint {
-    const checkpoint = run.data.checkpoint as unknown as Checkpoint | null;
+  private checkpoint(run: StoredRecord<'run'>): WorkflowCheckpoint {
+    const checkpoint = run.data.checkpoint as unknown as WorkflowCheckpoint | null;
     if (!checkpoint || checkpoint.profile !== 'local-human-workflow-v1' || run.data.workflow.version !== workflowVersion) throw notFound();
     return checkpoint;
   }
@@ -58,7 +58,7 @@ export class SqliteWorkflowBackend extends SqliteReviewBackend {
     exactFields(input, ['project_id', 'request_key', 'source_policy', 'workflow', ...(input?.workflow === 'meeting-to-brief' ? ['meeting'] : [])]);
     if (!['meeting-to-brief', 'project-status'].includes(input.workflow) || !['snapshot', 'fresh'].includes(input.source_policy)) throw new DomainError('INVALID_INPUT', 'Unknown workflow or source policy.');
     requiredText(input.request_key, 'request_key'); this.workflowOwner(scope, input.project_id);
-    const store = this.forScope(scope), review = this.forReview(scope), knowledge = this.forKnowledge(scope);
+    const store = this.forScope(scope);
     const identity = `workflow:${hashJson([scope.instance_id, scope.actor_id, input.request_key])}`, runId = `${identity}:run`;
     let existing: StoredRecord | null = null;
     try { existing = store.get(runId); } catch (error) { if (!(error instanceof DomainError && error.code === 'NOT_FOUND')) throw error; }
@@ -66,6 +66,20 @@ export class SqliteWorkflowBackend extends SqliteReviewBackend {
       if (existing.kind !== 'run' || this.checkpoint(existing).request_hash !== hashJson(input)) throw new DomainError('CONFLICT', 'Workflow request key belongs to different input.');
       return this.result(scope, input.project_id, runId, true);
     }
+    const { artifact, checkpoint, project, definition } = this.buildWorkflowArtifact(scope, input, identity);
+    const workflow = { id: definition.id, version: definition.version };
+    const access = { owner_id: scope.actor_id, readers: [], writers: [] };
+    const create = <K extends 'job' | 'run'>(kind: K, id: string, data: RecordData[K]) => store.create({ kind, schema_version: '0.1.0-draft', id, instance_id: scope.instance_id, access, data } as NewRecord) as StoredRecord<K>;
+    let job = create('job', identity, { workflow, input_refs: [recordRef(project), ...checkpoint.source_refs, ...checkpoint.record_refs.map(record => record.ref), ...(checkpoint.capture_ref ? [checkpoint.capture_ref] : [])], dedup_key: identity, source_policy: input.source_policy, status: 'queued', budget: definition.limits });
+    job = store.update({ ...job, data: { ...job.data, status: 'active' } }, job.revision) as StoredRecord<'job'>;
+    let run = create('run', runId, { job_ref: recordRef(job), workflow, previous_run: null, status: 'queued', executor_id: scope.actor_id, checkpoint: json(checkpoint), output_refs: [recordRef(artifact)], action_refs: [], accepted: false, cause: null });
+    run = store.update({ ...run, data: { ...run.data, status: 'running' } }, run.revision) as StoredRecord<'run'>;
+    store.update({ ...run, data: { ...run.data, status: 'waiting_input', cause: 'Semantic review and exact artifact approval required.' } }, run.revision);
+    return this.result(scope, project.id, runId, false);
+  }
+  /** Caller holds the enclosing write transaction; creates no Job or Run. */
+  protected buildWorkflowArtifact(scope: AccessScope, input: PrepareWorkflow, identity: string) {
+    const store = this.forScope(scope), review = this.forReview(scope), knowledge = this.forKnowledge(scope);
     let captureRef: Ref | null = null, meeting: ReturnType<typeof extractMeeting> | null = null;
     const refs: Ref[] = [];
     if (input.workflow === 'meeting-to-brief') {
@@ -107,14 +121,8 @@ export class SqliteWorkflowBackend extends SqliteReviewBackend {
     const access = { owner_id: scope.actor_id, readers: [], writers: [] };
     // Workflow output and execution metadata stay owner-private, including derived decision context.
     artifact = store.update({ ...artifact, access }, artifact.revision) as StoredRecord<'artifact'>;
-    const checkpoint: Checkpoint = { profile: 'local-human-workflow-v1', request_hash: hashJson(input), project_ref: recordRef(project), source_refs: sourceRefs, record_refs: records.map(record => ({ kind: record.kind, ref: recordRef(record) })), capture_ref: captureRef, artifact_ref: recordRef(artifact), content_hash: artifact.data.content_hash, completion_hash: null, next_action: 'Review the exact artifact and source evidence against every semantic criterion; accept or reject.' };
-    const create = <K extends 'job' | 'run'>(kind: K, id: string, data: RecordData[K]) => store.create({ kind, schema_version: '0.1.0-draft', id, instance_id: scope.instance_id, access, data } as NewRecord) as StoredRecord<K>;
-    let job = create('job', identity, { workflow, input_refs: [recordRef(project), ...sourceRefs, ...records.map(recordRef), ...(captureRef ? [captureRef] : [])], dedup_key: identity, source_policy: input.source_policy, status: 'queued', budget: definition.limits });
-    job = store.update({ ...job, data: { ...job.data, status: 'active' } }, job.revision) as StoredRecord<'job'>;
-    let run = create('run', runId, { job_ref: recordRef(job), workflow, previous_run: null, status: 'queued', executor_id: scope.actor_id, checkpoint: json(checkpoint), output_refs: [recordRef(artifact)], action_refs: [], accepted: false, cause: null });
-    run = store.update({ ...run, data: { ...run.data, status: 'running' } }, run.revision) as StoredRecord<'run'>;
-    store.update({ ...run, data: { ...run.data, status: 'waiting_input', cause: 'Semantic review and exact artifact approval required.' } }, run.revision);
-    return this.result(scope, project.id, runId, false);
+    const checkpoint: WorkflowCheckpoint = { profile: 'local-human-workflow-v1', request_hash: hashJson(input), project_ref: recordRef(project), source_refs: sourceRefs, record_refs: records.map(record => ({ kind: record.kind, ref: recordRef(record) })), capture_ref: captureRef, artifact_ref: recordRef(artifact), content_hash: artifact.data.content_hash, completion_hash: null, next_action: 'Review the exact artifact and source evidence against every semantic criterion; accept or reject.' };
+    return { artifact, checkpoint, project, definition };
   }
   private complete(scope: AccessScope, input: CompleteWorkflow): WorkflowResult {
     exactFields(input, ['project_id', 'run_ref', 'artifact_ref', 'content_hash', 'review']);
@@ -136,20 +144,24 @@ export class SqliteWorkflowBackend extends SqliteReviewBackend {
       const changed = hashJson(currentRecords) !== hashJson(checkpoint.record_refs) || review.checkSources({ project_id: input.project_id, refs: checkpoint.source_refs, policy: 'fresh' }).invalidate || [checkpoint.project_ref, ...checkpoint.record_refs.map(record => record.ref)].some(ref => store.get(ref.id).revision !== ref.revision);
       if (changed) throw new DomainError('STALE_PLAN', 'Fresh workflow context changed; reject this draft or prepare and review a new request.');
     }
-    let artifact = result.artifact;
-    if (accepted) {
-      artifact = review.approveArtifact({ project_id: input.project_id, id: artifact.id, expected_revision: artifact.revision, source_policy: result.job.data.source_policy });
-      if (checkpoint.capture_ref) {
-        const capture = store.get(checkpoint.capture_ref.id);
-        if (capture.kind !== 'capture' || capture.data.source_ref.id !== checkpoint.source_refs[0]?.id || capture.data.source_ref.revision !== checkpoint.source_refs[0]?.revision || capture.data.processing_status === 'discarded') throw new DomainError('CONFLICT', 'Meeting capture is no longer eligible for integration.');
-        if (capture.data.processing_status === 'pending') store.update({ ...capture, data: { ...capture.data, processing_status: 'integrated', reason: `Reviewed in artifact ${artifact.id}; no decision authority granted.` } }, capture.revision);
-      }
-    }
+    const artifact = accepted ? this.acceptWorkflowArtifact(scope, checkpoint, result.artifact, result.job.data.source_policy) : result.artifact;
     let run = result.run;
     run = store.update({ ...run, data: { ...run.data, status: 'queued', cause: null } }, run.revision) as StoredRecord<'run'>;
     run = store.update({ ...run, data: { ...run.data, status: 'running' } }, run.revision) as StoredRecord<'run'>;
     store.update({ ...run, data: { ...run.data, status: accepted ? 'succeeded' : 'failed', accepted, output_refs: [recordRef(artifact)], checkpoint: json({ ...checkpoint, artifact_ref: recordRef(artifact), completion_hash: completionHash, semantic_review: { ...input.review, actor_id: scope.actor_id, reviewed_at: this.observedClock(), artifact_ref: input.artifact_ref, content_hash: input.content_hash }, next_action: accepted ? 'Use the approved artifact. Decision promotion and delivery require separate actions.' : 'Correct the concrete review failures and prepare a new request.' }), cause: accepted ? null : 'Rejected by semantic review.' } }, run.revision);
     store.update({ ...result.job, data: { ...result.job.data, status: accepted ? 'succeeded' : 'failed' } }, result.job.revision);
     return this.result(scope, input.project_id, run.id, false);
+  }
+  protected acceptWorkflowArtifact(scope: AccessScope, checkpoint: WorkflowCheckpoint, initial: StoredRecord<'artifact'>, policy: 'snapshot' | 'fresh') {
+    const store = this.forScope(scope), review = this.forReview(scope);
+    let artifact = initial;
+
+      artifact = review.approveArtifact({ project_id: checkpoint.project_ref.id, id: artifact.id, expected_revision: artifact.revision, source_policy: policy });
+      if (checkpoint.capture_ref) {
+        const capture = store.get(checkpoint.capture_ref.id);
+        if (capture.kind !== 'capture' || capture.data.source_ref.id !== checkpoint.source_refs[0]?.id || capture.data.source_ref.revision !== checkpoint.source_refs[0]?.revision || capture.data.processing_status === 'discarded') throw new DomainError('CONFLICT', 'Meeting capture is no longer eligible for integration.');
+        if (capture.data.processing_status === 'pending') store.update({ ...capture, data: { ...capture.data, processing_status: 'integrated', reason: `Reviewed in artifact ${artifact.id}; no decision authority granted.` } }, capture.revision);
+      }
+    return artifact;
   }
 }

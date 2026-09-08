@@ -35,6 +35,10 @@ async function main(args: string[]): Promise<void> {
     const { runWorkflow } = await import('./workflows.js');
     output(runWorkflow(args)); return;
   }
+  if (args[0]?.startsWith('coordinator-')) {
+    const { runCoordinator } = await import('./coordinator.js');
+    output(await runCoordinator(args)); return;
+  }
   if (args.length === 1 && args[0] === 'doctor') {
     const dataDirectory = resolveDataDirectory();
     const { probeSqlite } = await import('../adapters/backends/sqlite/probe.js');

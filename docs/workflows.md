@@ -10,6 +10,8 @@ node examples/workflow-demo.mjs
 
 It creates a temporary foundation, completes both workflows through separate CLI processes, checks exact approved content and removes only its own temporary directory. It never opens Manu's instance. The same example is exercised from the installed tarball.
 
+M3.4 now offers a [coordinated profile](coordinator.md) for new jobs, with durable steps, fencing, budgets and mediated effects. This guide retains the original synchronous commands and their compatibility boundary.
+
 ## Commands and input
 
 Use an existing [foundation installation](installation.md). The host binds the project and actor from its request. Operation JSON cannot supply `project_id`, permissions, tools or a replacement actor.

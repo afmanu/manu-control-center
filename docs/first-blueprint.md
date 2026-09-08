@@ -1,6 +1,6 @@
 # First blueprint: project knowledge and work
 
-M3.3 implements the two [local human workflow compositions](workflows.md) without activating this operational blueprint. M3.4–M3.5 still provide the coordinator and real runtime.
+M3.3 implements the two [local human workflow compositions](workflows.md) without activating this operational blueprint. M3.4 supplies the [local coordinator and simulated effects](coordinator.md); real runtime invocation and operational profile activation remain pending.
 
 Pilot proposal `project-knowledge-operations@0.1.0-draft`. It implements one complete architectural path without defining every future blueprint.
 

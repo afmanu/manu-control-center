@@ -2361,6 +2361,12 @@
                 "effect_confirmed",
                 "no_effect_proven"
               ]
+            },
+            "result": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/definitions/json"
+              }
             }
           },
           "required": [

@@ -48,6 +48,12 @@ Exact source versions and current project context are prerequisites for A03/A05,
 
 A04 has manual typed intake checks, without a semantic extractor yet. A23 has persisted-source preflight and freshness-gated artifact approval, not coordinator invalidation/resumption. A08 has a local transition race without distributed leases; A18/A26/A27 still require runtime integration. Passing these local profiles does not mark all M3 complete or establish semantic accuracy.
 
+## M3.4 evidence boundary
+
+[Coordinator tests](../tests/coordinator.test.ts) and [process/CLI tests](../tests/local-coordinator.test.ts) demonstrate A08 for one SQLite authority with atomic claims and effective stale-token rejection; A09 for the named durable simulator; A10 for current content-bound grants; A20 for cancellation/deadline races; A21 for stable logical action identity across failed runs; and A23 for persisted dependent-step invalidation and replacement review. [Evidence](m3.4-verification.json) includes actual exits during local transactions and after target commit, installed CLI use and unchanged existing-instance checks.
+
+A19 includes current source access with redacted owned execution metadata for cancellation/reconciliation. A26/A27 still need the first real runtime; human classification and review do not constitute a model quality benchmark. Simulator receipts do not establish a real mail service or cross-host fencing.
+
 ## Brief evaluation
 
 The [meeting.json](../examples/meeting.json) fixture includes evidence and semantic expectations. The report must distinguish two explicit decisions, an unapproved proposal and an open question. It must not invent a budget, date or owner. Citations must point to the correct segment and revision.

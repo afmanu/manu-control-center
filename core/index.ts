@@ -12,3 +12,4 @@ export type { CaptureInput, CaptureReceipt, KnowledgeStore, SourceQuery, SourceM
 export type * from './review.js';
 export * from './workflows.js';
 export { localWorkflowDefinition } from './workflow-definitions.js';
+export * from './coordinator.js';

@@ -2,7 +2,7 @@
 
 A builder for AI knowledge and work systems. It creates and maintains instances with context, sources, decisions, capabilities and durable state through storage and agent adapters.
 
-**M0–M2 and M3.1–M3.3 are complete.** Capture and query sources, manage decision authority, and complete meeting briefs or project-status summaries with exact citations and explicit human review. Manu's foundation remains outside the repository. M3.4 adds the coordinator and effect control; real model execution follows in M3.5.
+**M0–M2 and M3.1–M3.4 are complete for the local profiles.** Capture sources, manage authority and complete human-reviewed meeting briefs or project status through a durable coordinator. Leases, fencing, budgets, cancellation, source invalidation and effect receipts are enforced; external delivery is simulated. Real model execution is next in M3.5.
 
 Primary repository: [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). The original repository's [MIT license](LICENSE) is preserved.
 
@@ -35,18 +35,19 @@ Entities and contracts define the core. Obsidian, files, databases, Codex, Claud
 | M0 | Complete | Executable repository, tooling and technical decisions. |
 | M1 | Complete | Contracts, reference persistence and evaluator separation. |
 | M2 | Complete | Instance creation, adoption, verification and recovery. |
-| M3 | In progress: M3.1–M3.3 complete | Local human-reviewed workflows available; coordinator and runtime next. |
+| M3 | In progress: M3.1–M3.4 complete | Coordinated local workflows and simulated effects available; real runtime next. |
 | M4 | Pending | A real second backend and second runtime. |
 | M5 | Pending | Updates, repair, auditing and maintainable distribution. |
 | M6 | As needed, from M3 | Integrations, recurrence and additional interfaces. |
 
-The [roadmap](docs/implementation-plan.md) defines tasks and completion criteria. M3.3 passes 176 tests and clean package installation, including both local workflows through the installed CLI. Classification and semantic review are human inputs; exact extraction, coverage and permissions are enforced. A01, A02, A16 and A17 pass for local construction; A19 also covers scoped source and derived-knowledge retrieval; A05/A06/A22 pass for the local review profile. A15 remains foundation-only and A27 covers the harness. Full agent workflows remain pending. See [acceptance](docs/acceptance.md), [M3.3 evidence](docs/m3.3-verification.json) and the [handoff](docs/handoff.md).
+The [roadmap](docs/implementation-plan.md) defines tasks and completion criteria. M3.4 passes 208 tests and clean package installation, including coordinated workflows, real process recovery and exactly one simulated delivery after a lost response. Classification and semantic review are human inputs; exact extraction, coverage and permissions are enforced. A01, A02, A16 and A17 pass for local construction; A19 also covers scoped source and derived-knowledge retrieval; A05/A06/A22 pass for the local review profile. A15 remains foundation-only and A27 covers the harness. Full agent workflows remain pending. See [acceptance](docs/acceptance.md), [M3.4 evidence](docs/m3.4-verification.json) and the [handoff](docs/handoff.md).
 
 ## Documentation
 
 - [Capture text/files and query sources](docs/knowledge.md).
 - [Review decisions, query time and preserve approved artifacts](docs/review.md).
 - [Run and review local meeting briefs and project status](docs/workflows.md).
+- [Coordinate runs, cancel work and reconcile simulated effects](docs/coordinator.md).
 - [Handoff and next work](docs/handoff.md).
 - [Scope and technology decisions](docs/decisions.md).
 - [Architecture](docs/architecture.md) and [component map](docs/component-map.md).
@@ -59,6 +60,6 @@ The [roadmap](docs/implementation-plan.md) defines tasks and completion criteria
 
 ## Status and distribution
 
-`0.1.0-dev.6` is a development release with npm publication disabled. The `foundation` profile installs storage, configuration and a project; its `verified` state certifies that scope. Full agent use is pending. `node:sqlite` emits an experimental warning in the pinned Node version. Codex and Claude Code are candidates; product compatibility has not yet been demonstrated.
+`0.1.0-dev.7` is a development release with npm publication disabled. The `foundation` profile installs storage, configuration and a project; its `verified` state certifies that scope. Full agent use is pending. `node:sqlite` emits an experimental warning in the pinned Node version. Codex and Claude Code are candidates; product compatibility has not yet been demonstrated.
 
 Private data and secrets stay outside Git and the package. Sources were integrated from the earlier documentation folder; subsequent decisions and implementation changes are maintained in this repository.

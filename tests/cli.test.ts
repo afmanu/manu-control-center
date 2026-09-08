@@ -19,7 +19,7 @@ test('CLI help and version work without importing the SQLite adapter', () => {
   assert.equal(help.stderr, '');
   const version = run(['--version']);
   assert.equal(version.status, 0);
-  assert.match(version.stdout, /^0\.1\.0-dev\.6\n$/);
+  assert.match(version.stdout, /^0\.1\.0-dev\.7\n$/);
 });
 
 test('CLI validates metadata and rejects unsupported commands without claiming installation', () => {

@@ -123,7 +123,8 @@ export class SqliteBackend implements BackendAdapter {
     }
     if (scope.actor_id !== before.access.owner_id && hashJson(before.access) !== hashJson(record.access)) throw new DomainError('FORBIDDEN', 'Only the owner can change access.');
     if (record.kind === 'authorization' && !scope.can_authorize) throw new DomainError('FORBIDDEN', 'Only a trusted grant issuer can change authorization.');
-    this.validateReferences(scope, record);
+    // Cancelling an owned job changes status only; its immutable, previously validated input refs need not remain readable.
+    if (!(record.kind === 'job' && record.data.status === 'cancelled' && record.access.owner_id === scope.actor_id)) this.validateReferences(scope, record);
     if (before.kind === 'decision' && record.kind === 'decision' && (before.data.status !== record.data.status || (record.data.status !== 'proposed' && (decisionContentHash(before) !== decisionContentHash(record) || hashJson(before.data.promotion) !== hashJson(record.data.promotion))))) {
       if (!record.data.promotion || record.data.actor_id !== scope.actor_id) throw new DomainError('FORBIDDEN', 'Decision change needs actor and current promotion provenance.');
       record.data.promotion.at = record.updated_at;

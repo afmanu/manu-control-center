@@ -1,18 +1,18 @@
 # Development handoff
 
-Updated: 2026-09-08. Primary repository: [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). **M0–M2 and M3.1–M3.3 complete; next step: M3.4.**
+Updated: 2026-09-08. Primary repository: [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). **M0–M2 and M3.1–M3.4 local profiles complete; next step: M3.5.**
 
 ## Current instruction
 
 Manu requests a system he can use and has selected this repository as its destination. Verified work and GitHub delivery are authorized. Preserve the initial history and MIT license; earlier documentation folders are snapshots, without automatic synchronization with this repository or the source vault. Another discovery interview is unnecessary.
 
-Manu authorized the next roadmap step after the English-repository update. M3.1, M3.2 and the subsequently authorized M3.3 local workflow profile are delivered here. Keep repository content in English; runtime interaction and user content may remain Spanish (D24 and [language.md](language.md)).
+Manu authorized the next roadmap step after the English-repository update. M3.1–M3.4 are delivered for the local human/coordinator profiles, including the explicitly authorized continuation into coordination and simulated effect control. Keep repository content in English; runtime interaction and user content may remain Spanish (D24 and [language.md](language.md)).
 
 M3 delivers first agent use; M4 demonstrates another representation and runtime; M5 adds maintenance. Essential M6 integrations may be brought forward from M3.
 
 ## Executable status
 
-Private package `manu-control-center@0.1.0-dev.6`, TypeScript/Node 24, exact dependencies and a lockfile. M3.2 adds no dependencies or database migration. Claim validity is an optional draft-schema addition; prior records remain readable. The 22 M1 contracts, SQLite backend with access/revisions/history, and A27 harness remain in place.
+Private package `manu-control-center@0.1.0-dev.7`, TypeScript/Node 24, exact dependencies and a lockfile. M3.2 adds no dependencies or database migration. Claim validity is an optional draft-schema addition; prior records remain readable. The 22 M1 contracts, SQLite backend with access/revisions/history, and A27 harness remain in place.
 
 M2 adds the `project-knowledge-foundation@0.1.0-draft` catalog, two modules, validated request, resolver and reproducible plan. The adapter checks the real backend in disposable databases, inspects destinations without writes, and applies operations with atomic checkpoints. Adoption reuses MCC SQLite projects with pinned revisions and ownership, preserving content/history.
 
@@ -92,22 +92,40 @@ The general coordinator, step persistence/invalidations, effective fencing, canc
 
 Read-only regression with the new backend preserves Manu's request, original plan, database bytes and directory entries. Replanning retains the original catalog/spec, foundation verification remains, and the instance still contains no sources, claims, decisions, artifacts, jobs, runs or actions. English/Spanish context reads agree. Runtime integration remains not_run.
 
+## M3.4 verification and implementation
+
+208 tests and clean installed-package verification pass. [Guide](coordinator.md), [evidence](m3.4-verification.json), [installed CLI demonstration](../examples/coordinator-demo.mjs). New coordinated job/run version: `0.1.0-coordinated`; old M3.3 workflows remain readable and usable without migration. The existing artifact producer retains its local-human capability contract.
+
+`coordinator-*` commands expose submit/read/claim/renew/pause/advance/review/revise/authorize/cancel/reconcile/retry. Public exports add `./coordinator`, `./sqlite-coordinator` and `./simulated-mailbox`. C19 owns all Job/Run/Step/Action state. Atomic claims pin an executor and epoch; every coordinator write checks the current lease, current job attempt and permissions in its transaction. Step records carry the actual executor and lease epoch. Leases last at most 60 seconds; expiry/release/cancellation fence previous workers. These are per-store guarantees, not cross-database migration or hostile-owner isolation.
+
+Local preparation reuses the M3.3 helper without creating a second job. Five preparation steps form one coherent atomic batch, preceded by committed reservations and an in-flight Action. Exact approval is a separate transaction after persisted human review and its content-bound grant. Steps, attempts and the original wall-clock deadline remain consumed across retry/generation changes. Numeric model token/cost budgets fail closed because no metered runtime is invoked. Failed jobs close when retries are exhausted; blocked work retains a reason and can be cancelled.
+
+Fresh checks now persist invalidated step references and replace only dependent records; unchanged input/extraction records remain for context-only changes. A changed transcript needs explicit current-reference reclassification. Old artifacts and grants stay in history, and unused old approval intents become rejected. Replacement artifacts require new exact review. Snapshot retains pinned versions with current permissions. The fixed helper rebuilds a coherent preparation snapshot, without offering suspension inside that local batch.
+
+The separate simulated delivery job requires an approved artifact and an explicit current grant. The durable target ledger commits receipt evidence under a stable logical key and supports lost responses, no-effect and unavailable modes. Reconciliation verifies target evidence instead of accepting a caller's receipt assertion. Its no-effect proof atomically seals an absent attempt, preventing a late old invocation from delivering after absence was certified. Confirmed/rejected Action data is immutable; optional Action.result stores evidence without a database migration. No real message or external integration is invoked.
+
+Cancellation fences new work immediately and keeps in-flight/unknown effects in cancel_requested until reconciliation. An already delivered effect remains confirmed after cancellation. Revoked context yields a redacted owned execution view, while cancellation/reconciliation remain possible. A narrow storage exception permits owner cancellation of a job without rereading its unchanged pinned inputs; the immutable-input guard still runs. Other access checks are unchanged.
+
+Verification includes independent workers racing for one claim, stale tokens after takeover/renewal, wrong/expired/revoked/wildcard grants, current source permissions, context changes after review, final-write rollback, budgets, cancellation before and after actual simulated delivery, forged receipts, and new-run retry preserving logical action identity. Real process exits test hot and cold local journals and a target commit without a coordinator receipt. Recovery retains one source/capture or one target delivery as appropriate. Tests exposed and corrected receipt-history removal on retry, temporary human-transition executor metadata, terminal job budget derivation and cancellation with revoked input access.
+
+Read-only regression preserves Manu's request, saved plan, database bytes, directory listing, original catalog/spec and foundation verification. There are still no personal sources, claims, decisions, artifacts, jobs, runs or actions in that instance; no simulator store was created there. Runtime invocation remains not_run. Next: M3.5 real runtime, then agent continuity and explicit first use.
+
 ## Boundaries M3 must preserve
 
 - The host authenticates and sets `AccessScope`, `can_authorize` and construction authority. These arguments never come from sources or LLM responses. The CLI is a trusted local host without remote authentication.
-- M1 action receipts are structured references; M3 must mediate invocation and test the target result. The M2 constructor does not coordinate workflows.
+- M3.4 mediates fixed local effects and verifies the simulator target; M3.5/M6 must demonstrate runtime/tool control and actual external results. The M2 constructor does not coordinate workflows.
 - SQLite uses rollback journaling. Planning/inspection reject WAL or a pending journal before attempting recovery. Only authorized apply/resume recovers transactions on an identified MCC store. Incomplete database-format initialization requires explicit repair without replacing unknown files.
-- There is no distributed fencing, scheduler, export or second backend/runtime. The M1 monotonicity guard is not an effective lease. The A27 harness is neither a sandbox nor a model semantic evaluation.
+- M3.4 enforces leases/fencing through coordinator APIs on one SQLite authority. There is no cross-database fencing/migration, scheduler, export or second runtime. Raw trusted-host APIs are not worker confinement. The A27 harness is neither a sandbox nor a model semantic evaluation.
 - M2 adoption is limited to projects already represented in MCC SQLite. It does not claim vault or arbitrary-folder import.
 - Replanning does not change ownership or overwrite different managed configurations. M3 must explicitly define any foundation evolution needed to activate capabilities; M5 expands general maintenance.
 - `node:sqlite` emits an experimental warning in Node 24.14.1. Other platforms' path rules do not prove compatibility: local evidence is macOS; CI records its own runs.
 
-D20–D27 record these choices, initial deployment and language policy in [decisions.md](decisions.md).
+D20–D28 record these choices, initial deployment and language policy in [decisions.md](decisions.md).
 
 ## Next work: M3
 
-1. M3.4: durable coordinator, checkpoints, cancellation, budgets and effect control; consume source preflight and persist invalidation rather than treating it as already implemented.
-2. M3.5–M3.7: real runtime adapter, continuity from another session and first use of Manu's foundation instance.
+1. M3.5: implement the first real runtime adapter and invoke both existing workflows with synthetic inputs. Establish trusted host/tool boundaries and keep evaluator expectations separate; measure semantic quality and mechanism enforcement independently.
+2. M3.6–M3.7: agent continuity and first use of Manu's foundation without replacing its saved plan or importing unrequested personal material.
 3. Check M3 scenarios in the [roadmap](implementation-plan.md), extending A15/A19/A27 to the actually invoked target.
 
 At session completion, record the phase, actual commands, results and limits; update handoff, decisions and evidence, and regenerate the documentation inventory. Keep user knowledge and instance state outside the distribution.

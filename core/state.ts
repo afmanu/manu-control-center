@@ -40,6 +40,7 @@ export function assertMutation(before: StoredRecord, after: StoredRecord): void 
     if (after.data.fencing_token < before.data.fencing_token || (after.data.owner_id !== before.data.owner_id && after.data.fencing_token <= before.data.fencing_token)) fail('Owner changes require an increased fencing token.');
   }
   if (before.kind === 'action' && after.kind === 'action') {
+    if (['confirmed', 'rejected'].includes(before.data.status) && hashJson(before.data) !== hashJson(after.data)) fail('Terminal action evidence is immutable.');
     const identity = (record: StoredRecord<'action'>) => [record.data.job_ref, record.data.step_id, record.data.effect_name, record.data.logical_key, record.data.destination, record.data.payload_hash];
     if (hashJson(identity(before)) !== hashJson(identity(after))) fail('Logical effect identity, destination and payload are immutable.');
     if (before.data.attempts > 0 && !(before.data.status === 'failed' && after.data.status === 'prepared') && hashJson(before.data.grant_ref) !== hashJson(after.data.grant_ref)) fail('Authorization provenance of an attempted effect is immutable.');

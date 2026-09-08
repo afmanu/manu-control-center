@@ -49,7 +49,7 @@ export interface StateData {
   job: { workflow: VersionRef; input_refs: Ref[]; dedup_key: string; source_policy: SourcePolicy; status: 'queued' | 'active' | 'succeeded' | 'failed' | 'cancelled'; budget: Budget };
   run: { job_ref: Ref; workflow: VersionRef; previous_run: Ref | null; status: RunStatus; executor_id: string | null; checkpoint: JsonObject | null; output_refs: Ref[]; action_refs: Ref[]; accepted: boolean; cause: string | null };
   step: { run_ref: Ref; step_id: string; status: 'pending' | 'running' | 'waiting_input' | 'succeeded' | 'failed' | 'skipped'; input_refs: Ref[]; output_refs: Ref[]; owner_id: string | null; fencing_token: number; checkpoint: JsonObject | null };
-  action: { job_ref: Ref; step_id: string; effect_name: string; logical_key: string; destination: string; payload: Json; payload_hash: string; grant_ref: Ref | null; status: ActionStatus; attempts: number; receipt_refs: string[]; reconciliation: 'not_checked' | 'effect_confirmed' | 'no_effect_proven' };
+  action: { job_ref: Ref; step_id: string; effect_name: string; logical_key: string; destination: string; payload: Json; payload_hash: string; grant_ref: Ref | null; status: ActionStatus; attempts: number; receipt_refs: string[]; reconciliation: 'not_checked' | 'effect_confirmed' | 'no_effect_proven'; result?: JsonObject };
 }
 export type RecordData = EntityData & StateData;
 export type RecordKind = keyof RecordData;
