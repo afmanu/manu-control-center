@@ -21,7 +21,7 @@
     {
       "command": "npm run smoke:install --cache /tmp/manu-control-center-npm-cache",
       "status": "passed",
-      "scope": "clean source npm ci offline, build and 18 tests; tarball install, installed bin, version, doctor and schema from a separate directory"
+      "scope": "clean source npm ci offline, build and 18 tests; tarball installed with isolated empty consumer cache and registry access; installed bin, version, doctor and schema from a separate directory"
     },
     {
       "command": "node dist/cli/main.js doctor",
@@ -69,10 +69,15 @@
     "package.json": "1428eaf3f422b35c34af4a6df7dae0f8bfcb2d5b678ccc1e971296eab92f5a99",
     "schemas/record-envelope.schema.json": "bf8493e1bb888de54d31968466660a44baca342b41a6e18f49a0ba652dfa555a",
     "scripts/check-docs.mjs": "db13b6971c829dd55c99184f9d5e9783f1087517d5cb604c389c3ac8431dac14",
-    "scripts/smoke-install.mjs": "f9f52ab56a1d582f9852a6fee4d04d4b5a06066b9ea8fe4b9e568d26c4640193",
+    "scripts/smoke-install.mjs": "6edaa7a54b28e3fce63351a27a1bccfa38485659052792f9e1bf9ec811d4da91",
     "tests/cli.test.ts": "dc5fce698cf61c1a5d73c4cf5e375996073d61af6f2873e2c9e002895829c360",
     "tests/record.test.ts": "0393ea17e308658b48c3120c97d4d6c9d219ebeb4491b8400f743e61acdeeeb8",
     "tests/storage.test.ts": "a411821197a4904bc3bf703eefbd7cf82099b8682005802bb519ed4af67f10fd",
     "tsconfig.json": "c7a40257a8af86df74dd0b19478d3168c1bc92fdc3c0f33aa9f2c2e3f0cbf89d"
+  },
+  "regression_check": {
+    "trigger": "GitHub Actions 34210778551: ENOTCACHED while resolving package dependencies",
+    "change": "Consumer tarball installation uses an isolated empty cache and registry access; source installation keeps lockfile and offline mode",
+    "local_result": "passed"
   }
 }

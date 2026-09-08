@@ -52,7 +52,9 @@ npm run smoke:install
 npm pack
 ```
 
-La prueba limpia necesita haber ejecutado primero `npm ci` con la misma caché de npm. Copia las fuentes a una carpeta temporal, instala con el lockfile en modo offline, compila y repite los tests. Luego empaqueta e instala el archivo en otra carpeta, comprueba versión, diagnóstico, validación y el comando instalado. Limpia ambas carpetas al terminar. Puede pasarse `--cache /ruta/a/cache` a npm cuando el entorno lo requiera.
+La prueba limpia necesita haber ejecutado primero `npm ci` con la misma caché de npm. Copia las fuentes a una carpeta temporal, instala con el lockfile en modo offline, compila y repite los tests. Luego empaqueta e instala el archivo en otra carpeta **con una caché de consumidor vacía y acceso al registro npm**, comprueba versión, diagnóstico, validación y el comando instalado. Limpia las carpetas y la caché temporal al terminar. Puede pasarse `--cache /ruta/a/cache` a npm para la instalación de fuentes cuando el entorno lo requiera.
+
+La instalación del paquete necesita resolver sus dependencias como un consumidor nuevo. Una caché creada por `npm ci` puede contener los archivos de dependencias sin sus metadatos de registro; por eso esta segunda comprobación no presupone que sea posible instalar el paquete offline.
 
 `npm pack` genera un paquete local; no lo publica. El paquete mantiene `private: true`. Las instrucciones de instalación del sistema completo llegarán en M2–M3; estos comandos instalan únicamente la base de desarrollo M0.
 

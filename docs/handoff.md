@@ -15,7 +15,7 @@ El constructor sigue siendo reutilizable y Manu será su primer usuario. M3 entr
 - Esquema y validador mínimo de metadatos `RecordEnvelope@0.1.0-draft`, con errores estructurados.
 - Prueba SQLite desechable: persistencia al reabrir, actualización condicional, rechazo de escritor con revisión obsoleta y rollback. No constituye el backend de instancias.
 - Resolución de la ubicación local de datos fuera del repositorio, sin crear aún una instancia.
-- 18 tests aprobados. Instalación desde fuentes limpias con `npm ci --offline`, compilación y repetición de tests; instalación del paquete generado y comprobación de sus comandos.
+- 18 tests aprobados. Instalación desde fuentes limpias con `npm ci --offline`, compilación y repetición de tests; instalación del paquete generado con una caché de consumidor vacía y comprobación de sus comandos. La prueba del paquete utiliza acceso al registro y no depende de metadatos precargados en el equipo de desarrollo.
 - Verificador de documentación y manifiesto regenerable; configuración de GitHub Actions para tests, comprobación documental e instalación limpia.
 
 La [evidencia local](m0-verification.json) identifica comandos, versiones, alcance y límites. Los resultados de ejecuciones remotas están en [GitHub Actions](https://github.com/afmanu/manu-control-center/actions). El commit de esta entrega vincula documentación, pruebas y código; la evidencia no almacena un hash de commit circular dentro de ese mismo commit.

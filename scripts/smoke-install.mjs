@@ -10,7 +10,7 @@ const temporary = mkdtempSync(join(tmpdir(), 'manu-control-center-clean-'));
 const source = join(temporary, 'source');
 const consumer = join(temporary, 'consumer');
 const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
-const common = ['--offline', '--ignore-scripts', '--no-audit', '--no-fund'];
+const common = ['--ignore-scripts', '--no-audit', '--no-fund'];
 const run = (command, args, cwd) => execFileSync(command, args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
 
 try {
@@ -19,10 +19,11 @@ try {
   for (const name of ['package.json', 'package-lock.json', 'tsconfig.json', '.npmrc', 'README.md', 'LICENSE', 'core', 'cli', 'adapters', 'schemas', 'examples', 'tests', 'docs', 'references']) {
     cpSync(join(root, name), join(source, name), { recursive: true });
   }
-  process.stdout.write(run(npm, ['ci', ...common], source));
+  process.stdout.write(run(npm, ['ci', '--offline', ...common], source));
   process.stdout.write(run(npm, ['test'], source));
   const packed = JSON.parse(run(npm, ['pack', '--json', '--ignore-scripts', '--pack-destination', temporary], source));
-  process.stdout.write(run(npm, ['install', join(temporary, packed[0].filename), ...common], consumer));
+  // npm ci caches tarballs, but not necessarily registry metadata for an unlocked consumer.
+  process.stdout.write(run(npm, ['install', join(temporary, packed[0].filename), '--prefer-offline', '--cache', join(temporary, 'package-cache'), ...common], consumer));
   const installed = join(consumer, 'node_modules', 'manu-control-center');
   const cli = join(installed, 'dist', 'cli', 'main.js');
   const version = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8')).version;

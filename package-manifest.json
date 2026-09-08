@@ -58,8 +58,8 @@
     },
     {
       "path": "docs/development.md",
-      "bytes": 5540,
-      "sha256": "8e3bd65648b7cf9b02d1a3fbd5238daf438f5bc1cc38b8617da6a88222126030"
+      "bytes": 5945,
+      "sha256": "767139b8fd761a4f9f8498a58db956359428c9e515bed5cf352dcb0a7c432734"
     },
     {
       "path": "docs/execution.md",
@@ -73,8 +73,8 @@
     },
     {
       "path": "docs/handoff.md",
-      "bytes": 5414,
-      "sha256": "02e5b8d632fcf3a766c1100202a26d20506b3e189cd08ff2e9e850c899e6c023"
+      "bytes": 5565,
+      "sha256": "a32c543ce127c00f724ead25c121af658e24e5af351b13430e456e8aa455ec5e"
     },
     {
       "path": "docs/implementation-plan.md",
@@ -83,8 +83,8 @@
     },
     {
       "path": "docs/m0-verification.json",
-      "bytes": 3304,
-      "sha256": "3e5c8d0e63b073e369e0e11856e275a9fe9a19c34a2ee358e25dc81ffaf9107c"
+      "bytes": 3662,
+      "sha256": "139410f624f01e52d06240bc1eafaf6d9b4d0dfad85e95fb7340858c2e4beb7d"
     },
     {
       "path": "examples/README.md",
