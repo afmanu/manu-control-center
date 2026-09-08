@@ -43,10 +43,24 @@ try {
   assert.equal(created.runtime_integration, 'not_verified');
   assert.equal(JSON.parse(run(process.execPath, [cli, 'inspect', request, instance], consumer)).verification_evidence.length, 1);
   run(process.execPath, ['--input-type=module', '-e', "import {assertRequest} from 'manu-control-center/builder'; import {inspectLocalInstallation} from 'manu-control-center/local'; if(typeof assertRequest!=='function'||typeof inspectLocalInstallation!=='function') throw new Error('Missing builder exports');"], consumer);
+  run(process.execPath, ['--input-type=module', '-e', "import {SqliteKnowledgeBackend} from 'manu-control-center/sqlite-knowledge'; import {captureLocalSource,readLocalContext} from 'manu-control-center/knowledge'; if(typeof captureLocalSource!=='function'||typeof readLocalContext!=='function') throw new Error('Missing knowledge exports'); const backend=new SqliteKnowledgeBackend(':memory:'); backend.close();"], consumer);
+  const captured = JSON.parse(run(process.execPath, [cli, 'capture', request, instance, 'synthetic-notes', '--actor', 'local-user', '--key', 'notes-1', '--file', join(installed, 'examples', 'local-source.txt')], consumer));
+  assert.equal(captured.replayed, false);
+  const initialSource = JSON.parse(run(process.execPath, [cli, 'source', request, instance, 'synthetic-notes', '--actor', 'local-user', '--revision', captured.source_ref.revision], consumer));
+  assert.equal(initialSource.data.segments[0].text, readFileSync(join(installed, 'examples', 'local-source.txt'), 'utf8'));
+  assert.equal(initialSource.data.authority, 'unverified');
+  const change = [cli, 'capture', request, instance, 'synthetic-notes', '--actor', 'local-user', '--key', 'notes-2', '--expected-revision', captured.source_ref.revision, '--text', 'Synthetic updated notes'];
+  const updated = JSON.parse(run(process.execPath, change, consumer));
+  assert.equal(JSON.parse(run(process.execPath, change, consumer)).replayed, true);
+  assert.deepEqual(JSON.parse(run(process.execPath, [cli, 'search', request, instance, 'updated', '--actor', 'local-user'], consumer)).matches[0].source_ref, updated.source_ref);
+  assert.equal(JSON.parse(run(process.execPath, [cli, 'source-history', request, instance, 'synthetic-notes', '--actor', 'local-user'], consumer)).versions.length, 2);
+  assert.equal(JSON.parse(run(process.execPath, [cli, '--lang', 'es', 'context', request, instance, '--actor', 'local-user'], consumer)).sources.matches.length, 1);
+  assert.deepEqual(JSON.parse(run(process.execPath, [cli, 'source', request, instance, 'synthetic-notes', '--actor', 'local-user', '--revision', captured.source_ref.revision], consumer)), initialSource);
+  assert.equal(JSON.parse(run(process.execPath, [cli, 'verify', request, instance], consumer)).ok, true);
   if (process.platform !== 'win32') {
     assert.equal(run(join(consumer, 'node_modules', '.bin', 'manu-control-center'), ['--version'], consumer).trim(), version);
   }
-  process.stdout.write(JSON.stringify({ ok: true, clean_source_install: true, source_tests: true, packed_cli_install: true, packed_instance_create_verify: true, version }) + '\n');
+  process.stdout.write(JSON.stringify({ ok: true, clean_source_install: true, source_tests: true, packed_cli_install: true, packed_instance_create_verify: true, packed_knowledge_capture_query: true, version }) + '\n');
 } catch (error) {
   process.stderr.write(error.stdout?.toString() ?? '');
   process.stderr.write(error.stderr?.toString() ?? '');

@@ -1,6 +1,6 @@
 # Implementation roadmap
 
-Updated: 2026-09-08. **Status: M0–M2 complete; M3–M6 pending.** Development in [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). Identifiers remain stable for architecture/component/acceptance traceability. [M2 evidence](m2-verification.json) and the [handoff](handoff.md) record current scope; historical [M0](m0-verification.json) and [M1](m1-verification.json) evidence is preserved.
+Updated: 2026-09-08. **Status: M0–M2 and M3.1 complete; M3 in progress; M4–M6 pending.** Development in [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). Identifiers remain stable for architecture/component/acceptance traceability. [M2 evidence](m2-verification.json) and the [handoff](handoff.md) record current scope; historical [M0](m0-verification.json) and [M1](m1-verification.json) evidence is preserved.
 
 ## Intended delivery
 
@@ -103,6 +103,8 @@ Work, in order:
 
 **Completion:** A03–A06, A08–A10, A18 and A20–A23 pass; A09 uses the identified simulator. A26 demonstrates both workflows and fresh-session continuity; A27 passes with the integrated evaluator. A15/A19 cover the added runtime/retrieval. Briefs invent no agreements, owners or dates and retain verifiable references.
 
+**M3.1 completed:** explicit local text/UTF-8 file capture, atomic source/project/capture writes, request-key replay, conditional updates, exact historical reads, literal search and project context. Queries filter current instance/project/source access before matching and pagination. 119 tests and clean package capture/query checks pass; the existing foundation is unchanged. This does not complete all M3 scenarios. See [usage and limits](knowledge.md), [D25](decisions.md) and [evidence](m3.1-verification.json).
+
 **Delivery:** usable local pilot: install → add a source → query → run a workflow → review a result → resume another day. Includes real-runtime evidence, known limits and verified usage steps. Personal-data use does not imply migrating the entire vault.
 
 ## M4 — Demonstrated portability
@@ -169,6 +171,6 @@ Add code when it has useful behavior: `core` defines contracts; `builder`, `life
 
 Each completion updates [handoff.md](handoff.md) with version/commit if available, completed tasks, actual commands, results, evidence, limits, decisions and next task. A phase may be pending, in progress, partially verified or complete. Completion requires all applicable criteria to pass; a simulation never proves a real integration.
 
-**Next development action: M3.1.** Add local-source capture and provenance-aware queries on the existing backend. Continue with temporal authority, both workflows, coordination, real runtime and foundation-instance use; preserve its data and document required configuration evolution. The intervening English-repository update is recorded in D24 and does not start M3.
+**Next development action: M3.2.** Add authority and time to the M3.1 capture/query path: distinguish claims and proposals from active decisions, support explicit current/historical questions, preserve exact approved artifacts and define source freshness requirements. Then implement both workflows, coordination, real runtime and foundation-instance use. Preserve the existing instance and original construction plan; keep the repository in English (D24).
 
 [Home](../README.md)

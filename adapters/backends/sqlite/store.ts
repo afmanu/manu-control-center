@@ -19,9 +19,13 @@ export class SqliteBackend implements BackendAdapter {
       const existing = this.db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'").all();
       if ((app !== 0 && app !== 1296253773) || (app === 0 && existing.length > 0)) throw new DomainError('INCOMPATIBLE_VERSION', 'Destination is not a Manu Control Center store.');
       if (app === 1296253773 && this.db.prepare("SELECT value FROM metadata WHERE key='schema_version'").get()?.['value'] !== '1') throw new DomainError('INCOMPATIBLE_VERSION', 'Unsupported store version.');
-      if (options.readOnly) {
-        if (app !== 1296253773) throw new DomainError('INCOMPATIBLE_VERSION', 'Read-only inspection requires an initialized store.');
+      if (app === 1296253773) {
+        // An initialized store needs no DDL or header rewrite on each connection.
+        if (!options.readOnly) this.db.exec('PRAGMA foreign_keys=ON');
         return;
+      }
+      if (options.readOnly) {
+        throw new DomainError('INCOMPATIBLE_VERSION', 'Read-only inspection requires an initialized store.');
       }
       this.db.exec(`PRAGMA foreign_keys=ON; BEGIN IMMEDIATE;
         CREATE TABLE IF NOT EXISTS metadata (key TEXT PRIMARY KEY, value TEXT NOT NULL) STRICT;

@@ -23,6 +23,10 @@ async function main(args: string[]): Promise<void> {
     const { runConstructor } = await import('./constructor.js');
     runConstructor(args); return;
   }
+  if (['capture', 'source', 'source-history', 'search', 'context'].includes(args[0]!)) {
+    const { runKnowledge } = await import('./knowledge.js');
+    output(runKnowledge(args)); return;
+  }
   if (args.length === 1 && args[0] === 'doctor') {
     const dataDirectory = resolveDataDirectory();
     const { probeSqlite } = await import('../adapters/backends/sqlite/probe.js');

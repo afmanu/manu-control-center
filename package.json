@@ -1,6 +1,6 @@
 {
   "name": "manu-control-center",
-  "version": "0.1.0-dev.3",
+  "version": "0.1.0-dev.4",
   "private": true,
   "description": "Portable builder for AI knowledge and work systems.",
   "type": "module",
@@ -21,7 +21,9 @@
     "./sqlite": "./dist/adapters/backends/sqlite/store.js",
     "./evals": "./dist/evals/harness.js",
     "./builder": "./dist/builder/index.js",
-    "./local": "./dist/adapters/interfaces/local/installation.js"
+    "./local": "./dist/adapters/interfaces/local/installation.js",
+    "./knowledge": "./dist/adapters/interfaces/local/knowledge.js",
+    "./sqlite-knowledge": "./dist/adapters/backends/sqlite/knowledge.js"
   },
   "types": "dist/core/index.d.ts",
   "files": [

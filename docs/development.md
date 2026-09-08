@@ -1,4 +1,4 @@
-# Developing and using the M0–M2 foundation
+# Developing the foundation and local knowledge tools
 
 Primary repository: [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). Builder documentation has been integrated here while preserving the initial history and MIT license. Earlier folders are migration background; subsequent changes are maintained in this repository.
 
@@ -37,11 +37,11 @@ After code changes, `npm run build` recompiles. `npm test` compiles and runs con
 
 `contracts` lists the 22 contracts. `validate <kind> <file.json>` checks structure and invariants; `validate-bundle <file.json>` checks consistency between the need, blueprint, modules, specification, plan and manifest. Neither executes plans. Results summarize validity and errors without dumping content or fixture expectations.
 
-The M2 constructor commands and Manu deployment are in the [installation guide](installation.md). `resolve`, `plan` and `inspect` do not write to the destination; `apply`, `verify`, `create`, `adopt` and `resume` perform their explicit operations. To produce a JSON plan file, use the installed binary or `node dist/cli/main.js`, without the headers emitted by `npm start`.
+The M3.1 [knowledge guide](knowledge.md) covers capture, source/history retrieval, search and context. The M2 constructor commands and Manu deployment are in the [installation guide](installation.md). `resolve`, `plan` and `inspect` do not write to the destination; `apply`, `verify`, `create`, `adopt` and `resume` perform their explicit operations. To produce a JSON plan file, use the installed binary or `node dist/cli/main.js`, without the headers emitted by `npm start`.
 
 ## Library and schemas
 
-The package exports the core from `manu-control-center`, the backend from `manu-control-center/sqlite`, the harness from `manu-control-center/evals`, the resolver from `manu-control-center/builder` and local construction from `manu-control-center/local`. JavaScript example for a consumer with the package installed:
+The package exports the core from `manu-control-center`, the backend from `manu-control-center/sqlite`, the harness from `manu-control-center/evals`, the resolver from `manu-control-center/builder` and local construction from `manu-control-center/local`. M3.1 adds the local knowledge entry points at `manu-control-center/knowledge` and `SqliteKnowledgeBackend` at `manu-control-center/sqlite-knowledge`; see [API and limits](knowledge.md). JavaScript example for a consumer with the package installed:
 
 ```js
 import { SqliteBackend } from 'manu-control-center/sqlite';
@@ -97,11 +97,11 @@ npm run smoke:install
 npm pack
 ```
 
-The clean test requires an earlier `npm ci` using the same npm cache. It copies sources to a temporary folder, installs from the lockfile offline, compiles and repeats the tests. It then packs and installs the archive in another folder **with an empty consumer cache and npm registry access**, checking the version, diagnostic, contract/bundle validation, installed command, localized help, and public core, SQLite, eval and builder imports. It also creates, verifies and inspects an instance from the installed package. Temporary folders and the consumer cache are removed afterward. When needed, pass `--cache /path/to/cache` to npm for the source installation.
+The clean test requires an earlier `npm ci` using the same npm cache. It copies sources to a temporary folder, installs from the lockfile offline, compiles and repeats the tests. It then packs and installs the archive in another folder **with an empty consumer cache and npm registry access**, checking the version, diagnostic, contract/bundle validation, installed command, localized help, and public core, SQLite, eval and builder imports. It also creates, verifies and inspects an instance, captures a packaged synthetic UTF-8 file, updates/replays a source and checks search, history, exact versions and context from the installed package. Temporary folders and the consumer cache are removed afterward. When needed, pass `--cache /path/to/cache` to npm for the source installation.
 
 Package installation must resolve dependencies as a new consumer would. A cache populated by `npm ci` may contain dependency archives without registry metadata; the second check therefore does not assume an offline package installation is possible.
 
-`npm pack` creates a local archive; it does not publish it. The package retains `private: true`. These commands install the development foundation and M2 constructor; full system use with an agent arrives in M3.
+`npm pack` creates a local archive; it does not publish it. The package retains `private: true`. These commands install the development foundation, M2 constructor and M3.1 local knowledge commands; full system use with an agent arrives in M3.
 
 ## Documentation and evidence
 

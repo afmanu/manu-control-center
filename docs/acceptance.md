@@ -1,6 +1,6 @@
 # Acceptance and evaluation plan
 
-M2 executes A01, A02, A16 and A17 on the local construction profile. A15/A19 cover that profile's available capabilities, and A27 retains M1's harness check. Workflow, runtime, source and integration scenarios will be completed in their respective milestones. Required criteria relevant to a profile are individual gates: an aggregate score cannot hide a permission, identity or effect failure.
+M2 executes A01, A02, A16 and A17 on the local construction profile. A15/A19 cover that profile's available capabilities, and A27 retains M1's harness check. M3.1 extends A19 to local source search, context, exact revision and history retrieval. Workflow, runtime and integration scenarios remain pending. Required criteria relevant to a profile are individual gates: an aggregate score cannot hide a permission, identity or effect failure.
 
 ## Scenario matrix
 
@@ -35,6 +35,12 @@ M2 executes A01, A02, A16 and A17 on the local construction profile. A15/A19 cov
 | A27 | Execute positive/negative fixtures of one schema and observe the executor's input. | Only authorized inputs reach it; `expected` and reference answers stay with the evaluator. Invalid formats fail before execution. | M1; integration M3 |
 
 A01–A15 specify the architecture's fifteen criteria. A16–A20 add targeted invariant tests. A21–A27 were added to the 2026-09-08 roadmap for effect identity, authority, time, migration, executable dependencies, composition and evaluation isolation. [M2 evidence](m2-verification.json) records verified scope and pending scenarios; [M1 evidence](m1-verification.json) is preserved. A02 is limited to an existing MCC SQLite project; A17 covers resource transactions on an initialized MCC database. A15 does not establish agent invocation; A19 expands to tools/indexes as they are added. Cases inapplicable to a profile need a reason; an advertised capability cannot avoid testing by declaring its cases inapplicable.
+
+## M3.1 evidence boundary
+
+[Local retrieval tests](../tests/knowledge.test.ts) demonstrate A19 for instance isolation, source/project ACL intersection, current permission revocation, historical access and filtering before pagination. [Local CLI tests](../tests/local-knowledge.test.ts) demonstrate fresh-process capture/query and read-only behavior. [Evidence](m3.1-verification.json) records 119 tests and a clean installed-package path.
+
+Exact source versions and current project context are prerequisites for A03/A05, not complete decision-aware or temporal question answering. Capturing malicious instructions leaves them unverified/pending and creates no decision, authorization or action; the real-runtime A18 test is still pending. Local atomic capture/retry tests do not certify the future coordinator, distributed fencing or external effects (A08/A21). A15 remains foundation-only; A27 remains the harness boundary until runtime integration.
 
 ## Brief evaluation
 

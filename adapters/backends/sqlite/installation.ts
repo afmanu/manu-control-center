@@ -16,6 +16,15 @@ export class SqliteInstallation extends SqliteBackend {
       CREATE TABLE IF NOT EXISTS builder_evidence (id TEXT PRIMARY KEY, document TEXT NOT NULL) STRICT;`);
   }
   private hasTable(name: string): boolean { return !!this.db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name=?").get(name); }
+  finishRecovery(request: InstallRequest): void {
+    this.transaction(() => {
+      const state = this.state(request.owner_id, request.instance_id);
+      if (!state || hashJson(state.installation.request) !== hashJson(request)) throw new DomainError('FORBIDDEN', 'Recovery request differs from the recorded installation.');
+      // Finish even a cold leftover journal through SQLite's own write/commit path.
+      // This explicit recovery preserves logical records, revisions and builder evidence.
+      this.db.exec('PRAGMA application_id=1296253773');
+    });
+  }
   state(owner: string, instance: string): InstallationState | null {
     if (!this.hasTable('builder_state')) return null;
     const row = this.db.prepare('SELECT document FROM builder_state WHERE id=1').get();

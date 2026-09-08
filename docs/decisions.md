@@ -136,3 +136,20 @@ Rejected alternatives: invalidate saved plans, rewrite private instances, transl
 Include ID, status (`proposed`, `adopted`, `superseded`), context, choice, alternatives, consequences, affected contracts/tests and date. Reversible local choices may be made during authorized work. Changes of objective and publication commitments belong to the user.
 
 [Home](../README.md)
+
+
+## Implementation decisions — M3
+
+### D25 — Atomic local capture and permission-scoped source retrieval
+
+Status: **adopted**, 2026-09-08. Context: Manu authorized the next roadmap step on the existing foundation. M3.1 needs a usable capture/query path before extraction, temporal authority and runtime orchestration. Choice: synchronous neutral knowledge request/result types, SQLite composition and a trusted-owner local CLI. Package `0.1.0-dev.4`; no new dependency, schema migration, catalog activation or plan rewrite.
+
+Explicit text or one regular UTF-8 file (up to 1 MiB) becomes one exact `body` segment in an unverified local source plus a pending capture. Snapshot availability/observation times do not assert the validity of its claims. A canonical file URL or text locator records origin; identities are explicit. The source update, project reference, capture and histories share `BEGIN IMMEDIATE`. Expected revisions prevent stale replacement. A request key is scoped to instance/actor and replay checks exact source/project/locator/content against the pinned source; changed intent conflicts. New keys may record unchanged content without duplicating source revisions. Existing source order is preserved.
+
+Queries enforce current project and source ACLs before content matching and pagination; exact historical reads still require current access. Search is literal and case-sensitive, current-only, with bounded excerpts, stable per-record references and explicit coverage. Context returns current purpose/status/responsible/next action and sources, omitting raw restricted reference lists. There is no ranking, decision-aware answer, automatic ingestion or implicit promotion. Each read call uses a read-only snapshot; pagination across calls can observe new writes.
+
+The CLI is an explicit local owner action on the trusted M1 data API. M2 `instance.install` grants and foundation verification stay construction-scoped. This entry point does not claim runtime capability, authentication or effect-layer mediation: M3.4–M3.5 must provide those boundaries for agent invocation. The kernel does not depend on files or SQLite; platform capture and transaction ownership remain adapter responsibilities. The adapter-only composition helper is not a root public export.
+
+Rejected alternatives: import the entire vault, infer identities from paths, split/normalize text and lose exact bytes, expose source IDs through unfiltered project reference lists, silently overwrite stale sources, or mark a runtime operational from local CRUD tests. Consequences: owner-only local commands, current literal search and exact revision retrieval are usable now; semantic/temporal decisions and real-runtime defenses remain later M3 work. Existing Manu data and its saved construction plan remain unchanged.
+
+Verification found that initialized SQLite connections need no repeated DDL/header write. Initialization now runs only for a new database. Explicit authorized recovery still finalizes hot and cold interrupted journals through native SQLite recovery/commit, without deleting journals or changing logical revisions. Checks: 119 tests, including real process exits, concurrent captures/updates, rollback at the last write, UTF-8 fidelity and limits, revoked permissions, CLI options and fresh-process retrieval; clean tarball consumer exercises the same public path. Read-only regression preserves Manu's request, plan, database and directory listing. [Guide](knowledge.md), [evidence](m3.1-verification.json).

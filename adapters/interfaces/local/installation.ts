@@ -128,7 +128,6 @@ export function recoverLocalConstruction(input: unknown, directory: string, acto
   if (readHeader(path).readUInt32BE(68) !== 1296253773) throw new DomainError('INCOMPATIBLE_VERSION', 'Recovery requires an initialized MCC store. Preserve incomplete initialization for explicit repair.');
   const backend = new SqliteInstallation(path);
   try {
-    const state = backend.state(request.owner_id, request.instance_id);
-    if (!state || hashJson(state.installation.request) !== hashJson(request)) throw new DomainError('FORBIDDEN', 'Recovery request differs from the recorded installation.');
+    backend.finishRecovery(request);
   } finally { backend.close(); }
 }

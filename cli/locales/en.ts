@@ -17,11 +17,16 @@ Usage:
   manu-control-center create <request.json> <absolute-directory> --actor <id>
   manu-control-center adopt <request.json> <absolute-directory> --actor <id>
   manu-control-center resume <request.json> <absolute-directory> --actor <id>
+  manu-control-center capture <request.json> <absolute-directory> <source-id> --actor <id> --key <key> (--file <path> | --text <text>) [--expected-revision <revision>]
+  manu-control-center source <request.json> <absolute-directory> <source-id> --actor <id> [--revision <revision>]
+  manu-control-center source-history <request.json> <absolute-directory> <source-id> --actor <id> [--limit <n>] [--after-revision <revision>]
+  manu-control-center search <request.json> <absolute-directory> <text> --actor <id> [--limit <n>] [--after <source-id>]
+  manu-control-center context <request.json> <absolute-directory> --actor <id> [--limit <n>] [--after <source-id>]
 
 doctor checks SQLite using temporary data and shows the intended data location.
 validate-record checks RecordEnvelope metadata only (0.1.0-draft).
 The local constructor is available. Planning does not write to the destination.
-Agents and workflows: M3.
+Local UTF-8 capture and provenance-aware queries are available. Agents and workflows are pending in M3.
 Language: --lang en|es or MANU_CONTROL_CENTER_LANG (default: en).
 Language affects help and error summaries; JSON keys, diagnostics and user data stay unchanged.
 `;
