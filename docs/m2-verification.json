@@ -1,0 +1,252 @@
+{
+  "milestone": "M2",
+  "status": "passed_local",
+  "date": "2026-09-08",
+  "package_version": "0.1.0-dev.2",
+  "profile": "foundation",
+  "environment": {
+    "os": "macOS",
+    "architecture": "arm64",
+    "node": "24.14.1",
+    "npm": "11.11.0",
+    "typescript": "7.0.2",
+    "sqlite": "3.51.2"
+  },
+  "checks": [
+    {
+      "command": "npm test",
+      "status": "passed",
+      "tests": 92,
+      "failed": 0,
+      "skipped": 0,
+      "scope": "M0/M1 regression and M2 resolver, plan, scopes, installation, adoption, failure recovery and CLI"
+    },
+    {
+      "command": "npm run smoke:install --cache /tmp/manu-control-center-npm-cache",
+      "status": "passed",
+      "tests": 92,
+      "scope": "Clean source with locked offline install and full tests; tarball consumer with empty cache and registry access; public exports; create/verify/inspect a foundation instance from installed CLI"
+    },
+    {
+      "command": "npm run schemas:write",
+      "status": "passed",
+      "scope": "Core contracts and installation request schema artifacts generated from their executable sources"
+    },
+    {
+      "command": "Apply and verify the prepared Manu foundation plan via public local adapter API",
+      "status": "passed",
+      "scope": "New dedicated application data directory, saved request/plan, no existing files replaced, no personal sources imported"
+    },
+    {
+      "command": "node dist/cli/main.js inspect <saved-manu-request> <manu-instance-directory> in a new process",
+      "status": "passed",
+      "scope": "Verified manifest, correct project identity and one retrievable verification report"
+    },
+    {
+      "command": "npm run check",
+      "status": "passed",
+      "tests": 92,
+      "scope": "Full regression, generated schema equality, 193 local links, 19 JSON files, 30 components, 27 scenarios and 7 roadmap phases; final grant-history regression also rerun with npm test"
+    }
+  ],
+  "milestone_tasks": {
+    "M2.1": "passed: supported foundation catalog, exact versions, closed request schema and actual backend probe",
+    "M2.2": "passed: canonical destination, logical ownership and resource revision/absence preconditions; byte-identical destination after planning/inspection",
+    "M2.3": "passed: authority validated before writing and per operation; checkpoint and resource in same transaction; original plan recovery, conflict rejection and no duplicate records",
+    "M2.4": "passed: manifest distinguishes installed_unverified and verified foundation; persisted content-addressed reports; runtime.invoke remains not_run",
+    "M2.5": "passed: explicit mapping to existing MCC SQLite project revision with shared/user_owned ownership; no rewrite",
+    "M2.6": "passed: resolve, plan, inspect, apply, verify, create, adopt and resume CLI routes; packaged consumer creates and verifies an instance"
+  },
+  "acceptance_scenarios": {
+    "A01": {
+      "status": "passed",
+      "scope": "Two foundation installations with the same project ID remain isolated"
+    },
+    "A02": {
+      "status": "passed",
+      "scope": "Explicit adoption of an existing MCC SQLite project preserves exact content, identity, ACL, revision, history and ownership"
+    },
+    "A03": {
+      "status": "not_run",
+      "scope": "future full-system scenario"
+    },
+    "A04": {
+      "status": "not_run",
+      "scope": "future full-system scenario"
+    },
+    "A05": {
+      "status": "not_run",
+      "scope": "future full-system scenario"
+    },
+    "A06": {
+      "status": "not_run",
+      "scope": "future full-system scenario"
+    },
+    "A07": {
+      "status": "not_run",
+      "scope": "future full-system scenario"
+    },
+    "A08": {
+      "status": "not_run",
+      "scope": "future full-system scenario"
+    },
+    "A09": {
+      "status": "not_run",
+      "scope": "future full-system scenario"
+    },
+    "A10": {
+      "status": "not_run",
+      "scope": "future full-system scenario"
+    },
+    "A11": {
+      "status": "not_run",
+      "scope": "future full-system scenario"
+    },
+    "A12": {
+      "status": "not_run",
+      "scope": "future full-system scenario"
+    },
+    "A13": {
+      "status": "not_run",
+      "scope": "future full-system scenario"
+    },
+    "A14": {
+      "status": "not_run",
+      "scope": "future full-system scenario"
+    },
+    "A15": {
+      "status": "passed",
+      "scope": "Foundation: missing required backend capability rejected, configured runtime never marked invoked; real runtime coverage pending M3"
+    },
+    "A16": {
+      "status": "passed",
+      "scope": "Resource change or new collision after planning rejects application without overwriting the resource"
+    },
+    "A17": {
+      "status": "passed",
+      "scope": "Atomic resource/checkpoint rollback; real process exits inside a transaction and after a committed checkpoint; original plan resumes once through API and CLI"
+    },
+    "A18": {
+      "status": "not_run",
+      "scope": "future full-system scenario"
+    },
+    "A19": {
+      "status": "passed",
+      "scope": "Foundation: local actor/instance scope on inspection, verification and knowledge backend; runtime/index coverage pending M3"
+    },
+    "A20": {
+      "status": "not_run",
+      "scope": "future full-system scenario"
+    },
+    "A21": {
+      "status": "not_run",
+      "scope": "future full-system scenario"
+    },
+    "A22": {
+      "status": "not_run",
+      "scope": "future full-system scenario"
+    },
+    "A23": {
+      "status": "not_run",
+      "scope": "future full-system scenario"
+    },
+    "A24": {
+      "status": "not_run",
+      "scope": "future full-system scenario"
+    },
+    "A25": {
+      "status": "not_run",
+      "scope": "future full-system scenario"
+    },
+    "A26": {
+      "status": "not_run",
+      "scope": "future full-system scenario"
+    },
+    "A27": {
+      "status": "passed",
+      "scope": "API-level fixture harness separation; real runtime integration pending M3"
+    }
+  },
+  "local_instance": {
+    "instance_id": "manu",
+    "project_id": "manu-control-center",
+    "state": "verified",
+    "scope": "foundation",
+    "location": "application_data_directory/instances/manu",
+    "plan_digest": "16d4e782d7d80dc70442695a35a86e9fc319629d770131acb5fe853c3ddd2f4a",
+    "manifest_revision": "92f5b57f-3c86-495b-ac05-afb9177cf212",
+    "verification_report": "ef305efb7456fb40311b02cae132da849a7125bd5e0375905d78c3eaa1da58d5",
+    "required_checks_passed": 5,
+    "runtime_integration": "not_run",
+    "personal_sources_imported": false,
+    "private_configuration_and_database_in_repository": false
+  },
+  "limitations": [
+    "Foundation installation only; capture, search workflows, model invocation and daily use remain M3",
+    "Adoption supports existing MCC SQLite projects, not arbitrary folders or other data representations",
+    "Trusted local host supplies identity and scoped authority; this is not remote authentication or a sandbox",
+    "Rollback journal on a local host; WAL is rejected without conversion before read-only inspection",
+    "Automatic journal recovery is an explicit host write operation on an initialized MCC store; incomplete initial database-format creation requires explicit repair and preserves unknown files",
+    "No configuration overwrite, ownership promotion or general version migration in M2",
+    "No distributed fencing, scheduler, external effects, export/import or second runtime",
+    "node:sqlite is experimental in the pinned Node version",
+    "Local macOS results here; exact-head remote CI evidence is recorded in GitHub Actions"
+  ],
+  "remote_ci": "https://github.com/afmanu/manu-control-center/actions",
+  "source_sha256": {
+    ".github/workflows/ci.yml": "06c0338b7edeebea29fcf9b587eb510af8f3bc40569636ee42bb877b7ee50f48",
+    ".npmrc": "3b88d1057add6f92ec23dc22dd017e312ded13a042deb0ba6f08bad85d936456",
+    ".nvmrc": "51849cee918b92b09b95121b54380f6124c0f578d8c2323221c0d75bbbadb08d",
+    "adapters/backends/sqlite/installation.ts": "40020e637de93803098ea9e256ea602ad7d5c735720ef389144b1235cbae9911",
+    "adapters/backends/sqlite/probe.ts": "061525d27747d3c95aa4fc439fb429f14c86b519e0ffd1be0efc8e0122bef1f4",
+    "adapters/backends/sqlite/store.ts": "6cba4cc67505815d5808d46b1d6435ee55db3364c7dc77b6de798c0ab1b040e4",
+    "adapters/interfaces/local/data-directory.ts": "d78b5e98503067656ba98e730f95771eddf840d4c09d094680342dcada8b42c9",
+    "adapters/interfaces/local/installation.ts": "750b5d83f096f8e6820be4ef0d9078ab9afc7c97ff8cee71f61dbfdd36ff7545",
+    "builder/catalog.ts": "1616d644a4018d9f8a0206725ef2b2ad37955a0c9b9ccfb55d96ac41a2a4513c",
+    "builder/index.ts": "ff37066afe87fd75a6638c8b6024c7d3653481295d266f5fadd4d119ab4404ac",
+    "builder/model.ts": "ef0de64e4f90e69a29e17977643575386d29096be226716cf3a50be55db44355",
+    "builder/planner.ts": "db72827d48f894dfa809187a02cfe4b6a0476839b7089f548d0618fa95dade4e",
+    "cli/constructor.ts": "3516d073355adfd9cd888f9cbf7bdf78bbaddc00d08634ad43fefcfad5926ea9",
+    "cli/main.ts": "b0f3889dd96db4cffe5cba54186d4575a7413541564f1a15b2b71ea46a198fc3",
+    "core/adapters.ts": "832c162033d6bc836b0ba1dade3fa99e8a1f440f301060c468a385c1a50e8ed0",
+    "core/construction.ts": "7c52ae0219fa5a9691dc1e054957dba9a1148ee5a058e08a1d8fc469b87a440d",
+    "core/errors.ts": "140f0d240cbcd2b8c0e842a3f62e4ce5d36f439294f987d0bc303178d0cc9fc4",
+    "core/hashing.ts": "d2025ba6947cfd3b616f1bdacb238ea465bb944024dd647dd8a7a521cd0c1be7",
+    "core/index.ts": "1129af718aaa50b252f862b5d05be96f2801c6839a308138c852f0d4968723fe",
+    "core/models.ts": "5428a5d48f801014e053f86beaedf7c29852281b87b5b0c352933229656a80fa",
+    "core/policy.ts": "3ba33e2408bd6dd90620705b8b85fb8f587762af67c42caaec9b61ffc3397aeb",
+    "core/record.ts": "cfc04b623d0c645665e79ae37ec7b1975971d8626b1b7094eba15f3cacf84df8",
+    "core/schema-definitions.ts": "6f398df33b2f4d71a50e71a6c0cb9b619f27b1a73b4ad32bff121a1b3e20ac36",
+    "core/state.ts": "e187f90ae3342ba14f887b6b7272f31e1ac111863f439d987603e295e68691c1",
+    "core/validation.ts": "4fcd048e5f50c7799b59eac4a3c7c92c913fe4c6daa132f4be1678f1974d9aa6",
+    "evals/harness.ts": "d1ff987b0c5eda87439ba7025e6ef3c2e3606eff44b5ced6033211a751471fcd",
+    "examples/conflicting-source.json": "e3c3294330eee642b3d342d6d2e9843f1757d03ffbfa33343eeb8d59758dbc04",
+    "examples/contracts/construction-bundle.json": "d8a18b740e4d1fde9d12f659f6bd45103299dd07c555d3f2a6d183bffe7c2576",
+    "examples/contracts/invalid-plan.json": "32671b8e2de7a5f8a29438a431ac6198dd1dba8c7bfcfc3cbb5a0b6f151bce0e",
+    "examples/contracts/valid.json": "b7c9c3644a595710c187ee717b63576fb1acdcccde710f6495c99def18388dae",
+    "examples/injected-source.json": "4df5e34e1b76898eb5f7f9f3a05baad19e94f4b5ba6937477387c68bc374e41c",
+    "examples/install-request.json": "ae35d0c9066bde19458f296efda51e7d96aa33368c80c6806fafaa36fb941f87",
+    "examples/instance.example.json": "7856d50b413873afffff1500facccdf8ea6c5211c8c9ee63018f10164445ac72",
+    "examples/meeting.json": "302f141f8341e32da5441cba46c051747fe4b45cf7e0f73395effd260d06d3a5",
+    "examples/no-decisions.json": "005dcf2d76f9fdaf9a19e69a9a1f637735d80740e7d9304be03c2a062469f143",
+    "examples/record-envelope.json": "6d5b08c92c396942e064db1701aa79ede564c5b4b8d26f16d3d75359aeb09252",
+    "package-lock.json": "ec50e38a50a7c7fa64401aa42c336ce46b1edddf6c05441ce808a157342c10ce",
+    "package.json": "dc19c00d4ee43ad5bcd30eb03cda453e744ee28bc82687701d03e4d97e388460",
+    "schemas/contracts.schema.json": "ff57a3fbb5d9d1a1a73c96f65b9991d5b4b96e16b477691d94c86c4b65f4d8f9",
+    "schemas/install-request.schema.json": "9fdd69a372bed40a317d5043b92748248336e1ba216b62e124c2cf78decbca99",
+    "schemas/record-envelope.schema.json": "bf8493e1bb888de54d31968466660a44baca342b41a6e18f49a0ba652dfa555a",
+    "scripts/check-docs.mjs": "db13b6971c829dd55c99184f9d5e9783f1087517d5cb604c389c3ac8431dac14",
+    "scripts/export-schemas.mjs": "c62addc217b55bc85dfb0adaf326066bc78f545fabe220be415a55fc7c0f8d71",
+    "scripts/smoke-install.mjs": "935d4cd12e307ac04c1a420671a569bef3e059034d6f46b491101b8724453d6c",
+    "tests/backend.test.ts": "a54eedf596572a28b44e190791d65bc90a3f6075ecd50fa8a6e52aaf3c1b3690",
+    "tests/builder.test.ts": "205d490fddc7559b5978d323515c49e24d015cdad967940ad51ab0f02b54023c",
+    "tests/cli.test.ts": "2c2cdb2aeb6c8f67181be93ba4620e06126ddab64cafdd8fc2ff39f7cbd4d20f",
+    "tests/contracts.test.ts": "8868f9c01f285d45910fe8276fc2ffe67b63fc9e046897d379e34c697b5633c1",
+    "tests/evals.test.ts": "9becf25e5a001a8366077c97b0b5a6d8b890d76a492b180c47c21e79ccdbe3e4",
+    "tests/fixtures.ts": "64265a5f3eeb72e9f7e1bf926c5654069759eabf3a7f99fa912e948943f05f7b",
+    "tests/record.test.ts": "0393ea17e308658b48c3120c97d4d6c9d219ebeb4491b8400f743e61acdeeeb8",
+    "tests/state.test.ts": "f4c7c2f5beed7ae852d5896748460da92facb461edc2923651dea88c28eb244b",
+    "tests/storage.test.ts": "a411821197a4904bc3bf703eefbd7cf82099b8682005802bb519ed4af67f10fd",
+    "tsconfig.json": "43c235c4f86ff3110e8265f3ad6be77b3af5aaa608abcb3be2b4b5039f5fd70d"
+  }
+}

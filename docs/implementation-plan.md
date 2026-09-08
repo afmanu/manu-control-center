@@ -1,6 +1,6 @@
 # Roadmap de implementación
 
-Actualizado: 2026-09-08. **Estado: M0 y M1 completados; M2–M6 pendientes.** Desarrollo en [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). Este plan conserva sus identificadores para mantener la trazabilidad con arquitectura, componentes y aceptación. La [evidencia de M1](m1-verification.json) y el [handoff](handoff.md) registran el alcance actual; se conserva la [evidencia de M0](m0-verification.json).
+Actualizado: 2026-09-08. **Estado: M0–M2 completados; M3–M6 pendientes.** Desarrollo en [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). Este plan conserva sus identificadores para mantener la trazabilidad con arquitectura, componentes y aceptación. La [evidencia de M2](m2-verification.json) y el [handoff](handoff.md) registran el alcance actual; se conservan las evidencias históricas de [M0](m0-verification.json) y [M1](m1-verification.json).
 
 ## Resultado que vamos a entregar
 
@@ -87,6 +87,8 @@ Trabajo, en orden:
 
 **Entrega:** una instancia instalable y verificable con el primer backend. La creación automática no se confunde con haber probado todavía el trabajo de usuario.
 
+**Cierre registrado:** M2.1–M2.6 implementados para el perfil `foundation`: catálogo y resolver con versiones fijadas, planificación sin escrituras en destino, aplicación con recurso/checkpoint atómicos, verificación durable y adopción explícita de proyectos MCC SQLite. CLI disponible: resolve, plan, inspect, apply, verify, create, adopt y resume. A01/A02/A16/A17 pasan en este destino; A15/A19 cubren las capacidades presentes. Pasan 92 tests e instalación limpia del paquete, incluida creación y verificación desde el consumidor. Se ha preparado la base local de Manu con tres recursos; la integración del runtime permanece pendiente. [Guía y límites](installation.md), [evidencia](m2-verification.json).
+
 ## M3 — Primera versión utilizable por Manu
 
 **Objetivo:** completar trabajo útil y conservar suficiente estado para continuar sin el historial de la conversación.
@@ -97,7 +99,7 @@ Trabajo, en orden:
 4. **M3.4 · Coordinador y efectos.** Estado durable único de jobs/runs/acciones, reclamación atómica, revisiones y fencing, recuperación, presupuestos y cancelación. Las operaciones controladas pasan por la capa de efectos; un proceso obsoleto no puede confirmar nuevas escrituras. Para respuestas externas perdidas, conservar incertidumbre y reconciliar antes de reintentar.
 5. **M3.5 · Runtime real.** Implementar el primer adaptador y ejecutar ambos recorridos con ese entorno. Delimitar qué operaciones puede controlar técnicamente el producto y cómo entrega entradas, recibe salidas y valida resultados. Las instrucciones de un agente por sí solas no prueban aislamiento ni control de herramientas.
 6. **M3.6 · Continuidad y experiencia.** Entregar entrada desde el agente compatible y CLI de apoyo para capturar, consultar, ejecutar, revisar y reanudar. El handoff deriva del estado persistente e incluye propósito, evidencia, pendientes y siguiente acción. Una sesión nueva debe recuperar el proyecto sin reconstruirlo mediante preguntas.
-7. **M3.7 · Puesta en uso.** Crear la primera instancia de Manu separada del repositorio, con perfil inicial editable y guía breve. Verificarla primero con material sintético y dejar disponible la incorporación explícita de sus fuentes. El conector de entrega externa se mantiene simulado hasta la extensión real de M6.
+7. **M3.7 · Puesta en uso.** Completar la instancia base de Manu preparada en M2, separada del repositorio, con perfil operativo editable y guía breve. Verificarla primero con material sintético y dejar disponible la incorporación explícita de sus fuentes. El conector de entrega externa se mantiene simulado hasta la extensión real de M6.
 
 **Cierre:** A03–A06, A08–A10, A18 y A20–A23 pasan; A09 utiliza el simulador identificado. A26 demuestra los dos recorridos y continuidad en una sesión nueva; A27 sigue pasando con el evaluador integrado. A15/A19 cubren el runtime y recuperación incorporados. El brief no inventa acuerdos, responsables ni fechas, y conserva referencias verificables.
 
@@ -167,6 +169,6 @@ El código se incorpora cuando tiene comportamiento útil: `core` define contrat
 
 Cada cierre actualiza [handoff.md](handoff.md) con versión/commit si existe, tareas realizadas, comandos reales, resultados, evidencia, limitaciones, decisiones y próxima tarea. Una fase puede estar pendiente, en curso, parcialmente verificada o completada. Solo se completa si pasan sus criterios aplicables; una simulación nunca acredita una integración real.
 
-**Siguiente acción de desarrollo: M2.1.** Implementar el catálogo mínimo y el resolver sobre los contratos y el backend de M1; inspeccionar capacidades reales y continuar con planificación, aplicación, verificación y adopción. No repetir el análisis de origen ni abrir otro proceso de definición general.
+**Siguiente acción de desarrollo: M3.1.** Añadir captura de fuentes locales y consultas con procedencia sobre el backend existente. Continuar con autoridad temporal, los dos workflows, coordinación, runtime real y uso de la instancia base; conservar sus datos y documentar cualquier evolución de configuración necesaria.
 
 [Entrada](../README.md)

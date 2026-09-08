@@ -2,6 +2,8 @@
 
 Propuesta piloto `project-knowledge-operations@0.1.0-draft`. Implementa un recorrido completo de la arquitectura; no determina todos los futuros blueprints.
 
+En M2 se implementa un perfil previo instalable: `project-knowledge-foundation@0.1.0-draft`, con módulos `project-context` e `installation-verification`. Instala configuración, catálogo y proyecto; no anuncia workflows ejecutados. El blueprint operativo descrito a continuación continúa en M3. Véase [instalación](installation.md).
+
 ## Usuario y resultado
 
 Una persona necesita transformar una reunión de proyecto en un brief sustentado, conservar decisiones y preguntas abiertas y retomar la revisión desde otro agente. El primer caso utiliza datos sintéticos y un destino local. Los envíos se prueban con conector simulado hasta configurar una integración real.

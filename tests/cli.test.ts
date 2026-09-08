@@ -1,13 +1,14 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { existsSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, rmSync, writeFileSync, readFileSync, realpathSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const cli = fileURLToPath(new URL('../cli/main.js', import.meta.url));
 const fixture = fileURLToPath(new URL('../../examples/record-envelope.json', import.meta.url));
+const errorRecord = (stderr: string) => JSON.parse(stderr.split('\n').find(line => line.startsWith('{'))!);
 const run = (args: string[], env: NodeJS.ProcessEnv = process.env) => spawnSync(process.execPath, [cli, ...args], { encoding: 'utf8', env });
 
 test('CLI help and version work without importing the SQLite adapter', () => {
@@ -17,7 +18,7 @@ test('CLI help and version work without importing the SQLite adapter', () => {
   assert.equal(help.stderr, '');
   const version = run(['--version']);
   assert.equal(version.status, 0);
-  assert.match(version.stdout, /^0\.1\.0-dev\.1\n$/);
+  assert.match(version.stdout, /^0\.1\.0-dev\.2\n$/);
 });
 
 test('CLI validates metadata and rejects unsupported commands without claiming installation', () => {
@@ -73,4 +74,34 @@ test('CLI exposes all contracts and validates bundles without echoing fixture ex
   assert.equal(run(['validate','unknown',meeting]).status,2);
   const invalid=fileURLToPath(new URL('../../examples/contracts/invalid-plan.json',import.meta.url));
   assert.equal(run(['validate','plan',invalid]).status,2);
+});
+
+test('M2 CLI resolves, plans, applies, verifies and inspects an installation from separate processes', () => {
+  const root = realpathSync(mkdtempSync(join(tmpdir(), 'mcc-cli-builder-')));
+  const input = fileURLToPath(new URL('../../examples/install-request.json', import.meta.url));
+  const directory = join(root, 'data'), planFile = join(root, 'plan.json');
+  try {
+    const resolved = run(['resolve', input, directory]);
+    assert.equal(resolved.status, 0, resolved.stderr); assert.equal(JSON.parse(resolved.stdout).spec.kind, 'instance_spec');
+    const planned = run(['plan', input, directory]); assert.equal(planned.status, 0, planned.stderr);
+    assert.equal(existsSync(directory), false); writeFileSync(planFile, planned.stdout);
+    const denied = run(['apply', planFile, '--actor', 'someone-else']);
+    assert.equal(denied.status, 1); assert.equal(errorRecord(denied.stderr).code, 'FORBIDDEN');
+    assert.equal(existsSync(directory), false);
+    const applied = run(['apply', planFile, '--actor', 'local-user']);
+    assert.equal(applied.status, 0, applied.stderr); assert.equal(JSON.parse(applied.stdout).manifest.state, 'installed_unverified');
+    const verified = run(['verify', input, directory]);
+    assert.equal(verified.status, 0, verified.stderr); assert.equal(JSON.parse(verified.stdout).manifest.state, 'verified');
+    const before = readFileSync(join(directory, 'store.sqlite'));
+    const inspected = run(['inspect', input, directory]); assert.equal(inspected.status, 0, inspected.stderr);
+    assert.equal(JSON.parse(inspected.stdout).verification_evidence.length, 1);
+    assert.deepEqual(readFileSync(join(directory, 'store.sqlite')), before);
+    assert.equal(run(['resume', input, directory, '--actor', 'local-user']).status, 0);
+    assert.equal(run(['create', input, join(root, 'second'), '--actor', 'local-user']).status, 0);
+    assert.equal(run(['adopt', input, join(root, 'uncreated'), '--actor', 'local-user']).status, 2);
+    assert.equal(run(['plan', input]).status, 2);
+    writeFileSync(planFile, '{}');
+    const invalid = run(['apply', planFile, '--actor', 'local-user']);
+    assert.equal(invalid.status, 2); assert.equal(errorRecord(invalid.stderr).code, 'INVALID_INPUT');
+  } finally { rmSync(root, { recursive: true, force: true }); }
 });

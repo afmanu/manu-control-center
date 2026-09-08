@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:manu-control-center:install-request:0.1.0-draft",
+  "type": "object",
+  "properties": {
+    "kind": {
+      "const": "install_request"
+    },
+    "schema_version": {
+      "const": "0.1.0-draft"
+    },
+    "instance_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "owner_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "project": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "id",
+        "purpose"
+      ],
+      "additionalProperties": false
+    },
+    "runtime": {
+      "enum": [
+        "unconfigured",
+        "codex",
+        "claude-code"
+      ]
+    },
+    "adoption": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "revision": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "ownership": {
+              "enum": [
+                "shared",
+                "user_owned"
+              ]
+            }
+          },
+          "required": [
+            "revision",
+            "ownership"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  "required": [
+    "kind",
+    "schema_version",
+    "instance_id",
+    "purpose",
+    "owner_id",
+    "project",
+    "runtime",
+    "adoption"
+  ],
+  "additionalProperties": false
+}

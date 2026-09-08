@@ -10,14 +10,19 @@ import { cloneJson, decisionContentHash, hashJson } from '../../../core/hashing.
 
 export class SqliteBackend implements BackendAdapter {
   readonly capabilities = Object.freeze({ conditional_writes: true, atomic_writes: true, history: true, scoped_queries: true, export_import: false, distributed_fencing: false });
-  private readonly db: DatabaseSync;
-  constructor(path: string, private readonly clock: () => string = () => new Date().toISOString()) {
-    this.db = new DatabaseSync(path, { timeout: 2000 });
+  protected readonly db: DatabaseSync;
+  private transactionDepth = 0;
+  constructor(path: string, private readonly clock: () => string = () => new Date().toISOString(), options: { readOnly?: boolean } = {}) {
+    this.db = new DatabaseSync(path, { timeout: 2000, readOnly: options.readOnly ?? false });
     try {
       const app = this.db.prepare('PRAGMA application_id').get()?.['application_id'];
       const existing = this.db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'").all();
       if ((app !== 0 && app !== 1296253773) || (app === 0 && existing.length > 0)) throw new DomainError('INCOMPATIBLE_VERSION', 'Destination is not a Manu Control Center store.');
       if (app === 1296253773 && this.db.prepare("SELECT value FROM metadata WHERE key='schema_version'").get()?.['value'] !== '1') throw new DomainError('INCOMPATIBLE_VERSION', 'Unsupported store version.');
+      if (options.readOnly) {
+        if (app !== 1296253773) throw new DomainError('INCOMPATIBLE_VERSION', 'Read-only inspection requires an initialized store.');
+        return;
+      }
       this.db.exec(`PRAGMA foreign_keys=ON; BEGIN IMMEDIATE;
         CREATE TABLE IF NOT EXISTS metadata (key TEXT PRIMARY KEY, value TEXT NOT NULL) STRICT;
         CREATE TABLE IF NOT EXISTS records (instance_id TEXT NOT NULL, id TEXT NOT NULL, kind TEXT NOT NULL, revision TEXT NOT NULL, document TEXT NOT NULL, PRIMARY KEY(instance_id,id)) STRICT;
@@ -49,11 +54,17 @@ export class SqliteBackend implements BackendAdapter {
       }),
     };
   }
-  private transaction<T>(work: () => T): T {
+  protected transaction<T>(work: () => T): T {
+    if (this.transactionDepth > 0) return work();
     try { this.db.exec('BEGIN IMMEDIATE'); }
-    catch { throw new DomainError('CONFLICT', 'Store is busy; retry after re-reading.', {}, true); }
+    catch (error) {
+      if (error && typeof error === 'object' && 'errcode' in error && [5, 6].includes(Number(error.errcode))) throw new DomainError('CONFLICT', 'Store is busy; retry after re-reading.', {}, true);
+      throw error;
+    }
+    this.transactionDepth++;
     try { const result = work(); this.db.exec('COMMIT'); return result; }
     catch (error) { this.db.exec('ROLLBACK'); throw error; }
+    finally { this.transactionDepth--; }
   }
   private read(scope: AccessScope, id: string, revision?: string): StoredRecord {
     const row = this.db.prepare(`SELECT r.document FROM records r JOIN access a ON a.instance_id=r.instance_id AND a.id=r.id WHERE r.instance_id=? AND r.id=? AND a.actor_id=?`).get(scope.instance_id, id, scope.actor_id);

@@ -16,7 +16,7 @@ const run = (command, args, cwd) => execFileSync(command, args, { cwd, encoding:
 try {
   mkdirSync(source);
   mkdirSync(consumer);
-  for (const name of ['package.json', 'package-lock.json', 'tsconfig.json', '.npmrc', 'README.md', 'LICENSE', 'core', 'cli', 'adapters', 'evals', 'schemas', 'examples', 'tests', 'docs', 'references']) {
+  for (const name of ['package.json', 'package-lock.json', 'tsconfig.json', '.npmrc', 'README.md', 'LICENSE', 'core', 'cli', 'adapters', 'evals', 'builder', 'schemas', 'examples', 'tests', 'docs', 'references']) {
     cpSync(join(root, name), join(source, name), { recursive: true });
   }
   process.stdout.write(run(npm, ['ci', '--offline', ...common], source));
@@ -33,10 +33,18 @@ try {
   assert.equal(JSON.parse(run(process.execPath, [cli, 'validate-bundle', join(installed, 'examples', 'contracts', 'construction-bundle.json')], consumer)).ok, true);
   assert.equal(JSON.parse(run(process.execPath, [cli, 'validate', 'eval_fixture', join(installed, 'examples', 'meeting.json')], consumer)).ok, true);
   run(process.execPath, ['--input-type=module', '-e', "import {assertContract} from 'manu-control-center'; import {SqliteBackend} from 'manu-control-center/sqlite'; import {prepareEvalInput} from 'manu-control-center/evals'; if(typeof assertContract!=='function'||typeof prepareEvalInput!=='function')throw new Error('Missing public exports'); const store=new SqliteBackend(':memory:'); store.close();"], consumer);
+  const instance = join(temporary, 'installed-instance');
+  const request = join(installed, 'examples', 'install-request.json');
+  const created = JSON.parse(run(process.execPath, [cli, 'create', request, instance, '--actor', 'local-user'], consumer));
+  assert.equal(created.ok, true);
+  assert.equal(created.manifest.state, 'verified');
+  assert.equal(created.runtime_integration, 'not_verified');
+  assert.equal(JSON.parse(run(process.execPath, [cli, 'inspect', request, instance], consumer)).verification_evidence.length, 1);
+  run(process.execPath, ['--input-type=module', '-e', "import {assertRequest} from 'manu-control-center/builder'; import {inspectLocalInstallation} from 'manu-control-center/local'; if(typeof assertRequest!=='function'||typeof inspectLocalInstallation!=='function') throw new Error('Missing builder exports');"], consumer);
   if (process.platform !== 'win32') {
     assert.equal(run(join(consumer, 'node_modules', '.bin', 'manu-control-center'), ['--version'], consumer).trim(), version);
   }
-  process.stdout.write(JSON.stringify({ ok: true, clean_source_install: true, source_tests: true, packed_cli_install: true, version }) + '\n');
+  process.stdout.write(JSON.stringify({ ok: true, clean_source_install: true, source_tests: true, packed_cli_install: true, packed_instance_create_verify: true, version }) + '\n');
 } catch (error) {
   process.stderr.write(error.stdout?.toString() ?? '');
   process.stderr.write(error.stderr?.toString() ?? '');

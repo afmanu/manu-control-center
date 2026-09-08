@@ -2,6 +2,7 @@
 
 Estos archivos son datos de prueba y diseño; no contienen datos de una instancia de usuario.
 
+- [Solicitud de instalación](install-request.json): entrada ejecutable del constructor M2; permite crear una instancia sintética con la [guía de instalación](../docs/installation.md).
 - [Metadatos mínimos](record-envelope.json): fixture M0 comprobable con `validate-record`.
 - [Contratos válidos](contracts/valid.json): objeto con un ejemplo por cada uno de los 22 contratos. Los tests validan cada miembro por separado; sus revisiones fijas no son registros ya persistidos.
 - [Bundle de construcción](contracts/construction-bundle.json): necesidad, blueprint, módulos, especificación, plan y manifiesto coherentes. `validate-bundle` valida declaraciones, sin instalar ni inspeccionar destinos reales.

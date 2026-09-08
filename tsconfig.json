@@ -22,6 +22,7 @@
     "cli/**/*.ts",
     "adapters/**/*.ts",
     "tests/**/*.ts",
-    "evals/**/*.ts"
+    "evals/**/*.ts",
+    "builder/**/*.ts"
   ]
 }

@@ -1,0 +1,13 @@
+{
+  "kind": "install_request",
+  "schema_version": "0.1.0-draft",
+  "instance_id": "demo-project-knowledge",
+  "purpose": "Base sintética de conocimiento y trabajo sobre un proyecto",
+  "owner_id": "local-user",
+  "project": {
+    "id": "demo-project",
+    "purpose": "Proyecto sintético para comprobar la instalación"
+  },
+  "runtime": "codex",
+  "adoption": null
+}

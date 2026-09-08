@@ -1,6 +1,6 @@
 # Alcance ejecutable de M1
 
-Versión del paquete: `0.1.0-dev.1`. Contratos: `0.1.0-draft`, revisables antes de una API estable. Este documento distingue el código disponible de los recorridos previstos en la arquitectura.
+Versión del paquete: `0.1.0-dev.1`. Contratos: `0.1.0-draft`, revisables antes de una API estable. Este documento conserva el alcance entregado en M1. La construcción implementada posteriormente está descrita en [instalación M2](installation.md).
 
 ## Contratos y composición
 

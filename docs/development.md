@@ -1,4 +1,4 @@
-# Desarrollo y uso de la base M0–M1
+# Desarrollo y uso de la base M0–M2
 
 Repositorio principal: [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). La documentación del constructor se ha integrado aquí conservando el historial inicial y su licencia MIT. Las carpetas anteriores son antecedentes de la migración; los siguientes cambios se mantienen en este repositorio.
 
@@ -28,7 +28,7 @@ npm start -- validate eval_fixture examples/meeting.json
 npm start -- validate-bundle examples/contracts/construction-bundle.json
 ```
 
-Después de cambiar código, `npm run build` recompila. `npm test` compila y ejecuta 74 pruebas de contratos, estados, permisos, SQLite, CLI y harness de evaluación. `npm run check` añade la comparación del esquema generado y la comprobación documental. `npm run typecheck` comprueba tipos sin generar archivos.
+Después de cambiar código, `npm run build` recompila. `npm test` compila y ejecuta 92 pruebas de contratos, estados, permisos, SQLite, constructor, recuperación, CLI y harness de evaluación. `npm run check` añade la comparación del esquema generado y la comprobación documental. `npm run typecheck` comprueba tipos sin generar archivos.
 
 `doctor` crea una base temporal, prueba escritura condicional entre dos conexiones, rechazo de una revisión obsoleta, rollback y persistencia al reabrir, y elimina los datos de prueba. Devuelve JSON y código 0 cuando todas esas comprobaciones pasan. Muestra la ubicación prevista de datos sin crearla. **No verifica todavía un backend completo, permisos de agentes ni una instancia.**
 
@@ -36,9 +36,11 @@ Después de cambiar código, `npm run build` recompila. `npm test` compila y eje
 
 `contracts` lista los 22 contratos. `validate <kind> <file.json>` comprueba su estructura e invariantes; `validate-bundle <file.json>` comprueba coherencia entre necesidad, blueprint, módulos, especificación, plan y manifiesto. Ninguno ejecuta planes. Los resultados resumen validez y errores sin volcar el contenido ni las expectativas del fixture.
 
+Los comandos del constructor M2 y el despliegue de Manu están en la [guía de instalación](installation.md). `resolve`, `plan` e `inspect` no escriben en el destino; `apply`, `verify`, `create`, `adopt` y `resume` realizan sus operaciones explícitas. Para producir un fichero JSON de plan utiliza el binario instalado o `node dist/cli/main.js`, sin las cabeceras de `npm start`.
+
 ## Biblioteca y esquemas
 
-El paquete exporta el núcleo desde `manu-control-center`, el backend desde `manu-control-center/sqlite` y el harness desde `manu-control-center/evals`. Ejemplo JavaScript para un consumidor con el paquete instalado:
+El paquete exporta el núcleo desde `manu-control-center`, el backend desde `manu-control-center/sqlite` y el harness desde `manu-control-center/evals`, el resolver desde `manu-control-center/builder` y la construcción local desde `manu-control-center/local`. Ejemplo JavaScript para un consumidor con el paquete instalado:
 
 ```js
 import { SqliteBackend } from 'manu-control-center/sqlite';
@@ -60,9 +62,9 @@ try {
 }
 ```
 
-Para persistencia, el constructor de SQLite recibe una ruta a una base dedicada. La carpeta padre debe existir; el constructor de instancias resolverá su creación en M2. La API de alcance exige un host confiable y no autentica usuarios por sí misma. Consulte [M1 implementado](m1-implementation.md) antes de conectar un runtime.
+Para persistencia, el constructor de SQLite recibe una ruta a una base dedicada. La API directa de SQLite requiere que exista la carpeta padre; `create`/`apply` del constructor M2 la preparan fuera de la distribución. La API de alcance exige un host confiable y no autentica usuarios por sí misma. Consulte [M1 implementado](m1-implementation.md) antes de conectar un runtime.
 
-La fuente del esquema es [schema-definitions.ts](../core/schema-definitions.ts). Tras cambiarla junto con tipos y validación:
+Las fuentes de esquemas son [schema-definitions.ts](../core/schema-definitions.ts) y [planner.ts](../builder/planner.ts), que añade la solicitud de instalación. Tras cambiarla junto con tipos y validación:
 
 ```bash
 npm run schemas:write
@@ -83,7 +85,7 @@ La configuración del adaptador local resuelve una ubicación fuera de la distri
 | Linux | `$XDG_DATA_HOME/manu-control-center` si XDG es absoluto; si no, `~/.local/share/manu-control-center` |
 | Windows | `%LOCALAPPDATA%/manu-control-center`, con fallback al directorio local del usuario |
 
-`MANU_CONTROL_CENTER_DATA_DIR` permite indicar otra ruta absoluta. La CLI resuelve y muestra la configuración sin crear una instancia; M2 lo implementará. M1 ya prueba identidad y límites de acceso en bases sintéticas. Secretos, bases de datos y ejecuciones reales quedan fuera del paquete y del repositorio.
+`MANU_CONTROL_CENTER_DATA_DIR` permite indicar otra ruta absoluta. `doctor` solo muestra esa configuración; los comandos de construcción reciben un directorio absoluto explícito y crean allí la instancia. La base de Manu utiliza el directorio local predeterminado. M1–M2 prueban identidad y límites de acceso. Secretos, bases de datos y ejecuciones reales quedan fuera del paquete y del repositorio.
 
 El primer estado operativo tendrá un host responsable. El código puede residir en una carpeta sincronizada; la sincronización del archivo SQLite no se utiliza como coordinación entre máquinas. Los traslados se implementarán con exportación/importación y transferencia de autoridad en M4.
 
@@ -94,7 +96,7 @@ npm run smoke:install
 npm pack
 ```
 
-La prueba limpia necesita haber ejecutado primero `npm ci` con la misma caché de npm. Copia las fuentes a una carpeta temporal, instala con el lockfile en modo offline, compila y repite los tests. Luego empaqueta e instala el archivo en otra carpeta **con una caché de consumidor vacía y acceso al registro npm**, comprueba versión, diagnóstico, validación de contratos/bundle, comando instalado e imports públicos de núcleo, SQLite y evals. Limpia las carpetas y la caché temporal al terminar. Puede pasarse `--cache /ruta/a/cache` a npm para la instalación de fuentes cuando el entorno lo requiera.
+La prueba limpia necesita haber ejecutado primero `npm ci` con la misma caché de npm. Copia las fuentes a una carpeta temporal, instala con el lockfile en modo offline, compila y repite los tests. Luego empaqueta e instala el archivo en otra carpeta **con una caché de consumidor vacía y acceso al registro npm**, comprueba versión, diagnóstico, validación de contratos/bundle, comando instalado e imports públicos de núcleo, SQLite, evals y constructor. También crea, verifica e inspecciona una instancia desde el paquete instalado. Limpia las carpetas y la caché temporal al terminar. Puede pasarse `--cache /ruta/a/cache` a npm para la instalación de fuentes cuando el entorno lo requiera.
 
 La instalación del paquete necesita resolver sus dependencias como un consumidor nuevo. Una caché creada por `npm ci` puede contener los archivos de dependencias sin sus metadatos de registro; por eso esta segunda comprobación no presupone que sea posible instalar el paquete offline.
 
@@ -111,7 +113,7 @@ npm run check:docs
 
 El manifiesto raíz inventaría documentación y esquemas, no todo el código. Los manifiestos anteriores de `references/` son históricos y conservan sus huellas originales. La comprobación valida JSON, enlaces locales a archivos, bloques de código y cobertura de componentes/escenarios/fases; no consulta enlaces externos ni comprueba anclas de secciones.
 
-La configuración de [GitHub Actions](../.github/workflows/ci.yml) ejecuta las mismas comprobaciones y la instalación limpia. La evidencia local vigente se registra en [m1-verification.json](m1-verification.json), conservando [M0](m0-verification.json) como histórico; el estado real de cada fase se mantiene en [handoff.md](handoff.md).
+La configuración de [GitHub Actions](../.github/workflows/ci.yml) ejecuta las mismas comprobaciones y la instalación limpia. La evidencia local vigente se registra en [m2-verification.json](m2-verification.json), conservando [M0](m0-verification.json) y [M1](m1-verification.json) como históricos; el estado real de cada fase se mantiene en [handoff.md](handoff.md).
 
 ## Límites técnicos actuales
 

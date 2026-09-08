@@ -1,6 +1,6 @@
 {
   "name": "manu-control-center",
-  "version": "0.1.0-dev.1",
+  "version": "0.1.0-dev.2",
   "private": true,
   "description": "Constructor portable de sistemas de conocimiento y trabajo con IA.",
   "type": "module",
@@ -19,7 +19,9 @@
   "exports": {
     ".": "./dist/core/index.js",
     "./sqlite": "./dist/adapters/backends/sqlite/store.js",
-    "./evals": "./dist/evals/harness.js"
+    "./evals": "./dist/evals/harness.js",
+    "./builder": "./dist/builder/index.js",
+    "./local": "./dist/adapters/interfaces/local/installation.js"
   },
   "types": "dist/core/index.d.ts",
   "files": [
@@ -30,7 +32,8 @@
     "examples",
     "docs",
     "references",
-    "dist/evals"
+    "dist/evals",
+    "dist/builder"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",

@@ -1,6 +1,6 @@
 # Contratos de construcción e información
 
-Versión adoptada en M1: `0.1.0-draft`. Existen 22 [esquemas](../schemas/contracts.schema.json), tipos, validadores, comprobación de composición y backend SQLite de referencia. [M1 implementado](m1-implementation.md) detalla campos exactos, mecanismos y límites. Las operaciones de construcción, ejecución y exportación descritas aquí siguen el roadmap M2–M4. Complementa [la arquitectura](architecture.md) sin sustituirla.
+Versión adoptada en M1: `0.1.0-draft`. Existen 22 [esquemas](../schemas/contracts.schema.json), tipos, validadores, comprobación de composición y backend SQLite de referencia. [M1 implementado](m1-implementation.md) detalla campos exactos, mecanismos y límites. M2 implementa resolución, planificación, aplicación, verificación y adopción local en el perfil [foundation](installation.md); ejecución y exportación siguen el roadmap M3–M4. Complementa [la arquitectura](architecture.md) sin sustituirla.
 
 ## Convenciones comunes
 

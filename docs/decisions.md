@@ -97,6 +97,32 @@ Estado: **adoptada como contrato; traslado pendiente**, 2026-09-08. Elección: `
 
 Consecuencia: los validadores detectan contradicciones del plan, pero no congelan un host ni prueban disponibilidad remota. M4 implementará exportación/importación, transferencia efectiva de autoridad y bloqueo ante dependencias ausentes. Pruebas actuales: modos, identidades, activación, integridad de contenido y grafos de dependencias.
 
+## Decisiones de implementación — M2
+
+### D20 — Perfil instalable previo al runtime
+
+Estado: **adoptada**, 2026-09-08. Elección: `project-knowledge-foundation@0.1.0-draft`, con módulos `project-context` e `installation-verification`, como perfil inicial de construcción. Resuelve identidades, versiones y políticas; instala configuración, catálogo y un proyecto. La selección codex/claude-code/unconfigured registra intención y versión del contrato de integración, sin atribuir versión del ejecutable ni capacidades invocadas. Alternativa descartada: declarar el blueprint de workflows operativo antes de M3. Consecuencia: `verified` tiene alcance `foundation`; runtime es una comprobación opcional `not_run` en este hito. Pruebas: resolución reproducible, rechazo de capacidades requeridas ausentes, instalación de dos instancias y paquete instalado.
+
+### D21 — Planes conservadores y transacciones de construcción
+
+Estado: **adoptada**, 2026-09-08. Elección: planner neutral en `builder/`; filesystem y SQLite en adaptadores. Se fija destino canónico, revisión y ownership de cada recurso. El plan se reconstruye desde el catálogo soportado al validarlo, con digest de contenido; no ejecuta instrucciones arbitrarias de un fichero. La inspección usa lectura sin inicializar tablas. Recurso y checkpoint comparten transacción con el backend de conocimiento, en tablas de responsabilidades distintas.
+
+Alternativas descartadas: escribir primero el recurso y guardar el checkpoint en otra base, usar el título como señal de adopción o reintentar una creación sin comprobar su recibo. Consecuencias: reanudación conserva el mismo plan; cambios observados producen `STALE_PLAN`; una solicitud diferente no sustituye un plan parcial. Adoptar conserva el registro exacto y fija `shared`/`user_owned`; no importa otras representaciones ni promueve ownership durante una replanificación. Pruebas: A01/A02/A16/A17, dos procesos concurrentes, rollback e interrupción real dentro/después de la transacción.
+
+### D22 — Autoridad, evidencia y recuperación local
+
+Estado: **adoptada**, 2026-09-08. Elección: la invocación explícita de CLI proporciona autoridad del host ligada a actor, instancia, digest, destino, efecto y caducidad. La biblioteca exige ese objeto y lo valida antes de escribir y en cada operación; los grants utilizados quedan registrados en el estado de construcción. No es autenticación remota ni una firma criptográfica del plan. El host debe mediar identidad y entrada del futuro runtime.
+
+La verificación conserva reportes con versión de Node/SQLite, revisiones observadas, resultados, fecha y hash. `inspect` recupera la evidencia y comprueba su integridad. La configuración y el catálogo se comprueban contra lo resuelto; un cambio posterior autorizado en conocimiento no se reescribe para restaurar el texto inicial.
+
+Se admite rollback journal en M2. Se detecta WAL mediante su [cabecera documentada](https://www.sqlite.org/fileformat.html#the_database_header) antes de abrir la inspección y se rechaza sin convertirlo. Si queda un journal por interrupción, planificar/inspeccionar informa del conflicto sin reparar; aplicar/reanudar desde el host permite la recuperación nativa de SQLite antes de verificar el alcance registrado. Esta recuperación técnica no invoca herramientas externas. Una inicialización sin identidad MCC válida queda para reparación explícita, preservando los archivos. Alternativa descartada: borrar journals o presentar una recuperación con escrituras como inspección pura. Pruebas: comparación de bytes/listado antes y después de inspección, rechazo de WAL, recuperación de transacción y comandos de CLI en procesos nuevos.
+
+### D23 — Base local de Manu
+
+Estado: **adoptada como configuración inicial**, 2026-09-08. Contexto: Manu autoriza continuar la construcción y preparar su instancia. Elección reversible: identidad/propietario local `manu`, proyecto `manu-control-center` con el propósito de construir este sistema y destino en el directorio de datos de la aplicación, separado del repositorio. Se guardan solicitud y plan originales junto a la configuración local y se aplican sin sustituir archivos existentes.
+
+Consecuencia: la instalación queda verificada como `foundation`; no contiene fuentes personales ni agente invocado. M3 completará el primer uso y debe conservar la base existente. Estas identidades iniciales son elecciones técnicas de despliegue, no una autenticación ni decisiones de negocio atribuidas al usuario. Evidencia: aplicación del plan, cinco comprobaciones requeridas aprobadas y `runtime.invoke: not_run`.
+
 ## Cómo registrar nuevas decisiones
 
 Usar ID, estado (`propuesta`, `adoptada`, `sustituida`), contexto, elección, alternativas, consecuencias, contratos/pruebas afectados y fecha. Las elecciones locales reversibles pueden tomarse durante el trabajo autorizado. Los cambios de objetivo y compromisos de publicación corresponden al usuario.
