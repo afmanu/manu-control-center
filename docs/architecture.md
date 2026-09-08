@@ -1,567 +1,566 @@
-# Fundamentos y arquitectura del ecosistema
+# Ecosystem foundations and architecture
 
-Documento fundacional de una plataforma constructora de sistemas de conocimiento y operación con IA.
+Foundational document for a platform that builds AI knowledge and operating systems.
 
-**Estado del proyecto:** alcance aprobado; definición previa a implementación. Este documento establece el diseño de referencia. Los componentes y garantías descritos son requisitos del producto, no capacidades desplegadas que ya se hayan verificado. El nombre comercial y las tecnologías concretas se resolverán durante el desarrollo sin alterar las responsabilidades aquí definidas.
+**Design status:** approved scope; reference definition written before implementation. Components and guarantees below are product requirements, not deployed capabilities already verified. Product naming and specific technologies are resolved during development without changing these responsibilities. Current implementation status lives in the [handoff](handoff.md).
 
-## 1. Qué construimos y para quién
+## 1. What we are building and for whom
 
-Construimos un repositorio que permite definir, crear, configurar, verificar y mantener sistemas personales u organizacionales de conocimiento y trabajo asistido por IA.
+We are building a repository for defining, creating, configuring, verifying and maintaining personal or organizational systems for knowledge and AI-assisted work.
 
-Una persona expresa qué necesita conseguir. El constructor traduce esa necesidad a una especificación, selecciona componentes compatibles y genera una instalación concreta. Esa instalación conserva contexto, fuentes, conocimiento, decisiones y estado de trabajo; ofrece procedimientos reutilizables; conecta las herramientas necesarias; y permite verificar los resultados.
+A person states the desired outcome. The builder translates that need into a specification, selects compatible components and generates a concrete installation. The installation retains context, sources, knowledge, decisions and work state; offers reusable procedures; connects necessary tools; and supports result verification.
 
-El producto sirve a tres perfiles: la persona que crea y utiliza una instalación; quien desarrolla módulos o adaptadores; y quien administra instalaciones para otras personas o equipos. Un usuario puede asumir varios papeles. Cada instalación conserva su identidad, datos, configuración, autorizaciones y evidencia.
+The product serves three roles: the person creating/using an installation, module/adapter developers, and administrators managing installations for others or teams. One user may fill several roles. Every installation retains its identity, data, configuration, authorizations and evidence.
 
-La propiedad central es la **continuidad del sistema más allá de un agente o aplicación**. Con acceso y capacidades compatibles, otro agente debe poder recuperar el estado y continuar el trabajo bajo los mismos contratos. La equivalencia se demuestra mediante pruebas; no implica respuestas idénticas ni soporte automático de todos los productos.
+Its central property is **system continuity beyond any one agent or application**. With compatible access and capabilities, another agent must retrieve state and continue under the same contracts. Tests demonstrate equivalence; this implies neither identical responses nor automatic support for every product.
 
-El modelo es independiente del almacenamiento, de la interfaz humana y del agente. Una entidad puede materializarse como documento, registro, fila u objeto. Obsidian, una plataforma documental, una aplicación web o una interfaz de comandos son posibles destinos mediante adaptadores. El núcleo no exige Markdown, carpetas, wikilinks, un servidor central ni una base vectorial.
+The model is independent of storage, human interface and agent. An entity may be represented as a document, record, row or object. Obsidian, a document platform, a web application or a command interface are possible adapter targets. The core requires neither Markdown, folders, wikilinks, a central server nor a vector database.
 
-## 2. Los tres objetos que organizan todo el proyecto
+## 2. The three objects organizing the project
 
-| Objeto | Qué contiene | Quién lo mantiene |
+| Object | Contents | Maintainer |
 |---|---|---|
-| Repositorio constructor | Modelo, contratos, blueprints, módulos, procedimientos, adaptadores, herramientas de construcción y pruebas. | Equipo del producto y autores de extensiones. |
-| Especificación de instancia | Necesidad concreta, módulos, políticas, destinos, referencias de acceso, restricciones y versiones resueltas. | Propietario de la instalación, con asistencia del constructor. |
-| Instancia desplegada | Recursos configurados, datos, procedimientos efectivos, ejecuciones, acceso y evidencia de funcionamiento. | Propietario y operadores autorizados. |
+| Builder repository | Model, contracts, blueprints, modules, procedures, adapters, construction tools and tests. | Product team and extension authors. |
+| Instance specification | Concrete need, modules, policies, targets, access references, restrictions and resolved versions. | Installation owner, assisted by the builder. |
+| Deployed instance | Configured resources, data, effective procedures, runs, access and functional evidence. | Owner and authorized operators. |
 
-Un **blueprint** es una definición reutilizable de un tipo de sistema: describe sus entidades, capacidades, requisitos y aceptación. Una **instancia** es la realización concreta para un usuario. Un **plan de despliegue** describe los cambios necesarios para materializar o actualizar esa instancia.
+A **blueprint** is a reusable definition of a system type: its entities, capabilities, requirements and acceptance. An **instance** is a concrete realization for a user. A **deployment plan** describes changes needed to materialize or update that instance.
 
-El repositorio puede producir muchas instancias. Sus datos privados no se incorporan al código de distribución. Actualizar componentes del producto no debe reemplazar automáticamente el contenido o las personalizaciones de los usuarios.
+The repository can produce many instances. Private data is not included in distribution code. Updating product components must not automatically replace user content/customizations.
 
 ```mermaid
 flowchart TB
-    N[Necesidad del usuario] --> B[Constructor]
-    R[Repositorio: contratos, blueprints y adaptadores] --> B
-    B --> S[Especificación de instancia]
-    S --> P[Plan de recursos y cambios]
-    P --> D[Aplicación y verificación]
-    D --> I[Instancia utilizable]
-    I --> E[Evidencia, uso y personalización]
-    E --> U[Plan de actualización o reparación]
+    N[User need] --> B[Builder]
+    R[Repository: contracts, blueprints and adapters] --> B
+    B --> S[Instance specification]
+    S --> P[Resource and change plan]
+    P --> D[Application and verification]
+    D --> I[Usable instance]
+    I --> E[Evidence, use and customization]
+    E --> U[Update or repair plan]
     U --> D
 ```
 
-## 3. La estructura mental que explica el diseño
+## 3. How the design is derived
 
-La construcción parte de un resultado útil y deriva las responsabilidades necesarias para obtenerlo:
+Construction starts with a useful outcome and derives the responsibilities needed to obtain it:
 
-1. **Definir el propósito.** Qué resultado necesita la persona y qué demostraría que le sirve.
-2. **Identificar información y autoridad.** Qué se necesita saber, quién lo mantiene y para qué preguntas es válido.
-3. **Definir persistencia.** Qué debe sobrevivir a una sesión, una actualización o un cambio de agente.
-4. **Describir el proceso.** Qué transformaciones y decisiones producen el resultado.
-5. **Identificar efectos y límites.** Qué se lee, qué se modifica y con qué autorización.
-6. **Seleccionar capacidades de ejecución.** Qué debe ofrecer cada destino para cumplir el contrato.
-7. **Definir aceptación y recuperación.** Cómo comprobar el resultado y continuar ante un fallo.
-8. **Construir un recorrido completo.** Crear una instancia y realizar una tarea útil.
-9. **Medir y mejorar.** Usar evidencia para ajustar conocimiento, procedimientos o configuración.
-10. **Añadir recurrencia y especialización.** Incorporarlas cuando el uso y las pruebas lo justifiquen.
+1. **Define purpose.** What the person needs and what would demonstrate usefulness.
+2. **Identify information and authority.** What must be known, who maintains it and which questions it answers.
+3. **Define persistence.** What must survive a session, update or change of agent.
+4. **Describe the process.** Which transformations/decisions produce the outcome.
+5. **Identify effects and limits.** What is read/modified and under whose authorization.
+6. **Select execution capabilities.** What each target must provide to satisfy its contract.
+7. **Define acceptance and recovery.** How to check results and continue after failure.
+8. **Build a complete path.** Create an instance and perform a useful task.
+9. **Measure and improve.** Use evidence to adjust knowledge, procedures or configuration.
+10. **Add recurrence and specialization.** Introduce them when use and tests justify them.
 
-Estas preguntas se iteran. Las pruebas y los límites se definen junto al proceso, antes de ejecutar efectos relevantes. El trabajo se divide por responsabilidades; el número de carpetas o agentes no es una medida de calidad.
+These questions are iterative. Tests and limits are defined alongside the process, before meaningful effects. Work is divided by responsibility; folder/agent count is not a quality measure.
 
-## 4. Principios e invariantes
+## 4. Principles and invariants
 
-| Principio | Consecuencia verificable |
+| Principle | Verifiable consequence |
 |---|---|
-| Propiedad y portabilidad | El usuario puede recuperar sus datos, relaciones, decisiones y estado mediante mecanismos documentados. |
-| Autoridad explícita | Cada dato, regla y estado tiene una autoridad definida para su ámbito. Las vistas y copias remiten a ella. |
-| Separación de responsabilidades | Fuente, hipótesis, conocimiento, decisión, artefacto, historial y ejecución no se confunden. |
-| Contratos comunes | Los componentes colaboran mediante entradas, salidas, operaciones, efectos y errores definidos. |
-| Contexto pertinente | Cada tarea recibe información suficiente y autorizada para su propósito. |
-| Autorización con alcance | Disponer de una herramienta no concede permiso para cualquier uso de ella. Las autorizaciones vigentes se respetan dentro de su alcance. |
-| Estado durable | La continuidad no depende exclusivamente de recordar la conversación. |
-| Escrituras controladas | Los cambios detectan conflictos y los efectos externos se identifican antes de reintentarlos. |
-| Evidencia suficiente | Configurar un componente, invocarlo y obtener un resultado aceptable son hechos distintos. |
-| Evolución conservadora | Actualizar preserva personalizaciones, identifica incompatibilidades y declara recuperación disponible. |
-| Complejidad proporcional | Cada extensión responde a una necesidad observable y dispone de una prueba. |
-| Compatibilidad demostrada | Un adaptador declara qué soporta, qué ha probado y qué no puede garantizar. |
+| Ownership and portability | Users can retrieve their data, relationships, decisions and state through documented mechanisms. |
+| Explicit authority | Each fact, rule and state has a defined authority for its scope. Views/copies refer to it. |
+| Responsibility separation | Sources, hypotheses, knowledge, decisions, artifacts, history and execution remain distinct. |
+| Common contracts | Components collaborate through defined inputs, outputs, operations, effects and errors. |
+| Relevant context | Each task receives sufficient, authorized information for its purpose. |
+| Scoped authorization | Tool availability does not grant every possible use. Existing authorizations are respected within scope. |
+| Durable state | Continuity does not depend solely on remembering the conversation. |
+| Controlled writes | Changes detect conflicts; external effects are identified before retry. |
+| Sufficient evidence | Configuring a component, invoking it and obtaining an acceptable result are distinct facts. |
+| Conservative evolution | Updates preserve customizations, identify incompatibilities and declare available recovery. |
+| Proportional complexity | Every extension addresses an observable need and has a test. |
+| Demonstrated compatibility | Adapters declare support, tested behavior and guarantees they cannot provide. |
 
-La procedencia generada no hace descartable un artefacto. Un índice puede ser reconstruible; un informe aprobado necesita conservar su versión exacta. La autoridad tampoco equivale a verdad absoluta: determina qué fuente se utiliza para una función, con vigencia y evidencia explícitas.
+Generated provenance does not make artifacts disposable. An index may be reconstructible; an approved report must retain its exact version. Authority is not absolute truth: it determines which source serves a function, with explicit validity and evidence.
 
-## 5. Lenguaje común
+## 5. Shared terminology
 
-| Término | Significado dentro del producto |
+| Term | Meaning in the product |
 |---|---|
-| Núcleo o kernel | Modelo y reglas generales que mantienen coherencia entre componentes. |
-| Módulo | Conjunto instalable de capacidades y dependencias para una función. |
-| Preset | Valores iniciales y ejemplos que facilitan configurar un caso de uso. |
-| Capability | Resultado reutilizable que el sistema ofrece, como extraer decisiones de una reunión. |
-| Skill | Paquete que explica o implementa una capacidad, con recursos y contrato. |
-| Workflow | Proceso que coordina pasos, capacidades, decisiones y efectos. |
-| Agente | Ejecutor capaz de interpretar contexto y elegir acciones dentro de su alcance. |
-| Runtime | Entorno donde trabaja el agente y desde el que accede a herramientas. |
-| Herramienta | Operación invocable con entradas, resultado y efectos definidos. |
-| Conector | Implementación del acceso a un sistema externo. |
-| Backend | Persistencia y operaciones sobre las entidades de una instancia. |
-| Job o trabajo | Petición identificada de ejecutar un workflow con determinadas entradas. |
-| Run o ejecución | Intento concreto de realizar un trabajo, con pasos, resultados y evidencia. |
-| Artefacto | Resultado conservado: documento, informe, código, archivo o registro. |
-| Eval | Comprobación específica de una propiedad o resultado. |
-| Auditoría | Valoración del sistema a partir de evidencia y pruebas con cobertura declarada. |
+| Core or kernel | Model and general rules maintaining consistency between components. |
+| Module | Installable capabilities and dependencies for a function. |
+| Preset | Initial values/examples simplifying use-case configuration. |
+| Capability | Reusable result offered by the system, such as extracting meeting decisions. |
+| Skill | Package explaining or implementing a capability, with resources and a contract. |
+| Workflow | Process coordinating steps, capabilities, decisions and effects. |
+| Agent | Executor that interprets context and selects actions within scope. |
+| Runtime | Environment where an agent works and accesses tools. |
+| Tool | Invocable operation with defined inputs, result and effects. |
+| Connector | Access implementation for an external system. |
+| Backend | Persistence and operations on instance entities. |
+| Job | Identified request to execute a workflow with specified inputs. |
+| Run | Concrete attempt at a job, with steps, results and evidence. |
+| Artifact | Preserved result: document, report, code, file or record. |
+| Eval | Specific check of a property or outcome. |
+| Audit | Assessment from evidence/tests with declared coverage. |
 
-Una skill puede contener un proceso completo y un workflow puede combinar código determinista con pasos de agente. Determinismo, autonomía y empaquetado son dimensiones distintas.
+A skill may contain a complete process; a workflow may combine deterministic code and agent steps. Determinism, autonomy and packaging are distinct dimensions.
 
-## 6. Mapa general de responsabilidades
+## 6. Responsibility overview
 
-El constructor y su ciclo de vida producen una instancia organizada en cinco planos. Un plano agrupa responsabilidades; no exige un servicio desplegado.
+The builder and its lifecycle produce an instance organized in five planes. A plane groups responsibilities; it does not require a deployed service.
 
-| Grupo | Componentes |
+| Group | Components |
 |---|---|
-| Construcción y ciclo de vida | C01 Diagnóstico; C02 catálogo; C03 resolución; C04 planificación y compilación; C05 aplicación y adopción; C06 versiones y evolución. |
-| Control | C07 núcleo; C08 políticas y autonomía; C09 identidad, aislamiento y secretos. |
-| Conocimiento y estado | C10 entidades; C11 contexto y proyectos; C12 captura; C13 conocimiento y decisiones; C14 autoridad; C15 recuperación; C16 artefactos. |
-| Capacidades y ejecución | C17 skills; C18 workflows; C19 coordinación; C20 runtimes; C21 efectos; C22 cadencia; C23 recuperación. |
-| Integración y acceso | C24 backends; C25 conectores; C26 gateway opcional; C27 interfaces. |
-| Verificación y aprendizaje | C28 observabilidad; C29 verificación y evals; C30 auditoría y mejora. |
+| Construction and lifecycle | C01 diagnosis; C02 catalog; C03 resolution; C04 planning/compilation; C05 application/adoption; C06 versions/evolution. |
+| Control | C07 kernel; C08 policies/autonomy; C09 identity, isolation and secrets. |
+| Knowledge and state | C10 entities; C11 context/projects; C12 capture; C13 knowledge/decisions; C14 authority; C15 retrieval; C16 artifacts. |
+| Capabilities and execution | C17 skills; C18 workflows; C19 coordination; C20 runtimes; C21 effects; C22 cadence; C23 recovery. |
+| Integration and access | C24 backends; C25 connectors; C26 optional gateway; C27 interfaces. |
+| Verification and learning | C28 observability; C29 verification/evals; C30 auditing/improvement. |
 
-Cada ficha siguiente define un componente lógico. Varios pueden implementarse en una misma biblioteca, proceso o servicio. Los identificadores permiten referenciar responsabilidades sin depender de una estructura física de archivos.
+Each following entry defines a logical component. Several may share one library, process or service. IDs reference responsibilities independently of physical file layout.
 
-## 7. Construcción y ciclo de vida
+## 7. Construction and lifecycle
 
-### C01. Diagnóstico y onboarding
+### C01. Diagnosis and onboarding
 
-Transforma una necesidad en requisitos suficientes para construir una primera experiencia útil. Averigua el resultado buscado, contexto mínimo, fuentes existentes, destinos preferidos y restricciones. Puede recuperar respuestas ya disponibles para no volver a preguntar.
+Turn a need into sufficient requirements for a useful first experience. Establish the desired outcome, minimal context, existing sources, preferred targets and restrictions. Reuse available answers to avoid repeated questions.
 
-- **Entrada → salida:** intención y entorno existente → requisitos estructurados, supuestos identificados y caso inicial de aceptación.
-- **Estado y dependencias:** conserva respuestas confirmadas y cuestiones abiertas de la configuración; consulta C09, C14 y los adaptadores de detección.
-- **Límite y fallo:** no inventa preferencias ni necesita conocer toda la vida del usuario. Si falta una decisión imprescindible, prepara el resto y solicita esa información.
-- **Comprobación:** otra sesión puede retomar la configuración; los requisitos distinguen hechos, elecciones y supuestos.
+- **Input → output:** intent/existing environment → structured requirements, identified assumptions and an initial acceptance case.
+- **State and dependencies:** confirmed answers and open configuration questions; consult C09, C14 and discovery adapters.
+- **Boundary and failure:** do not invent preferences or require the user's entire life story. If an essential decision is missing, prepare the rest and request that information.
+- **Check:** another session can resume configuration; requirements distinguish facts, choices and assumptions.
 
-### C02. Catálogo de blueprints, módulos y presets
+### C02. Blueprint, module and preset catalog
 
-Define qué sistemas puede construir el producto. Cada blueprint compone módulos y establece entidades, capacidades, requisitos y pruebas del sistema completo. Los presets facilitan elecciones iniciales sin alterar los contratos.
+Define systems the product can build. Blueprints compose modules and establish entities, capabilities, requirements and whole-system tests. Presets simplify initial choices without altering contracts.
 
-- **Entrada → salida:** definiciones versionadas y requisitos del caso → candidatos compatibles con dependencias declaradas.
-- **Estado y dependencias:** mantiene versiones, compatibilidad y referencias a C17, C18 y C29; los datos personales permanecen fuera del catálogo distribuido.
-- **Límite y fallo:** no mezcla instrucciones particulares de una instancia con reglas universales. Una dependencia ausente o incompatible impide resolver ese candidato.
-- **Comprobación:** un blueprint puede instanciarse dos veces con configuraciones independientes y resultados equivalentes según sus pruebas.
+- **Input → output:** versioned definitions/case requirements → compatible candidates with declared dependencies.
+- **State and dependencies:** versions, compatibility and C17/C18/C29 references; personal data stays outside the distributed catalog.
+- **Boundary and failure:** keep instance-specific instructions separate from universal rules. Missing/incompatible dependencies prevent candidate resolution.
+- **Check:** instantiate a blueprint twice with independent configurations and equivalent outcomes under its tests.
 
-### C03. Especificación y resolución de instancia
+### C03. Instance specification and resolution
 
-Convierte la selección del usuario en una definición efectiva: módulos, versiones, políticas, destinos y personalizaciones. Comprueba requisitos frente a las capacidades de los adaptadores. Esta definición describe qué debe existir, antes de modificar recursos.
+Convert user selections into an effective definition: modules, versions, policies, targets and customizations. Check requirements against adapter capabilities. Describe desired existence before modifying resources.
 
-- **Entrada → salida:** requisitos, catálogo y capacidades observadas → especificación resuelta o incompatibilidades explicadas.
-- **Estado y dependencias:** conserva identidad de instancia, decisiones de composición, versiones fijadas y referencias de configuración; usa C02, C08, C20 y C24–C27.
-- **Límite y fallo:** no sustituye silenciosamente una capacidad obligatoria por otra más débil. Propone alternativas con sus efectos.
-- **Comprobación:** la misma especificación resuelta produce el mismo plan lógico cuando el estado observado de los destinos no cambia.
+- **Input → output:** requirements, catalog and observed capabilities → resolved specification or explained incompatibilities.
+- **State and dependencies:** instance identity, composition decisions, pinned versions and configuration references; uses C02, C08, C20 and C24–C27.
+- **Boundary and failure:** never silently replace a required capability with a weaker one. Propose alternatives with consequences.
+- **Check:** the same resolved specification produces the same logical plan if observed target state is unchanged.
 
-### C04. Planificador y compilador de despliegue
+### C04. Deployment planner and compiler
 
-Compara el estado deseado con los recursos existentes y produce un plan revisable. La compilación adapta contratos y procedimientos a los formatos del destino. El plan distingue crear, reutilizar, modificar y retirar recursos gestionados.
+Compare desired state with existing resources and produce a reviewable plan. Compilation adapts contracts/procedures to target formats. Plans distinguish creation, reuse, modification and removal of managed resources.
 
-- **Entrada → salida:** especificación resuelta y estado observado → operaciones ordenadas, precondiciones, recursos generados y pruebas de verificación.
-- **Estado y dependencias:** el plan conserva identificador, revisiones observadas, alcance y dependencias; emplea C03, C06 y adaptadores.
-- **Límite y fallo:** planificar no implica aplicar. Un cambio posterior en el destino exige revalidar o recalcular el plan y, si cambia el alcance autorizado, resolverlo antes de actuar.
-- **Comprobación:** una vista previa explica qué cambiará; generar un paquete no se confunde con instalarlo ni demostrar su funcionamiento.
+- **Input → output:** resolved specification/observed state → ordered operations, preconditions, generated resources and verification tests.
+- **State and dependencies:** plan ID, observed revisions, scope and dependencies; uses C03, C06 and adapters.
+- **Boundary and failure:** planning is not application. Later destination changes require plan revalidation/recalculation; changes to authorized scope must be resolved before acting.
+- **Check:** a preview explains changes; package generation is not confused with installation or demonstrated operation.
 
-### C05. Aplicador, instalación y adopción
+### C05. Application, installation and adoption
 
-Materializa un plan dentro de la autorización vigente, registra resultados y comprueba el sistema. En adopción reconoce equivalencias existentes antes de crear recursos. Una instalación termina con un primer recorrido útil y un handoff verificable.
+Materialize a plan within current authorization, record results and check the system. Adoption recognizes existing equivalents before creating resources. Installation concludes with a useful first path and verifiable handoff.
 
-- **Entrada → salida:** plan vigente y acceso autorizado → recursos configurados, evidencia por paso y manifiesto de instalación.
-- **Estado y dependencias:** escribe checkpoints del despliegue y referencias a recursos gestionados; usa C04, C08, C21, C24–C25 y C29.
-- **Límite y fallo:** no sobrescribe contenido ajeno por coincidir un nombre. Ante aplicación parcial registra lo ocurrido, verifica precondiciones y ofrece recuperación de los cambios propios.
-- **Comprobación:** repetir el plan no duplica recursos; adoptar preserva contenido y personalizaciones; un fallo permite continuar desde evidencia.
+- **Input → output:** current plan/authorized access → configured resources, per-step evidence and installation manifest.
+- **State and dependencies:** deployment checkpoints and managed-resource references; uses C04, C08, C21, C24–C25 and C29.
+- **Boundary and failure:** matching names do not justify overwriting others' content. Record partial application, verify preconditions and offer recovery for the installation's own changes.
+- **Check:** repeating a plan does not duplicate resources; adoption preserves content/customizations; evidence supports continuation after failure.
 
-### C06. Versiones, manifiesto y evolución
+### C06. Versions, manifest and evolution
 
-Mantiene la identidad técnica de la instalación y su evolución: versiones de contratos, esquemas, skills, workflows, adaptadores y dependencias. El manifiesto registra recursos gestionados, configuración efectiva y última verificación.
+Maintain technical installation identity/evolution: contract, schema, skill, workflow, adapter and dependency versions. The manifest records managed resources, effective configuration and latest verification.
 
-- **Entrada → salida:** instancia instalada y nueva versión o defecto → plan de actualización, migración o reparación con compatibilidad declarada.
-- **Estado y dependencias:** es autoridad del inventario instalado y de sus versiones; se apoya en C03–C05, C19, C24 y C29.
-- **Límite y fallo:** diferencia personalización del usuario de recursos generados. Declara si la recuperación permite restaurar, compensar o avanzar; no promete rollback de efectos irreversibles. Las ejecuciones abiertas se mantienen compatibles, se fijan a su versión o se pausan para migración explícita.
-- **Comprobación:** una actualización conserva datos y overrides y detecta una ejecución incompatible antes de afectarla.
+- **Input → output:** installed instance and new version/defect → update, migration or repair plan with declared compatibility.
+- **State and dependencies:** authority for installed inventory/versions; relies on C03–C05, C19, C24 and C29.
+- **Boundary and failure:** distinguish user customizations from generated resources. Declare restore, compensation or forward recovery; never promise rollback of irreversible effects. Keep open runs compatible, pin their version or pause for explicit migration.
+- **Check:** updates preserve data/overrides and detect incompatible runs before affecting them.
 
 ## 8. Control
 
-### C07. Núcleo y contrato operativo
+### C07. Kernel and operating contract
 
-Define conceptos, invariantes y reglas comunes de recuperación, escritura, aceptación y continuidad. Contiene el mecanismo general para resolver autoridad y políticas; las fuentes concretas y preferencias pertenecen a la configuración de cada instancia.
+Define concepts, invariants and common retrieval, write, acceptance and continuity rules. Provide the general authority/policy resolution mechanism; concrete sources/preferences belong to instance configuration.
 
-- **Entrada → salida:** contrato versionado y configuración efectiva → reglas aplicables y referencias a procedimientos pertinentes.
-- **Estado y dependencias:** mantiene definiciones del producto; consulta C08 y C14 para decisiones específicas. Las entradas de cada runtime se generan o vinculan desde esas definiciones.
-- **Límite y fallo:** no incluye toda la información del usuario ni sustituye las políticas superiores del entorno. Un contrato incompatible impide declarar compatibilidad.
-- **Comprobación:** dos adaptadores usan la misma versión y respetan los mismos invariantes dentro de sus capacidades demostradas.
+- **Input → output:** versioned contract/effective configuration → applicable rules and relevant procedure references.
+- **State and dependencies:** product definitions; consults C08/C14 for specific decisions. Runtime entry points are generated from or linked to these definitions.
+- **Boundary and failure:** neither contains all user information nor overrides higher-priority environment policies. Incompatible contracts prevent compatibility claims.
+- **Check:** two adapters use the same version and honor the same invariants within demonstrated capabilities.
 
-### C08. Políticas, autorizaciones y autonomía
+### C08. Policies, authorizations and autonomy
 
-Determina qué acciones están permitidas, bajo qué condiciones y con qué intervención humana. Considera actor, instancia, recurso, operación, destino, contenido y duración cuando sean relevantes. La autonomía describe cómo puede repetirse el trabajo dentro de ese alcance.
+Determine allowed actions, conditions and human involvement. Consider actor, instance, resource, operation, destination, content and duration where relevant. Autonomy describes how work may recur within scope.
 
-- **Entrada → salida:** acción propuesta, políticas y autorizaciones vigentes → permitido, denegado o requisito pendiente con motivo.
-- **Estado y dependencias:** conserva concesiones, revocaciones y decisiones de política con evidencia; usa C09, C18, C21 y C28.
-- **Límite y fallo:** no amplía permisos del host ni trata herramientas disponibles como autorización. Una modificación fuera del alcance concedido exige reevaluación. El progreso de autonomía depende de evidencia pertinente y de autorización, no de un contador universal de éxitos.
-- **Comprobación:** una acción autorizada continúa sin preguntas repetidas; una acción fuera de alcance se detiene incluso al cambiar de conector.
+- **Input → output:** proposed action, policies/current authorizations → allowed, denied or unmet requirement with a reason.
+- **State and dependencies:** grants, revocations and evidenced policy decisions; uses C09, C18, C21 and C28.
+- **Boundary and failure:** do not expand host permissions or treat available tools as authorization. Out-of-scope changes require reevaluation. Autonomy progression depends on relevant evidence/authorization, not a universal success counter.
+- **Check:** authorized actions proceed without repeated questions; out-of-scope actions stop even if the connector changes.
 
-### C09. Identidad, aislamiento y secretos
+### C09. Identity, isolation and secrets
 
-Identifica personas, agentes, servicios e instalaciones y limita qué datos y operaciones puede usar cada uno. Gestiona referencias a credenciales mediante el mecanismo adecuado al despliegue.
+Identify people, agents, services and installations and bound available data/operations. Manage credential references through the appropriate deployment mechanism.
 
-- **Entrada → salida:** identidad y petición de acceso → contexto de acceso acotado o denegación.
-- **Estado y dependencias:** mantiene asociaciones de identidad y referencias de credenciales; los valores secretos viven en el mecanismo de autenticación elegido. Se conecta con C08 y todos los adaptadores de acceso.
-- **Límite y fallo:** compartir infraestructura no autoriza compartir datos. Credenciales vencidas, identidad ambigua o ámbito desconocido bloquean el acceso correspondiente; no se copian secretos a memorias o reportes.
-- **Comprobación:** una identidad de una instalación no puede recuperar recursos de otra; la revocación surte efecto en nuevas acciones.
+- **Input → output:** identity/access request → bounded access context or denial.
+- **State and dependencies:** identity mappings/credential references; secret values live in the selected authentication mechanism. Connects to C08 and all access adapters.
+- **Boundary and failure:** shared infrastructure does not authorize shared data. Expired credentials, ambiguous identity or unknown scope block corresponding access; secrets never go into memory or reports.
+- **Check:** an identity in one installation cannot retrieve another's resources; revocation affects new actions.
 
-## 9. Conocimiento y estado
+## 9. Knowledge and state
 
-### C10. Modelo de entidades y relaciones
+### C10. Entity and relationship model
 
-Da una identidad coherente a proyectos, personas, fuentes, capturas, afirmaciones, decisiones, artefactos y ejecuciones. Las relaciones indican pertenencia, procedencia, dependencia o sustitución cuando aportan significado.
+Give projects, people, sources, captures, claims, decisions, artifacts and runs consistent identity. Relationships express membership, provenance, dependency or supersession when meaningful.
 
-- **Entrada → salida:** entidad o relación candidata → registro identificable, tipado y referenciable con revisión.
-- **Estado y dependencias:** es autoridad de identidades y relaciones internas de la instancia; persiste mediante C24 y aplica C08. Los identificadores externos se conservan como correspondencias.
-- **Límite y fallo:** dos nombres parecidos no demuestran identidad. Fusiones, duplicados y conflictos se resuelven explícitamente sin perder referencias históricas.
-- **Comprobación:** exportar e importar conserva identidades y relaciones; una decisión sigue enlazada al proyecto y a la evidencia que la originó.
+- **Input → output:** candidate entity/relation → identifiable, typed, referenceable record with revision.
+- **State and dependencies:** authority for internal instance identities/relationships; persists through C24 and applies C08. External IDs remain mappings.
+- **Boundary and failure:** similar names do not prove identity. Resolve merges, duplicates and conflicts explicitly without losing historical references.
+- **Check:** export/import preserves identities/relationships; decisions remain linked to their project and originating evidence.
 
-### C11. Contexto, proyectos y responsabilidades
+### C11. Context, projects and responsibilities
 
-Mantiene la información necesaria para entender al usuario y su trabajo: preferencias confirmadas, objetivos, restricciones y estado de proyectos. Una responsabilidad continua puede representarse como área u otra entidad pertinente al blueprint.
+Maintain information needed to understand the user/work: confirmed preferences, goals, restrictions and project state. Ongoing responsibilities may be areas or other blueprint-appropriate entities.
 
-- **Entrada → salida:** información confirmada y avances verificados → contexto efectivo y estado de trabajo con siguiente paso.
-- **Estado y dependencias:** cada campo tiene autoridad local o externa declarada; usa C10, C14 y C24. El proyecto referencia sus ejecuciones; no duplica todos sus pasos.
-- **Límite y fallo:** una preferencia puede cambiar y una prioridad puede caducar. Conflictos o falta de vigencia se comunican; no se inventa continuidad a partir de actividad reciente.
-- **Comprobación:** una sesión nueva identifica propósito, estado, decisiones relevantes y siguiente paso sin reconstruir conversaciones completas.
+- **Input → output:** confirmed information/verified progress → effective context and work state with a next step.
+- **State and dependencies:** every field has declared local/external authority; uses C10, C14 and C24. Projects reference runs without duplicating every step.
+- **Boundary and failure:** preferences change and priorities expire. Report conflicts/staleness; do not invent continuity from recent activity.
+- **Check:** a new session identifies purpose, state, relevant decisions and next step without reconstructing full conversations.
 
-### C12. Captura, clasificación y promoción
+### C12. Capture, classification and promotion
 
-Recibe conversaciones, documentos, reuniones o ideas y conserva la evidencia necesaria antes de integrarla. Clasifica hechos declarados, hipótesis, propuestas, decisiones y preguntas abiertas. Promover significa convertir información en un registro autorizado mediante un criterio explícito.
+Receive conversations, documents, meetings or ideas and retain necessary evidence before integration. Classify declared facts, hypotheses, proposals, decisions and open questions. Promotion turns information into an authorized record under explicit criteria.
 
-- **Entrada → salida:** información entrante con origen → captura identificada y propuestas de integración o registros confirmados dentro de la autorización disponible.
-- **Estado y dependencias:** conserva captura, procedencia y estado de procesamiento; utiliza C10–C15. Puede integrar directamente una instrucción inequívoca del usuario sin imponer otra entrevista.
-- **Límite y fallo:** el contenido de una fuente no se convierte en instrucciones para el sistema. Las contradicciones y clasificaciones ambiguas permanecen visibles.
-- **Comprobación:** una hipótesis no aparece como hecho confirmado; repetir una captura identificada no duplica registros; la información promovida conserva procedencia.
+- **Input → output:** incoming information with origin → identified capture and integration proposals or confirmed records within available authority.
+- **State and dependencies:** capture, provenance and processing state; uses C10–C15. May directly integrate an unambiguous user instruction without another interview.
+- **Boundary and failure:** source content does not become system instructions. Contradictions/ambiguous classifications stay visible.
+- **Check:** hypotheses do not appear as confirmed facts; repeated identified capture does not duplicate records; promoted information retains provenance.
 
-### C13. Conocimiento y decisiones
+### C13. Knowledge and decisions
 
-Destila conceptos, aprendizajes y procedimientos que sirven fuera de una ejecución. Las decisiones registran elección, contexto, alternativas pertinentes, actor, evidencia, expectativas y condiciones de revisión.
+Distill concepts, lessons and procedures useful beyond a run. Decisions record choice, context, relevant alternatives, actor, evidence, expectations and review conditions.
 
-- **Entrada → salida:** experiencia verificada o elección autorizada → conocimiento reutilizable o decisión versionada y conectada.
-- **Estado y dependencias:** mantiene contenido aceptado e historial de sustituciones; usa C10, C12, C14 y C16. Las justificaciones son resúmenes explícitos y evidencia, sin depender del razonamiento interno de un modelo.
-- **Límite y fallo:** una decisión válida en un proyecto no se convierte automáticamente en política universal. Evidencia insuficiente conserva el carácter provisional.
-- **Comprobación:** puede explicarse qué se decidió, por qué, con qué información y si sigue vigente; una corrección no borra la versión usada anteriormente.
+- **Input → output:** verified experience/authorized choice → reusable knowledge or a connected, versioned decision.
+- **State and dependencies:** accepted content/supersession history; uses C10, C12, C14 and C16. Rationales are explicit summaries/evidence independent of model-internal reasoning.
+- **Boundary and failure:** a project decision does not automatically become universal policy. Insufficient evidence retains provisional status.
+- **Check:** explain what was decided, why, using which information and whether it remains current; corrections do not erase previously used versions.
 
-### C14. Registro de fuentes, autoridad, procedencia y vigencia
+### C14. Source registry, authority, provenance and currency
 
-Define qué fuente responde a cada pregunta y qué evidencia sustenta una afirmación. Separa autoridad por ámbito, origen, periodo de validez, observación, revisión, verificación y tratamiento de caché.
+Define which source answers each question and what evidence supports a claim. Separate scoped authority, origin, validity period, observation, revision, verification and cache handling.
 
-- **Entrada → salida:** pregunta, entidades y fuentes disponibles → fuentes pertinentes, límites temporales y conflictos que deben resolverse.
-- **Estado y dependencias:** mantiene el catálogo de fuentes y sus políticas de autoridad; usa C10, C11 y C25. Referencia capacidades de acceso sin duplicar las credenciales.
-- **Límite y fallo:** una fuente viva no sustituye un registro histórico cuando se pregunta por el pasado. Una fuente autorizada puede fallar o contener errores; se distingue indisponibilidad de ausencia de datos.
-- **Comprobación:** el estado actual y el estado conocido al tomar una decisión se recuperan correctamente, con fechas y referencias diferentes cuando corresponde.
+- **Input → output:** question, entities and available sources → relevant sources, temporal limits and conflicts to resolve.
+- **State and dependencies:** source catalog and authority policies; uses C10, C11 and C25. References access capabilities without duplicating credentials.
+- **Boundary and failure:** live sources do not replace historical records for questions about the past. Authoritative sources can fail or be wrong; distinguish unavailability from missing data.
+- **Check:** retrieve current state and state known when a decision was made correctly, using different dates/references when appropriate.
 
-### C15. Recuperación, búsqueda e índices
+### C15. Retrieval, search and indexes
 
-Construye el contexto necesario para una tarea. Utiliza rutas o referencias conocidas, filtros, búsqueda textual o semántica según el caso y las capacidades del backend. Los índices facilitan encontrar fuentes y no adquieren autoridad sobre su contenido.
+Build the context a task needs. Use known paths/references, filters, text or semantic search according to the case and backend capabilities. Indexes help locate sources without gaining authority over their content.
 
-- **Entrada → salida:** objetivo, alcance de acceso y presupuesto de contexto → selección de información con referencias, vigencia y cobertura declaradas.
-- **Estado y dependencias:** mantiene índices y cachés derivados identificados por revisión; consulta C08, C10, C14, C24 y C25.
-- **Límite y fallo:** filtra el acceso antes de exponer resultados. Una búsqueda sin resultados no prueba que el dato no exista; índices obsoletos o cobertura parcial se detectan o declaran.
-- **Comprobación:** encuentra decisiones y fuentes conocidas, evita datos fuera del alcance y mantiene resultados útiles al reconstruir sus índices.
+- **Input → output:** objective, access scope and context budget → information selection with references, currency and declared coverage.
+- **State and dependencies:** derived indexes/caches identified by revision; consults C08, C10, C14, C24 and C25.
+- **Boundary and failure:** filter access before exposing results. Empty search does not prove nonexistence; detect or declare stale indexes/partial coverage.
+- **Check:** find known decisions/sources, exclude out-of-scope data and retain useful results after index reconstruction.
 
-### C16. Artefactos y preservación de resultados
+### C16. Artifacts and result preservation
 
-Gestiona documentos, informes, código y otros entregables producidos durante el trabajo. Distingue borrador, resultado aceptado, versión enviada y sustituciones. Conserva qué versión se utilizó para una acción o decisión.
+Manage documents, reports, code and other deliverables produced during work. Distinguish drafts, accepted results, sent versions and replacements. Preserve which version served an action/decision.
 
-- **Entrada → salida:** resultado y evidencia de aceptación o entrega → artefacto versionado, referenciable y con estado explícito.
-- **Estado y dependencias:** es autoridad del artefacto exacto y sus versiones; utiliza C10, C19, C21, C24 y C29.
-- **Límite y fallo:** no clasifica todo output del agente como caché reconstruible. Un artefacto incompleto o no validado mantiene ese estado; una edición posterior no altera retrospectivamente lo aprobado.
-- **Comprobación:** se recupera la propuesta realmente enviada aunque el borrador actual haya cambiado o el modelo produzca un texto distinto al repetir la tarea.
+- **Input → output:** result and acceptance/delivery evidence → versioned, referenceable artifact with explicit state.
+- **State and dependencies:** authority for exact artifacts/versions; uses C10, C19, C21, C24 and C29.
+- **Boundary and failure:** not all agent output is reconstructible cache. Incomplete/unvalidated artifacts retain that state; later edits do not retroactively change approval.
+- **Check:** retrieve the proposal actually sent even after draft changes or different model output on repetition.
 
-## 10. Capacidades y ejecución
+## 10. Capabilities and execution
 
-### C17. Capacidades, skills y contratos
+### C17. Capabilities, skills and contracts
 
-Empaqueta unidades reutilizables de trabajo. El procedimiento explica cómo realizarlo; el contrato declara entradas, lecturas, escrituras, dependencias, resultado, aceptación y errores. Puede incluir scripts, recursos y pruebas.
+Package reusable work units. Procedures explain how; contracts declare inputs, reads, writes, dependencies, results, acceptance and errors. Packages may contain scripts, resources and tests.
 
-- **Entrada → salida:** entradas válidas y contexto autorizado → resultado de capacidad con evidencia y estado de aceptación.
-- **Estado y dependencias:** mantiene definición y versión del paquete; el estado de cada uso pertenece a C19. Depende de C07, C08, C15, C25 y C29 según el caso.
-- **Límite y fallo:** el formato del paquete no demuestra que el host haga cumplir el contrato. La instalación debe proporcionar el evaluador correspondiente o declarar la garantía ausente.
-- **Comprobación:** fixtures positivos y negativos distinguen resultado correcto, incompleto e inventado; contrato y procedimiento no contienen instrucciones incompatibles.
+- **Input → output:** valid inputs/authorized context → capability result with evidence and acceptance state.
+- **State and dependencies:** package definition/version; individual invocation state belongs to C19. Depends on C07, C08, C15, C25 and C29 as applicable.
+- **Boundary and failure:** package format does not prove host enforcement. Installation must supply the corresponding evaluator or declare the missing guarantee.
+- **Check:** positive/negative fixtures distinguish correct, incomplete and invented results; contract/procedure contain no incompatible instructions.
 
-### C18. Definición de workflows
+### C18. Workflow definitions
 
-Compone pasos en un proceso completo. Define disparador, entradas, dependencias, decisiones, resultados, efectos, condiciones de parada y recuperación. Los pasos pueden ser deterministas, asistidos por agente o de intervención humana.
+Compose steps into a complete process. Define triggers, inputs, dependencies, decisions, results, effects, stop conditions and recovery. Steps may be deterministic, agent-assisted or human.
 
-- **Entrada → salida:** definición del proceso y versiones de capacidades → workflow validado y ejecutable por un coordinador compatible.
-- **Estado y dependencias:** es autoridad de la definición del proceso y de sus transiciones permitidas; usa C08, C17, C21, C23 y C29. C19 mantiene los intentos concretos.
-- **Límite y fallo:** una ruta sin salida, una dependencia ausente o una transición sin evidencia invalida el proceso. Los casos pequeños pueden tener pocos pasos sin infraestructura adicional.
-- **Comprobación:** cada camino relevante tiene salida, aceptación y recuperación; los efectos están identificados antes de poner el workflow en uso.
+- **Input → output:** process definition/capability versions → validated workflow executable by a compatible coordinator.
+- **State and dependencies:** authority for process definitions/permitted transitions; uses C08, C17, C21, C23 and C29. C19 maintains concrete attempts.
+- **Boundary and failure:** dead ends, missing dependencies or transitions without evidence invalidate the process. Small cases may use few steps without additional infrastructure.
+- **Check:** every relevant path has an outcome, acceptance and recovery; identify effects before enabling the workflow.
 
-### C19. Coordinador de trabajos y ejecuciones
+### C19. Job and run coordinator
 
-Recibe trabajos, registra intentos y controla la continuidad. Gestiona adquisición de tareas, revisiones del estado, transiciones y referencias de evidencia. Puede implementarse como biblioteca invocable o servicio según el despliegue.
+Receive jobs, record attempts and control continuity. Manage task acquisition, state revisions, transitions and evidence references. May be an invocable library or service according to deployment.
 
-- **Entrada → salida:** trabajo con workflow y entradas identificadas → ejecución con estado durable, artefactos, efectos y siguiente acción.
-- **Estado y dependencias:** es la única autoridad del estado de jobs y runs; usa C08, C18, C20–C24 y C28–C29. Las colas y paneles son representaciones de ese estado.
-- **Límite y fallo:** el agente no marca completado un paso sin evidencia aceptada. Una ejecución interrumpida conserva checkpoints; una solicitud duplicada se identifica según su contrato.
-- **Comprobación:** dos trabajadores no controlan simultáneamente el mismo paso de escritura; otro runtime continúa desde un checkpoint válido.
+- **Input → output:** job with identified workflow/inputs → run with durable state, artifacts, effects and next action.
+- **State and dependencies:** sole authority for jobs/runs; uses C08, C18, C20–C24 and C28–C29. Queues/dashboards represent that state.
+- **Boundary and failure:** agents cannot mark steps complete without accepted evidence. Interrupted runs retain checkpoints; duplicate requests are identified by contract.
+- **Check:** two workers cannot simultaneously control one write step; another runtime continues from a valid checkpoint.
 
-### C20. Adaptadores de runtime y selección de ejecutor
+### C20. Runtime adapters and executor selection
 
-Permite utilizar agentes diferentes conservando contratos comunes. Traduce instrucciones y paquetes, comprueba capacidades de la sesión y selecciona un ejecutor elegible. La selección puede ser explícita por el usuario; el despacho automático exige una vía de invocación disponible.
+Support different agents under common contracts. Translate instructions/packages, check session capabilities and select an eligible executor. Selection may be explicit by the user; automatic dispatch requires an available invocation path.
 
-- **Entrada → salida:** requisitos del trabajo, acceso y candidatos → ejecutor compatible o incompatibilidad explicada, más un paquete de contexto acotado.
-- **Estado y dependencias:** mantiene versión del adaptador y evidencia de capacidades observadas; C19 conserva la asignación. Utiliza C07–C09, C15 y C17–C18.
-- **Límite y fallo:** no supone que todos los agentes admiten invocación remota, las mismas herramientas o iguales resultados. Un candidato no disponible no recibe el trabajo.
-- **Comprobación:** dos runtimes completan el mismo contrato y preservan continuidad; la pérdida de una capacidad se refleja antes de usarla.
+- **Input → output:** job requirements, access and candidates → compatible executor or explained incompatibility, plus bounded context.
+- **State and dependencies:** adapter version and observed-capability evidence; C19 retains assignment. Uses C07–C09, C15 and C17–C18.
+- **Boundary and failure:** do not assume all agents support remote invocation, identical tools or equal results. Unavailable candidates receive no work.
+- **Check:** two runtimes complete the same contract and preserve continuity; capability loss is reflected before use.
 
-### C21. Control de escrituras y efectos externos
+### C21. Write and external effect control
 
-Media las operaciones que cambian recursos. Vincula una acción con su autorización, entradas, destino, revisión e identificador de efecto. Comprueba el resultado antes de declararlo confirmado o repetirlo.
+Mediate resource-changing operations. Bind actions to authorization, inputs, destination, revision and effect identity. Check outcomes before confirming or repeating them.
 
-- **Entrada → salida:** intención de cambio identificada → efecto confirmado, rechazado, fallido o incierto con evidencia.
-- **Estado y dependencias:** C19 conserva el registro único de acciones que este componente actualiza; utiliza C08–C09, C24–C25 y C28. Las referencias remotas permiten reconciliar resultados.
-- **Límite y fallo:** una clave de idempotencia se aplica donde produce el efecto cuando el destino la soporte. Un timeout no demuestra fracaso; si no puede determinarse el resultado, la acción queda incierta.
-- **Comprobación:** una respuesta perdida después de un envío no causa otro envío automático; una revisión desactualizada no pisa una edición concurrente.
+- **Input → output:** identified change intent → confirmed, rejected, failed or uncertain effect with evidence.
+- **State and dependencies:** C19 owns the single action record updated here; uses C08–C09, C24–C25 and C28. Remote references support reconciliation.
+- **Boundary and failure:** apply idempotency keys at the effect destination when supported. Timeout does not prove failure; unresolved outcomes remain uncertain.
+- **Check:** a lost response after sending does not cause another automatic send; stale revisions do not overwrite concurrent edits.
 
-### C22. Disparadores, programación y cadencia
+### C22. Triggers, scheduling and cadence
 
-Genera trabajos a partir de tiempo, eventos, condiciones, dependencias o solicitudes manuales. La definición del disparador permanece separada de la lógica del workflow.
+Generate jobs from time, events, conditions, dependencies or manual requests. Trigger definitions remain separate from workflow logic.
 
-- **Entrada → salida:** definición versionada y evento observado → job identificado para C19.
-- **Estado y dependencias:** mantiene horarios, zona temporal, ventanas, cursores de eventos y política de ejecuciones perdidas; usa C08, C18–C20, C25 y C28.
-- **Límite y fallo:** las condiciones requieren una fuente verificable. Un horario requiere un ejecutor activo en ese momento; definirlo no demuestra que haya corrido. La política determina deduplicación, retrasos y recuperación tras desconexión.
-- **Comprobación:** un evento repetido no duplica efectos; se prueba qué ocurre con cambios horarios, runtime inactivo y disparos perdidos.
+- **Input → output:** versioned definition/observed event → identified job for C19.
+- **State and dependencies:** schedules, timezone, windows, event cursors and missed-run policy; uses C08, C18–C20, C25 and C28.
+- **Boundary and failure:** conditions require verifiable sources. Schedules need an active executor at the scheduled time; definition does not prove execution. Policy governs deduplication, delays and post-disconnection recovery.
+- **Check:** repeated events do not duplicate effects; test clock changes, inactive runtimes and missed triggers.
 
-### C23. Errores, reparación y recuperación de trabajo
+### C23. Errors, repair and work recovery
 
-Clasifica fallos y selecciona cómo continuar: reintentar una operación segura, renovar acceso, pedir un dato imprescindible, reparar un recurso o dejar un bloqueo identificable.
+Classify failures and choose continuation: retry a safe operation, renew access, request essential data, repair a resource or leave an identifiable block.
 
-- **Entrada → salida:** error estructurado y estado de ejecución → plan de recuperación y siguiente transición válida.
-- **Estado y dependencias:** registra la decisión de recuperación en C19, con evidencia de C21, C24–C25 y C29; no mantiene una copia paralela del estado.
-- **Límite y fallo:** distingue entrada ausente, conflicto, permiso denegado, validación fallida, timeout y efecto incierto. Los reintentos tienen límites y no amplían permisos ni repiten efectos no reconciliados.
-- **Comprobación:** un fallo inducido se recupera desde la dependencia afectada, preservando pasos previos que siguen siendo válidos.
+- **Input → output:** structured error/execution state → recovery plan and next valid transition.
+- **State and dependencies:** recovery decisions recorded in C19 with C21, C24–C25 and C29 evidence; no parallel state copy.
+- **Boundary and failure:** distinguish missing inputs, conflicts, denied permission, failed validation, timeouts and uncertain effects. Bounded retries neither expand permissions nor repeat unreconciled effects.
+- **Check:** recover an induced failure from the affected dependency while preserving earlier valid steps.
 
-## 11. Integración y acceso
+## 11. Integration and access
 
-### C24. Adaptadores de backend y portabilidad de datos
+### C24. Backend adapters and data portability
 
-Materializa el modelo común sobre el almacenamiento seleccionado. Implementa lectura, búsqueda, actualización, relaciones, revisiones y exportación según las capacidades declaradas del destino.
+Materialize the shared model in selected storage. Implement reading, search, updates, relationships, revisions and export according to declared target capabilities.
 
-- **Entrada → salida:** operación lógica sobre entidades → resultado persistido o recuperado con identidad y revisión.
-- **Estado y dependencias:** mantiene correspondencias entre identificadores lógicos y recursos concretos; usa los contratos de C10, políticas de C08 y credenciales de C09.
-- **Límite y fallo:** declara transacciones, concurrencia, permisos, límites de consulta y consistencia disponibles. Una garantía obligatoria ausente exige otro destino o una configuración alternativa explícita. Las limitaciones no se ocultan tras una interfaz uniforme.
-- **Comprobación:** el mismo contrato funciona sobre dos representaciones distintas; exportación/importación conserva identidad, relaciones, procedencia, versiones requeridas y estado vigente.
+- **Input → output:** logical entity operation → persisted/retrieved result with identity and revision.
+- **State and dependencies:** mappings between logical IDs/concrete resources; uses C10 contracts, C08 policies and C09 credentials.
+- **Boundary and failure:** declare available transactions, concurrency, permissions, query limits and consistency. Missing mandatory guarantees require another target or an explicit alternative configuration. A uniform interface must not hide limitations.
+- **Check:** the same contract works over two distinct representations; export/import preserves identity, relationships, provenance, required versions and current state.
 
-### C25. Conectores y contratos de herramientas
+### C25. Connectors and tool contracts
 
-Comunica la instancia con fuentes y aplicaciones externas mediante APIs, MCP, CLI, exportaciones u otros mecanismos adecuados. Normaliza resultados y errores preservando identificadores, tiempos y alcance de la fuente.
+Connect the instance to external sources/applications through APIs, MCP, CLIs, exports or other suitable mechanisms. Normalize results/errors while preserving source IDs, times and scope.
 
-- **Entrada → salida:** operación con argumentos y acceso acotado → datos con procedencia o efecto verificable.
-- **Estado y dependencias:** mantiene configuración de conexión y referencias a autenticación; C14 es autoridad del propósito y uso de la fuente. Usa C08–C09 y C21 para modificaciones.
-- **Límite y fallo:** el mecanismo de transporte no decide qué fuente tiene autoridad. Se identifican expiración de acceso, límites de uso, errores parciales y cobertura insuficiente.
-- **Comprobación:** una consulta conocida devuelve el rango y ámbito correctos; una escritura devuelve evidencia conciliable; la falta de acceso no se presenta como ausencia de datos.
+- **Input → output:** operation with arguments/bounded access → data with provenance or a verifiable effect.
+- **State and dependencies:** connection configuration/authentication references; C14 owns source purpose/use. Uses C08–C09 and C21 for modifications.
+- **Boundary and failure:** transport does not determine source authority. Identify expired access, usage limits, partial errors and insufficient coverage.
+- **Check:** known queries return the right range/scope; writes return reconcilable evidence; denied access is not presented as missing data.
 
-### C26. Gateway de acceso remoto opcional
+### C26. Optional remote access gateway
 
-Ofrece operaciones comunes a clientes que necesitan acceder a una instancia desde otro entorno. Puede exponer recuperación, captura o envío de trabajos mediante un protocolo compatible con los clientes seleccionados.
+Offer common operations to clients accessing an instance from another environment. May expose retrieval, capture or job submission through a protocol compatible with selected clients.
 
-- **Entrada → salida:** petición autenticada y acotada → respuesta, cambio verificado o identificador de trabajo consultable.
-- **Estado y dependencias:** usa el mismo backend y coordinador de la instancia; depende de C08–C09, C15, C19, C21 y C24. Los registros de acceso no duplican el conocimiento.
-- **Límite y fallo:** distingue leer, modificar y ejecutar. No acepta ejecución arbitraria por el hecho de conocer un nombre de skill. Los clientes sin acceso o protocolo compatible mantienen un modo explícito de preparación/handoff.
-- **Comprobación:** un cliente de consulta no puede ejecutar un workflow de escritura; una solicitud de trabajo devuelve un estado verificable sin bloquear indefinidamente la conexión.
+- **Input → output:** authenticated, scoped request → response, verified change or queryable job ID.
+- **State and dependencies:** uses the same instance backend/coordinator; depends on C08–C09, C15, C19, C21 and C24. Access logs do not duplicate knowledge.
+- **Boundary and failure:** distinguish reading, modification and execution. Knowing a skill name does not authorize arbitrary execution. Clients without access/protocol compatibility retain explicit preparation/handoff mode.
+- **Check:** a read client cannot execute a write workflow; job submission returns verifiable state without indefinitely blocking the connection.
 
-### C27. Interfaces, vistas y acceso humano
+### C27. Interfaces, views and human access
 
-Presenta conocimiento, proyectos, ejecuciones y resultados a la persona. Puede ser una aplicación existente, una web, una CLI o un explorador especializado. Las operaciones de edición siguen los mismos límites que las realizadas por agentes.
+Present knowledge, projects, runs and results. May use an existing application, website, CLI or specialized explorer. Edits follow the same limits as agent operations.
 
-- **Entrada → salida:** consulta o acción del usuario → vista pertinente o comando explícito sobre la instancia.
-- **Estado y dependencias:** preferencias de presentación pueden ser propias de la interfaz; datos y cambios de dominio se mantienen en C10–C16 y C19 a través de C24 o C26.
-- **Límite y fallo:** una vista no actualiza su copia como si fuera otra autoridad. Si una interfaz externa permite escrituras directas, el adaptador detecta revisiones y declara qué validaciones puede aplicar. Las vistas antiguas indican su fecha.
-- **Comprobación:** un cambio autorizado se refleja al consultar desde otra interfaz; reconstruir un grafo no altera las decisiones o artefactos originales.
+- **Input → output:** user query/action → relevant view or explicit instance command.
+- **State and dependencies:** presentation preferences may be interface-owned; domain data/changes stay in C10–C16 and C19 through C24/C26.
+- **Boundary and failure:** a view cannot update its copy as another authority. If an external interface permits direct writes, its adapter detects revisions and declares enforceable validation. Old views show their date.
+- **Check:** authorized changes appear through another interface; rebuilding a graph does not alter original decisions/artifacts.
 
-## 12. Verificación y aprendizaje
+## 12. Verification and learning
 
-### C28. Observabilidad y evidencia operativa
+### C28. Observability and operational evidence
 
-Permite reconstruir qué ocurrió durante construcción y uso: actor, versión, entradas referenciadas, fuentes, pasos, efectos, errores, artefactos y comprobaciones. Captura las métricas de tiempo, uso y coste que el entorno permita observar.
+Reconstruct construction/use events: actor, version, referenced inputs, sources, steps, effects, errors, artifacts and checks. Capture observable timing, usage and cost metrics.
 
-- **Entrada → salida:** eventos y resultados → trazas correlacionadas por instancia, trabajo, ejecución y acción.
-- **Estado y dependencias:** mantiene observaciones y referencias de evidencia; C19 conserva el estado operativo y C08 las autorizaciones. Recibe eventos de los componentes participantes.
-- **Límite y fallo:** no duplica indiscriminadamente transcripciones o secretos. La retención depende del tipo de registro y política de la instancia. Una métrica no disponible se declara como tal, diferenciando estimaciones de mediciones.
-- **Comprobación:** puede reconstruirse un efecto y su autorización sin depender del recuerdo del agente; un fallo de registro deja visible la falta de evidencia.
+- **Input → output:** events/results → traces correlated by instance, job, run and action.
+- **State and dependencies:** observations/evidence references; C19 owns operational state and C08 authorizations. Receives participating components' events.
+- **Boundary and failure:** avoid indiscriminate transcript/secret duplication. Retention follows record type and instance policy. Declare unavailable metrics and distinguish estimates from measurements.
+- **Check:** reconstruct an effect and its authorization without agent memory; logging failure leaves missing evidence visible.
 
-### C29. Verificación estructural, funcional y evals
+### C29. Structural/functional verification and evals
 
-Comprueba cuatro dimensiones: recursos y contratos presentes; posibilidad de ejecución; corrección del resultado; fiabilidad con uso real. Combina validadores deterministas, casos de prueba, rúbricas semánticas y revisión humana según la propiedad evaluada.
+Check four dimensions: resources/contracts present, execution possible, results correct and reliability in real use. Combine deterministic validators, test cases, semantic rubrics and human review according to the property.
 
-- **Entrada → salida:** componente o resultado, criterio y evidencia → comprobación con alcance, versión, resultado y explicación.
-- **Estado y dependencias:** mantiene definiciones de pruebas y resultados identificados; usa C04–C06, C14, C17–C21 y C28.
-- **Límite y fallo:** un archivo existente o una sección de texto no demuestran calidad. Las pruebas con efectos deben usar un alcance autorizado. Se distingue fallo confirmado, ausencia de verificación y requisito no aplicable.
-- **Comprobación:** casos negativos conocidos son detectados; una transcripción sin decisiones no recibe crédito por decisiones inventadas; cambiar de backend o runtime conserva criterios de aceptación.
+- **Input → output:** component/result, criterion and evidence → check with scope, version, result and explanation.
+- **State and dependencies:** test definitions/identified results; uses C04–C06, C14, C17–C21 and C28.
+- **Boundary and failure:** a file or text section does not establish quality. Effectful tests need authorized scope. Distinguish confirmed failure, absent verification and inapplicable requirements.
+- **Check:** detect known negatives; invented decisions earn no credit for a decision-free transcript; backend/runtime changes preserve acceptance criteria.
 
-### C30. Auditoría, consolidación y mejora
+### C30. Auditing, consolidation and improvement
 
-Evalúa la salud de la instancia y prioriza cambios a partir de evidencia. Mantiene hallazgos con identidad estable y cobertura explícita. La consolidación de conocimiento y la mejora de procedimientos tienen destinos y criterios diferentes.
+Assess instance health and prioritize evidence-based changes. Maintain stable finding identities and explicit coverage. Knowledge consolidation and procedure improvement have different destinations/criteria.
 
-- **Entrada → salida:** uso real, observaciones, evals y revisiones previas → hallazgos, prioridades y una mejora verificable.
-- **Estado y dependencias:** conserva historial de auditoría, estado actual de hallazgos y propuestas de mejora; usa C06, C12–C15 y C28–C29.
-- **Límite y fallo:** auditar no autoriza a reparar ni ampliar autonomía. Una mejora de reglas o capacidades pasa por validación y activación dentro del alcance autorizado. La consolidación no borra evidencia necesaria para decisiones o entregas.
-- **Comprobación:** un defecto se detecta, se repara y se cierra con evidencia nueva; puede reabrirse sin sobrescribir la evaluación anterior.
+- **Input → output:** real use, observations, evals and prior reviews → findings, priorities and a verifiable improvement.
+- **State and dependencies:** audit history, current finding state and improvement proposals; uses C06, C12–C15 and C28–C29.
+- **Boundary and failure:** auditing does not authorize repair or expanded autonomy. Rule/capability improvements require validation and activation within authorized scope. Consolidation preserves evidence needed for decisions/deliveries.
+- **Check:** detect, repair and close a defect with new evidence; reopen it without overwriting previous assessment.
 
-## 13. Dónde vive cada autoridad
+## 13. Where each authority lives
 
-La persistencia física corresponde al backend; la autoridad lógica pertenece al componente responsable. Un mismo recurso no debe tener varios escritores independientes que mantengan versiones distintas del mismo estado.
+Backends provide physical persistence; responsible components own logical authority. One resource must not have independent writers maintaining contradictory versions of the same state.
 
-| Información | Autoridad lógica | Otras representaciones |
+| Information | Logical authority | Other representations |
 |---|---|---|
-| Definición de un tipo de sistema | C02: blueprint y módulos versionados. | Documentación y ejemplos. |
-| Configuración deseada de una instalación | C03: especificación resuelta. | Formularios o asistentes de configuración. |
-| Cambios autorizados para un despliegue | C04: plan vigente vinculado a C08. | Vista previa y reporte. |
-| Componentes y recursos instalados | C06: manifiesto. | Panel de administración. |
-| Política y autorizaciones | C08: registros con actor y alcance. | Prompts, diálogos y referencias de auditoría. |
-| Identidades y relaciones internas | C10: modelo y registros de entidad. | Índices y grafos. |
-| Estado general de un proyecto | C11 o fuente externa declarada en C14. | Página, dashboard o nota hub. |
-| Conocimiento y decisiones aceptadas | C13, con procedencia y versiones. | Resúmenes o contextos de sesión. |
-| Artefacto aprobado o enviado | C16: versión exacta. | Previsualizaciones. |
-| Estado de trabajo, ejecución y efectos | C19, actualizado mediante C21 para acciones. | Cola, paneles y resúmenes de continuidad. |
-| Fuente de un dato externo | Sistema externo según C14. | Snapshot local fechado cuando corresponda. |
-| Observaciones de ejecución | C28: trazas y evidencia. | Métricas y reportes. |
-| Pruebas y resultados | C29. | Reportes de verificación. |
-| Hallazgos y revisiones | C30. | Vista de salud actual. |
+| System-type definition | C02: versioned blueprint/modules. | Documentation/examples. |
+| Desired installation configuration | C03: resolved specification. | Forms/configuration assistants. |
+| Authorized deployment changes | C04: current plan linked to C08. | Preview/report. |
+| Installed components/resources | C06: manifest. | Administration panel. |
+| Policy and authorizations | C08: records with actor/scope. | Prompts, dialogs and audit references. |
+| Internal identities/relationships | C10: entity model/records. | Indexes/graphs. |
+| Overall project state | C11 or an external source declared in C14. | Page, dashboard or hub note. |
+| Accepted knowledge/decisions | C13, with provenance/versions. | Summaries/session context. |
+| Approved/sent artifact | C16: exact version. | Previews. |
+| Job, run and effect state | C19, updated through C21 for actions. | Queue, dashboards and continuity summaries. |
+| External fact source | External system according to C14. | Dated local snapshot where appropriate. |
+| Execution observations | C28: traces/evidence. | Metrics/reports. |
+| Tests/results | C29. | Verification reports. |
+| Findings/reviews | C30. | Current-health view. |
 
-Estado actual e historial tienen usos diferentes. El sistema conserva versiones y eventos necesarios para explicar cambios; una vista del estado actual no reemplaza la evidencia histórica. Los índices reconstruibles se identifican como tales y no se respaldan como si fueran la única copia del conocimiento.
+Current state and history serve different uses. Retain versions/events needed to explain changes; a current-state view does not replace historical evidence. Reconstructible indexes are labeled as such and not backed up as the only knowledge copy.
 
-## 14. Contratos que conectan los componentes
+## 14. Contracts connecting components
 
-Cada contrato tiene versión, propietario, entradas, salidas, precondiciones, efectos, errores y comprobaciones. El siguiente nivel resume las fronteras principales:
+Every contract has a version, owner, inputs, outputs, preconditions, effects, errors and checks. Main boundaries:
 
-| Contrato | Entrada | Salida | Propiedad esencial |
+| Contract | Input | Output | Essential property |
 |---|---|---|---|
-| Construcción | Necesidad y destinos. | Especificación, plan, recursos y verificación. | Crear y mantener una instancia sin mezclar sus datos con la distribución. |
-| Instancia | Blueprint resuelto y configuración. | Identidad, inventario y referencias operativas. | Conocer qué sistema se está utilizando y bajo qué versiones. |
-| Información | Entidades, relaciones y consultas. | Datos con identidad, revisión y procedencia. | Conservar significado entre representaciones. |
-| Capacidad/workflow | Entradas, contexto y versiones. | Resultado, evidencia y estado. | Aceptación explícita y efectos identificados. |
-| Ejecución | Trabajo autorizado y ejecutor compatible. | Run persistente y resultados conciliables. | Continuidad, exclusión de escrituras conflictivas y reintentos controlados. |
-| Adaptación | Operación lógica y requisitos. | Operación del destino y garantías observadas. | No ocultar capacidades ausentes ni ampliar permisos. |
-| Verificación | Criterio, objeto y evidencia. | Resultado con cobertura y límites. | Separar declaración, operación y aceptación. |
+| Construction | Need and targets. | Specification, plan, resources and verification. | Create/maintain instances without mixing their data into the distribution. |
+| Instance | Resolved blueprint/configuration. | Identity, inventory and operational references. | Know the system in use and its versions. |
+| Information | Entities, relationships and queries. | Data with identity, revision and provenance. | Preserve meaning across representations. |
+| Capability/workflow | Inputs, context and versions. | Result, evidence and state. | Explicit acceptance and identified effects. |
+| Execution | Authorized job and compatible executor. | Persistent run and reconcilable results. | Continuity, conflicting-write exclusion and controlled retries. |
+| Adaptation | Logical operation and requirements. | Target operation and observed guarantees. | Neither hide missing capabilities nor expand permissions. |
+| Verification | Criterion, object and evidence. | Result with coverage/limits. | Separate declaration, operation and acceptance. |
 
-Los documentos explican procedimientos y decisiones. Los esquemas permiten comprobar estructura. El código o servicio elegido aplica las validaciones mecánicas, control de revisiones y transiciones. Los agentes realizan interpretación y producción de resultados. Una garantía escrita en lenguaje natural solo se considera aplicada cuando su mecanismo de cumplimiento está identificado y probado.
+Documents explain procedures/decisions. Schemas check structure. Selected code/services enforce mechanical validation, revision control and transitions. Agents interpret context and produce results. A natural-language guarantee is enforced only when its mechanism is identified and tested.
 
-## 15. Los recorridos completos del ecosistema
+## 15. Complete ecosystem paths
 
-### Crear una instalación
+### Create an installation
 
-Necesidad → diagnóstico → blueprint → especificación resuelta → inspección del destino → plan → autorización vigente → aplicación → comprobación estructural → recuperación de contexto → primer workflow → manifiesto y handoff.
+Need → diagnosis → blueprint → resolved specification → destination inspection → plan → current authorization → application → structural checks → context retrieval → first workflow → manifest and handoff.
 
-El constructor conserva checkpoints antes de que la instancia esté lista. Puede reutilizar las mismas bibliotecas de estado y verificación que el sistema resultante, sin exigir que una instalación incompleta ya esté operativa.
+The builder retains checkpoints before the instance is ready. It may reuse the resulting system's state/verification libraries without requiring an incomplete installation to be operational already.
 
-### Realizar y continuar trabajo
+### Perform and continue work
 
-Solicitud → job identificado → selección de workflow → contexto autorizado → ejecutor elegible → pasos y evidencia → validación → artefacto → actualización de estado → siguiente paso o cierre.
+Request → identified job → workflow selection → authorized context → eligible executor → steps/evidence → validation → artifact → state update → next step or completion.
 
-Antes de una escritura relevante se comprueban permisos y revisiones. El agente entrante recibe objetivo, versiones, fuentes, pasos completados, efectos confirmados, incertidumbres, artefactos y acción pendiente. No necesita una copia de toda la conversación.
+Check permissions/revisions before meaningful writes. An incoming agent receives the objective, versions, sources, completed steps, confirmed effects, uncertainties, artifacts and pending action. It does not need the entire conversation.
 
-### Convertir experiencia en conocimiento
+### Turn experience into knowledge
 
-Experiencia → captura identificada → clasificación → contraste y resolución de contradicciones → integración autorizada → conocimiento o decisión → relaciones útiles → recuperación en trabajo posterior.
+Experience → identified capture → classification → cross-checking/conflict resolution → authorized integration → knowledge/decision → useful relationships → retrieval in later work.
 
-Una instrucción clara del usuario puede alimentar directamente el registro correspondiente. La promoción selectiva no obliga a pedir confirmación de nuevo para información ya inequívoca y autorizada.
+A clear user instruction may directly feed its corresponding record. Selective promotion does not require repeated confirmation for already unambiguous, authorized information.
 
-### Mejorar el sistema
+### Improve the system
 
-Uso real → observaciones → evals → auditoría → prioridad → cambio acotado → prueba → activación autorizada → seguimiento.
+Real use → observations → evals → audit → priority → bounded change → test → authorized activation → follow-up.
 
-Una mejora puede corregir contexto, routing, un procedimiento o un adaptador. La memoria del usuario y las reglas ejecutables tienen ciclos de revisión distintos.
+Improvements may correct context, routing, procedures or adapters. User memory and executable rules have different review cycles.
 
-### Actualizar o reparar una instalación
+### Update or repair an installation
 
-Manifiesto y evidencia → detectar cambio o defecto → compatibilidad → plan → protección de datos y personalizaciones → aplicación por pasos → verificación → continuidad.
+Manifest/evidence → change/defect detection → compatibility → plan → data/customization protection → stepwise application → verification → continuity.
 
-Una migración conserva la correspondencia entre identificadores y declara cómo trata versiones históricas. Si una acción no puede revertirse, el plan lo hace explícito y define la estrategia disponible antes de ejecutarla.
+Migrations preserve identifier mappings and declare treatment of historical versions. For irreversible actions, the plan states this and defines available strategy before execution.
 
-## 16. Un ejemplo de principio a fin
+## 16. An end-to-end example
 
-Una consultora necesita transformar reuniones en propuestas de proyecto. Quiere conservar decisiones, recuperar compromisos y continuar desde diferentes agentes. Elige una interfaz web con un backend de registros; otra persona podría usar archivos y un editor. El blueprint conserva el mismo significado.
+A consultancy needs to turn meetings into project proposals. It wants retained decisions, retrievable commitments and continuity across agents. It selects a web interface with a record backend; another person might use files/editor. The blueprint preserves meaning.
 
-**Construcción.** C01 identifica un primer resultado: producir un brief sustentado en la reunión. C02 selecciona los módulos de conocimiento y operación. C03 resuelve versiones, destino y políticas. C04 planifica entidades de proyecto, fuente, decisión, artefacto y ejecución, junto a las vistas y procedimientos. C05 crea o reutiliza recursos y C29 comprueba el primer recorrido. C06 registra lo instalado.
+**Construction.** C01 identifies the first result: a meeting-supported brief. C02 selects knowledge/operation modules. C03 resolves versions, destination and policies. C04 plans project, source, decision, artifact and run entities, views and procedures. C05 creates/reuses resources; C29 tests the first path. C06 records installation.
 
-**Ingreso.** Una reunión recibe identidad de fuente. C25 obtiene la transcripción con acceso autorizado; C12 registra su procedencia y clasifica propuestas, compromisos y preguntas. C14 identifica la versión de la transcripción y el ámbito temporal. Una idea planteada durante la reunión permanece como propuesta cuando no existe una decisión.
+**Ingestion.** A meeting receives source identity. C25 retrieves its transcript with authorized access; C12 records provenance and classifies proposals, commitments and questions. C14 identifies transcript version/time scope. An idea remains a proposal when no decision exists.
 
-**Trabajo.** C19 crea una ejecución del workflow. C15 recupera el proyecto y las decisiones pertinentes. C20 selecciona un agente compatible. C17 produce un borrador; C29 comprueba que sus afirmaciones están sustentadas y que sus preguntas abiertas siguen visibles. C16 conserva la versión y C11 actualiza el siguiente paso del proyecto.
+**Work.** C19 creates a workflow run. C15 retrieves the project/relevant decisions. C20 selects a compatible agent. C17 drafts; C29 checks supported claims and visible open questions. C16 preserves the version; C11 updates the project's next step.
 
-**Interrupción.** El agente termina la sesión antes de una revisión pendiente. C19 conserva el estado, las versiones de fuentes y el artefacto. Otro agente comprueba acceso y vigencia, lee ese paquete de continuidad y retoma. Si la transcripción cambió, revalida el paso afectado antes de reutilizar su resultado.
+**Interruption.** The agent ends its session before pending review. C19 retains state, source versions and artifact. Another agent checks access/currency, reads continuity context and resumes. If the transcript changed, it revalidates the affected step before reusing its result.
 
-**Entrega.** La persona autoriza enviar una versión concreta a un destinatario determinado. C08 conserva ese alcance y C21 prepara la acción identificada. El conector realiza el envío y devuelve evidencia. Si la respuesta se pierde, el sistema comprueba el destino antes de reintentar; si no puede resolverlo, mantiene el efecto como incierto. El texto realmente enviado queda preservado en C16.
+**Delivery.** The person authorizes sending a specific version to a specified recipient. C08 retains scope; C21 prepares the identified action. The connector sends and returns evidence. If the response is lost, check the destination before retry; if unresolved, keep the effect uncertain. C16 preserves the exact sent text.
 
-**Aprendizaje.** Una conclusión útil se incorpora a C13 con procedencia. El historial de C28 permite observar una deficiencia de recuperación; C30 propone una mejora concreta y C29 la prueba antes de activarla. Se conserva qué cambio se hizo y qué evidencia demostró su utilidad.
+**Learning.** C13 receives a useful conclusion with provenance. C28 history reveals a retrieval defect; C30 proposes a concrete improvement and C29 tests it before activation. Preserve the change and evidence of its usefulness.
 
-**Evolución.** Una nueva versión del workflow introduce un campo adicional. C06 identifica la compatibilidad y las personalizaciones. C04 genera un plan y C05 aplica la actualización sin sustituir propuestas anteriores ni perder decisiones. Una ejecución abierta utiliza su versión compatible o se migra explícitamente.
+**Evolution.** A new workflow version adds a field. C06 identifies compatibility/customizations. C04 plans and C05 applies the update without replacing earlier proposals or losing decisions. Open runs retain compatible versions or migrate explicitly.
 
-Este ejemplo conecta construcción, memoria, ejecución, control, integración, verificación y evolución sobre un mismo caso. Ninguna parte exige una aplicación específica.
+This connects construction, memory, execution, control, integration, verification and evolution in one case. No part requires a specific application.
 
-## 17. Estructura física del repositorio constructor
+## 17. Builder repository structure
 
-La siguiente distribución organiza fuentes del producto. No es una plantilla obligatoria para los datos de cada instalación.
+This layout organizes product sources. It is not a mandatory instance-data template.
 
 ```text
 repository/
-├── README.md                 entrada al producto y primer recorrido
-├── core/                     modelo, contratos y protocolos comunes
-├── blueprints/               definiciones de sistemas construibles
-├── modules/                  composición de capacidades y dependencias
-├── presets/                  valores iniciales y ejemplos por uso
-├── skills/                   paquetes de capacidades
-├── workflows/                procesos y sus contratos
-├── builder/                  diagnóstico, resolución, planes y compilación
-├── lifecycle/                aplicación, adopción, versiones y migración
-├── execution/                coordinación, efectos y recuperación
+├── README.md                 product entry point and first path
+├── core/                     shared model, contracts and protocols
+├── blueprints/               definitions of buildable systems
+├── modules/                  capability and dependency composition
+├── presets/                  initial values and use-case examples
+├── skills/                   capability packages
+├── workflows/                processes and their contracts
+├── builder/                  diagnosis, resolution, plans and compilation
+├── lifecycle/                application, adoption, versions and migration
+├── execution/                coordination, effects and recovery
 ├── adapters/
-│   ├── runtimes/             entornos de agentes
-│   ├── backends/             almacenamiento
-│   ├── connections/          herramientas y fuentes externas
-│   ├── interfaces/           acceso humano y gateway cuando se requiera
-│   └── schedulers/           ejecución recurrente opcional
-├── evals/                    escenarios y criterios de comportamiento
-├── tests/                    contratos y mecanismos implementados
-├── examples/                 instancias de demostración con datos sintéticos
-└── docs/                     fundamentos, componentes, uso y contribución
+│   ├── runtimes/             agent environments
+│   ├── backends/             storage
+│   ├── connections/          tools and external sources
+│   ├── interfaces/           human access and gateway when needed
+│   └── schedulers/           optional recurring execution
+├── evals/                    behavioral scenarios and criteria
+├── tests/                    implemented contracts and mechanisms
+├── examples/                 demonstration instances with synthetic data
+└── docs/                     foundations, components, use and contribution
 ```
 
-Las dependencias apuntan hacia los contratos comunes. Un adaptador implementa el núcleo; el núcleo no importa convenciones de una marca. El builder utiliza adaptadores para planificar y aplicar. Una instancia operativa necesita sus componentes efectivos y estado, no toda la herramienta de desarrollo del producto.
+Dependencies point toward common contracts. Adapters implement the core; the core does not import brand conventions. The builder uses adapters to plan/apply. An operational instance needs its effective components/state, not the entire product development toolset.
 
-La configuración de instancia puede serializarse en un formato abierto y validable, con identificadores, versiones, módulos, políticas y destinos. Las rutas de carpetas o nombres de tablas aparecen en la configuración del adaptador que las materializa.
+Instance configuration can serialize to an open, validatable format with identifiers, versions, modules, policies and targets. Folder paths/table names live in the adapter configuration that materializes them.
 
-## 18. Perfiles de despliegue y límites de compatibilidad
+## 18. Deployment profiles and compatibility limits
 
-| Perfil | Componentes activados | Condición de aceptación |
+| Profile | Active components | Acceptance condition |
 |---|---|---|
-| Interactivo | Núcleo, memoria, capacidades, coordinador y acceso humano/agente. | Una tarea útil produce resultado y continuidad verificables. |
-| Conectado | Interactivo más fuentes y herramientas externas necesarias. | Conexiones y efectos funcionan dentro de su alcance autorizado. |
-| Recurrente | Conectado o interactivo más disparadores y ejecutor disponible. | Existen ejecuciones reales, deduplicación y recuperación de interrupciones. |
-| Acceso remoto | Perfil anterior más gateway o mecanismo de acceso equivalente. | Clientes autorizados usan el mismo estado sin ampliar permisos. |
+| Interactive | Kernel, memory, capabilities, coordinator and human/agent access. | Useful tasks produce verifiable results and continuity. |
+| Connected | Interactive plus necessary external sources/tools. | Connections/effects work within authorized scope. |
+| Recurrent | Connected or interactive plus triggers and an available executor. | Actual runs, deduplication and interruption recovery. |
+| Remote access | Previous profile plus gateway/equivalent access. | Authorized clients share state without expanding permissions. |
 
-Son perfiles combinables. Una responsabilidad lógica puede implementarse con una biblioteca y un único proceso. Un despliegue distribuido requiere garantías adicionales de concurrencia y acceso que deben probarse.
+Profiles are composable. A logical responsibility may use a library and one process. Distributed deployment requires additional tested concurrency/access guarantees.
 
-La compatibilidad se evalúa por versión, capacidad y escenario. El sistema diferencia soporte declarado, disponibilidad observada, alcance autorizado y comportamiento verificado. Un cliente sin escritura puede preparar una propuesta; el resultado se identifica como pendiente de aplicación, no como instalación completada.
+Evaluate compatibility by version, capability and scenario. Distinguish declared support, observed availability, authorized scope and verified behavior. A client without write access may prepare a proposal; label it pending application, not completed installation.
 
-La primera implementación cubre un blueprint completo, un backend adecuado al piloto y un runtime. Un segundo backend de representación diferente y un segundo runtime validan temprano la independencia de las abstracciones. La puerta de calidad exige ese contraste antes de declarar portabilidad general. Gateway, múltiples schedulers y selección automática de agentes se activan cuando el caso lo requiera.
+The first implementation covers one complete blueprint, a suitable pilot backend and one runtime. A second backend with a different representation and a second runtime test abstraction independence early. This comparison is required before general portability claims. Enable gateways, multiple schedulers and automatic agent selection when needed.
 
-## 19. Criterios de aceptación de la arquitectura
+## 19. Architecture acceptance criteria
 
-1. El constructor crea dos instancias independientes desde la misma versión y conserva su separación de datos.
-2. Un destino existente se adopta sin imponer una organización física distinta ni duplicar sus entidades.
-3. Una sesión nueva encuentra propósito, decisiones y siguiente paso de un proyecto.
-4. Capturar una hipótesis no la convierte automáticamente en un hecho confirmado.
-5. Las consultas actuales e históricas usan evidencia temporalmente pertinente.
-6. Un entregable aprobado conserva su contenido exacto y la versión utilizada.
-7. Otro agente puede continuar una ejecución desde estado durable y revisar qué sigue vigente.
-8. Una edición concurrente se detecta antes de sobrescribir contenido.
-9. Un efecto externo incierto se reconcilia o mantiene pendiente sin repetición automática.
-10. Una autorización conserva su alcance; cambiar de herramienta o agente no lo amplía.
-11. Una actualización preserva personalizaciones e identifica ejecuciones incompatibles.
-12. Exportar e importar a otro backend conserva identidades, relaciones y procedencia.
-13. Una auditoría detecta un defecto conocido y exige evidencia nueva para cerrarlo.
-14. La cadencia se considera operativa solo tras ejecuciones reales en sus condiciones de uso.
-15. Un componente sin verificación suficiente aparece con su límite explícito.
+1. The builder creates two independent instances from the same version and preserves data separation.
+2. Existing targets are adopted without imposing another physical organization or duplicating entities.
+3. New sessions find project purpose, decisions and next step.
+4. Captured hypotheses do not automatically become confirmed facts.
+5. Current/historical queries use temporally relevant evidence.
+6. Approved deliverables retain exact content and the version used.
+7. Another agent can continue from durable state and review what remains valid.
+8. Concurrent edits are detected before overwriting content.
+9. Uncertain external effects reconcile or remain pending without automatic repetition.
+10. Authorization retains scope; changing tools/agents does not expand it.
+11. Updates preserve customizations and identify incompatible runs.
+12. Export/import to another backend preserves identities, relationships and provenance.
+13. Audits detect known defects and require new evidence for closure.
+14. Cadence is operational only after real runs under intended conditions.
+15. Components without sufficient verification show explicit limits.
 
-Los presupuestos de tiempo, contexto, llamadas y coste se fijan por trabajo cuando sean relevantes y observables. El coordinador controla los límites implementables; los adaptadores declaran métricas no disponibles. El sistema permite cancelación y evita programar nuevos pasos después de ella, registrando los efectos que ya hubieran ocurrido.
+Set time, context, call and cost budgets per job when relevant/observable. The coordinator controls enforceable limits; adapters declare unavailable metrics. Support cancellation and prevent new steps afterward while recording effects already performed.
 
-## 20. Cómo usar este documento para construir y explicar
+## 20. Using this document to build and explain
 
-Para una primera lectura, seguir definición, tres objetos, principios, mapa y ejemplo completo. Para implementar un módulo, consultar su ficha, propietario de estado, contratos y criterios de aceptación. Para revisar una decisión técnica, comprobar que conserva las responsabilidades aunque cambie la tecnología.
+For a first reading, follow the definition, three objects, principles, map and complete example. To implement a module, consult its component entry, state owner, contracts and acceptance criteria. To review a technical choice, verify responsibility preservation even when technology changes.
 
-El orden de desarrollo comienza con un blueprint y su recorrido útil; continúa con modelo y autoridad, contratos, adaptación inicial, construcción, ejecución, recuperación y verificación. El segundo destino comprueba independencia. Las extensiones llegan mediante módulos con requisitos y pruebas.
+Development starts with a blueprint/useful path, then model/authority, contracts, initial adaptation, construction, execution, recovery and verification. The second target tests independence. Extensions arrive as modules with requirements/tests.
 
-Cada componente tendrá durante la implementación una especificación ejecutable que fije esquemas concretos, operaciones, errores, límites y fixtures. Este documento es la referencia conceptual común y explica por qué esas piezas existen y cómo colaboran.
+During implementation, each component gains an executable specification with concrete schemas, operations, errors, limits and fixtures. This document is the shared conceptual reference explaining why the parts exist and how they collaborate.
 
-
-[Volver a la entrada del proyecto](../README.md)
+[Back to the project](../README.md)

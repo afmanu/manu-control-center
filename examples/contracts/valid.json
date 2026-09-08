@@ -683,7 +683,7 @@
     "input": {
       "project": {
         "id": "project-demo",
-        "purpose": "Preparar una página informativa para un servicio ficticio"
+        "purpose": "Prepare an information page for a fictional service"
       },
       "source": {
         "id": "meeting-demo",
@@ -693,22 +693,22 @@
           {
             "id": "s1",
             "speaker": "Responsable",
-            "text": "Decidimos que el primer entregable será una página informativa."
+            "text": "We decided the first deliverable will be an information page."
           },
           {
             "id": "s2",
             "speaker": "Colaborador",
-            "text": "Propongo añadir un chatbot; todavía no lo hemos aprobado."
+            "text": "I propose adding a chatbot; we have not approved it yet."
           },
           {
             "id": "s3",
             "speaker": "Responsable",
-            "text": "Acordamos revisar el texto antes de publicarlo."
+            "text": "We agreed to review the text before publishing it."
           },
           {
             "id": "s4",
             "speaker": "Colaborador",
-            "text": "¿Qué presupuesto tenemos? Todavía no lo sabemos."
+            "text": "What is our budget? We do not know yet."
           }
         ]
       }
@@ -716,31 +716,31 @@
     "expected": {
       "decisions": [
         {
-          "meaning": "El primer entregable es una página informativa",
+          "meaning": "The first deliverable is an information page",
           "source_segment": "s1"
         },
         {
-          "meaning": "Revisar el texto antes de publicarlo",
+          "meaning": "Review the text before publishing it",
           "source_segment": "s3"
         }
       ],
       "proposals": [
         {
-          "meaning": "Añadir un chatbot, pendiente de aprobación",
+          "meaning": "Add a chatbot, pending approval",
           "source_segment": "s2"
         }
       ],
       "open_questions": [
         {
-          "meaning": "Presupuesto sin definir",
+          "meaning": "Budget undefined",
           "source_segment": "s4"
         }
       ],
       "must_not_assert": [
-        "Presupuesto confirmado",
-        "Fecha de entrega confirmada",
-        "Chatbot aprobado",
-        "Permiso para publicar"
+        "Confirmed budget",
+        "Confirmed delivery date",
+        "Approved chatbot",
+        "Permission to publish"
       ]
     }
   }

@@ -1,222 +1,221 @@
-> ANTECEDENTE HISTÓRICO. No establece el estado ni el alcance actuales. Prevalecen [las decisiones vigentes](../docs/decisions.md) y [la arquitectura](../docs/architecture.md). Las recomendaciones antiguas se conservan como contexto.
+> HISTORICAL BACKGROUND. This does not establish current status or scope. [Current decisions](../docs/decisions.md) and [architecture](../docs/architecture.md) prevail. Earlier recommendations are retained as context. English translation; original text is preserved in Git history.
 
-# Revisión de la conversación de ChatGPT sobre Universal AI OS
+# Review of the ChatGPT Universal AI OS conversation
 
-## Fuente, alcance y dictamen
+## Source, scope and assessment
 
-Fuente: [Revisión arquitectónica AIS OS](https://chatgpt.com/share/6a9fb953-4dd4-83eb-82da-79510772401c), compartida por Manu. El lector web devolvió un error; la conversación se abrió y leyó mediante el navegador. El texto principal recuperado contenía 97.745 caracteres, aproximadamente 12.346 palabras. Se revisaron el análisis de AIS-OS, la comparación con el instalador, la propuesta de 35 apartados y la deconstrucción final de 60 apartados. Las referencias numéricas de esta nota corresponden al desglose final salvo indicación contraria.
+Source: [AIS OS architectural review](https://chatgpt.com/share/6a9fb953-4dd4-83eb-82da-79510772401c), shared by Manu. The web reader returned an error; the conversation was opened/read through the browser. Retrieved main text contained 97,745 characters, approximately 12,346 words. The review covered AIS-OS analysis, installer comparison, the 35-section proposal and final 60-section breakdown. Numbered references below refer to the final breakdown unless stated otherwise.
 
-Se contrasta con [la especificación v0.2](architecture-v0.2.md) y con la aclaración actual de Manu: el producto es un **repositorio constructor**, independiente de agente, backend e interfaz. La conversación aportada es material de diseño que se revisa; sus propuestas de aprobación o implementación no se ejecutan como instrucciones de esta sesión.
+Compare with [v0.2 specification](architecture-v0.2.md) and Manu's clarified scope: an agent-, backend- and interface-independent **builder repository**. The supplied conversation is reviewed design material; its approval/implementation proposals are not executed as current-session instructions.
 
-**Dictamen:** base conceptual útil y amplia para definir el sistema resultante. Requiere separar el producto constructor de las instancias, retirar la dependencia implícita del filesystem y precisar autoridad, persistencia, ejecución y garantías. Sus 60 apartados constituyen un catálogo de preocupaciones, no 60 servicios ni 60 carpetas que deban implementarse.
+**Assessment:** a useful, broad conceptual foundation for the resulting system. It needs separation of builder product/instances, removal of implicit filesystem dependence, and precise authority, persistence, execution and guarantees. Sixty sections form a concern catalog, not sixty services/folders to implement.
 
-La revisión no instala software ni convierte automáticamente los hallazgos en políticas canónicas. No se ha probado un Universal AI OS operativo.
+This review installs no software and does not automatically promote findings to canonical policy. No operational Universal AI OS has been tested.
 
-## Aportaciones que conviene conservar
+## Contributions to preserve
 
-1. Cinco planos comprensibles: control; estado/conocimiento; ejecución; integración; verificación. Sirven para explicar responsabilidades sin imponer infraestructura.
-2. Separación del núcleo versionado y los datos de cada usuario. Facilita actualizar componentes sin reemplazar la memoria de la instancia.
-3. Autoridad, procedencia y vigencia explícitas. Recuperar información exige interpretar qué significa y para qué pregunta es válida.
-4. Distinción de procedimiento y contrato verificable, con entradas, efectos, aceptación y errores.
-5. Estado de ejecución externo a la conversación y recuperación basada en evidencia.
-6. Adaptadores de runtime derivados de fuentes mantenidas y paridad semántica comprobada.
-7. Verificación estructural, ejecución, calidad del resultado y fiabilidad con uso real como dimensiones diferentes.
-8. Dos ciclos de aprendizaje: desarrollo del conocimiento y mejora del propio sistema. Son compatibles con el ciclo de ejecución del trabajo; no compiten como taxonomías.
-9. Versiones, migraciones, historial de auditoría e identificación de fallos desde el diseño.
+1. Five understandable planes: control, state/knowledge, execution, integration and verification. They explain responsibilities without prescribing infrastructure.
+2. Separation of versioned core/user data, allowing component updates without replacing instance memory.
+3. Explicit authority, provenance and currency: retrieval must interpret meaning and question-specific validity.
+4. Procedures distinct from verifiable contracts with inputs, effects, acceptance and errors.
+5. Execution state outside the conversation and evidence-based recovery.
+6. Runtime adapters derived from maintained sources with tested semantic parity.
+7. Structural verification, execution, result quality and real-use reliability as distinct dimensions.
+8. Two learning cycles: knowledge development and system improvement. Both coexist with work execution rather than competing taxonomies.
+9. Versions, migrations, audit history and failure identification designed from the start.
 
-## Hallazgos y correcciones
+## Findings and corrections
 
-### R01 — El constructor pierde protagonismo en la propuesta final
+### R01 — The builder loses prominence in the final proposal
 
-La comparación inicial identifica correctamente el patrón instalador que genera otro entorno. Sin embargo, el árbol de la propuesta de 35 apartados combina `kernel`, `workspace`, `audits`, `generated`, aplicaciones y scripts. El apartado 42 del desglose final reduce el instalador a bootstrap. Faltan fronteras precisas para blueprint, especificación de instancia, resolución de módulos, plan, recursos gestionados y reconciliación tras cambios.
+The initial comparison correctly identifies an installer generating another environment. However, the 35-section proposal's tree combines `kernel`, `workspace`, `audits`, `generated`, applications and scripts. Final section 42 reduces installation to bootstrap. Precise boundaries are missing for blueprints, instance specifications, module resolution, plans, managed resources and post-change reconciliation.
 
-**Corrección:** documentar dos arquitecturas relacionadas: el repositorio constructor y el sistema que produce. El constructor recibe una necesidad, compone un blueprint, comprueba destinos, genera un plan, lo aplica dentro del alcance autorizado y entrega una instancia con evidencia. Sigue disponible para adopción, actualización y reparación aunque no intervenga en el trabajo diario.
+**Correction:** document two related architectures: the builder repository and its output system. The builder receives a need, composes a blueprint, checks targets, generates/applies a scoped plan and delivers an evidenced instance. It remains available for adoption, updates and repair even when absent from daily work.
 
-**Prueba:** dos usuarios generan instancias independientes desde la misma versión; actualizar una conserva sus datos y no altera la otra ni el repositorio de distribución.
+**Test:** two users generate independent instances from one version; updating one preserves its data and affects neither the other nor distribution sources.
 
-### R02 — La independencia de Obsidian no alcanza la independencia del backend
+### R02 — Obsidian independence does not establish backend independence
 
-Los apartados 6, 8 y el árbol previo conservan Markdown, frontmatter, wikilinks y filesystem como sustrato. Eso elimina dependencia del editor Obsidian, pero mantiene una representación física obligatoria. No cumple el alcance más amplio confirmado por Manu.
+Sections 6/8 and the earlier tree retain Markdown, frontmatter, wikilinks and filesystem as substrate. This removes editor dependence while mandating a physical representation, contrary to Manu's broader confirmed scope.
 
-**Corrección:** definir entidades, relaciones, revisiones, consultas y estado antes de su representación. El adaptador materializa documentos, filas, objetos o archivos. Reutilizar [Universal Backend Model](backend-model.md). Obsidian queda en una combinación concreta de backend de archivos e interfaz.
+**Correction:** define entities, relationships, revisions, queries and state before representation. Adapters materialize documents, rows, objects or files. Reuse [Universal Backend Model](backend-model.md). Obsidian becomes one file-backend/interface combination.
 
-**Prueba:** el mismo blueprint funciona sobre dos representaciones diferentes; el núcleo y los contratos de los workflows no necesitan rutas de carpetas. La exportación/importación conserva identificadores, relaciones, procedencia y estado aplicable.
+**Test:** the same blueprint works over two representations; core/workflow contracts require no folder paths. Export/import retains IDs, relationships, provenance and applicable state.
 
-### R03 — Autoridad, origen y vigencia aparecen mezclados
+### R03 — Authority, origin and currency are mixed
 
-El apartado 12 enumera LIVE, CANONICAL, HISTORICAL, DERIVED, CACHE y REFERENCE como clases de fuente. Esas propiedades pueden coexistir: un informe derivado y aprobado puede ser autoridad sobre lo que se presentó en una fecha; una fuente consultada ahora puede contener un dato incorrecto o fuera del alcance de la pregunta.
+Section 12 lists LIVE, CANONICAL, HISTORICAL, DERIVED, CACHE and REFERENCE as source classes. These may coexist: a derived approved report can govern what was presented on a date; a freshly queried source can contain incorrect or irrelevant data.
 
-**Corrección:** separar autoridad por entidad/campo y pregunta; procedencia; periodo de validez; fecha de observación; versión; criterio de verificación y política de caché. La autoridad especifica qué registro se usa para una función; no garantiza verdad absoluta. Ante una pregunta histórica debe consultarse la evidencia de ese momento.
+**Correction:** separate authority by entity/field/question, provenance, validity period, observation date, version, verification criteria and cache policy. Authority defines a record's function, not absolute truth. Historical questions require evidence from the relevant time.
 
-**Prueba:** una consulta sobre el estado actual y otra sobre el estado usado para una decisión pasada obtienen respuestas distintas cuando corresponde, ambas con fuentes.
+**Test:** current-state and past-decision-state queries return different answers when appropriate, both sourced.
 
-### R04 — Material derivado no equivale siempre a material descartable
+### R04 — Derived material is not always disposable
 
-Los apartados 11, 24, 45 y 57 agrupan generación y reconstrucción con reglas demasiado absolutas. Un adaptador compilado o un índice suele poder regenerarse; una propuesta enviada, un informe aprobado, un acta o un artefacto usado en una decisión deben conservar su versión exacta. Reejecutar un modelo no asegura reproducirlos.
+Sections 11, 24, 45 and 57 group generation/reconstruction under overly absolute rules. Compiled adapters/indexes are often regenerable; sent proposals, approved reports, minutes and decision artifacts must retain exact versions. Model reruns cannot guarantee reproduction.
 
-**Corrección:** distinguir recursos generados del sistema, cachés/vistas reconstruibles y artefactos de trabajo versionados. Estos últimos pueden convertirse en registros autorizados mediante una transición explícita. Una interfaz puede escribir en el backend canónico; una aplicación puede aportar interfaz y backend sin violar la separación lógica.
+**Correction:** distinguish generated system resources, reconstructible caches/views and versioned work artifacts. The latter can become authorized records through explicit transitions. Interfaces may write to canonical backends; applications may supply both interface/backend without violating logical separation.
 
-**Prueba:** reconstruir un índice no modifica un informe aprobado; corregir un dato desde una UI actualiza el backend declarado sin crear una segunda autoridad.
+**Test:** index reconstruction does not change approved reports; UI corrections update the declared backend without creating another authority.
 
-### R05 — Las declaraciones necesitan un responsable de ejecución
+### R05 — Declarations need an execution owner
 
-Los apartados 16, 18–20 y 25–26 especifican contratos, estados y routing, pero falta determinar quién comprueba precondiciones, toma un trabajo, valida una transición y registra sus efectos. Un YAML con estados o `idempotent: true` no implementa esas propiedades.
+Sections 16, 18–20 and 25–26 specify contracts, states/routing without establishing who checks preconditions, claims jobs, validates transitions and records effects. YAML states or `idempotent: true` do not implement these properties.
 
-**Corrección:** definir un coordinador mínimo de ejecuciones. Puede ser código común invocado por los agentes o un servicio si el despliegue lo necesita. El agente realiza interpretación y transformaciones; el coordinador gestiona identificación, estados, validaciones y registro de efectos. No obliga a construir otro loop general de LLM ni una plataforma distribuida desde el inicio.
+**Correction:** define a minimal run coordinator, as shared agent-invoked code or a service when needed. Agents interpret/transform; the coordinator handles identity, state, validation and effect records. This requires neither another general LLM loop nor initial distributed infrastructure.
 
-**Prueba:** un estado completado exige evidencia verificable y la ejecución rechaza una transición inválida incluso cuando el agente intenta declararla.
+**Test:** completed states require verifiable evidence; invalid transitions fail even if an agent declares them.
 
-### R06 — Cola, reintentos y continuidad necesitan control de concurrencia
+### R06 — Queues, retries and continuity need concurrency control
 
-Los apartados 19, 20, 26, 31 y 53 describen reanudación e idempotencia, pero no cubren dos trabajadores que toman el mismo trabajo o un efecto externo completado antes de que se pierda su respuesta.
+Sections 19, 20, 26, 31 and 53 describe resumption/idempotency without covering two workers claiming one job or external completion followed by a lost response.
 
-**Corrección:** elegir un escritor por tarea inicialmente o implementar adquisición atómica con propietario y vencimiento. Comprobar revisiones del estado, registrar acciones antes de ejecutarlas, identificar cada efecto y reconciliar resultados inciertos. Una clave de idempotencia debe aplicarse en el límite que produce el efecto, cuando el destino la soporte. Los estados de cola son parte del ciclo de ejecución, con una autoridad definida.
+**Correction:** initially choose one writer per task or implement atomic acquisition with owner/expiry. Check state revisions, record actions before execution, identify effects and reconcile uncertain results. Apply idempotency keys at the effect-producing boundary when supported. Queue states belong to the execution lifecycle with defined authority.
 
-**Prueba:** dos trabajadores no envían el mismo mensaje; tras un timeout se consulta el resultado antes de reintentar. Si no hay forma de saber qué ocurrió, la acción queda incierta y no se repite automáticamente.
+**Test:** two workers do not send the same message; after timeout, query the outcome before retry. If unknowable, leave the action uncertain without automatic repetition.
 
-### R07 — Los manifiestos de capacidades necesitan evidencia de sesión
+### R07 — Capability manifests need session evidence
 
-Los apartados 22 y 25 usan booleanos como `mcp`, `browser` o `background`. No expresan alcance, disponibilidad temporal, versión, sesión autenticada o posibilidad de invocación programática. El ejemplo que exige filesystem y MCP para editar Obsidian tampoco representa las alternativas posibles.
+Sections 22/25 use booleans such as `mcp`, `browser` or `background`. They omit scope, temporal availability, version, authenticated session and programmatic invocation. Requiring filesystem plus MCP for Obsidian editing also omits alternatives.
 
-**Corrección:** separar soporte declarado del adaptador, disponibilidad comprobada en la sesión y autorización por acción. Expresar alternativas de acceso. Para ejecución automática se necesita una vía de lanzamiento disponible y autorizada, con seguimiento de resultado; que una aplicación tenga una función no demuestra que un dispatcher externo pueda usarla.
+**Correction:** separate adapter-declared support, session-tested availability and per-action authorization. Express access alternatives. Automatic execution requires an available, authorized launch path and result tracking; an application's feature does not prove external-dispatcher access.
 
-**Prueba:** al revocarse una credencial o desaparecer un runtime, el router excluye la capacidad; un workflow puede usar escritura local o un servicio de escritura equivalente según su contrato.
+**Test:** revoked credentials or unavailable runtimes remove capabilities from routing; workflows may use local writes or equivalent write services according to contract.
 
-### R08 — Agent Skills es un formato; el contrato adicional requiere implementación propia
+### R08 — Agent Skills is a format; additional contracts need implementation
 
-Los apartados 15–18 proponen `SKILL.md` con `contract.yaml`. La especificación de Agent Skills permite archivos adicionales, pero no define el significado de ese contrato personalizado ni obliga a otros hosts a validarlo. El soporte de herramientas y lenguajes también depende del agente.
+Sections 15–18 propose `SKILL.md` with `contract.yaml`. Agent Skills permits auxiliary files but does not define this custom contract or require other hosts to validate it. Tool/language support also depends on the agent.
 
-**Corrección:** adoptar el formato para distribuir procedimientos, declarar `contract.yaml` como extensión del proyecto y proporcionar su esquema y validador. Vincular cada criterio de aceptación con una prueba, rúbrica o revisión identificable. Comprobar consistencia entre contrato y procedimiento.
+**Correction:** use the format for procedure distribution, declare `contract.yaml` as a project extension and supply its schema/validator. Link acceptance criteria to identifiable tests, rubrics or reviews. Check contract/procedure consistency.
 
-**Prueba:** un paquete válido en formato puede fallar el contrato funcional; un runtime que ignora el contrato no obtiene automáticamente la etiqueta de ejecución verificada. Fuente: [Agent Skills Specification](https://agentskills.io/specification).
+**Test:** format-valid packages can fail functional contracts; runtimes ignoring the contract do not automatically earn verified-execution status. Source: [Agent Skills Specification](https://agentskills.io/specification).
 
-### R09 — Skill, workflow y agente describen dimensiones distintas
+### R09 — Skills, workflows and agents describe different dimensions
 
-El apartado 17 los presenta como una escalera que pasa por script, skill, workflow y agente. Una skill puede empaquetar un workflow completo; un workflow puede combinar código determinista con pasos interpretados por un agente. Su longitud no determina la necesidad de un agente.
+Section 17 presents a ladder from script to skill to workflow to agent. Skills may package entire workflows; workflows may mix deterministic code and agent-interpreted steps. Length does not determine agent necessity.
 
-**Corrección:** usar capability para el resultado reutilizable; skill para su paquete/procedimiento; workflow para la coordinación; agente para el ejecutor con decisiones dinámicas. Determinismo y autonomía son propiedades adicionales. Mantener el principio de mínima complejidad sin convertirlo en jerarquía rígida.
+**Correction:** capability means reusable result; skill means package/procedure; workflow means coordination; agent means a dynamically deciding executor. Determinism/autonomy are additional properties. Keep minimal complexity without a rigid hierarchy.
 
-**Prueba:** el glosario clasifica un workflow con una transformación LLM sin duplicarlo como varios sistemas independientes.
+**Test:** the glossary classifies an LLM-transforming workflow without duplicating it into independent systems.
 
-### R10 — MCP y el gateway deben ser opciones de integración justificadas
+### R10 — MCP and gateways should be justified integration options
 
-La preferencia MCP → API → CLI → export → browser mezcla protocolos, transportes y mecanismos que pueden estar compuestos. El gateway propuesto permite acceso común desde varios clientes, pero `run_skill` introduce ejecución remota, identidad y gestión de trabajos, no solo lectura de memoria.
+The MCP → API → CLI → export → browser preference mixes protocols, transports and composable mechanisms. The gateway provides common client access, but `run_skill` adds remote execution, identity and job management beyond memory reads.
 
-**Corrección:** elegir acceso por cobertura, control, fiabilidad y coste operativo. Mantener contratos neutrales. Añadir gateway cuando exista un cliente que lo necesite. Separar búsqueda/lectura, escritura controlada y ejecución de trabajos; esta última debe devolver identificación y estado, comprobar alcance y registrar efectos. No asumir que todos los clientes admiten ese gateway.
+**Correction:** choose access by coverage, control, reliability and operational cost. Keep neutral contracts. Add a gateway for a client that needs it. Separate search/reading, controlled writes and job execution; jobs return IDs/state, check scope and record effects. Do not assume universal client support.
 
-**Prueba:** un cliente autorizado para recuperar contexto no puede activar una acción externa. La [arquitectura MCP](https://modelcontextprotocol.io/specification/2026-07-28/architecture) mantiene responsabilidades propias en host, clientes y servidores; el protocolo no sustituye por sí mismo el control de workflows.
+**Test:** context-retrieval authorization cannot activate external actions. The [MCP architecture](https://modelcontextprotocol.io/specification/2026-07-28/architecture) assigns host/client/server responsibilities; the protocol does not itself replace workflow control.
 
-### R11 — Política y autonomía requieren alcance y mecanismos de cumplimiento
+### R11 — Policy and autonomy require scope and enforcement mechanisms
 
-Los apartados 27–28, 54–55 aciertan al distinguir capacidad de permiso. Falta concretar dónde se hace cumplir cada restricción y cómo se vincula una autorización al actor, destino, acción y contenido aprobado. El ejemplo de veinte ejecuciones exitosas es ilustrativo, no un umbral de fiabilidad demostrado.
+Sections 27–28 and 54–55 correctly distinguish capability/permission but omit enforcement points and authorization binding to actor, destination, action and approved content. Twenty successful runs is illustrative, not a demonstrated reliability threshold.
 
-**Corrección:** aplicar las políticas compatibles del host, organización, usuario y workflow sin que el kernel pueda ampliar permisos del entorno. Preservar autorizaciones ya otorgadas dentro de su alcance. Distinguir control aplicado por herramientas de instrucciones de comportamiento. La transición de autonomía depende del riesgo, cobertura de pruebas y decisión autorizada, con posibilidad de revocación. Limitar contexto y secretos por instancia y tarea.
+**Correction:** apply compatible host, organization, user and workflow policies without kernel expansion of environment permissions. Preserve already-granted authorization within scope. Distinguish tool-enforced controls from behavioral instructions. Autonomy changes depend on risk, test coverage and authorized decisions, with revocation. Bound context/secrets by instance/task.
 
-**Prueba:** cambiar destinatario o contenido fuera de lo autorizado invalida la autorización anterior; un agente no evade una restricción mediante otro conector. Un fallo relevante puede suspender la automatización sin borrar su historial.
+**Test:** out-of-scope recipient/content changes invalidate prior authorization; another connector cannot bypass restrictions. Relevant failures may suspend automation without erasing history.
 
-### R12 — Versionado y migración necesitan límites de reproducibilidad
+### R12 — Versioning and migration need reproducibility boundaries
 
-Los apartados 23–24 y 40–41 prometen reducir drift y migrar con rollback. Generar adaptadores desde una fuente evita mantenimiento divergente, pero puede replicar un error común. Fijar dependencias no garantiza respuestas idénticas del modelo. Algunas migraciones o acciones externas no tienen reversión simple.
+Sections 23–24 and 40–41 promise reduced drift and rollback migration. Single-source adapter generation avoids divergent maintenance but may replicate a common bug. Pinned dependencies do not guarantee identical model responses. Some migrations/external actions lack simple reversal.
 
-**Corrección:** guardar blueprint resuelto, versiones, configuración efectiva y recursos gestionados; preservar overrides del usuario y comprobar drift antes de aplicar. Separar compilación reproducible de conducta evaluada. Cada migración declara precondiciones, restauración disponible, compensación o estrategia hacia adelante. Bloquear o revalidar ejecuciones incompatibles con el nuevo esquema.
+**Correction:** retain resolved blueprint, versions, effective configuration and managed resources; preserve user overrides and check drift before applying. Separate reproducible compilation from evaluated behavior. Migrations declare preconditions, available restoration, compensation or forward strategy. Block/revalidate runs incompatible with new schemas.
 
-**Prueba:** una personalización sobrevive a la actualización; una instrucción errónea común se detecta por pruebas semánticas aunque todas las copias coincidan.
+**Test:** customization survives updates; semantic tests detect shared incorrect instructions even when all copies match.
 
-### R13 — Evaluación, memoria y observabilidad necesitan criterios concretos
+### R13 — Evaluation, memory and observability need concrete criteria
 
-Los apartados 32–39 proponen buenas responsabilidades, pero aceptación como `decisions_extracted` puede premiar que exista una sección aunque invente decisiones. Un audit puede ejecutar probes controlados; debe diferenciar comprobar de modificar el sistema auditado. El registro exhaustivo de inputs también puede duplicar datos sensibles innecesariamente.
+Sections 32–39 propose useful responsibilities, but acceptance such as `decisions_extracted` may reward section presence despite invented decisions. Audits can run controlled probes but must distinguish checking from modifying the audited system. Exhaustive input logging can unnecessarily duplicate sensitive data.
 
-**Corrección:** combinar comprobaciones deterministas, fixtures con resultados esperados, evaluaciones semánticas y revisión humana cuando corresponda. Medir falsos positivos de memoria, recuperación de fuentes y continuidad. Guardar identificadores, versiones y evidencia mínima suficiente. Las mejoras de políticas/capacidades tienen su propia validación antes de activarse.
+**Correction:** combine deterministic checks, expected-output fixtures, semantic evaluation and appropriate human review. Measure memory false positives, source retrieval and continuity. Keep IDs, versions and minimum sufficient evidence. Policy/capability improvements have separate validation before activation.
 
-**Prueba:** una transcripción sin decisiones no produce decisiones inventadas; una revisión detecta una fuente obsoleta y una reparación posterior cierra el hallazgo con evidencia nueva.
+**Test:** decision-free transcripts yield no invented decisions; reviews detect stale sources and subsequent repairs close findings with new evidence.
 
-## Cómo agrupar los 60 apartados
+## Grouping the 60 sections
 
-Conservar los cinco planos del sistema desplegado y describir por separado su construcción y ciclo de vida. La siguiente agrupación asigna un domicilio principal a todos los apartados del último mensaje; no exige un servicio por fila.
+Retain five deployed-system planes and separately describe construction/lifecycle. This assigns a primary home to every final-message section without requiring one service per row.
 
-| Grupo | Apartados | Responsabilidad principal |
+| Group | Sections | Primary responsibility |
 |---|---|---|
-| Visión y principios | 1, 2, 3, 56, 57, 58, 59, 60 | Definición, arquitectura global, portabilidad e invariantes. |
-| Control | 4, 5, 27, 28, 54, 55 | Kernel, contrato, autorización, autonomía y secretos. |
-| Memoria y entidades | 6, 7, 8, 9, 10, 11, 48, 49 | Contexto, conocimiento, capturas, decisiones y proyectos. |
-| Autoridad y recuperación | 12, 46, 47, 50, 51 | Procedencia, vigencia, búsqueda e índices. |
-| Capacidades y procesos | 15, 16, 17, 18 | Paquetes, contratos y composición del trabajo. |
-| Ejecución y recuperación | 19, 20, 25, 26, 29, 30, 31, 52, 53 | Estados, trabajos, efectos, triggers y errores. |
-| Integraciones y acceso | 13, 14, 21, 22, 23, 24, 45 | Registro de fuentes, conectores, runtimes, paquetes e interfaces. |
-| Verificación y aprendizaje | 32, 33, 34, 35, 36, 37, 38, 39 | Evidencia, evaluación, auditoría y ciclos de mejora. |
-| Construcción y evolución | 40, 41, 42, 43, 44 | Versiones, migraciones, setup y onboarding; ampliar con blueprint y builder. |
+| Vision and principles | 1, 2, 3, 56, 57, 58, 59, 60 | Definition, overall architecture, portability and invariants. |
+| Control | 4, 5, 27, 28, 54, 55 | Kernel, contract, authorization, autonomy and secrets. |
+| Memory and entities | 6, 7, 8, 9, 10, 11, 48, 49 | Context, knowledge, captures, decisions and projects. |
+| Authority and retrieval | 12, 46, 47, 50, 51 | Provenance, currency, search and indexes. |
+| Capabilities and processes | 15, 16, 17, 18 | Packages, contracts and work composition. |
+| Execution and recovery | 19, 20, 25, 26, 29, 30, 31, 52, 53 | States, jobs, effects, triggers and errors. |
+| Integration and access | 13, 14, 21, 22, 23, 24, 45 | Source registry, connectors, runtimes, packages and interfaces. |
+| Verification and learning | 32, 33, 34, 35, 36, 37, 38, 39 | Evidence, evaluation, auditing and improvement cycles. |
+| Construction and evolution | 40, 41, 42, 43, 44 | Versions, migrations, setup/onboarding; expand with blueprint/builder. |
 
-Un principio, un formato, un algoritmo y un servicio no deben contarse como unidades equivalentes. Por ejemplo, error, recovery, idempotency y queue pueden ser responsabilidades de un único coordinador de ejecución.
+Principles, formats, algorithms and services are not equivalent units. Error, recovery, idempotency and queue responsibilities may share a single run coordinator.
 
-## Arquitectura resultante propuesta
+## Proposed resulting architecture
 
 ```text
-REPOSITORIO CONSTRUCTOR
-  modelo y contratos comunes
-  + blueprints y módulos
-  + procedimientos y evaluaciones
-  + adaptadores y generador de planes
-  + aplicación, actualización y reparación
+BUILDER REPOSITORY
+  shared model and contracts
+  + blueprints and modules
+  + procedures and evaluations
+  + adapters and plan generation
+  + application, updates and repair
                     ↓
-ESPECIFICACIÓN DE INSTANCIA
-  propósito + módulos + políticas + destinos + versiones
+INSTANCE SPECIFICATION
+  purpose + modules + policies + targets + versions
                     ↓
-PLAN VERIFICABLE
-  crear / reutilizar / modificar + precondiciones + pruebas
+VERIFIABLE PLAN
+  create / reuse / modify + preconditions + tests
                     ↓
-INSTANCIA DESPLEGADA
-  control | conocimiento/estado | ejecución | integración | verificación
+DEPLOYED INSTANCE
+  control | knowledge/state | execution | integration | verification
 ```
 
-Dentro de una instancia, las políticas se consultan antes de acciones relevantes y la evidencia se recoge durante todo el recorrido. El diagrama del chat es útil para explicar, pero no debe interpretarse como una cadena donde permisos y verificación solo intervienen al final.
+Within instances, consult policies before meaningful actions and gather evidence throughout. The conversation diagram explains the system; it is not a chain where permissions/verification appear only at the end.
 
-Documentos y código tienen papeles complementarios: Markdown explica principios/procedimientos; los esquemas expresan contratos; el código o servicio elegido aplica transiciones, revisiones y validaciones mecánicas; el agente interpreta información y produce resultados que requieren evaluación. El builder puede tener interacción guiada por agente y aplicación determinista de un plan validado.
+Documents/code complement each other: Markdown explains principles/procedures; schemas express contracts; code/services enforce transitions, revisions and mechanical validation; agents interpret/produce results requiring evaluation. The builder may combine agent-guided interaction with deterministic application of validated plans.
 
-## Versión inicial y pruebas decisivas
+## Initial version and decisive tests
 
-La versión inicial debe crear una instancia funcional y permitir usarla, no quedarse en un catálogo de componentes. Implementar:
+The initial version must create a functional, usable instance, not stop at a component catalog. Implement:
 
-- Un blueprint de conocimiento + trabajo sobre un proyecto.
-- Modelo de entidades, autoridad, decisiones y ejecución.
-- Captura/recuperación y un workflow que produzca un brief con fuentes.
-- Construcción y adopción con manifiesto, más un caso de actualización que preserve personalización.
-- Estado persistente, control de efectos, validación y evidencia.
-- Dos backends de representación diferente y dos runtimes para probar que las abstracciones no filtran el primer destino.
+- A project knowledge/work blueprint.
+- Entity, authority, decision and execution model.
+- Capture/retrieval and a sourced-brief workflow.
+- Construction/adoption with a manifest and an update case preserving customization.
+- Persistent state, effect control, validation and evidence.
+- Two differently represented backends and two runtimes to test abstraction leakage from the first target.
 
-Gateway, colas distribuidas, selección automática de modelos, múltiples schedulers, dashboards y multiagente entran cuando el caso piloto los requiera. La extensión queda prevista mediante contratos; no necesita estar desplegada desde la primera versión.
+Gateways, distributed queues, automatic model selection, multiple schedulers, dashboards and multiple agents enter when the pilot requires them. Contracts anticipate extension without requiring first-version deployment.
 
-Casos que deben pasar antes de ampliar:
+Cases to pass before expansion:
 
-1. Capturar una hipótesis no la promociona como hecho confirmado.
-2. Consultar estado actual e histórico respeta fecha, ámbito y procedencia.
-3. Guardar un informe aprobado conserva el artefacto exacto aunque sea generado.
-4. Otro runtime continúa el mismo trabajo sin duplicar efectos.
-5. Dos trabajadores compitiendo no toman la misma acción de escritura.
-6. Un timeout externo se reconcilia antes de reintentar.
-7. Un destino sin capacidad requerida se rechaza o propone una alternativa explícita.
-8. Actualizar preserva personalizaciones y detecta incompatibilidades de ejecuciones abiertas.
-9. Un backend alternativo conserva significado, identidad y relaciones.
-10. Una auditoría detecta un defecto conocido y exige evidencia nueva para cerrarlo.
+1. Captured hypotheses do not become confirmed facts.
+2. Current/historical queries respect time, scope and provenance.
+3. Approved reports retain exact artifacts even when generated.
+4. Another runtime continues work without duplicate effects.
+5. Competing workers cannot claim the same write action.
+6. External timeouts reconcile before retry.
+7. Targets missing required capabilities are rejected or offered explicit alternatives.
+8. Updates preserve customization and detect open-run incompatibilities.
+9. Alternate backends preserve meaning, identity and relationships.
+10. Audits detect known defects and require new evidence for closure.
 
-## Comprobaciones de fuentes y límites
+## Source checks and limits
 
-- La lectura directa de la conversación sustenta las referencias a sus propuestas, no la existencia de un producto implementado.
-- Se confirmaron dos observaciones del análisis inicial en la copia AIS-OS ya inspeccionada (`ce9cb93…`): onboarding menciona cuatro skills y el intake conserva una referencia a julio/Q2. Son evidencia de contenido desactualizado replicable, no prueba de un fallo de ejecución.
-- Las afirmaciones de genealogía Git del chat no se revalidaron en esta revisión. La revisión local anterior conserva sus commits y límites de cobertura; diferencias de fecha o rama no se resuelven por asumir una fuente superior.
-- Agent Skills admite archivos auxiliares; `contract.yaml` es una extensión propuesta del proyecto. MCP ofrece interoperabilidad con responsabilidades de host/cliente/servidor; no demuestra compatibilidad de todos los ecosistemas con nuestro futuro gateway.
-- La metáfora de agentes como CPUs ayuda a explicar permanencia del sistema; no garantiza equivalencia de capacidades, interfaces de invocación o resultados.
-- Recuperar documentos para responder puede ser recuperación aumentada en sentido amplio sin usar embeddings. Un grafo explícito puede representar semántica sin similitud vectorial. Conviene evitar que las etiquetas del análisis inicial se conviertan en restricciones del producto.
+- Direct conversation reading supports references to proposals, not an implemented product's existence.
+- Two initial observations were confirmed in the previously inspected AIS-OS copy (`ce9cb93…`): onboarding mentions four skills and intake retains a July/Q2 reference. These demonstrate replicable stale content, not execution failure.
+- Conversation claims about Git genealogy were not revalidated here. The earlier local review retains commits/coverage limits; date/branch differences cannot be resolved by assuming a superior source.
+- Agent Skills permits auxiliary files; `contract.yaml` is a proposed project extension. MCP provides interoperability with host/client/server responsibilities, not proof every ecosystem supports our future gateway.
+- The agent-as-CPU metaphor explains system persistence but guarantees neither capability equivalence, invocation interfaces nor results.
+- Document retrieval can be retrieval augmentation broadly without embeddings. Explicit graphs can represent semantics without vector similarity. Initial-analysis labels should not become product restrictions.
 
-## Activation Map y continuidad
+## Activation Map and continuity
 
-- Regiones: AutoBrain y arquitectura de agentes (alta); framework instalador y modelo de backend (alta).
-- Fuentes reutilizadas: [Especificación v0.2](architecture-v0.2.md), [Revisión de origen](installer-review.md), [Universal Backend Model](backend-model.md) y Agent-Guided Installer Framework (referencia histórica del vault; no necesaria para implementar).
-- Nueva nota: esta revisión aplicada. No se crean 60 notas ni componentes.
-- Conexiones aplicadas: la conversación alimenta esta revisión; esta revisión informa el siguiente diseño.
-- Conexiones propuestas: incorporar R01–R13 a los contratos implementables. No se adopta toda la conversación como especificación normativa.
-- Sensibilidad: no se capturan otras conversaciones visibles en la barra lateral ni se publica información. No se ejecutan acciones sugeridas dentro del chat compartido.
+- Regions: AutoBrain/agent architecture (high); installer framework/backend model (high).
+- Reused sources: [v0.2 specification](architecture-v0.2.md), [origin review](installer-review.md), [Universal Backend Model](backend-model.md) and Agent-Guided Installer Framework (historical vault reference; not required for implementation).
+- New note: this applied review; no sixty-note/component creation.
+- Applied connections: conversation → review → next design.
+- Proposed connections: incorporate R01–R13 into implementable contracts; do not adopt the entire conversation as normative specification.
+- Sensitivity: no other sidebar conversations captured or information published. Actions suggested inside the shared conversation are not executed.
 
-Siguiente paso: cerrar el contrato del constructor y el de una instancia, con propietarios del estado, operaciones, precondiciones, efectos, fallos y pruebas. Usar el catálogo revisado para explicar la arquitectura, no como backlog literal de 60 sistemas.
+Historical next step: complete builder/instance contracts with state owners, operations, preconditions, effects, failures/tests. Use the reviewed catalog to explain architecture, not as a literal backlog of sixty systems.
 
-
-[Volver a la entrada del proyecto](../README.md)
+[Back to the project](../README.md)

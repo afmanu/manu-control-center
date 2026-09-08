@@ -1,14 +1,14 @@
 # Manu Control Center
 
-Constructor de sistemas de conocimiento y trabajo con IA. Crea y mantiene instancias con contexto, fuentes, decisiones, capacidades y estado durable, mediante adaptadores de almacenamiento y agentes.
+A builder for AI knowledge and work systems. It creates and maintains instances with context, sources, decisions, capabilities and durable state through storage and agent adapters.
 
-**M0–M2 completados.** Ya puedes resolver una configuración, revisar un plan y crear, adoptar o reanudar una instancia SQLite con verificación. La instancia base de Manu está preparada fuera del repositorio. M3 incorporará captura, consulta, workflows y un runtime real.
+**M0–M2 are complete.** You can resolve a configuration, review a plan, and create, adopt or resume a verified SQLite instance. Manu's foundation instance is prepared outside the repository. M3 will add capture, queries, workflows and a real runtime.
 
-Repositorio principal: [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). Conserva la licencia [MIT](LICENSE) del repositorio inicial.
+Primary repository: [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). The original repository's [MIT license](LICENSE) is preserved.
 
-## Empezar
+## Getting started
 
-Con Node.js 24.14.1 (versión en `.nvmrc`) y npm:
+With Node.js 24.14.1 (pinned in `.nvmrc`) and npm:
 
 ```bash
 npm ci --ignore-scripts --no-audit --no-fund
@@ -20,40 +20,42 @@ npm start -- validate eval_fixture examples/meeting.json
 npm start -- validate-bundle examples/contracts/construction-bundle.json
 ```
 
-`doctor` prueba el almacenamiento en una base temporal. `validate` comprueba estructura e invariantes de un contrato; `validate-bundle` comprueba la coherencia declarada entre necesidad, módulos, configuración y plan. Para crear o adoptar una instancia, sigue la [guía del constructor](docs/installation.md). La [guía de desarrollo](docs/development.md) explica los comandos, la biblioteca, el empaquetado y sus límites.
+`doctor` tests storage in a temporary database. `validate` checks a contract's structure and invariants; `validate-bundle` checks declared consistency between the need, modules, configuration and plan. To create or adopt an instance, follow the [constructor guide](docs/installation.md). The [development guide](docs/development.md) covers commands, the library, packaging and limitations.
 
-## Qué vamos a entregar
+The repository is maintained in English. For Spanish CLI help and error summaries, use `npm start -- --lang es --help` or set `MANU_CONTROL_CENTER_LANG=es`. User content can remain in Spanish; changing the interface language never translates stored data or protocol fields. See [language and compatibility](docs/language.md).
 
-Manu será el primer usuario de un constructor reutilizable. Una necesidad se convierte en una especificación de instancia, un plan y una instalación verificable. La instancia mantiene conocimiento y continuidad fuera de la conversación. Producto, configuración y datos privados conservan ubicaciones y responsabilidades distintas.
+## What we are building
 
-El núcleo se define mediante entidades y contratos. Obsidian, archivos, bases de datos, Codex, Claude Code y otros entornos pertenecen a adaptadores con capacidades que deben demostrarse. El punto de partida es local e interactivo.
+Manu is the first user of a reusable builder. A need becomes an instance specification, a plan and a verifiable installation. The instance preserves knowledge and continuity beyond the conversation. The product, configuration and private data retain distinct locations and responsibilities.
 
-| Fase | Estado | Entrega |
+Entities and contracts define the core. Obsidian, files, databases, Codex, Claude Code and other environments belong in adapters whose capabilities must be demonstrated. The starting point is local and interactive.
+
+| Phase | Status | Deliverable |
 |---|---|---|
-| M0 | Completado | Repositorio ejecutable, herramientas y decisiones técnicas. |
-| M1 | Completado | Contratos, persistencia de referencia y separación del evaluador. |
-| M2 | Completado | Crear, adoptar y verificar instancias con recuperación. |
-| M3 | Pendiente | Primera instancia utilizable: captura, consulta, workflows y continuidad. |
-| M4 | Pendiente | Segundo backend y segundo runtime reales. |
-| M5 | Pendiente | Actualización, reparación, auditoría y entrega mantenible. |
-| M6 | Según necesidad, desde M3 | Integraciones, recurrencia e interfaces adicionales. |
+| M0 | Complete | Executable repository, tooling and technical decisions. |
+| M1 | Complete | Contracts, reference persistence and evaluator separation. |
+| M2 | Complete | Instance creation, adoption, verification and recovery. |
+| M3 | Pending | First usable instance: capture, queries, workflows and continuity. |
+| M4 | Pending | A real second backend and second runtime. |
+| M5 | Pending | Updates, repair, auditing and maintainable distribution. |
+| M6 | As needed, from M3 | Integrations, recurrence and additional interfaces. |
 
-El [roadmap](docs/implementation-plan.md) contiene tareas y criterios de cierre. Pasan 92 tests y la instalación limpia del paquete, incluida una instancia creada desde él. A01, A02, A16 y A17 pasan para el backend local; A15/A19 cubren el perfil de instalación y A27 el harness. Los recorridos con agente se comprobarán en M3. Véase [aceptación](docs/acceptance.md).
+The [roadmap](docs/implementation-plan.md) defines tasks and completion criteria. M2 passed 92 tests and a clean package installation, including an instance created from the installed package. A01, A02, A16 and A17 pass for the local backend; A15/A19 cover the installation profile and A27 the harness. Agent workflows will be checked in M3. See [acceptance](docs/acceptance.md) and the [current handoff](docs/handoff.md) for subsequent verification.
 
-## Documentación
+## Documentation
 
-- [Handoff y siguiente trabajo](docs/handoff.md).
-- [Decisiones de alcance y tecnología](docs/decisions.md).
-- [Arquitectura](docs/architecture.md) y [mapa de componentes](docs/component-map.md).
-- [Contratos](docs/contracts.md), [ejecución](docs/execution.md) y [primer blueprint](docs/first-blueprint.md).
-- [Instalar y usar el constructor](docs/installation.md), [desarrollo](docs/development.md) y [evidencia M2](docs/m2-verification.json).
-- [Contratos y mecanismos de M1](docs/m1-implementation.md), con su [evidencia histórica](docs/m1-verification.json).
-- [Antecedentes](references/README.md), como material histórico; [evidencia de M0](docs/m0-verification.json).
+- [Handoff and next work](docs/handoff.md).
+- [Scope and technology decisions](docs/decisions.md).
+- [Architecture](docs/architecture.md) and [component map](docs/component-map.md).
+- [Contracts](docs/contracts.md), [execution](docs/execution.md) and [first blueprint](docs/first-blueprint.md).
+- [Install and use the constructor](docs/installation.md), [development](docs/development.md) and [M2 evidence](docs/m2-verification.json).
+- [M1 contracts and mechanisms](docs/m1-implementation.md), with [historical evidence](docs/m1-verification.json).
+- [Background references](references/README.md), as historical material; [M0 evidence](docs/m0-verification.json).
 
-[AGENTS.md](AGENTS.md) orienta el desarrollo del repositorio. [START-HERE.md](START-HERE.md) permite continuar en otra sesión. El [inventario documental](package-manifest.json) se comprueba con `npm run check:docs`; no es el manifiesto de una instancia.
+[AGENTS.md](AGENTS.md) guides repository development. [START-HERE.md](START-HERE.md) supports continuation in another session. The [documentation inventory](package-manifest.json) is checked by `npm run check:docs`; it is not an instance manifest.
 
-## Estado y distribución
+## Status and distribution
 
-`0.1.0-dev.2` es una versión de desarrollo con publicación npm desactivada. El perfil `foundation` instala almacenamiento, configuración y proyecto; su estado `verified` acredita ese alcance. El uso completo con agente está pendiente. `node:sqlite` emite un aviso experimental en la versión de Node fijada. Codex y Claude Code son candidatos, sin compatibilidad de producto acreditada todavía.
+`0.1.0-dev.3` is a development release with npm publication disabled. The `foundation` profile installs storage, configuration and a project; its `verified` state certifies that scope. Full agent use is pending. `node:sqlite` emits an experimental warning in the pinned Node version. Codex and Claude Code are candidates; product compatibility has not yet been demonstrated.
 
-Los datos privados y secretos quedan fuera de Git y del paquete. Las fuentes se han integrado desde la carpeta documental anterior; las próximas decisiones y cambios de implementación se mantienen en este repositorio.
+Private data and secrets stay outside Git and the package. Sources were integrated from the earlier documentation folder; subsequent decisions and implementation changes are maintained in this repository.

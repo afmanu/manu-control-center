@@ -1,4 +1,5 @@
 import { test } from 'node:test';
+import { projectPurpose } from './locales/es.js';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { existsSync, mkdtempSync, rmSync, writeFileSync, readFileSync, realpathSync } from 'node:fs';
@@ -18,7 +19,7 @@ test('CLI help and version work without importing the SQLite adapter', () => {
   assert.equal(help.stderr, '');
   const version = run(['--version']);
   assert.equal(version.status, 0);
-  assert.match(version.stdout, /^0\.1\.0-dev\.2\n$/);
+  assert.match(version.stdout, /^0\.1\.0-dev\.3\n$/);
 });
 
 test('CLI validates metadata and rejects unsupported commands without claiming installation', () => {
@@ -103,5 +104,73 @@ test('M2 CLI resolves, plans, applies, verifies and inspects an installation fro
     writeFileSync(planFile, '{}');
     const invalid = run(['apply', planFile, '--actor', 'local-user']);
     assert.equal(invalid.status, 2); assert.equal(errorRecord(invalid.stderr).code, 'INVALID_INPUT');
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('CLI defaults to English and supports explicit Spanish with flag precedence and no SQLite import', () => {
+  const environment: NodeJS.ProcessEnv = { ...process.env, LANG: 'es_ES.UTF-8' };
+  delete environment.MANU_CONTROL_CENTER_LANG;
+  const defaultHelp = run(['--help'], environment);
+  assert.equal(defaultHelp.status, 0); assert.match(defaultHelp.stdout, /Usage:/); assert.equal(defaultHelp.stderr, '');
+  const spanish = run(['--help'], { ...environment, MANU_CONTROL_CENTER_LANG: 'es' });
+  assert.equal(spanish.status, 0); assert.match(spanish.stdout, /Uso:/); assert.equal(spanish.stderr, '');
+  for (const args of [['--lang', 'es', '--help'], ['--help', '--lang', 'es']]) {
+    assert.equal(run(args, environment).stdout, spanish.stdout);
+  }
+  assert.equal(run(['--lang', 'en', '--help'], { ...environment, MANU_CONTROL_CENTER_LANG: 'es' }).stdout, defaultHelp.stdout);
+  assert.equal(run(['--lang', 'en', '--help'], { ...environment, MANU_CONTROL_CENTER_LANG: 'invalid' }).stdout, defaultHelp.stdout);
+});
+
+test('invalid language selection fails before constructor dispatch or destination writes', () => {
+  const root = realpathSync(mkdtempSync(join(tmpdir(), 'mcc-language-invalid-')));
+  const input = fileURLToPath(new URL('../../examples/install-request.json', import.meta.url));
+  const directory = join(root, 'uncreated');
+  const command = ['create', input, directory, '--actor', 'local-user'];
+  try {
+    for (const flags of [['--lang'], ['--lang', 'fr'], ['--lang', 'es', '--lang', 'en'], ['--lang', 'es', '--lang']]) {
+      const result = run([...command, ...flags]);
+      assert.equal(result.status, 2); assert.equal(errorRecord(result.stderr).code, 'INVALID_INPUT');
+      assert.equal(result.stdout, ''); assert.equal(existsSync(directory), false);
+    }
+    const invalidEnvironment = run(command, { ...process.env, MANU_CONTROL_CENTER_LANG: 'invalid' });
+    assert.equal(invalidEnvironment.status, 2); assert.equal(existsSync(directory), false);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('Spanish CLI adds error summaries while retaining canonical diagnostics and exit codes', () => {
+  const input = fileURLToPath(new URL('../../examples/meeting.json', import.meta.url));
+  for (const args of [['validate', 'unknown', input], ['plan'], ['validate-record', '/missing-mcc-language-fixture.json']]) {
+    const english = run(['--lang', 'en', ...args]);
+    const spanish = run(['--lang', 'es', ...args]);
+    assert.equal(spanish.status, english.status); assert.equal(spanish.status, 2);
+    const en = english.stdout ? JSON.parse(english.stdout) : errorRecord(english.stderr);
+    const es = spanish.stdout ? JSON.parse(spanish.stdout) : errorRecord(spanish.stderr);
+    assert.equal(typeof es.display_message, 'string'); assert.notEqual(es.display_message, en.message);
+    delete es.display_message;
+    assert.deepEqual(es, en);
+  }
+  assert.match(run(['--lang', 'en', 'unknown']).stderr, /Invalid arguments/);
+  assert.match(run(['--lang', 'es', 'unknown']).stderr, /Argumentos/);
+});
+
+test('CLI language never translates user content or changes resolved plans and their digests', () => {
+  const root = realpathSync(mkdtempSync(join(tmpdir(), 'mcc-language-content-')));
+  const input = JSON.parse(readFileSync(fileURLToPath(new URL('../../examples/install-request.json', import.meta.url)), 'utf8'));
+  input.purpose = projectPurpose; input.project.purpose = projectPurpose;
+  const request = join(root, 'request.json'), directory = join(root, 'data');
+  writeFileSync(request, JSON.stringify(input));
+  try {
+    const en = run(['--lang', 'en', 'plan', request, directory]);
+    const es = run(['--lang', 'es', 'plan', request, directory]);
+    assert.equal(en.status, 0, en.stderr); assert.equal(es.status, 0, es.stderr);
+    assert.equal(es.stdout, en.stdout); assert.equal(existsSync(directory), false);
+    const plan = JSON.parse(es.stdout);
+    assert.equal(plan.request.project.purpose, projectPurpose);
+    assert.equal(plan.catalog.blueprint.purpose, 'Installable project knowledge foundation; workflows in M3');
+    const created = run(['--lang', 'es', 'create', request, directory, '--actor', input.owner_id]);
+    assert.equal(created.status, 0, created.stderr);
+    const inspected = run(['--lang', 'en', 'inspect', request, directory]);
+    assert.equal(inspected.status, 0, inspected.stderr);
+    assert.equal(JSON.parse(inspected.stdout).inspection.project.data.purpose, projectPurpose);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });

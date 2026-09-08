@@ -49,13 +49,13 @@ const scenarios = [...text('docs/acceptance.md').matchAll(/^\| (A\d{2}) \|/gm)].
 assert.deepEqual(scenarios, expected('A', 27));
 const roadmap = text('docs/implementation-plan.md');
 assert.deepEqual([...roadmap.matchAll(/^## (M\d) —/gm)].map(match => match[1]), expected('M', 7, 0, 1));
-const trace = roadmap.split('## Trazabilidad de aceptación')[1]?.split('## Reglas de ejecución y cierre')[0];
+const trace = roadmap.split('## Acceptance traceability')[1]?.split('## Execution and completion rules')[0];
 assert.ok(trace, 'Missing roadmap traceability table');
 assert.deepEqual([...new Set(trace.match(/\bA\d{2}\b/g))].sort(), scenarios);
 const manifest = {
   package: 'manu-control-center',
   format_version: 1,
-  scope: 'Documentación y esquemas del repositorio; excluye código, dependencias y su propia huella. No es un manifiesto de instancia.',
+  scope: 'Repository documentation and schemas; excludes code, dependencies and its own hash. This is not an instance manifest.',
   validation: { internal_markdown_links: links, markdown_fences: 'passed', json_parse: jsonFiles, components: 30, acceptance_scenarios: 27, roadmap_phases: 7 },
   files: files.map(path => {
     const bytes = readFileSync(path);

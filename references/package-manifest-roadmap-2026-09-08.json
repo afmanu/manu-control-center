@@ -2,15 +2,15 @@
   "package": "second-brain-ai-os-builder",
   "package_version": "roadmap-2026-09-08",
   "status": "preimplementation",
-  "note": "Inventario del paquete documental vigente, no manifiesto de una instancia instalada. No incluye su propia huella. M0-M6 pendientes de implementación.",
+  "note": "Documentation package inventory at that snapshot, not an installed instance manifest. Excludes its own hash. M0-M6 were pending implementation.",
   "previous_snapshot": {
     "path": "references/package-manifest-handoff-2026-09-08.json",
     "sha256": "7ee98e63a2e93413c60fba74e74df65d4b483e6b2c988cc68c82ad6699cd1b80",
-    "scope": "Handoff original anterior al roadmap; sus hashes y validación son históricos."
+    "scope": "Original handoff before the roadmap; its hashes and validation are historical."
   },
   "validation": {
     "checked_on": "2026-09-08",
-    "scope": "Documentación local; no comportamiento del producto ni disponibilidad de enlaces externos.",
+    "scope": "Local documentation only; not product behavior or external-link availability.",
     "internal_markdown_links": {
       "status": "passed",
       "count": 128

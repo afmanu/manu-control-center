@@ -1,14 +1,14 @@
-# Ejemplos sintéticos
+# Synthetic examples
 
-Estos archivos son datos de prueba y diseño; no contienen datos de una instancia de usuario.
+These files are test/design data; they contain no user-instance data. Maintained examples use English. Runtime user content may use Spanish or another language without translation by the persistence layer.
 
-- [Solicitud de instalación](install-request.json): entrada ejecutable del constructor M2; permite crear una instancia sintética con la [guía de instalación](../docs/installation.md).
-- [Metadatos mínimos](record-envelope.json): fixture M0 comprobable con `validate-record`.
-- [Contratos válidos](contracts/valid.json): objeto con un ejemplo por cada uno de los 22 contratos. Los tests validan cada miembro por separado; sus revisiones fijas no son registros ya persistidos.
-- [Bundle de construcción](contracts/construction-bundle.json): necesidad, blueprint, módulos, especificación, plan y manifiesto coherentes. `validate-bundle` valida declaraciones, sin instalar ni inspeccionar destinos reales.
-- [Plan inválido](contracts/invalid-plan.json): una creación lleva una revisión esperada en vez de precondición de ausencia; `validate plan` debe rechazarlo con código 2.
-- [Reunión con decisiones](meeting.json), [sin decisiones](no-decisions.json), [fuentes contradictorias](conflicting-source.json) y [fuente con instrucciones maliciosas](injected-source.json): mismo contrato `eval_fixture`, versión de fixture `0.2.0-draft`. El harness solo entrega `input` al ejecutor; `expected` queda reservado al evaluador.
-- [Configuración ilustrativa](instance.example.json): intención histórica del piloto. Sus IDs `TO_BE_SELECTED` y su formato no son una especificación resuelta de M1; no se puede aplicar como instalación.
+- [Installation request](install-request.json): executable M2 constructor input; create a synthetic instance with the [installation guide](../docs/installation.md).
+- [Minimal metadata](record-envelope.json): M0 fixture checked with `validate-record`.
+- [Valid contracts](contracts/valid.json): one example for each of the 22 contracts. Tests validate members individually; fixed revisions are not already-persisted records.
+- [Construction bundle](contracts/construction-bundle.json): consistent need, blueprint, modules, specification, plan and manifest. `validate-bundle` checks declarations without installing or inspecting real targets.
+- [Invalid plan](contracts/invalid-plan.json): a creation has an expected revision instead of an absence precondition; `validate plan` must reject it with exit code 2.
+- [Meeting with decisions](meeting.json), [no decisions](no-decisions.json), [contradictory sources](conflicting-source.json) and [malicious source instructions](injected-source.json): one `eval_fixture` contract, fixture version `0.2.0-draft`. The harness gives only `input` to the executor; `expected` stays with the evaluator.
+- [Illustrative configuration](instance.example.json): historical pilot intent. Its `TO_BE_SELECTED` IDs and format are not an M1 resolved specification; it cannot be applied as an installation.
 
 ```bash
 npm start -- validate eval_fixture examples/meeting.json
@@ -16,6 +16,6 @@ npm start -- validate-bundle examples/contracts/construction-bundle.json
 npm start -- validate plan examples/contracts/invalid-plan.json
 ```
 
-El último comando falla deliberadamente. M1 comprueba contratos y separación del harness; la fidelidad del brief y la defensa frente a instrucciones de una fuente se comprobarán con el runtime real en M3. Véase [aceptación](../docs/acceptance.md).
+The last command deliberately fails. M1 checks contracts/harness separation; brief fidelity and resistance to source instructions will be tested with the real runtime in M3. See [acceptance](../docs/acceptance.md).
 
-[Entrada](../README.md)
+[Home](../README.md)

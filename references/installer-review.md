@@ -1,163 +1,162 @@
-> ANTECEDENTE HISTÓRICO. No establece el estado ni el alcance actuales. Prevalecen [las decisiones vigentes](../docs/decisions.md) y [la arquitectura](../docs/architecture.md). Las recomendaciones antiguas se conservan como contexto.
+> HISTORICAL BACKGROUND. This does not establish current status or scope. [Current decisions](../docs/decisions.md) and [architecture](../docs/architecture.md) prevail. Earlier recommendations are retained as context. English translation; original text is preserved in Git history.
 
-# Revisión del instalador original y propuesta Second Brain / AI OS
+# Original installer review and Second Brain / AI OS proposal
 
-## Alcance y conclusión
+## Scope and conclusion
 
-Manu identificó [claude-obsidian-second-brain-installer](https://github.com/afmanu/claude-obsidian-second-brain-installer) como instalador original del que evolucionó su vault. La revisión incorpora ese origen a la comparación anterior con AIS-OS. El objetivo es permitir uso desde Codex, Claude Code, Cowork y otros entornos mediante capacidades verificadas.
+Manu identified [claude-obsidian-second-brain-installer](https://github.com/afmanu/claude-obsidian-second-brain-installer) as the original installer from which his vault evolved. This review adds that origin to the earlier AIS-OS comparison. The goal is use from Codex, Claude Code, Cowork and other environments through verified capabilities.
 
-**Propuesta:** un sistema de conocimiento compartido, una capa operativa opcional y un instalador que gestione creación, adopción, actualización y reparación. La prioridad es consolidar contratos y probar comportamientos. Las recomendaciones no constituyen decisiones adoptadas ni cambios de configuración.
+**Proposal:** shared knowledge, an optional operating layer and an installer handling creation, adoption, updates and repair. Prioritize contract consolidation and behavioral tests. Recommendations are neither adopted decisions nor configuration changes.
 
-Versiones inspeccionadas:
+Inspected versions:
 
-- Instalador original: commit `9cb05973a04b6e2b945fac591ccec8bf6f43f85c`, 2026-05-05; 31 archivos versionados. Inspección estática de bootstrap, instalación, comandos, perfiles, contratos, recuperación, ejemplo y configuración MCP.
-- AIS-OS: commit `ce9cb93a1145da5daba84ea37208ec35fd03606e`, 2026-09-06; manuales, seis skills, evaluación, historial, sincronización y paquete visual.
-- Vault local: manifiestos, protocolos, skills locales y documentación relacionada. Revisión dirigida, sin auditoría exhaustiva de todas las notas.
-- Documentación oficial actual de los entornos, consultada el 2026-09-08.
+- Original installer: commit `9cb05973a04b6e2b945fac591ccec8bf6f43f85c`, 2026-05-05; 31 tracked files. Static inspection of bootstrap, installation, commands, profiles, contracts, retrieval, example and MCP configuration.
+- AIS-OS: commit `ce9cb93a1145da5daba84ea37208ec35fd03606e`, 2026-09-06; manuals, six skills, evaluation, history, synchronization and visual package.
+- Local vault: manifests, protocols, local skills and related documentation. Targeted review, not an exhaustive audit of all notes.
+- Official environment documentation consulted on 2026-09-08.
 
-La copia del instalador es superficial; ampliar su historial falló por resolución DNS. Se acepta el origen indicado por Manu, pero no se reconstruyó la genealogía completa de commits. No se ejecutaron instaladores, servicios ni automatizaciones. Los transcripts de ejemplo no se consideran evidencia de ejecución.
+The installer clone is shallow; expanding history failed due to DNS resolution. Manu's stated origin is accepted, but complete commit genealogy was not reconstructed. No installers, services or automations were executed. Example transcripts are not execution evidence.
 
-## Qué aporta cada origen
+## Contributions from each source
 
-| Origen | Aporte que conservar | Evolución propuesta |
+| Source | Contribution to retain | Proposed evolution |
 |---|---|---|
-| Instalador original | Entrada guiada, detección de intención, personalización, contratos de salida, recuperación y separación instalador/vault final. | Desacoplar runtime y transporte; añadir estado persistente, adopción y verificación ejecutable. |
-| Vault evolucionado | Captura, proyectos, áreas, memoria temporal, conocimiento destilado, hubs de continuidad y relaciones significativas. | Convertir sus reglas estables en un contrato portable; dejar el inventario personal en el vault. |
-| AIS-OS | Onboarding, entrevistas con guardado, rutas de recuperación, auditoría con evidencia e historial, mejora concreta por ciclo. | Adaptar métricas al propósito y hacer opcional la ejecución recurrente. |
-| Agent-Guided Installer Framework existente | Blueprint, adaptadores de runtime/backend, capacidades, verificación y handoff. | Reutilizar sus contratos mínimos para este caso; validar su implementación antes de asumir que está disponible. |
+| Original installer | Guided entry, intent detection, customization, output contracts, retrieval and installer/final-vault separation. | Decouple runtime/transport; add persistent state, adoption and executable verification. |
+| Evolved vault | Capture, projects, areas, temporal memory, distilled knowledge, continuity hubs and meaningful relationships. | Turn stable rules into a portable contract; keep personal inventory in the vault. |
+| AIS-OS | Onboarding, saved interviews, retrieval routes, evidenced audits/history and one concrete improvement per cycle. | Adapt metrics to purpose; make recurrence optional. |
+| Existing Agent-Guided Installer Framework | Blueprint, runtime/backend adapters, capabilities, verification and handoff. | Reuse minimal contracts for this case; validate implementation before assuming availability. |
 
-Las Three Ms y Four Cs siguen siendo un marco útil de operación atribuido a Nate Herk. Para este sistema, Context se apoya en memoria y recuperación; Connections en fuentes y adaptadores; Capabilities en workflows; Cadence en ejecución recurrente comprobada. La cadencia se incorpora cuando el workflow manual ya funciona y el usuario necesita recurrencia.
+Three Ms and Four Cs remain a useful operating framework attributed to Nate Herk. Here, Context relies on memory/retrieval; Connections on sources/adapters; Capabilities on workflows; Cadence on demonstrated recurring execution. Add cadence once the manual workflow works and the user needs recurrence.
 
-## Hallazgos prioritarios
+## Priority findings
 
-### 1. Los entornos reciben reglas diferentes en el vault actual
+### 1. Environments receive different rules in the current vault
 
-AGENTS.md (referencia histórica no incluida) declara actualización de agosto; CLAUDE.md (referencia histórica no incluida) conserva abril. Existen diferencias sustantivas: estado de apex-agent, excepciones de fechas en nombres y alcance del sistema. La captura en `.agents/skills/second-brain-capture/` incorpora Activation Map; la copia en `.claude/skills/second-brain-capture/` no. El inventario local contiene cuatro skills en `.agents/skills` y una en `.claude/skills`.
+AGENTS.md (historical reference not included) declares an August update; CLAUDE.md (historical reference not included) retains April. Material differences concern apex-agent status, filename-date exceptions and system scope. Capture in `.agents/skills/second-brain-capture/` includes Activation Map; `.claude/skills/second-brain-capture/` does not. Local inventory contains four skills in `.agents/skills` and one in `.claude/skills`.
 
-Esto demuestra divergencia documental; no prueba que una sesión concreta de Claude haya fallado. No se inspeccionaron instalaciones globales de skills.
+This proves documentation drift, not a failed Claude session. Global skill installations were not inspected.
 
-**Cambio propuesto:** una fuente mantenida para las políticas y otra para cada skill, con entradas específicas por entorno generadas y comprobadas. Las diferencias intencionales de herramientas deben declararse. La igualdad de archivos no garantiza igualdad de comportamiento: también hacen falta pruebas por entorno.
+**Proposed change:** one maintained policy source and one source per skill, with generated/checked environment-specific entry points. Declare intentional tool differences. Identical files do not guarantee identical behavior; environment tests are also needed.
 
-### 2. El instalador acopla conocimiento, herramienta y producto
+### 2. The installer couples knowledge, tool and product
 
-El [contrato de comandos](https://github.com/afmanu/claude-obsidian-second-brain-installer/blob/9cb05973a04b6e2b945fac591ccec8bf6f43f85c/specs/command-contracts.md) obliga a leer `.claude/vault-profile.md` y usar `obsidian-vault` MCP para notas. El perfil mezcla identidad, idioma, estructura y rutas bajo una carpeta específica de Claude.
+The [command contract](https://github.com/afmanu/claude-obsidian-second-brain-installer/blob/9cb05973a04b6e2b945fac591ccec8bf6f43f85c/specs/command-contracts.md) requires `.claude/vault-profile.md` and `obsidian-vault` MCP for notes. The profile mixes identity, language, structure and routes inside a Claude-specific folder.
 
-**Cambio propuesto:** llevar la configuración compartida a `_system/`. Definir operaciones como buscar, leer, escribir y comprobar enlaces. Implementarlas inicialmente con archivos locales; habilitar MCP cuando aporte acceso o capacidades necesarios. Node y la configuración MCP serían dependencias del adaptador elegido, no requisitos universales del Second Brain.
+**Proposed change:** move shared configuration to `_system/`. Define search, read, write and link-check operations. Initially implement local files; enable MCP when it supplies needed access/capabilities. Node/MCP configuration would be selected-adapter dependencies, not universal Second Brain requirements.
 
-Un runtime con escritura autorizada en Markdown puede operar sin MCP. Un chat sin acceso persistente solo puede preparar contenido o entregar un paquete a otro entorno. Ningún adaptador debe declarar instalación terminada por haber generado instrucciones.
+An authorized Markdown-writing runtime can operate without MCP. Chat without persistent access can only prepare content or hand off a package. Generating instructions must never justify declaring installation complete.
 
-### 3. El vault evolucionado necesita adopción
+### 3. The evolved vault needs adoption
 
-El [contrato de salida original](https://github.com/afmanu/claude-obsidian-second-brain-installer/blob/9cb05973a04b6e2b945fac591ccec8bf6f43f85c/specs/vault-output-contract.md) espera `Home.md`, `00_START_HERE.md`, `.claude/vault-profile.md` y otros archivos que este vault no utiliza. Aquí existen `_system`, hubs y convenciones propias. Su ausencia no demuestra una instalación rota.
+The [original output contract](https://github.com/afmanu/claude-obsidian-second-brain-installer/blob/9cb05973a04b6e2b945fac591ccec8bf6f43f85c/specs/vault-output-contract.md) expects `Home.md`, `00_START_HERE.md`, `.claude/vault-profile.md` and other files this vault does not use. It has `_system`, hubs and its own conventions. Missing those original files does not establish a broken installation.
 
-El [esquema original](https://github.com/afmanu/claude-obsidian-second-brain-installer/blob/9cb05973a04b6e2b945fac591ccec8bf6f43f85c/specs/frontmatter-schema.md) usa `type/created`; el vault actual establece `tipo/creado`. También conviven notas heredadas. La adopción debe leer equivalencias, detectar conflictos y respetar el formato elegido para nuevas notas. Si ambos campos discrepan, debe señalar el conflicto.
+The [original schema](https://github.com/afmanu/claude-obsidian-second-brain-installer/blob/9cb05973a04b6e2b945fac591ccec8bf6f43f85c/specs/frontmatter-schema.md) uses `type/created`; the current vault uses the Spanish field names `tipo/creado`. Legacy notes coexist. Adoption must read equivalents, detect conflicts and respect the chosen new-note format. Conflicting values in both fields must be reported.
 
-**Cambio propuesto:** inventariar y mapear funciones antes de proponer archivos. No reinstalar la plantilla original sobre la evolución personal ni normalizar masivamente nombres y propiedades.
+**Proposed change:** inventory/map functions before proposing files. Do not reinstall the original template over personal evolution or mass-normalize names/properties.
 
-### 4. Los perfiles deben personalizar la presentación y el destino conservando el significado
+### 4. Profiles should customize presentation and destination while preserving meaning
 
-La [captura original](https://github.com/afmanu/claude-obsidian-second-brain-installer/blob/9cb05973a04b6e2b945fac591ccec8bf6f43f85c/.claude/commands/second-brain-capture.md) transforma una decisión en proyecto/propuesta para consultoría, argumento para investigación o meta/aprendizaje para uso personal. Esa transformación dificulta recuperar decisiones como una categoría estable.
+The [original capture procedure](https://github.com/afmanu/claude-obsidian-second-brain-installer/blob/9cb05973a04b6e2b945fac591ccec8bf6f43f85c/.claude/commands/second-brain-capture.md) turns a decision into a project/proposal for consulting, an argument for research or a goal/lesson for personal use. That makes decisions harder to retrieve as a stable category.
 
-El [catálogo](https://github.com/afmanu/claude-obsidian-second-brain-installer/blob/9cb05973a04b6e2b945fac591ccec8bf6f43f85c/docs/skills-catalog.md) propone rutas fijas como `04_Daily` aunque algunos perfiles usan otras rutas. También equipara notas no modificadas con no visitadas, y sugiere inferir bloqueo de un proyecto desde su antigüedad. Son señales indirectas, no hechos sobre su uso o estado.
+The [catalog](https://github.com/afmanu/claude-obsidian-second-brain-installer/blob/9cb05973a04b6e2b945fac591ccec8bf6f43f85c/docs/skills-catalog.md) proposes fixed routes such as `04_Daily` although some profiles use others. It also equates unchanged notes with unvisited notes and suggests inferring blocked projects from age. These are indirect signals, not usage/state facts.
 
-**Cambio propuesto:** tipos semánticos estables y rutas lógicas configurables, por ejemplo `routes.logs` o `routes.projects`. Los perfiles pueden combinarse mediante ejemplos, plantillas y módulos. La puntuación heurística de conexiones debe presentarse como ordenación, sin aparentar una probabilidad calibrada. Las revisiones temporales y las fuentes capturadas se destilan selectivamente antes de convertirse en conocimiento permanente.
+**Proposed change:** stable semantic types and configurable logical routes such as `routes.logs`/`routes.projects`. Combine profiles through examples, templates and modules. Present heuristic connection scores as ranking, not calibrated probabilities. Selectively distill temporal reviews/captured sources before permanent knowledge promotion.
 
-### 5. Los contratos documentales necesitan evidencia ejecutable
+### 5. Documentation contracts need executable evidence
 
-La [máquina de estados](https://github.com/afmanu/claude-obsidian-second-brain-installer/blob/9cb05973a04b6e2b945fac591ccec8bf6f43f85c/specs/setup-state-machine.md) documenta 26 estados, pero el snapshot no contiene motor de instalación, suite de pruebas, CI ni archivo de estado persistente implementados. Sí contiene instrucciones que un asistente puede ejecutar. Verificar que MCP lista la raíz no demuestra escritura, clasificación correcta ni continuidad.
+The [state machine](https://github.com/afmanu/claude-obsidian-second-brain-installer/blob/9cb05973a04b6e2b945fac591ccec8bf6f43f85c/specs/setup-state-machine.md) documents 26 states, but the snapshot contains no implemented installation engine, test suite, CI or persistent state file. It does contain assistant-executable instructions. MCP root listing does not prove writes, correct classification or continuity.
 
-El contrato contempla reemplazar archivos generados sin cambios, pero no ofrece un manifiesto instalado con versión y huellas que permita distinguirlos de archivos personalizados de forma reproducible.
+The contract allows replacing unchanged generated files but supplies no installed manifest with versions/hashes to reproducibly distinguish them from customized files.
 
-**Cambio propuesto:** registrar versión, pasos completados y comprobados, archivos gestionados y sus huellas; volver a validar dependencias al reanudar. Producir un plan de cambios y preservar personalizaciones. Una actualización repetida debe ser idempotente. La recuperación revierte los cambios propios sin deshacer ediciones posteriores del usuario. Comprobar la versión leída antes de escribir reduce sobrescrituras entre agentes.
+**Proposed change:** record versions, completed/verified steps, managed files/hashes; revalidate dependencies on resumption. Produce change plans and preserve customization. Repeated updates must be idempotent. Recovery reverts its own changes without undoing later user edits. Checking read versions before writes reduces agent-to-agent overwrites.
 
-### 6. La evaluación debe medir el propósito elegido
+### 6. Evaluation must measure the selected purpose
 
-[AIS-OS audit](https://github.com/nateherkai/AIS-OS/blob/ce9cb93a1145da5daba84ea37208ec35fd03606e/.claude/skills/audit/SKILL.md) aporta pruebas de recuperación y evidencia operativa; su historial distingue hallazgos nuevos, abiertos, resueltos o no revisados. Esta disciplina es transferible.
+[AIS-OS audit](https://github.com/nateherkai/AIS-OS/blob/ce9cb93a1145da5daba84ea37208ec35fd03606e/.claude/skills/audit/SKILL.md) contributes retrieval tests and operational evidence; history distinguishes new, open, resolved and unreviewed findings. This discipline transfers well.
 
-Su [rúbrica](https://github.com/nateherkai/AIS-OS/blob/ce9cb93a1145da5daba84ea37208ec35fd03606e/.claude/skills/audit/rubric.md) limita la puntuación sin cadencia automática demostrada. Para un Second Brain manual, esa ausencia puede ser deliberada. Conviene evaluar por separado integridad/recuperación, continuidad y workflows; la recurrencia aplica solo a los módulos activados. Cada cierre de hallazgo exige evidencia nueva.
+Its [rubric](https://github.com/nateherkai/AIS-OS/blob/ce9cb93a1145da5daba84ea37208ec35fd03606e/.claude/skills/audit/rubric.md) caps scores without demonstrated automated cadence. In a manual Second Brain that absence may be deliberate. Evaluate integrity/retrieval, continuity and workflows separately; recurrence applies only to enabled modules. Closing findings always needs new evidence.
 
-## Arquitectura propuesta
+## Proposed architecture
 
-Desarrollo posterior: [Arquitectura base de Second Brain y AI OS](architecture-v0.2.md) detalla los principios y contratos de construcción solicitados por Manu. Esta revisión conserva los hallazgos que justifican la propuesta.
+Subsequent development: [Second Brain and AI OS baseline architecture](architecture-v0.2.md) details the construction principles/contracts requested by Manu. This review preserves the supporting findings.
 
-### Un núcleo, dos ciclos de uso
+### One core, two usage cycles
 
-El núcleo conserva propósito, preferencias confirmadas, reglas, rutas, conocimiento reutilizable, decisiones y procedencia. Se distinguen el estado actual y el historial que lo explica, siguiendo Compiled Truth + Timeline (referencia histórica del vault; no necesaria para implementar).
+The core retains purpose, confirmed preferences, rules, routes, reusable knowledge, decisions and provenance. Distinguish current state from explanatory history, following Compiled Truth + Timeline (historical vault reference; not required for implementation).
 
-**Second Brain:** capturar → contextualizar → aplicar → destilar → conectar → revisar. El flujo admite entradas directas cuando la clasificación está clara; no obliga a crear una nota en cada paso.
+**Second Brain:** capture → contextualize → apply → distill → connect → review. Clear classification permits direct entry; one note per step is unnecessary.
 
-**AI OS:** recibir objetivo → recuperar contexto → ejecutar workflow → validar entregable → actualizar estado y aprendizaje → repetir si corresponde.
+**AI OS:** receive objective → retrieve context → execute workflow → validate deliverable → update state/learning → repeat if appropriate.
 
-Ambos ciclos usan las mismas decisiones, proyectos y preferencias. Los resultados operativos pueden alimentar memoria, con promoción selectiva y evidencia; no todo output ni toda hipótesis se convierte automáticamente en regla permanente. La recurrencia requiere un scheduler real, acceso a sus fuentes y evidencia de ejecuciones.
+Both cycles share decisions, projects and preferences. Operational results may feed memory with selective promotion/evidence; not every output/hypothesis becomes a permanent rule. Recurrence requires a real scheduler, source access and run evidence.
 
-### Distribución pública y sistema instalado
+### Public distribution and installed system
 
-Estructura orientativa del repositorio de distribución:
+Illustrative distribution layout:
 
 ```text
-README.md             entrada: qué resuelve y primer resultado
-core/                 contratos compartidos, esquema y rutas lógicas
-skills/               fuentes canónicas de los workflows
-modules/              definición de second-brain y ai-os, sin duplicar skills
-presets/              preferencias iniciales y ejemplos combinables
-adapters/             entradas y empaquetado por entorno
-installer/            plan, aplicación, estado, adopción y actualización
-tests/                fixtures y comprobaciones de comportamiento
-docs/                 diseño, uso, compatibilidad y contribución
+README.md             entry: purpose and first result
+core/                 shared contracts, schema and logical routes
+skills/               canonical workflow sources
+modules/              second-brain/ai-os definitions without duplicate skills
+presets/              initial preferences and composable examples
+adapters/             environment entry points and packaging
+installer/            planning, application, state, adoption and updates
+tests/                fixtures and behavioral checks
+docs/                 design, use, compatibility and contribution
 ```
 
-La estructura del vault instalado mantiene sus capas de conocimiento. En este caso se conservarían `00_Inbox` a `06_Archive`, `_system` y `_templates`. Los componentes del instalador no necesitan copiarse íntegros dentro del vault. El repositorio público distribuye contratos, ejemplos sintéticos y herramientas; los datos personales pertenecen a cada instalación.
+The installed vault retains its knowledge layers: here, `00_Inbox` through `06_Archive`, `_system` and `_templates`. The installer need not be copied in full into the vault. Public distribution contains contracts, synthetic examples and tools; personal data belongs to each installation.
 
-Propuesta de fuentes comunes instaladas: `_system/system-contract.md` para reglas, `_system/vault-config.yaml` para rutas/módulos/esquema, y un manifiesto de instalación para archivos gestionados y versión. Estos nombres son una propuesta; al adoptar deben reutilizarse fuentes equivalentes y evitar otra copia de la misma verdad. Los manuales de entrada resumen lo necesario y remiten a dichas fuentes; inventarios cambiantes viven en sus hubs.
+Proposed common installed sources: `_system/system-contract.md` for rules, `_system/vault-config.yaml` for routes/modules/schema, and an installation manifest for managed files/version. These names are proposals; adoption should reuse equivalent sources without another truth copy. Entry manuals summarize essentials and refer to them; changing inventories live in their hubs.
 
-### Portabilidad por capacidades
+### Capability-based portability
 
-| Capacidad comprobada | Comportamiento posible |
+| Verified capability | Possible behavior |
 |---|---|
-| Lectura y escritura autorizadas del vault | Captura, recuperación, enlaces y continuidad mediante archivos. |
-| Lectura sin escritura | Análisis y propuesta de cambios. |
-| Ejecución de comandos | Instalación de dependencias necesarias y validadores, según permisos. |
-| Conector/MCP disponible en la sesión consumidora | Operación sobre la fuente que realmente expone. |
-| Scheduler y fuentes disponibles durante la ejecución | Workflows recurrentes con trazas verificables. |
-| Sin acceso persistente | Preparación de contenido y handoff explícito. |
+| Authorized vault reads/writes | File-based capture, retrieval, links and continuity. |
+| Read-only access | Analysis/change proposals. |
+| Command execution | Necessary dependency installation/validators, subject to permissions. |
+| Connector/MCP in the consuming session | Operations on the source actually exposed. |
+| Scheduler and sources available during execution | Recurring workflows with verifiable traces. |
+| No persistent access | Content preparation and explicit handoff. |
 
-Codex descubre skills mediante `.agents/skills`; Claude Code documenta `.claude/skills` y mantiene compatibilidad con `.claude/commands`. Cowork ofrece distribución mediante plugins. Por tanto, una fuente común puede necesitar distintos paquetes y puntos de entrada. Copiar carpetas no demuestra que el entorno las cargue.
+At review time, Codex discovers skills through `.agents/skills`; Claude Code documents `.claude/skills` and compatibility with `.claude/commands`; Cowork distributes plugins. Shared sources may therefore require different packages/entry points. Copying folders does not prove loading.
 
-La documentación actual de Cowork contempla sesiones entre web, escritorio y móvil, con condiciones específicas para acceder a archivos locales a través del escritorio. El instalador de mayo debe reemplazar su clasificación estática por detección de acceso real. La compatibilidad se declara por versión, superficie y capacidad probada; no como promesa genérica de equivalencia entre todos los productos.
+Cowork documentation consulted during the review covers web, desktop and mobile sessions with specific conditions for local-file access through desktop. The May installer should replace static classification with real-access detection. Declare compatibility by version, surface and tested capability, not universal product equivalence. Recheck these historical observations during implementation.
 
-Fuentes oficiales: [Skills de Codex](https://learn.chatgpt.com/docs/build-skills), [AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md), [Skills de Claude Code](https://code.claude.com/docs/en/skills), [Plugins de Cowork](https://claude.com/docs/cowork/guide/plugins), [Cowork entre superficies](https://support.claude.com/en/articles/15520349-use-claude-cowork-on-web-desktop-and-mobile).
+Official sources: [Codex skills](https://learn.chatgpt.com/docs/build-skills), [AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md), [Claude Code skills](https://code.claude.com/docs/en/skills), [Cowork plugins](https://claude.com/docs/cowork/guide/plugins), [Cowork surfaces](https://support.claude.com/en/articles/15520349-use-claude-cowork-on-web-desktop-and-mobile).
 
-## Secuencia de implementación propuesta
+## Proposed implementation sequence
 
-1. **Consolidar el contrato actual.** Comparar los dos manuales, acordar qué reglas son actuales, separar políticas de inventarios y generar entradas equivalentes. Conservar el historial; no ejecutar aún una migración masiva.
-2. **Empaquetar una versión mínima.** Markdown local, núcleo Second Brain, captura, recuperación y continuidad. Reutilizar el Agent-Guided Installer Framework (referencia histórica del vault; no necesaria para implementar); su diseño documentado debe contrastarse con el código antes de incorporarlo.
-3. **Probar crear y adoptar.** Usar fixtures nuevos y una copia de prueba del vault con datos sintéticos o mínimos. Simular interrupción, reanudación, actualización y personalización.
-4. **Validar dos runtimes locales.** Ejecutar los mismos casos en Codex y Claude Code; después empaquetar y probar Cowork con sus capacidades reales. Mantener los entornos no probados como pendientes.
-5. **Añadir un workflow operativo útil.** Por ejemplo, retomar un proyecto y producir un brief con fuentes. Auditarlo, corregir un fallo y repetir. Añadir conexiones externas y cadencia cuando ese caso las requiera.
+1. **Consolidate the current contract.** Compare manuals, establish current rules, separate policies/inventories and generate equivalent entry points. Preserve history; no mass migration yet.
+2. **Package a minimal version.** Local Markdown, Second Brain core, capture, retrieval and continuity. Reuse Agent-Guided Installer Framework (historical vault reference; not required for implementation); compare its documented design with code before incorporation.
+3. **Test creation/adoption.** Use new fixtures and a test vault copy with synthetic/minimal data. Simulate interruption, resumption, updates and customization.
+4. **Validate two local runtimes.** Run identical cases in Codex/Claude Code, then package/test Cowork against actual capabilities. Untested environments stay pending.
+5. **Add a useful operational workflow.** For example, resume a project and produce a sourced brief. Audit, correct a failure and repeat. Add external connections/cadence when the case needs them.
 
-Esta secuencia coincide con la decisión ya documentada de parar expansión conceptual y pasar a packaging (referencia histórica del vault; no necesaria para implementar).
+This sequence matches the earlier stop-conceptual-expansion-and-package decision (historical vault reference; not required for implementation).
 
-## Criterios de aceptación
+## Acceptance criteria
 
-- Una sesión nueva encuentra propósito, reglas y siguiente paso sin reconstrucción manual extensa.
-- Capturar una decisión conserva su significado, origen y proyecto, independientemente del perfil.
-- Resolver una referencia no duplica notas y deja un enlace válido cuando existe una relación útil.
-- Una nota heredada sigue siendo recuperable sin renombrarla ni reescribirla masivamente.
-- Adoptar este vault reconoce sus equivalencias y no impone archivos del contrato antiguo.
-- Repetir instalación/actualización no duplica contenido ni pisa personalizaciones.
-- Interrumpir y retomar comprueba requisitos y continúa desde evidencia persistida.
-- Otro runtime recupera el mismo estado y respeta el mismo contrato; se documentan límites distintos de herramientas.
-- Un workflow produce un artefacto comprobable y guarda solo el aprendizaje relevante.
-- La auditoría puede detectar un defecto conocido, verificar su reparación y conservar el historial. La cadencia se prueba únicamente si está activada.
+- New sessions find purpose, rules and next step without extensive manual reconstruction.
+- Captured decisions retain meaning, origin and project regardless of profile.
+- Resolving references does not duplicate notes and leaves valid links for useful relationships.
+- Legacy notes remain retrievable without mass renaming/rewriting.
+- Adoption recognizes vault equivalents without imposing old-contract files.
+- Repeated installation/updates neither duplicate content nor overwrite customizations.
+- Interrupt/resume checks requirements and continues from persisted evidence.
+- Another runtime retrieves the same state and honors the same contract; tool differences are documented.
+- Workflows produce verifiable artifacts and retain relevant learning only.
+- Audits detect known defects, verify repairs and preserve history. Test cadence only when enabled.
 
 ## Activation Map
 
-- **Regiones activadas:** AutoBrain y Second Brain (alta); diseño de agentes e instaladores (alta); evaluación operativa (media). No se incorporan datos personales de otras áreas.
-- **Notas reutilizadas:** Knowledge Flow (referencia histórica del vault; no necesaria para implementar), Project States (referencia histórica del vault; no necesaria para implementar), Neural Vault Protocol (referencia histórica del vault; no necesaria para implementar), Compiled Truth + Timeline y Agent-Guided Installer Framework.
-- **Nueva nota:** esta investigación aplicada al proyecto existente. No se crea otro framework ni proyecto.
-- **Conexiones aplicadas:** esta revisión actualiza el contexto de AutoBrain y alimenta [la síntesis arquitectónica anterior](memory-and-control-analysis.md).
-- **Conexiones propuestas:** reutilizar contratos del framework instalador y evaluación de AIS-OS. No implica dependencia de código instalada ni adopción de todas sus políticas.
-- **Riesgos de interpretación:** origen declarado frente a historia Git no reconstruida; diseño frente a implementación; paridad estática frente a comportamiento; actualización del sistema frente a normalización de contenido.
+- **Activated regions:** AutoBrain/Second Brain (high); agent/installer design (high); operational evaluation (medium). No personal data from other areas is incorporated.
+- **Reused notes:** Knowledge Flow, Project States, Neural Vault Protocol (historical vault references; not required for implementation), Compiled Truth + Timeline and Agent-Guided Installer Framework.
+- **New note:** applied research within the existing project; no new framework/project.
+- **Applied connections:** this review updates AutoBrain context and informs [the earlier architectural synthesis](memory-and-control-analysis.md).
+- **Proposed connections:** reuse installer-framework contracts and AIS-OS evaluation. This implies neither installed code dependencies nor adoption of all their policies.
+- **Interpretation risks:** stated origin versus unreconstructed Git history; design versus implementation; static parity versus behavior; system update versus content normalization.
 
-
-[Volver a la entrada del proyecto](../README.md)
+[Back to the project](../README.md)

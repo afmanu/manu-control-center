@@ -1,39 +1,18 @@
 #!/usr/bin/env node
+import { messages, parseLanguage, presentResult, type Language } from './i18n.js';
 import { readFileSync } from 'node:fs';
 import { resolveDataDirectory } from '../adapters/interfaces/local/data-directory.js';
 
 const metadata = JSON.parse(readFileSync(new URL('../../package.json', import.meta.url), 'utf8')) as { version: string };
-const help = `Manu Control Center ${metadata.version}
-
-Uso:
-  manu-control-center --help
-  manu-control-center --version
-  manu-control-center doctor
-  manu-control-center validate-record <archivo.json>
-  manu-control-center contracts
-  manu-control-center validate <tipo> <archivo.json>
-  manu-control-center validate-bundle <archivo.json>
-  manu-control-center resolve <solicitud.json> <directorio-absoluto>
-  manu-control-center plan <solicitud.json> <directorio-absoluto>
-  manu-control-center inspect <solicitud.json> <directorio-absoluto>
-  manu-control-center apply <plan.json> --actor <id>
-  manu-control-center verify <solicitud.json> <directorio-absoluto>
-  manu-control-center create <solicitud.json> <directorio-absoluto> --actor <id>
-  manu-control-center adopt <solicitud.json> <directorio-absoluto> --actor <id>
-  manu-control-center resume <solicitud.json> <directorio-absoluto> --actor <id>
-
-doctor verifica SQLite con datos temporales y muestra la ubicación prevista de datos.
-validate-record valida únicamente metadatos RecordEnvelope (0.1.0-draft).
-Constructor local disponible. Planificar no escribe en el destino. Agentes y workflows: M3.
-`;
+let language: Language = 'en';
 
 function output(value: unknown): void {
-  process.stdout.write(`${JSON.stringify(value, null, 2)}\n`);
+  process.stdout.write(`${JSON.stringify(presentResult(value, language), null, 2)}\n`);
 }
 
 async function main(args: string[]): Promise<void> {
   if (args.length === 0 || (args.length === 1 && ['--help', '-h', 'help'].includes(args[0]!))) {
-    process.stdout.write(help);
+    process.stdout.write(messages[language].help(metadata.version));
     return;
   }
   if (args.length === 1 && ['--version', '-v'].includes(args[0]!)) {
@@ -87,7 +66,7 @@ async function main(args: string[]): Promise<void> {
     try {
       input = JSON.parse(readFileSync(args[1]!, 'utf8'));
     } catch (error) {
-      process.stderr.write(`${JSON.stringify({ ok: false, code: 'INVALID_INPUT', message: String(error) })}\n`);
+      process.stderr.write(`${JSON.stringify(presentResult({ ok: false, code: 'INVALID_INPUT', message: String(error) }, language))}\n`);
       process.exitCode = 2;
       return;
     }
@@ -97,12 +76,23 @@ async function main(args: string[]): Promise<void> {
     process.exitCode = result.ok ? 0 : 2;
     return;
   }
-  process.stderr.write(`Argumentos no válidos. Ejecuta manu-control-center --help.\n`);
+  process.stderr.write(`${messages[language].invalidArguments}\n`);
   process.exitCode = 2;
 }
 
-main(process.argv.slice(2)).catch(async error => {
+async function dispatch(): Promise<void> {
+  let parsed;
+  try { parsed = parseLanguage(process.argv.slice(2), process.env['MANU_CONTROL_CENTER_LANG']); }
+  catch (error) {
+    process.stderr.write(`${JSON.stringify({ ok: false, code: 'INVALID_INPUT', message: String(error) })}\n`);
+    process.exitCode = 2; return;
+  }
+  language = parsed.language;
+  await main(parsed.args);
+}
+
+dispatch().catch(async error => {
   const { DomainError } = await import('../core/errors.js');
-  process.stderr.write(`${JSON.stringify({ ok: false, ...(error instanceof DomainError ? error.toJSON() : { code: 'CHECK_FAILED', message: String(error) }) })}\n`);
+  process.stderr.write(`${JSON.stringify(presentResult({ ok: false, ...(error instanceof DomainError ? error.toJSON() : { code: 'CHECK_FAILED', message: String(error) }) }, language))}\n`);
   process.exitCode = error instanceof DomainError && error.code === 'INVALID_INPUT' ? 2 : 1;
 });

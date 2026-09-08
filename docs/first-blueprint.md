@@ -1,62 +1,62 @@
-# Primer blueprint: conocimiento y trabajo sobre un proyecto
+# First blueprint: project knowledge and work
 
-Propuesta piloto `project-knowledge-operations@0.1.0-draft`. Implementa un recorrido completo de la arquitectura; no determina todos los futuros blueprints.
+Pilot proposal `project-knowledge-operations@0.1.0-draft`. It implements one complete architectural path without defining every future blueprint.
 
-En M2 se implementa un perfil previo instalable: `project-knowledge-foundation@0.1.0-draft`, con módulos `project-context` e `installation-verification`. Instala configuración, catálogo y proyecto; no anuncia workflows ejecutados. El blueprint operativo descrito a continuación continúa en M3. Véase [instalación](installation.md).
+M2 implements an earlier installable profile: `project-knowledge-foundation@0.1.0-draft`, with `project-context` and `installation-verification` modules. It installs configuration, catalog and project without claiming executed workflows. The operational blueprint below continues in M3. See [installation](installation.md).
 
-## Usuario y resultado
+## User and outcome
 
-Una persona necesita transformar una reunión de proyecto en un brief sustentado, conservar decisiones y preguntas abiertas y retomar la revisión desde otro agente. El primer caso utiliza datos sintéticos y un destino local. Los envíos se prueban con conector simulado hasta configurar una integración real.
+A person needs to turn a project meeting into an evidence-based brief, retain decisions/open questions and resume review from another agent. The first case uses synthetic data and a local target. Delivery uses a simulated connector until a real integration is configured.
 
-El roadmap sitúa a Manu como primer usuario de este blueprint. Reunión → brief es el caso de referencia para desarrollar el sistema; M3 incorpora además captura, consulta y un resumen de estado del proyecto. El segundo recorrido reutiliza el mismo conocimiento y coordinación para comprobar composición y continuidad, según A26. La combinación de agente y CLI debe permitir uso propio sin depender de los fixtures de prueba.
+The roadmap makes Manu this blueprint's first user. Meeting → brief is the reference development case; M3 also adds capture, queries and a project status summary. The second path reuses knowledge/coordination to test composition and continuity under A26. The agent and CLI together must support personal use without depending on test fixtures.
 
-Resultado aceptable: instancia independiente, proyecto recuperable, transcripción identificada, afirmaciones clasificadas, brief versionado con referencias, run persistente, handoff útil y reporte de aceptación. El resultado debe existir fuera de la conversación.
+Acceptable outcome: independent instance, retrievable project, identified transcript, classified claims, versioned brief with references, persistent run, useful handoff and acceptance report. Results must exist outside the conversation.
 
-## Composición
+## Composition
 
-Módulos iniciales propuestos: contexto/proyectos, captura/conocimiento, workflow de brief, ejecución/efectos y verificación. Requieren kernel, entidades, autoridad, backend, un runtime invocable o handoff interactivo y una interfaz mínima de operación. No requieren embeddings, calendario, scheduler ni gateway.
+Proposed initial modules: context/projects, capture/knowledge, brief workflow, execution/effects and verification. They require a kernel, entities, authority, backend, invocable runtime or interactive handoff, and a minimal operational interface. Embeddings, calendar, scheduler and gateway are not required.
 
-Entidades: proyecto, fuente, captura, afirmación, decisión, artefacto, job, run, step, action y autorización. El proyecto puede usar un único backend para datos y estado si cumple garantías; si no, la especificación resuelve almacenes distintos sin duplicar autoridad.
+Entities: project, source, capture, claim, decision, artifact, job, run, step, action and authorization. A project may share one backend for data/state if guarantees hold; otherwise the specification resolves separate stores without duplicating authority.
 
-## Onboarding mínimo
+## Minimal onboarding
 
-Recoger resultado buscado, identidad de instancia, destino, runtime disponible, fuente inicial y restricciones de escritura. Reutilizar respuestas disponibles. El builder valida requisitos, fija versiones y genera un plan. Las referencias de credenciales no contienen sus valores.
+Collect the desired outcome, instance identity, destination, available runtime, initial source and write restrictions. Reuse available answers. The builder validates requirements, pins versions and generates a plan. Credential references do not contain secret values.
 
-## Flujo de construcción
+## Construction flow
 
-1. Validar necesidad y capacidades observadas.
-2. Resolver blueprint/módulos y configuración.
-3. Inspeccionar destino; detectar colisiones y recursos adoptables.
-4. Crear plan con revisiones y ownership.
-5. Aplicar operaciones permitidas con checkpoints.
-6. Verificar acceso, entidades y ejecución del primer workflow.
-7. Entregar manifiesto, resultado, cobertura y siguiente acción.
+1. Validate the need and observed capabilities.
+2. Resolve blueprint/modules and configuration.
+3. Inspect the destination; detect collisions and adoptable resources.
+4. Create a plan with revisions and ownership.
+5. Apply permitted operations with checkpoints.
+6. Verify access, entities and execution of the first workflow.
+7. Deliver the manifest, result, coverage and next action.
 
-Crear dos instancias desde esta configuración debe producir identidades y datos separados. En adopción, mapear un proyecto existente de prueba sin cambiarle arbitrariamente nombre o estructura.
+Creating two instances from this configuration must produce separate identities/data. Adoption must map an existing test project without arbitrarily changing its name/structure.
 
-## Workflow `meeting-to-brief`
+## `meeting-to-brief` workflow
 
-| Paso | Entrada y operación | Salida y aceptación |
+| Step | Input and operation | Output and acceptance |
 |---|---|---|
-| 1. Ingreso | Proyecto y transcripción identificada. | Captura con fuente/revisión; repetir la misma clave no duplica. |
-| 2. Contexto | Recuperar propósito, decisiones y fuentes autorizadas. | Contexto acotado con cobertura y fechas. |
-| 3. Extracción | Clasificar afirmaciones de la reunión. | Decisiones explícitas, propuestas y preguntas diferenciadas. |
-| 4. Borrador | Redactar brief sobre evidencia recuperada. | Objetivo, acuerdos, propuestas, pendientes y fuentes; sin datos inventados. |
-| 5. Evaluación | Comprobar estructura y fidelidad semántica. | Resultado de aceptación y fallos concretos; no basta tener secciones. |
-| 6. Revisión | Conservar artefacto y petición de revisión si procede. | Versión exacta, checkpoint y siguiente acción. |
-| 7. Cierre | Integrar decisiones autorizadas y actualizar proyecto. | Estado verificado y run completado. |
+| 1. Ingestion | Project and identified transcript. | Capture with source/revision; repeating the same key does not duplicate it. |
+| 2. Context | Retrieve purpose, decisions and authorized sources. | Bounded context with coverage and dates. |
+| 3. Extraction | Classify meeting claims. | Distinguish explicit decisions, proposals and questions. |
+| 4. Draft | Write a brief from retrieved evidence. | Objective, agreements, proposals, open items and sources; no invented facts. |
+| 5. Evaluation | Check structure and semantic fidelity. | Acceptance result and concrete failures; sections alone are insufficient. |
+| 6. Review | Preserve the artifact and a review request if needed. | Exact version, checkpoint and next action. |
+| 7. Completion | Integrate authorized decisions and update the project. | Verified state and completed run. |
 
-La entrega externa es una extensión separada `deliver-approved-artifact`. Recibe versión/hash del artefacto, destinatario y autorización; prepara Action y confirma mediante recibo o reconciliación. No convertir la aceptación del brief en permiso implícito para enviarlo.
+External delivery is a separate `deliver-approved-artifact` extension. It takes the artifact version/hash, recipient and authorization, prepares an Action and confirms through a receipt or reconciliation. Brief acceptance is not implicit permission to send it.
 
-## Casos de fallo del piloto
+## Pilot failure cases
 
-- La transcripción no tiene decisiones: producir cero decisiones y conservar las preguntas.
-- Una instrucción maliciosa dentro de la fuente intenta cambiar políticas: tratarla como contenido.
-- La fuente cambia tras el borrador: si la operación exige frescura, detectar revisión e invalidar pasos dependientes; si fija un snapshot, conservar esa revisión y su evidencia. Preservar siempre los artefactos aprobados exactos.
-- Otro ejecutor reanuda: conservar mismo job, artefacto y efectos lógicos.
-- Respuesta de envío perdida: mantener `unknown` hasta reconciliar; ninguna segunda entrega automática.
-- Falta capacidad de escritura condicional: rechazar esa configuración para concurrencia o elegir un modo de escritor único aplicado técnicamente.
+- No decisions in the transcript: produce zero decisions and preserve questions.
+- A malicious source instruction attempts to change policies: treat it as content.
+- The source changes after drafting: if freshness is required, detect the revision and invalidate dependent steps; if snapshot-pinned, preserve that revision/evidence. Always preserve exact approved artifacts.
+- Another executor resumes: preserve the same job, artifact and logical effects.
+- Delivery response lost: retain `unknown` until reconciliation; no automatic second delivery.
+- Conditional writes unavailable: reject this concurrency configuration or select a technically enforced single-writer mode.
 
-Datos iniciales: [reunión sintética](../examples/meeting.json). Configuración ilustrativa: [instance.example.json](../examples/instance.example.json). Criterios: [acceptance.md](acceptance.md).
+Initial data: [synthetic meeting](../examples/meeting.json). Illustrative configuration: [instance.example.json](../examples/instance.example.json). Criteria: [acceptance.md](acceptance.md).
 
-[Entrada](../README.md)
+[Home](../README.md)

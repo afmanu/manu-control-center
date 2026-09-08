@@ -1,4 +1,5 @@
 import { test } from 'node:test';
+import { foundationCatalog, legacyFoundationCatalog } from '../builder/catalog.js';
 import assert from 'node:assert/strict';
 import { mkdtempSync, rmSync, mkdirSync, existsSync, readFileSync, writeFileSync, readdirSync, realpathSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -145,7 +146,11 @@ test('M2 two concurrent installers reconcile one plan with one project and one h
   const run = () => new Promise<any>((resolve, reject) => { const worker = new Worker(script, { eval: true, workerData: { plan, authority: authority(plan), moduleUrl: new URL('../adapters/interfaces/local/installation.js', import.meta.url).href } }); worker.once('message', resolve); worker.once('error', reject); worker.once('exit', code => { if (code) reject(new Error(`Exit ${code}`)); }); });
   const results = await Promise.all([run(), run()]);
   assert.ok(results.some(result => result.ok), JSON.stringify(results));
-  assert.ok(results.every(result => result.ok || ['CONFLICT', 'STALE_PLAN'].includes(result.code)), JSON.stringify(results));
+  // A competing first initialization may expose a journal before its MCC header commits.
+  // Accept only that documented fail-closed boundary, and still require one successful
+  // installer plus the final single-project/history checks below.
+  assert.ok(results.every(result => result.ok || ['CONFLICT', 'STALE_PLAN'].includes(result.code)
+    || (result.code === 'INCOMPATIBLE_VERSION' && result.message === 'Recovery requires an initialized MCC store. Preserve incomplete initialization for explicit repair.')), JSON.stringify(results));
   applyLocalInstallation(plan, authority(plan));
   const backend = new SqliteBackend(join(directory, 'store.sqlite'));
   try { const scope = backend.forScope({ instance_id: input.instance_id, actor_id: input.owner_id }); assert.equal(scope.history(input.project.id).length, 1); assert.equal(scope.query().records.length, 1); } finally { backend.close(); }
@@ -234,4 +239,42 @@ test('M2 CLI resume recovers an interrupted transaction from its recorded plan',
   assert.equal(resumed.status, 0, resumed.stderr);
   assert.equal(JSON.parse(resumed.stdout).manifest.state, 'verified');
   assert.equal(inspectLocalInstallation(input, directory).project!.id, input.project.id);
+}));
+
+const withDigest = (plan: InstallPlan): InstallPlan => ({ ...plan, digest: hashJson(Object.fromEntries(Object.entries(plan).filter(([key]) => key !== 'digest'))) });
+
+test('original M2 catalog plans resume and replan without translating persisted content or changing specification', () => temporary(root => {
+  const input = request(), directory = join(root, 'legacy');
+  const current = planLocalInstallation(input, directory);
+  const legacy = withDigest({ ...current, catalog: legacyFoundationCatalog() });
+  // Captured from the original dev.2 catalog, independent of current English descriptions.
+  assert.equal(hashJson(legacy.catalog), '3632340a425114069b820fb24e2f7aaee9b5c221c0af1187df1ba99c3b7f138c');
+  assert.notEqual(legacy.digest, current.digest);
+  assert.deepEqual(legacy.spec, current.spec);
+  assert.deepEqual(assertInstallPlan(legacy), legacy);
+  assert.throws(() => applyLocalInstallation(legacy, authority(legacy), { afterCheckpoint: () => { throw new Error('Interrupted legacy installation'); } }), /Interrupted legacy/);
+  const file = join(root, 'request.json'); writeFileSync(file, JSON.stringify(input));
+  const resumed = spawnSync(process.execPath, [fileURLToPath(new URL('../cli/main.js', import.meta.url)), '--lang', 'es', 'resume', file, directory, '--actor', input.owner_id], { encoding: 'utf8' });
+  assert.equal(resumed.status, 0, resumed.stderr); assert.equal(JSON.parse(resumed.stdout).manifest.state, 'verified');
+  const original = new SqliteInstallation(join(directory, 'store.sqlite'), true);
+  try { assert.deepEqual(original.state(input.owner_id, input.instance_id)!.installation, legacy); } finally { original.close(); }
+  const next = planLocalInstallation(input, directory);
+  assert.deepEqual(next.catalog, legacy.catalog); assert.deepEqual(next.spec, current.spec);
+  assert.equal(applyLocalInstallation(next, authority(next)).resources.length, 3);
+  assert.equal(verifyLocalInstallation(input, directory).state, 'verified');
+  const records = inspectLocalInstallation(input, directory);
+  assert.equal(records.resources.find(resource => resource.id === 'catalog')!.hash, hashJson(legacy.catalog));
+}));
+
+test('catalog compatibility rejects unknown descriptions and executable changes even with recomputed digests', () => temporary(root => {
+  const plan = planLocalInstallation(request(), join(root, 'uncreated'));
+  for (const catalog of [foundationCatalog(), legacyFoundationCatalog()]) {
+    const description = structuredClone(catalog); description.blueprint.purpose = 'An untrusted replacement';
+    const executable = structuredClone(catalog); executable.modules[0]!.requires_capabilities = [];
+    for (const changed of [description, executable]) {
+      const forged = withDigest({ ...plan, catalog: changed });
+      assert.throws(() => applyLocalInstallation(forged, authority(forged)), hasCode('INVALID_INPUT'));
+      assert.equal(existsSync(plan.observation.destination), false);
+    }
+  }
 }));

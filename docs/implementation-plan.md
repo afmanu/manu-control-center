@@ -1,174 +1,174 @@
-# Roadmap de implementación
+# Implementation roadmap
 
-Actualizado: 2026-09-08. **Estado: M0–M2 completados; M3–M6 pendientes.** Desarrollo en [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). Este plan conserva sus identificadores para mantener la trazabilidad con arquitectura, componentes y aceptación. La [evidencia de M2](m2-verification.json) y el [handoff](handoff.md) registran el alcance actual; se conservan las evidencias históricas de [M0](m0-verification.json) y [M1](m1-verification.json).
+Updated: 2026-09-08. **Status: M0–M2 complete; M3–M6 pending.** Development in [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). Identifiers remain stable for architecture/component/acceptance traceability. [M2 evidence](m2-verification.json) and the [handoff](handoff.md) record current scope; historical [M0](m0-verification.json) and [M1](m1-verification.json) evidence is preserved.
 
-## Resultado que vamos a entregar
+## Intended delivery
 
-Construir un producto reutilizable que cree y mantenga sistemas de conocimiento y trabajo con IA, con **Manu como primer usuario**. El repositorio contiene el constructor y sus módulos; cada instancia conserva su configuración, conocimiento y ejecuciones fuera de la distribución.
+Build a reusable product that creates and maintains AI knowledge and work systems, with **Manu as the first user**. The repository contains the builder/modules; each instance keeps configuration, knowledge and runs outside the distribution.
 
-La primera instancia permitirá incorporar información de un proyecto, recuperar su contexto, distinguir decisiones de propuestas, producir un resultado con fuentes y continuar en otra sesión. El blueprint [conocimiento y trabajo sobre un proyecto](first-blueprint.md) proporciona el recorrido inicial. Reunión → brief es el caso de referencia disponible para implementarlo y probarlo; no se presenta como una prioridad de negocio que Manu haya elegido expresamente.
+The first instance will ingest project information, retrieve context, distinguish decisions from proposals, produce sourced results and continue in another session. The [project knowledge and work](first-blueprint.md) blueprint supplies the initial path. Meeting → brief is the available reference case for implementation/testing, not an explicitly selected business priority attributed to Manu.
 
-Partimos del contexto ya definido. M0 es preparación técnica y comienzo del código, sin una nueva entrevista de descubrimiento. Las decisiones reversibles se toman durante la implementación y se registran en [decisions.md](decisions.md).
+Start from the defined context. M0 is technical preparation and initial code, without another discovery interview. Make reversible choices during implementation and record them in [decisions.md](decisions.md).
 
-## Entregas y dependencias
+## Deliverables and dependencies
 
-| Fase | Entrega concreta | Qué permite | Dependencia |
+| Phase | Concrete deliverable | Enables | Dependency |
 |---|---|---|---|
-| M0 — Repositorio ejecutable | Paquete, CLI mínima, pruebas y decisiones técnicas. | Instalar y ejecutar el proyecto en desarrollo. | Documentación actual. |
-| M1 — Contratos y persistencia | Modelos validados, interfaces y almacén de referencia probado. | Guardar entidades y estado con identidad, revisiones y aislamiento. | M0. |
-| M2 — Constructor operativo | Crear, inspeccionar, planificar, aplicar, verificar y adoptar instancias. | Disponer de una instancia propia instalada y verificable. | M1. |
-| M3 — Primera versión utilizable | Captura, búsqueda, contexto, workflows, runtime real y continuidad. | Trabajar con información propia desde una sesión nueva. | M2. |
-| M4 — Portabilidad demostrada | Otra representación de datos y otro runtime real. | Mover conocimiento y continuar trabajos entre destinos compatibles. | M3. |
-| M5 — Mantenimiento y entrega reproducible | Actualización, reparación, auditoría, documentación y paquete instalable. | Usarlo de forma continuada y mantener otras instancias. | M3; cierre completo tras M4. |
-| M6 — Integraciones y ampliaciones | Conexiones reales y capacidades adicionales por caso de uso. | Incorporar aplicaciones y automatización al trabajo diario. | M3 más las garantías que requiera cada extensión. |
+| M0 — Executable repository | Package, minimal CLI, tests and technical decisions. | Install/run the development project. | Current documentation. |
+| M1 — Contracts and persistence | Validated models, interfaces and tested reference store. | Store entities/state with identity, revisions and isolation. | M0. |
+| M2 — Operational builder | Create, inspect, plan, apply, verify and adopt instances. | An installed, verifiable personal instance. | M1. |
+| M3 — First usable version | Capture, search, context, workflows, real runtime and continuity. | Work with personal information from a fresh session. | M2. |
+| M4 — Demonstrated portability | Another data representation and real runtime. | Move knowledge and continue work between compatible targets. | M3. |
+| M5 — Maintenance and reproducible delivery | Updates, repair, auditing, documentation and installable package. | Sustained use and maintenance of other instances. | M3; full completion after M4. |
+| M6 — Integrations and extensions | Real connections and additional capabilities by use case. | Applications/automation in everyday work. | M3 plus guarantees required by each extension. |
 
 ```mermaid
 flowchart LR
-  M0["M0 · Repositorio"] --> M1["M1 · Contratos"]
-  M1 --> M2["M2 · Constructor"]
-  M2 --> M3["M3 · Primera versión utilizable"]
-  M3 --> M4["M4 · Portabilidad"]
-  M3 --> M5["M5 · Mantenimiento"]
+  M0["M0 · Repository"] --> M1["M1 · Contracts"]
+  M1 --> M2["M2 · Builder"]
+  M2 --> M3["M3 · First usable version"]
+  M3 --> M4["M4 · Portability"]
+  M3 --> M5["M5 · Maintenance"]
   M4 --> M5
-  M3 --> M6["M6 · Integraciones necesarias"]
+  M3 --> M6["M6 · Necessary integrations"]
 ```
 
-M3 entrega el piloto local utilizable; M5 cierra la entrega mantenible y reproducible. Una integración imprescindible para usarlo puede adelantarse desde M3 como trabajo de M6. No es necesario esperar a completar todo el catálogo de extensiones.
+M3 delivers a usable local pilot; M5 completes maintainable, reproducible delivery. An integration essential for use may be brought forward from M3 as M6 work. Completing the entire extension catalog is unnecessary.
 
-El orden se fija por dependencias y resultados verificables. No se asignan fechas sin medir el primer desarrollo y el acceso efectivo a los runtimes. Tras M0 se podrá estimar el siguiente bloque con datos de instalación y pruebas, sin convertir esa estimación en requisito para avanzar.
+Order follows dependencies and verifiable outcomes. Do not assign dates before measuring initial development and effective runtime access. After M0, installation/test data can inform estimates for the next block without making estimation a prerequisite for progress.
 
-## M0 — Repositorio ejecutable
+## M0 — Executable repository
 
-**Objetivo:** pasar de documentación a un proyecto que se puede instalar, ejecutar y comprobar.
+**Objective:** move from documentation to an installable, executable, testable project.
 
-Trabajo, en orden:
+Work, in order:
 
-1. **M0.1 · Base local.** Inicializar Git local si no existe, revisar exclusiones de datos y secretos, crear el paquete y una estructura mínima con archivos útiles. Conservar las especificaciones y los antecedentes; el remoto y la distribución pública se resuelven después.
-2. **M0.2 · Decisiones técnicas.** Seleccionar lenguaje, empaquetado, validación y almacenamiento con una prueba pequeña de instalación y escritura condicional. Registrar alternativas y consecuencias. La forma inicial será una aplicación local modular con biblioteca y CLI; las treinta responsabilidades no requieren treinta servicios.
-3. **M0.3 · Destinos del piloto.** Elegir un backend local de registros y el primer entorno invocable. Documentar cómo se comprobará un segundo backend documental y otro runtime en M4. La presencia de un ejecutable no acredita integración del producto.
-4. **M0.4 · Ubicación de la instancia.** Separar código, configuración y datos privados. El primer despliegue tendrá un host responsable de ejecutar trabajos. Definir la ubicación del estado durable y la exportación; no atribuir coordinación de escritores a la sincronización de una carpeta.
-5. **M0.5 · Herramientas de desarrollo.** Añadir CLI con ayuda y versión, runner de pruebas, un contrato mínimo ejecutable y guía con comandos comprobados.
+1. **M0.1 · Local foundation.** Initialize local Git if absent, review data/secret exclusions, create the package and a minimal structure with useful files. Preserve specifications/background; resolve the remote and public distribution afterward.
+2. **M0.2 · Technical decisions.** Select language, packaging, validation and storage with a small installation/conditional-write test. Record alternatives/consequences. Start with a modular local application, library and CLI; thirty responsibilities do not require thirty services.
+3. **M0.3 · Pilot targets.** Choose a local record backend and the first invocable environment. Document how M4 will test a second document backend and runtime. An executable's presence does not establish product integration.
+4. **M0.4 · Instance location.** Separate code, configuration and private data. The first deployment has one host responsible for jobs. Define durable-state location and export; folder synchronization does not coordinate writers.
+5. **M0.5 · Development tools.** Add CLI help/version, test runner, a minimal executable contract and a guide with verified commands.
 
-**Cierre:** instalación reproducida en una ubicación limpia, CLI invocable y prueba mínima aprobada. Las decisiones incluyen versiones y destino real observado. Todavía no se declara una instancia operativa.
+**Completion:** reproduce installation in a clean location, invoke the CLI and pass the minimal test. Decisions include versions and an actually observed target. Do not yet declare an operational instance.
 
-**Entrega:** repositorio de desarrollo ejecutable y siguiente tarea M1.1 lista para implementar.
+**Delivery:** executable development repository with M1.1 ready to implement.
 
-**Cierre registrado:** M0.1–M0.5 implementados; 18 tests y prueba de instalación limpia aprobados. Se conservan Git y MIT del destino indicado por el usuario. El paquete mínimo no acredita un backend de instancia ni un runtime integrado. Véase [desarrollo](development.md).
+**Recorded completion:** M0.1–M0.5 implemented; 18 tests and clean installation passed. Git/MIT from the user's selected destination are preserved. The minimal package proves neither an instance backend nor an integrated runtime. See [development](development.md).
 
-## M1 — Contratos y persistencia
+## M1 — Contracts and persistence
 
-**Objetivo:** establecer el modelo común y demostrar las garantías que utilizarán el constructor y los workflows.
+**Objective:** establish the common model and demonstrate guarantees needed by the builder/workflows.
 
-1. **M1.1 · Construcción.** Esquemas versionados de necesidad, blueprint, especificación resuelta, plan y manifiesto. Errores legibles y validación de referencias, capacidades y ownership.
-2. **M1.2 · Conocimiento.** Entidades de proyecto, fuente, captura, afirmación, decisión, artefacto y relación. Identidad independiente del nombre o ruta; procedencia, revisión, fechas y acceso explícitos.
-3. **M1.3 · Ejecución.** Contratos de skill, workflow, job, run, step, action y autorización. Definir transiciones, presupuestos, cancelación, checkpoints y compatibilidad de versiones.
-4. **M1.4 · Persistencia.** Implementación mínima del backend de referencia: crear, leer, consultar, actualizar con revisión esperada y registrar relaciones. Probar aislamiento y exclusión antes de confiarle estado operativo. El estado tiene una autoridad lógica aunque un backend documental requiera un almacén operativo complementario.
-5. **M1.5 · Fronteras difíciles.** Precisar identidad de un efecto entre reintentos, rechazo de la misma clave con contenido distinto, promoción autorizada de decisiones y política temporal por operación. Diseñar exportación con definiciones ejecutables y transferencia de autoridad; implementarla en M4.
-6. **M1.6 · Fixtures y harness.** Unificar formatos de los ejemplos, incluidos los campos de preguntas abiertas. Separar estrictamente entradas visibles por el ejecutor y expectativas reservadas al evaluador. Añadir casos inválidos, fuentes contradictorias y fuente sin decisiones.
+1. **M1.1 · Construction.** Versioned schemas for need, blueprint, resolved specification, plan and manifest. Readable errors and validation of references, capabilities and ownership.
+2. **M1.2 · Knowledge.** Project, source, capture, claim, decision, artifact and relation entities. Identity independent of names/paths; explicit provenance, revision, dates and access.
+3. **M1.3 · Execution.** Skill, workflow, job, run, step, action and authorization contracts. Define transitions, budgets, cancellation, checkpoints and version compatibility.
+4. **M1.4 · Persistence.** Minimal reference backend: create, read, query, update with expected revision and record relationships. Test isolation/exclusion before trusting it with operational state. State has one logical authority even if a document backend needs a complementary operational store.
+5. **M1.5 · Difficult boundaries.** Specify effect identity across retries, rejection of the same key with different content, authorized decision promotion and per-operation time policy. Design export with executable definitions and authority transfer; implement in M4.
+6. **M1.6 · Fixtures and harness.** Unify example formats, including open-question fields. Strictly separate executor-visible inputs from evaluator-only expectations. Add invalid cases, contradictory sources and a source without decisions.
 
-**Cierre:** esquemas válidos e inválidos ejercitados; transiciones imposibles y revisiones obsoletas rechazadas; aislamiento comprobado; el ejecutor de evaluación no recibe `expected`. Las pruebas de mecanismo usan expectativas deterministas, separadas de las evaluaciones semánticas.
+**Completion:** exercise valid/invalid schemas; reject impossible transitions/stale revisions; verify isolation; keep `expected` out of executor input. Mechanism tests use deterministic expectations, separate from semantic evaluations.
 
-**Entrega:** contratos ejecutables, almacén mínimo e interfaces de backend/runtime/herramientas que no importan convenciones de un proveedor al núcleo. Primer cierre de A27; base contractual de A08, A10 y A21–A25.
+**Delivery:** executable contracts, minimal store and backend/runtime/tool interfaces that do not import provider conventions into the core. Initial A27 completion; contractual foundation for A08, A10 and A21–A25.
 
-**Cierre registrado:** M1.1–M1.6 implementados: 22 contratos, bundle coherente, backend SQLite con revisiones/historial/acceso, transiciones y políticas, identidad de efectos, contrato de traslado y harness A27. Pasan 74 tests e instalación limpia con imports del paquete. La prueba de A27 cubre separación de API; los recorridos con runtime, leases y efectos reales siguen en M3/M4. Véanse [alcance M1](m1-implementation.md) y [evidencia](m1-verification.json).
+**Recorded completion:** M1.1–M1.6 implemented: 22 contracts, coherent bundle, SQLite revisions/history/access, transitions/policies, effect identity, transfer contract and A27 harness. 74 tests and clean installation with package imports pass. A27 proves API separation; runtime workflows, leases and real effects remain M3/M4 work. See [M1 scope](m1-implementation.md) and [evidence](m1-verification.json).
 
-## M2 — Constructor operativo
+## M2 — Operational builder
 
-**Objetivo:** convertir una configuración en una instancia instalada, verificable y recuperable tras fallos.
+**Objective:** turn configuration into an installed, verifiable instance recoverable after failures.
 
-1. **M2.1 · Resolver.** Catálogo inicial de un blueprint y los módulos necesarios. Reutilizar los datos de contexto existentes y pedir solamente campos imprescindibles que falten. Resolver versiones, capacidades y destinos; los placeholders de los ejemplos no son instalaciones válidas.
-2. **M2.2 · Inspeccionar y planificar.** Descubrir recursos existentes y producir un plan sin escrituras en el destino. Incluir precondiciones, revisiones observadas, ownership, efectos previstos, verificación y recuperación.
-3. **M2.3 · Aplicar.** Ejecutar operaciones autorizadas con checkpoints persistentes. Revalidar el destino antes de escribir. Reconciliar recursos ya creados tras una caída; declarar estado parcial cuando corresponda.
-4. **M2.4 · Verificar.** Manifiesto de lo efectivamente instalado y reporte de capacidades probadas. Separar presencia, configuración, invocación y resultado funcional. El workflow completo se verificará en M3.
-5. **M2.5 · Adoptar.** Mapear un proyecto preexistente de prueba conservando contenido y nombres. Diferenciar recursos gestionados, compartidos y del usuario; no inferir identidad solo por nombre.
-6. **M2.6 · Entrada humana.** Operaciones reales de CLI para crear/adoptar, inspeccionar, planificar, aplicar y verificar. Registrar errores y evidencia con IDs de instancia y operación.
+1. **M2.1 · Resolve.** Initial catalog of one blueprint and required modules. Reuse existing context and request only essential missing fields. Resolve versions, capabilities and targets; example placeholders are not valid installations.
+2. **M2.2 · Inspect and plan.** Discover existing resources and produce a plan without destination writes. Include preconditions, observed revisions, ownership, intended effects, verification and recovery.
+3. **M2.3 · Apply.** Execute authorized operations with persistent checkpoints. Revalidate before writing. Reconcile resources already created before a crash; declare partial state where appropriate.
+4. **M2.4 · Verify.** Manifest of actual installation and tested capabilities. Separate presence, configuration, invocation and functional outcome. Full workflow verification arrives in M3.
+5. **M2.5 · Adopt.** Map an existing test project while preserving content/names. Distinguish managed, shared and user-owned resources; do not infer identity solely from names.
+6. **M2.6 · Human entry point.** Real CLI operations to create/adopt, inspect, plan, apply and verify. Record errors/evidence with instance/operation IDs.
 
-**Cierre:** dos instancias aisladas; planificación sin escrituras en el destino; plan obsoleto rechazado; aplicación interrumpida y repetida sin duplicados; adopción conservadora. A01, A02, A16 y A17 pasan; A15 y A19 pasan para las capacidades presentes.
+**Completion:** two isolated instances; planning without destination writes; stale plans rejected; interrupted/repeated application without duplicates; conservative adoption. A01, A02, A16 and A17 pass; A15/A19 pass for present capabilities.
 
-**Entrega:** una instancia instalable y verificable con el primer backend. La creación automática no se confunde con haber probado todavía el trabajo de usuario.
+**Delivery:** an installable, verifiable instance on the first backend. Automated creation is not yet proof of user work.
 
-**Cierre registrado:** M2.1–M2.6 implementados para el perfil `foundation`: catálogo y resolver con versiones fijadas, planificación sin escrituras en destino, aplicación con recurso/checkpoint atómicos, verificación durable y adopción explícita de proyectos MCC SQLite. CLI disponible: resolve, plan, inspect, apply, verify, create, adopt y resume. A01/A02/A16/A17 pasan en este destino; A15/A19 cubren las capacidades presentes. Pasan 92 tests e instalación limpia del paquete, incluida creación y verificación desde el consumidor. Se ha preparado la base local de Manu con tres recursos; la integración del runtime permanece pendiente. [Guía y límites](installation.md), [evidencia](m2-verification.json).
+**Recorded completion:** M2.1–M2.6 implemented for `foundation`: pinned catalog/resolver, planning without destination writes, atomic resource/checkpoint application, durable verification and explicit adoption of MCC SQLite projects. CLI: resolve, plan, inspect, apply, verify, create, adopt and resume. A01/A02/A16/A17 pass on this target; A15/A19 cover present capabilities. 92 tests and clean package installation pass, including consumer-side creation/verification. Manu's local foundation has three resources; runtime integration remains pending. [Guide and limits](installation.md), [evidence](m2-verification.json).
 
-## M3 — Primera versión utilizable por Manu
+## M3 — First version usable by Manu
 
-**Objetivo:** completar trabajo útil y conservar suficiente estado para continuar sin el historial de la conversación.
+**Objective:** complete useful work and preserve enough state to continue without conversation history.
 
-1. **M3.1 · Captura y consulta.** Ingresar texto o archivos del alcance inicial, asociarlos a proyectos y fuentes, conservar revisiones y recuperar contexto con referencias. Búsqueda inicial sencilla; filtros de acceso antes de exponer contenido o resultados.
-2. **M3.2 · Autoridad y tiempo.** Diferenciar hechos, hipótesis, propuestas y decisiones. Una extracción no concede autoridad para hacer vigente una decisión. Las consultas indican si buscan estado actual o histórico; cada ejecución define si fija sus fuentes o exige frescura. Los artefactos aprobados conservan su contenido exacto.
-3. **M3.3 · Trabajo útil.** Implementar `meeting-to-brief`: captura, recuperación, extracción, borrador, evaluación, revisión y cierre. Añadir un recorrido pequeño de resumen de estado del proyecto que reutilice los mismos módulos. Así comprobamos que el núcleo sirve para más de un flujo.
-4. **M3.4 · Coordinador y efectos.** Estado durable único de jobs/runs/acciones, reclamación atómica, revisiones y fencing, recuperación, presupuestos y cancelación. Las operaciones controladas pasan por la capa de efectos; un proceso obsoleto no puede confirmar nuevas escrituras. Para respuestas externas perdidas, conservar incertidumbre y reconciliar antes de reintentar.
-5. **M3.5 · Runtime real.** Implementar el primer adaptador y ejecutar ambos recorridos con ese entorno. Delimitar qué operaciones puede controlar técnicamente el producto y cómo entrega entradas, recibe salidas y valida resultados. Las instrucciones de un agente por sí solas no prueban aislamiento ni control de herramientas.
-6. **M3.6 · Continuidad y experiencia.** Entregar entrada desde el agente compatible y CLI de apoyo para capturar, consultar, ejecutar, revisar y reanudar. El handoff deriva del estado persistente e incluye propósito, evidencia, pendientes y siguiente acción. Una sesión nueva debe recuperar el proyecto sin reconstruirlo mediante preguntas.
-7. **M3.7 · Puesta en uso.** Completar la instancia base de Manu preparada en M2, separada del repositorio, con perfil operativo editable y guía breve. Verificarla primero con material sintético y dejar disponible la incorporación explícita de sus fuentes. El conector de entrega externa se mantiene simulado hasta la extensión real de M6.
+1. **M3.1 · Capture and query.** Ingest initial-scope text/files, associate projects/sources, retain revisions and retrieve referenced context. Start with simple search; filter access before exposing content/results.
+2. **M3.2 · Authority and time.** Distinguish facts, hypotheses, proposals and decisions. Extraction does not grant authority to activate a decision. Queries specify current/historical state; each run pins sources or requires freshness. Approved artifacts retain exact content.
+3. **M3.3 · Useful work.** Implement `meeting-to-brief`: capture, retrieval, extraction, drafting, evaluation, review and completion. Add a small project-status summary path reusing the same modules to test that the core serves multiple workflows.
+4. **M3.4 · Coordinator and effects.** One durable jobs/runs/actions state, atomic claims, revisions/fencing, recovery, budgets and cancellation. Controlled operations pass through the effect layer; stale processes cannot confirm new writes. Lost external responses retain uncertainty and reconcile before retry.
+5. **M3.5 · Real runtime.** Implement the first adapter and run both workflows in it. Define which operations the product can technically control and how it supplies inputs, receives outputs and validates results. Agent instructions alone prove neither isolation nor tool control.
+6. **M3.6 · Continuity and experience.** Provide a compatible-agent entry point and supporting CLI for capture, queries, execution, review and resumption. Generate handoff from persistent state with purpose, evidence, open items and next action. A new session must retrieve the project without reconstructing it through questions.
+7. **M3.7 · First use.** Complete Manu's M2 foundation outside the repository with an editable operational profile and short guide. Verify synthetic material first and make explicit source ingestion available. External delivery stays simulated until the real M6 extension.
 
-**Cierre:** A03–A06, A08–A10, A18 y A20–A23 pasan; A09 utiliza el simulador identificado. A26 demuestra los dos recorridos y continuidad en una sesión nueva; A27 sigue pasando con el evaluador integrado. A15/A19 cubren el runtime y recuperación incorporados. El brief no inventa acuerdos, responsables ni fechas, y conserva referencias verificables.
+**Completion:** A03–A06, A08–A10, A18 and A20–A23 pass; A09 uses the identified simulator. A26 demonstrates both workflows and fresh-session continuity; A27 passes with the integrated evaluator. A15/A19 cover the added runtime/retrieval. Briefs invent no agreements, owners or dates and retain verifiable references.
 
-**Entrega:** piloto local utilizable: instalar → incorporar una fuente → consultar → ejecutar un workflow → revisar un resultado → retomar otro día. Incluye evidencia de un runtime real, límites conocidos y pasos de uso comprobados. El uso de datos propios no implica migrar todo el vault.
+**Delivery:** usable local pilot: install → add a source → query → run a workflow → review a result → resume another day. Includes real-runtime evidence, known limits and verified usage steps. Personal-data use does not imply migrating the entire vault.
 
-## M4 — Portabilidad demostrada
+## M4 — Demonstrated portability
 
-**Objetivo:** comprobar que el modelo funciona fuera de su primera implementación.
+**Objective:** prove the model works beyond its first implementation.
 
-1. **M4.1 · Segunda representación.** Adaptador documental distinto del backend de registros, con suite común de entidades, consultas, revisiones y acceso. Declarar capacidades faltantes y resolver dónde vive la autoridad operativa.
-2. **M4.2 · Exportar e importar.** Preservar IDs, relaciones, procedencia, versiones requeridas, artefactos exactos y estado. Incluir las definiciones versionadas de skills, workflows y validadores, o referencias que se resuelvan y verifiquen. Excluir valores de credenciales.
-3. **M4.3 · Traslado seguro.** Distinguir migración, copia y restauración. En migración, detener nuevas reclamaciones en el origen y transferir autoridad antes de ejecutar en destino. En copia, remapear identidad y mantener trabajos pendientes inactivos. En restauración, comprobar cuál es el ejecutor vigente. Reconciliar acciones inciertas e invalidar leases anteriores.
-4. **M4.4 · Segundo runtime.** Ejecutar el mismo contrato en otro entorno real; interrumpir trabajo en el primero y reanudarlo en el segundo con revalidación de entradas, permisos, versiones y efectos.
-5. **M4.5 · Matriz de compatibilidad.** Registrar combinación de runtime/backend/versiones, escenarios ejecutados, evidencias y límites. Probar las combinaciones que se declaren soportadas; no inferir todas a partir de una pareja que funciona.
+1. **M4.1 · Second representation.** Document adapter distinct from the record backend, with a shared entity/query/revision/access suite. Declare missing capabilities and resolve operational authority storage.
+2. **M4.2 · Export and import.** Preserve IDs, relationships, provenance, required versions, exact artifacts and state. Include versioned skill/workflow/validator definitions or resolvable, verified references. Exclude credential values.
+3. **M4.3 · Safe transfer.** Distinguish migration, copy and restore. Migration stops new source claims and transfers authority before destination execution. Copy remaps identity and leaves inherited pending jobs inactive. Restore checks the current executor. Reconcile uncertain actions and invalidate previous leases.
+4. **M4.4 · Second runtime.** Execute the same contract in another real environment; interrupt work in the first and resume in the second after revalidating inputs, permissions, versions and effects.
+5. **M4.5 · Compatibility matrix.** Record runtime/backend/version combinations, executed scenarios, evidence and limits. Test every declared supported combination; do not infer all combinations from one working pair.
 
-**Cierre:** A07, A12, A24 y A25 pasan; A15 y A19 pasan en cada combinación declarada. Los resultados aceptados y efectos confirmados no se repiten. Una dependencia ausente impide reanudar el paso afectado con un error legible, sin sustituirla silenciosamente.
+**Completion:** A07, A12, A24 and A25 pass; A15/A19 pass in each declared combination. Accepted results/confirmed effects are not repeated. A missing dependency prevents the affected step from resuming with a readable error, without silent substitution.
 
-**Entrega:** exportación e importación verificadas y continuidad demostrada con dos representaciones y dos runtimes reales. Si falta acceso a un destino, se completa lo independiente y su compatibilidad permanece pendiente.
+**Delivery:** verified export/import and demonstrated continuity with two representations and two real runtimes. If a target is inaccessible, finish independent work and leave that compatibility pending.
 
-## M5 — Mantenimiento y entrega reproducible
+## M5 — Maintenance and reproducible delivery
 
-**Objetivo:** conservar el trabajo y las personalizaciones mientras el producto evoluciona.
+**Objective:** preserve work/customizations as the product evolves.
 
-1. **M5.1 · Actualización.** Comparar versión gestionada anterior, estado observado y nueva versión deseada. Preservar overrides, producir plan de cambio y detectar conflictos. Fijar, migrar explícitamente o bloquear runs abiertos según compatibilidad.
-2. **M5.2 · Reparación.** Diagnóstico de instalación parcial, referencias rotas, incompatibilidades y trabajos bloqueados. Reparación acotada con evidencia; no prometer rollback de efectos irreversibles.
-3. **M5.3 · Auditoría y mejora.** Hallazgos con IDs estables, historial, estado y evidencia. Cerrar solo después de una comprobación nueva. Convertir un problema detectado en una mejora concreta y volver a evaluar el recorrido afectado.
-4. **M5.4 · Calidad de uso.** Revisar el uso del piloto: utilidad del contexto recuperado, correcciones necesarias, pasos manuales, tiempos y coste observable. Ampliar el corpus semántico según fallos reales, sin usar una puntuación media para ocultar fallos de permisos o efectos.
-5. **M5.5 · Entrega.** Empaquetado versionado, pruebas automatizadas, guía de instalación/uso/backup/restauración/actualización y matriz de soporte. Instalar desde cero y actualizar una instancia de la versión anterior. Preparar un candidato a release; licencia, marca, remoto y publicación se resuelven al distribuir.
+1. **M5.1 · Updates.** Compare previous managed version, observed state and new desired version. Preserve overrides, produce a change plan and detect conflicts. Pin, explicitly migrate or block open runs according to compatibility.
+2. **M5.2 · Repair.** Diagnose partial installations, broken references, incompatibilities and blocked jobs. Apply bounded repairs with evidence; do not promise rollback of irreversible effects.
+3. **M5.3 · Auditing and improvement.** Findings with stable IDs, history, state and evidence. Close only after a new check. Turn a detected problem into a concrete improvement and reevaluate the affected path.
+4. **M5.4 · Usability quality.** Review pilot use: retrieved-context utility, required corrections, manual steps, timing and observable cost. Expand the semantic corpus from real failures; averages cannot hide permission/effect failures.
+5. **M5.5 · Delivery.** Versioned packaging, automated tests, installation/use/backup/restore/update guides and support matrix. Install from scratch and update an earlier instance. Prepare a release candidate; resolve license, branding, remote and publication for distribution.
 
-**Cierre:** A11 y A13 pasan, con regresión de los escenarios obligatorios para el perfil y evidencia de instalación limpia. La restauración y actualización preservan datos y artefactos; los defectos relevantes no se marcan resueltos por cambiar solamente su descripción.
+**Completion:** A11/A13 pass, with regression of the profile's mandatory scenarios and clean-install evidence. Restore/updates preserve data/artifacts; changing a defect's description does not resolve it.
 
-**Entrega:** producto instalable y mantenible, con guía reproducible y cobertura declarada. El primer trabajo de mantenimiento puede empezar tras M3; su cierre incluye los destinos soportados de M4.
+**Delivery:** installable, maintainable product with a reproducible guide and declared coverage. Initial maintenance may start after M3; full completion includes M4 supported targets.
 
-## M6 — Integraciones y ampliaciones por necesidad
+## M6 — Integrations and extensions as needed
 
-**Objetivo:** incorporar lo que necesite el uso diario sobre el núcleo ya probado. Cada extensión es una entrega acotada.
+**Objective:** add everyday-use capabilities on the tested core. Each extension is a bounded delivery.
 
-| Bloque | Trabajo | Condición de cierre |
+| Block | Work | Completion condition |
 |---|---|---|
-| M6.1 · Aplicaciones y fuentes reales | Conectar las aplicaciones necesarias del piloto; lectura, escritura o entrega según capacidades y alcance. | Acceso real probado, errores/desconexión cubiertos y recibos o reconciliación de efectos. A09 real y A10/A18/A19 según el conector. |
-| M6.2 · Recurrencia | Triggers y scheduler que crean jobs del mismo coordinador. | A14 pasa con zona horaria, eventos repetidos, desconexión, recuperación y cancelación. |
-| M6.3 · Interfaz adicional | Vista de proyectos, ejecuciones, artefactos, pendientes y revisión, si la CLI y el agente resultan insuficientes. | El usuario completa el recorrido; la UI lee/escribe mediante contratos existentes y no crea otra autoridad de estado. |
-| M6.4 · Acceso remoto y delegación | Gateway o varios ejecutores cuando el caso los requiera. | Autenticación y alcance, exclusión, fencing, desconexión y observabilidad probados en el despliegue real. |
-| M6.5 · Más blueprints y capacidades | Otros procesos, skills y destinos reutilizando el núcleo. | Contratos, dependencias, evals y compatibilidad versionados; la nueva capacidad no rompe las existentes. |
+| M6.1 · Real applications and sources | Connect necessary pilot applications; read, write or deliver according to capability/scope. | Real access tested, errors/disconnections covered, effect receipts or reconciliation. Real A09 and A10/A18/A19 as applicable. |
+| M6.2 · Recurrence | Triggers/scheduler creating jobs in the same coordinator. | A14 passes with timezone, repeated events, disconnection, recovery and cancellation. |
+| M6.3 · Additional interface | Project, run, artifact, open-item and review views if CLI/agent are insufficient. | User completes the path; UI reads/writes through existing contracts without another state authority. |
+| M6.4 · Remote access and delegation | Gateway or multiple executors when needed. | Authentication/scope, exclusion, fencing, disconnection and observability tested in real deployment. |
+| M6.5 · More blueprints and capabilities | Other processes, skills and targets reusing the core. | Versioned contracts, dependencies, evals and compatibility; no regressions in existing capabilities. |
 
-Prioridad: resolver primero una necesidad que impida el uso del piloto; después reducir trabajo manual observado. No conectar todas las aplicaciones por disponibilidad ni convertir los módulos opcionales en requisitos de instalación. M6.1 puede comenzar tras M3; publicación de contenido y comunicaciones requieren el alcance de autorización correspondiente.
+First resolve needs preventing pilot use, then reduce observed manual work. Do not connect every available application or make optional modules installation prerequisites. M6.1 can start after M3; content publication/communications require corresponding authorization scope.
 
-## Trazabilidad de aceptación
+## Acceptance traceability
 
-Los casos completos viven en [acceptance.md](acceptance.md). Esta tabla asigna la primera puerta funcional; los casos se vuelven a ejecutar cuando se amplía su superficie o cambia su mecanismo.
+Full cases live in [acceptance.md](acceptance.md). This table assigns the first functional gate; rerun cases when their surface expands or mechanism changes.
 
-| Puerta | Escenarios |
+| Gate | Scenarios |
 |---|---|
-| M0 | Instalación, CLI y prueba mínima de contrato. |
-| M1 | A27: separación entre entradas y expectativas. Pruebas unitarias de contratos y persistencia. |
-| M2 | A01, A02, A16, A17; A15/A19 para constructor y backend inicial. |
-| M3 | A03, A04, A05, A06, A08, A09 simulado, A10, A18, A20, A21, A22, A23, A26; ampliar A15/A19/A27. |
-| M4 | A07, A12, A24, A25; ampliar A15/A19 a los destinos soportados. |
-| M5 | A11, A13; regresión del perfil e instalación/actualización/restauración. |
-| M6 | A09 real, A14 si recurrente y escenarios afectados por cada extensión. |
+| M0 | Installation, CLI and minimal contract test. |
+| M1 | A27: input/expectation separation. Contract/persistence unit tests. |
+| M2 | A01, A02, A16, A17; A15/A19 for constructor and initial backend. |
+| M3 | A03, A04, A05, A06, A08, simulated A09, A10, A18, A20, A21, A22, A23, A26; expand A15/A19/A27. |
+| M4 | A07, A12, A24, A25; expand A15/A19 to supported targets. |
+| M5 | A11, A13; profile regression and installation/update/restore. |
+| M6 | Real A09, A14 if recurrent, and scenarios affected by each extension. |
 
-Los hallazgos del análisis quedan incorporados en tareas concretas: identidad de efectos (M1.5/M3.4), mediación del runtime (M3.5), autoridad de decisiones (M3.2), política temporal (M3.2), migración de trabajos activos y dependencias ejecutables (M4.2–M4.3), normalización y aislamiento de fixtures (M1.6), cobertura incremental de componentes y utilidad de más de un recorrido (M3.3/M5.4).
+Analysis findings are embedded in concrete tasks: effect identity (M1.5/M3.4), runtime mediation (M3.5), decision authority (M3.2), time policy (M3.2), active-job migration/executable dependencies (M4.2–M4.3), fixture normalization/isolation (M1.6), incremental component coverage and usefulness beyond one path (M3.3/M5.4).
 
-## Reglas de ejecución y cierre
+## Execution and completion rules
 
-El código se incorpora cuando tiene comportamiento útil: `core` define contratos; `builder`, `lifecycle` y `execution` los consumen; los adaptadores implementan las interfaces; skills y workflows componen capacidades. `tests` comprueba mecanismos y `evals` resultados. Los detalles de un proveedor permanecen en su adaptador.
+Add code when it has useful behavior: `core` defines contracts; `builder`, `lifecycle` and `execution` consume them; adapters implement interfaces; skills/workflows compose capabilities. `tests` checks mechanisms; `evals` checks outcomes. Provider details remain in their adapters.
 
-Cada cierre actualiza [handoff.md](handoff.md) con versión/commit si existe, tareas realizadas, comandos reales, resultados, evidencia, limitaciones, decisiones y próxima tarea. Una fase puede estar pendiente, en curso, parcialmente verificada o completada. Solo se completa si pasan sus criterios aplicables; una simulación nunca acredita una integración real.
+Each completion updates [handoff.md](handoff.md) with version/commit if available, completed tasks, actual commands, results, evidence, limits, decisions and next task. A phase may be pending, in progress, partially verified or complete. Completion requires all applicable criteria to pass; a simulation never proves a real integration.
 
-**Siguiente acción de desarrollo: M3.1.** Añadir captura de fuentes locales y consultas con procedencia sobre el backend existente. Continuar con autoridad temporal, los dos workflows, coordinación, runtime real y uso de la instancia base; conservar sus datos y documentar cualquier evolución de configuración necesaria.
+**Next development action: M3.1.** Add local-source capture and provenance-aware queries on the existing backend. Continue with temporal authority, both workflows, coordination, real runtime and foundation-instance use; preserve its data and document required configuration evolution. The intervening English-repository update is recorded in D24 and does not start M3.
 
-[Entrada](../README.md)
+[Home](../README.md)

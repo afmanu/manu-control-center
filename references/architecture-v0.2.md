@@ -1,150 +1,150 @@
-> ANTECEDENTE HISTÓRICO. No establece el estado ni el alcance actuales. Prevalecen [las decisiones vigentes](../docs/decisions.md) y [la arquitectura](../docs/architecture.md). Las recomendaciones antiguas se conservan como contexto.
+> HISTORICAL BACKGROUND. This does not establish current status or scope. [Current decisions](../docs/decisions.md) and [architecture](../docs/architecture.md) prevail. Earlier recommendations are retained as context. English translation; original text is preserved in Git history.
 
-# Arquitectura base de Second Brain y AI OS
+# Second Brain and AI OS baseline architecture
 
-## Propósito y estado
+## Purpose and status
 
-**Referencia vigente para desarrollo:** [Fundamentos y arquitectura del ecosistema](../docs/architecture.md), versión documental 1.0. Este documento v0.2 se conserva como antecedente de diseño; la definición autocontenida y el catálogo de componentes se mantienen en la referencia vigente.
+**Current development reference:** [Ecosystem foundations and architecture](../docs/architecture.md), document version 1.0. This v0.2 document remains design background; the self-contained definition and component catalog live in the current reference.
 
-Revisión complementaria: [Propuesta Universal AI OS de ChatGPT y revisión crítica](shared-conversation-review.md). Sus hallazgos informan la siguiente iteración; no modifican automáticamente los contratos de esta versión.
+Complementary review: [ChatGPT Universal AI OS proposal and critical review](shared-conversation-review.md). Findings inform the next iteration without automatically changing this version's contracts.
 
-Especificación propuesta para combinar conocimiento duradero, ejecución útil y continuidad entre agentes. Desarrolla la [revisión del instalador original, el vault evolucionado y AIS-OS](installer-review.md). No instala componentes ni cambia las reglas operativas vigentes.
+Proposed specification combining durable knowledge, useful execution and cross-agent continuity. It develops the [review of the original installer, evolved vault and AIS-OS](installer-review.md). It installs no components and changes no current operating rules.
 
-**Alcance aclarado por Manu — v0.2:** el entregable es un repositorio constructor que permite crear y desplegar instancias de Second Brain / AI OS. El vault actual aporta aprendizajes, pero no define el layout ni el backend del producto. Obsidian es una integración opcional. No se exige Markdown, carpetas PARA, hubs, frontmatter ni una aplicación concreta. Esta aclaración sustituye la preferencia por archivos y el layout del vault de la v0.1.
+**Scope clarified by Manu — v0.2:** the deliverable is a builder repository for creating/deploying Second Brain / AI OS instances. The current vault supplies lessons, not product layout/backend. Obsidian is optional. Markdown, PARA folders, hubs, frontmatter and any specific application are not required. This clarification supersedes v0.1's file preference and vault layout.
 
-Se distinguen tres objetos: **repositorio constructor** (modelo, blueprints, generador, adaptadores y pruebas), **especificación de instancia** (necesidades, capacidades y destinos elegidos) y **sistema desplegado** (recursos concretos, acceso, workflows y estado). Guardar esta especificación en el vault no vincula el producto a Obsidian.
+Distinguish **builder repository** (model, blueprints, generator, adapters/tests), **instance specification** (needs, capabilities and selected targets), and **deployed system** (concrete resources, access, workflows/state). Saving this specification in a vault does not bind the product to Obsidian.
 
-**Patrón arquitectónico:** núcleo independiente, memoria externa compartida, workflows con contratos y adaptadores por capacidades. El sistema conserva significado, estado y criterios de aceptación cuando cambia el agente que lo utiliza.
+**Architecture pattern:** independent core, shared external memory, contracted workflows and capability-based adapters. Preserve meaning, state and acceptance criteria when the agent changes.
 
-**Patrón de construcción:** propósito → conocimiento necesario → proceso → primera ejecución → evidencia → mejora → autonomía si aporta valor.
+**Construction pattern:** purpose → required knowledge → process → first execution → evidence → improvement → autonomy if useful.
 
-La portabilidad del contenido es un objetivo general. La compatibilidad de ejecución se declara por adaptador, versión, superficie y capacidades comprobadas. Un entorno sin acceso persistente puede producir una propuesta o un paquete de continuidad, pero no confirmar una escritura que no haya realizado.
+Content portability is a general goal. Execution compatibility is declared by adapter, version, surface and tested capabilities. Environments without persistent access may produce proposals/continuity packages but cannot confirm writes they did not perform.
 
-## Principios fundamentales
+## Fundamental principles
 
-| Principio | Regla de construcción | Evidencia de cumplimiento |
+| Principle | Construction rule | Evidence |
 |---|---|---|
-| 1. El conocimiento pertenece al usuario | Guardar memoria y estado relevantes en formatos accesibles fuera del chat y de las memorias privadas del proveedor. | Otro entorno recupera el contexto con acceso a las mismas fuentes. |
-| 2. Una autoridad por dato o regla | Declarar dónde se mantiene cada hecho, política, workflow y estado. Generar las copias de distribución y las vistas. | Una corrección tiene un lugar de edición claro y sus proyecciones se comprueban. |
-| 3. Separar responsabilidades | Distinguir fuente, captura, hipótesis, decisión, conocimiento, estado actual, historial y resultado. | Una propuesta generada no cambia por sí sola una preferencia confirmada. |
-| 4. Significado estable, estructura adaptable | Definir entidades y rutas lógicas antes de nombres de carpetas o perfiles. | Una decisión sigue siendo recuperable como decisión en distintos perfiles e idiomas. |
-| 5. Contrato antes de ejecución | Definir entradas, resultado, evidencia, efectos permitidos y recuperación de cada workflow. | Se puede aceptar o rechazar una ejecución por criterios previos. |
-| 6. Contexto seleccionado por tarea | Recuperar propósito, contexto del proyecto, estado y fuentes relevantes de forma progresiva. | Una consulta encuentra evidencia suficiente sin cargar indiscriminadamente el sistema. |
-| 7. Capacidad y autorización explícitas | Comprobar herramientas disponibles y alcance autorizado en la sesión actual. Respetar las autorizaciones vigentes. | El adaptador comunica límites reales y no amplía permisos al cambiar de entorno. |
-| 8. Continuidad y cambios comprobables | Persistir pasos, referencias y efectos; comprobar revisiones antes de actualizar. | Se reanuda sin repetir una acción ya confirmada ni pisar una edición concurrente. |
-| 9. Evidencia y consolidación selectiva | Validar resultados, conservar procedencia y promover solo aprendizajes útiles. | Una auditoría distingue realizado, demostrado, pendiente y no aplicable. |
-| 10. Complejidad proporcional al uso | Empezar con un recorrido completo y un backend adecuado al caso. Añadir especialización, conectores y cadencia por necesidad. | Cada componente resuelve un caso observable y tiene responsable y prueba. |
+| 1. Knowledge belongs to the user | Keep relevant memory/state accessible outside chat and provider-private memory. | Another environment retrieves context from the same sources. |
+| 2. One authority per fact/rule | Declare the maintained location of each fact, policy, workflow and state. Generate distribution copies/views. | Corrections have a clear editing location and checked projections. |
+| 3. Separate responsibilities | Distinguish source, capture, hypothesis, decision, knowledge, current state, history and result. | Generated proposals do not independently change confirmed preferences. |
+| 4. Stable meaning, adaptable structure | Define entities/logical routes before folder/profile names. | Decisions remain retrievable across profiles/languages. |
+| 5. Contract before execution | Define workflow inputs, results, evidence, permitted effects and recovery. | Accept/reject runs against prior criteria. |
+| 6. Task-selected context | Progressively retrieve purpose, project context, state and relevant sources. | Queries find sufficient evidence without loading everything. |
+| 7. Explicit capability/authorization | Check tools and authorized scope in the current session; respect existing authorization. | Adapters communicate real limits without expanding permissions across environments. |
+| 8. Verifiable continuity/changes | Persist steps, references and effects; check revisions before updating. | Resume without repeating confirmed actions or overwriting concurrent edits. |
+| 9. Evidence/selective consolidation | Validate results, retain provenance and promote useful lessons only. | Audits distinguish performed, demonstrated, pending and inapplicable. |
+| 10. Complexity proportional to use | Start with a complete path and suitable backend. Add specialization, connectors/cadence as needed. | Every component has an observable case, owner and test. |
 
-Los límites expresados en instrucciones orientan al agente; el control técnico depende de los permisos, herramientas y validadores del entorno. La arquitectura debe distinguir estas garantías.
+Instructional limits guide agents; technical control depends on environment permissions, tools and validators. Architecture must distinguish these guarantees.
 
-## Dos ciclos sobre una memoria
+## Two cycles over one memory
 
 ```mermaid
 flowchart TB
-    U[Objetivo o información del usuario] --> A[Agente y adaptador del entorno]
-    A --> C[Contrato común y resolución de contexto]
-    C --> B[Second Brain: capturar, destilar, conectar]
-    C --> O[AI OS: planificar, ejecutar, validar]
-    B <--> M[Memoria, proyectos y decisiones compartidos]
+    U[User objective or information] --> A[Agent and environment adapter]
+    A --> C[Shared contract and context resolution]
+    C --> B[Second Brain: capture, distill, connect]
+    C --> O[AI OS: plan, execute, validate]
+    B <--> M[Shared memory, projects and decisions]
     O <--> M
-    O --> E[Estado de ejecución y evidencia]
-    E --> R[Revisión y aprendizaje selectivo]
+    O --> E[Execution state and evidence]
+    E --> R[Review and selective learning]
     R --> M
 ```
 
-El Second Brain transforma información en conocimiento recuperable. El AI OS usa ese conocimiento para realizar trabajo y devolver avances comprobados. Ambos usan los mismos proyectos, decisiones y preferencias. El estado de una ejecución pertenece a esa ejecución; el estado general pertenece a la entidad proyecto, cuya vista puede ser una página, registro, dashboard o nota hub.
+The Second Brain turns information into retrievable knowledge. The AI OS uses it to work and return verified progress. Both share projects, decisions/preferences. Run state belongs to the run; overall state belongs to the project entity, represented as a page, record, dashboard or hub note.
 
-Una captura puede ir directamente a su destino si está clara. Un trabajo pequeño puede completarse en una sola sesión. La separación conceptual no obliga a generar un archivo por paso.
+Clear captures may go directly to their destination. Small jobs may finish in one session. Conceptual separation does not require one file per step.
 
-## Responsabilidades del sistema
+## System responsibilities
 
-Se concretan las seis responsabilidades de [Arquitectura de sistemas con memoria y control](memory-and-control-analysis.md):
+The six responsibilities in [Memory and control systems architecture](memory-and-control-analysis.md) become:
 
-| Responsabilidad | Qué contiene | Qué pregunta resuelve |
+| Responsibility | Contents | Question answered |
 |---|---|---|
-| Propósito y contrato | Objetivos, alcance, políticas y criterios de éxito. | ¿Para qué existe y bajo qué reglas trabaja? |
-| Contexto y acceso | Identidad pertinente, mapa de fuentes, búsqueda, procedencia y adaptadores. | ¿Qué necesita saber y cómo lo obtiene? |
-| Capacidades y procesos | Workflows, skills, contratos de herramientas y roles opcionales. | ¿Cómo produce el resultado? |
-| Memoria y estado | Conocimiento, decisiones, proyectos, ejecuciones y continuidad. | ¿Qué conserva y dónde quedó el trabajo? |
-| Control y evaluación | Validaciones, alcance autorizado, evidencia e historial de hallazgos. | ¿Cómo sabe si el resultado sirve? |
-| Mantenimiento y evolución | Consolidación, actualización, reparación y mejora verificada. | ¿Cómo conserva utilidad con el tiempo? |
+| Purpose and contract | Goals, scope, policies and success criteria. | Why does it exist and under which rules? |
+| Context and access | Relevant identity, source map, search, provenance and adapters. | What must it know and how does it obtain it? |
+| Capabilities and processes | Workflows, skills, tool contracts and optional roles. | How does it produce results? |
+| Memory and state | Knowledge, decisions, projects, runs and continuity. | What is retained and where did work stop? |
+| Control and evaluation | Validation, authorized scope, evidence and finding history. | How does it know results are useful? |
+| Maintenance and evolution | Consolidation, updates, repair and verified improvement. | How does it remain useful over time? |
 
-Estas responsabilidades no equivalen a seis agentes ni a seis servicios desplegados.
+These are not six agents or six deployed services.
 
-## Estructura del repositorio de distribución
+## Distribution repository structure
 
 ```text
 repository/
 ├── README.md
 ├── core/
-│   ├── contracts/                 reglas comunes y contratos de operaciones
-│   ├── schemas/                   modelo lógico de entidades, relaciones y estado
-│   └── protocols/                 recuperación, memoria y continuidad
-├── blueprints/                    especificaciones de sistemas que se pueden crear
-├── skills/                       fuente mantenida de cada procedimiento
+│   ├── contracts/                 common rules and operation contracts
+│   ├── schemas/                   logical entity, relationship and state model
+│   └── protocols/                 retrieval, memory and continuity
+├── blueprints/                    specifications of buildable systems
+├── skills/                        maintained procedure sources
 ├── modules/
-│   ├── second-brain.yaml          composición de capacidades de conocimiento
-│   └── ai-os.yaml                 composición de capacidades operativas
-├── presets/                      valores iniciales por caso de uso
-├── builder/                      diagnóstico, composición y generación del plan
+│   ├── second-brain.yaml          knowledge capability composition
+│   └── ai-os.yaml                 operational capability composition
+├── presets/                       use-case defaults
+├── builder/                       diagnosis, composition and plan generation
 ├── adapters/
-│   ├── runtimes/                  integración con agentes y sus superficies
-│   ├── backends/                  persistencia, búsqueda y relaciones
-│   ├── interfaces/                vistas y navegación para la persona
-│   └── execution/                 servicios de ejecución y programación opcionales
-├── installer/                    aplicar, adoptar, actualizar, reparar y verificar
-├── tests/                        fixtures, contratos, recuperación y compatibilidad
-├── examples/                     demostraciones con datos sintéticos
-└── docs/                         explicación y guía de contribución
+│   ├── runtimes/                  agent and surface integration
+│   ├── backends/                  persistence, search and relationships
+│   ├── interfaces/                human views and navigation
+│   └── execution/                 optional execution and scheduling services
+├── installer/                     apply, adopt, update, repair and verify
+├── tests/                         fixtures, contracts, recovery and compatibility
+├── examples/                      synthetic demonstrations
+└── docs/                          explanation and contribution guide
 ```
 
-**Reglas de dependencia:** el núcleo define contratos independientes de marcas; los adaptadores implementan esos contratos. Los blueprints componen módulos y declaran requisitos y aceptación del sistema completo. Las skills piden operaciones sobre entidades y referencias lógicas. Los módulos seleccionan capacidades y dependencias; no mantienen otra copia de sus instrucciones. Los presets aportan valores iniciales y ejemplos, sin cambiar el significado de las entidades. La personalización persistente del usuario prevalece sobre esos valores dentro de las políticas aplicables.
+**Dependency rules:** the core defines brand-independent contracts; adapters implement them. Blueprints compose modules and declare whole-system requirements/acceptance. Skills request entity/logical-reference operations. Modules select capabilities/dependencies without another instruction copy. Presets supply defaults/examples without changing entity meaning. Persistent user customization prevails over defaults within applicable policies.
 
-La fuente distribuida de una skill vive en `skills/`. La instalación conserva su versión y las personalizaciones explícitas; los paquetes para entornos se derivan de esa definición efectiva. Una modificación del usuario debe incorporarse o resolverse al actualizar, no perderse al regenerar.
+A skill's distributed source lives in `skills/`. Installation retains its version/explicit customizations; environment packages derive from that effective definition. Updates must incorporate or resolve user modifications, not lose them during regeneration.
 
-El instalador reutilizaría los contratos pertinentes del Agent-Guided Installer Framework (referencia histórica del vault; no necesaria para implementar). Su código y disponibilidad deberán comprobarse antes de tratarlo como dependencia implementada.
+The installer would reuse relevant Agent-Guided Installer Framework contracts (historical vault reference; not required for implementation). Verify its code/availability before treating it as an implemented dependency.
 
-## Estructura lógica del sistema desplegado
+## Deployed system's logical structure
 
-Toda instancia contiene propósito y políticas, memoria y relaciones, capacidades, estado de trabajo, acceso humano/agente y evidencia de funcionamiento. Su representación física depende del destino: documentos, registros, tablas, objetos o una combinación con autoridad declarada para cada entidad.
+Every instance contains purpose/policies, memory/relationships, capabilities, work state, human/agent access and functional evidence. Physical representation depends on the target: documents, records, tables, objects or combinations with declared per-entity authority.
 
-| Eje independiente | Qué se elige | Ejemplos de destinos posibles, no implementados |
+| Independent axis | Selection | Possible targets, not implemented |
 |---|---|---|
-| Runtime de agente | Quién interpreta y ejecuta los procedimientos. | Codex, Claude Code, Cowork u otro agente con adaptador. |
-| Backend | Dónde persisten entidades, relaciones y estado. | Archivos, SQLite, Postgres o una plataforma documental accesible por API. |
-| Interfaz humana | Cómo se consulta y modifica el sistema. | Obsidian sobre archivos, Notion, una app web o una CLI. |
-| Ejecución | Dónde corren tareas y, si hace falta, su programación. | Sesión interactiva, proceso local o servicio alojado. |
+| Agent runtime | Who interprets/executes procedures. | Codex, Claude Code, Cowork or another adapted agent. |
+| Backend | Entity, relationship and state persistence. | Files, SQLite, Postgres or an API-accessible document platform. |
+| Human interface | How to query/modify the system. | Obsidian over files, Notion, a web app or CLI. |
+| Execution | Where tasks and optional schedules run. | Interactive session, local process or hosted service. |
 
-Una herramienta puede cubrir varios ejes. Notion puede aportar persistencia e interfaz; Obsidian puede presentar una persistencia basada en archivos. Separar responsabilidades no obliga a desplegar servicios independientes.
+One tool may span axes. Notion may provide persistence/interface; Obsidian may present file persistence. Separating responsibilities does not require independent services.
 
-El modelo común reutiliza [Universal Backend Model](backend-model.md): entidades, relaciones, consultas, permisos, revisiones y comprobaciones. Los adaptadores declaran capacidades soportadas, emuladas y ausentes. Una carencia obligatoria bloquea ese plan o exige elegir una alternativa explícita; no se degrada silenciosamente el significado o la garantía solicitada.
+The common model reuses [Universal Backend Model](backend-model.md): entities, relationships, queries, permissions, revisions/checks. Adapters declare supported, emulated and absent capabilities. Missing mandatory capabilities block a plan or require an explicit alternative; requested meaning/guarantees never degrade silently.
 
-La instancia mantiene un manifiesto con identidad, versión, selección de módulos/adaptadores, recursos gestionados, configuración efectiva y verificaciones. Puede almacenarse como archivo o registro según el despliegue. Los estados de ejecución son persistentes; los índices derivados son reconstruibles. El formato de intercambio y la correspondencia entre identificadores se definen para permitir exportar, importar y verificar equivalencia entre backends.
+Instances retain a manifest with identity, version, selected modules/adapters, managed resources, effective configuration and checks. It may be a file/record. Execution state persists; derived indexes are reconstructible. Define interchange format/ID mappings to export, import and verify backend equivalence.
 
-Obsidian tendría un adaptador o perfil de despliegue que traduzca entidades a notas y relaciones a enlaces. Solo ahí se elegirían carpetas, frontmatter y hubs. Ningún workflow del núcleo exigiría esas convenciones.
+An Obsidian adapter/profile would translate entities to notes and relationships to links. Only there would folders, frontmatter and hubs be selected. No core workflow would require them.
 
-## Proceso del constructor
+## Builder process
 
 ```text
-Necesidad del usuario
-→ blueprint y módulos pertinentes
-→ especificación de instancia
-→ comprobación de capacidades y acceso de los destinos
-→ plan de recursos, configuración y cambios
-→ aplicación dentro de la autorización vigente
-→ validación estructural y primer workflow real
-→ manifiesto, evidencia y continuidad
+User need
+→ relevant blueprint and modules
+→ instance specification
+→ target capability and access checks
+→ resource, configuration and change plan
+→ application within current authorization
+→ structural validation and first real workflow
+→ manifest, evidence and continuity
 ```
 
-El constructor debe poder diagnosticar un sistema existente para adoptarlo y generar planes de actualización o reparación. El plan distingue crear, reutilizar, modificar y dejar intacto. La reanudación comprueba recursos y efectos confirmados antes de repetir acciones. El resultado entregado incluye el sistema configurado y sus límites demostrados.
+The builder must diagnose existing systems for adoption and generate update/repair plans. Distinguish create, reuse, modify and leave intact. Resumption checks confirmed resources/effects before repetition. Delivery includes the configured system and demonstrated limits.
 
-## Modelo de información y autoridades
+## Information model and authorities
 
-Entidades base: captura, fuente, proyecto, área, conocimiento, decisión y ejecución. Un artefacto puede ser un Markdown, un informe o un archivo de código: se referencia desde el trabajo que lo produce. Los estados de conocimiento distinguen propuesta, confirmación y sustitución; los estados de ejecución distinguen pendiente, en curso, bloqueada, completada y fallida.
+Base entities: capture, source, project, area, knowledge, decision and run. An artifact may be Markdown, a report or code file, referenced by its producing job. Knowledge states distinguish proposal, confirmation and supersession; execution states distinguish pending, running, blocked, completed and failed.
 
-Cada entidad necesita identidad recuperable, tipo y procedencia pertinentes. Los identificadores estables se asignan cuando el caso exige referencias duraderas, sin imponer una migración masiva a contenido heredado. La traducción o el perfil cambian etiquetas y representaciones, conservando significado.
+Each entity needs retrievable identity, type and relevant provenance. Assign stable IDs when durable references are required without forcing mass migration of legacy content. Translation/profiles change labels and representation while preserving meaning.
 
-Ejemplo orientativo de configuración, no implementado:
+Illustrative, unimplemented configuration:
 
 ```yaml
 schema_version: 1
@@ -163,68 +163,67 @@ deployment:
   execution: interactive
 ```
 
-Este ejemplo describe intención y requisitos; los nombres de adaptadores son marcadores, no soporte disponible. Las correspondencias concretas de campos, tablas, páginas o carpetas pertenecen al plan de despliegue. Una colisión entre campos heredados se comunica y resuelve con evidencia. Un dato vivo conserva su autoridad externa si así se ha configurado; la instancia guarda una referencia o snapshot fechado. Una copia antigua no reemplaza una consulta actual disponible.
+This describes intent/requirements; adapter names are placeholders, not available support. Concrete field/table/page/folder mappings belong to deployment plans. Report and resolve legacy-field collisions with evidence. Live data retains external authority if configured; instances keep references/dated snapshots. Old copies do not replace available current queries.
 
-## Contratos mínimos de operación
+## Minimum operating contracts
 
-**Recuperación:** objetivo → contexto pertinente → proyecto/estado → búsqueda dirigida → fuentes necesarias. Cada recuperación devuelve referencias y límites de cobertura; el texto recuperado como fuente no adquiere autoridad de instrucción. Una sesión ordinaria carga solo lo que necesita. Activation Map es una estrategia opcional de selección y relación de contexto.
+**Retrieval:** objective → relevant context → project/state → targeted search → necessary sources. Return references/coverage limits; source text gains no instruction authority. Ordinary sessions load only necessary material. Activation Map is an optional context-selection/relationship strategy.
 
-**Workflow:** todo procedimiento declara identificador/versión, activación, entradas, contexto requerido, pasos, resultado, efectos permitidos, dependencias, criterio de aceptación, estado que modifica y forma de recuperación. Puede empaquetarse como skill sin inventar una segunda definición del mismo proceso. Reutilizar Agent Design Spec (referencia histórica del vault; no necesaria para implementar) si se necesita un agente con rol propio.
+**Workflow:** every procedure declares ID/version, activation, inputs, required context, steps, result, permitted effects, dependencies, acceptance, modified state and recovery. It may be packaged as a skill without inventing another process definition. Reuse Agent Design Spec (historical vault reference; not required for implementation) when a dedicated agent role is needed.
 
-**Herramientas y almacenamiento:** contratos propuestos para consultar entidades, recuperar contenido, actualizar con revisión, relacionar entidades y registrar eventos, con identificadores dentro del alcance configurado y resultado verificable. Un adaptador sin control de revisión debe declarar el límite y operar con un único escritor o entregar propuestas de cambio. Las garantías requeridas se comprueban antes de aceptar el destino.
+**Tools and storage:** proposed contracts query entities, retrieve content, update with revisions, relate entities and record events using scoped IDs/verifiable results. Adapters without revision control declare this limit and use one writer or change proposals. Check required guarantees before accepting targets.
 
-**Continuidad:** guardar objetivo, workflow/versión, referencias de entrada, revisiones usadas, pasos completados, artefactos, efectos confirmados, bloqueos y siguiente acción. El agente entrante comprueba acceso, vigencia y autorización antes de continuar. Se conserva un resumen de decisiones y evidencia, sin depender del razonamiento interno de un modelo.
+**Continuity:** save objective, workflow/version, input references, revisions used, completed steps, artifacts, confirmed effects, blocks and next action. Incoming agents check access, currency and authorization. Preserve explicit decision summaries/evidence independently of model-internal reasoning.
 
-**Efectos externos:** identificar cada acción y verificar su resultado antes de reintentar. Si una solicitud pudo haberse completado y la respuesta se perdió, comprobar el sistema destino; usar claves de idempotencia cuando estén disponibles. Sin evidencia suficiente, dejar la acción como incierta para revisión.
+**External effects:** identify actions and verify outcomes before retry. If a request may have completed but its response was lost, check the target and use idempotency keys where available. Without sufficient evidence, leave it uncertain for review.
 
-**Evaluación:** definir pruebas por workflow y registrar resultados con evidencia. Separar defecto confirmado, falta de prueba y requisito no aplicable. Cerrar hallazgos con nueva evidencia y conservar el historial.
+**Evaluation:** define workflow tests and record evidenced results. Separate confirmed defects, missing tests and inapplicable requirements. Close findings with new evidence and preserve history.
 
-## Portabilidad entre ecosistemas
+## Cross-ecosystem portability
 
-| Modo según capacidades | Compromiso del sistema |
+| Capability-based mode | System commitment |
 |---|---|
-| Consulta o preparación | Lee el contexto disponible y devuelve análisis o un paquete para aplicar después. |
-| Operación persistente | Lee y escribe el mismo almacenamiento autorizado, valida cambios y conserva continuidad. |
-| Operación con herramientas externas | Añade solo las conexiones verificadas y acciones autorizadas. |
-| Operación recurrente | Añade un scheduler real, acceso a las fuentes durante la ejecución y registro de resultados. |
+| Query or preparation | Read available context and return analysis/a package for later application. |
+| Persistent operation | Read/write the same authorized storage, validate changes and retain continuity. |
+| External-tool operation | Add only verified connections and authorized actions. |
+| Recurrent operation | Add a real scheduler, source access during execution and result records. |
 
-Los modos se determinan por la sesión, no por el nombre comercial. El adaptador comprueba acceso real, descubrimiento de skills, escritura, validación y límites. La compatibilidad significa conservar contratos y alcanzar resultados equivalentes dentro de esas capacidades; no exige textos generados idénticos.
+Modes follow the session, not brand names. Adapters check real access, skill discovery, writes, validation/limits. Compatibility preserves contracts and equivalent outcomes within capabilities; generated text need not be identical.
 
-Ejemplos actuales de distribución: Codex documenta `AGENTS.md` y `.agents/skills`; Claude Code documenta `.claude/skills`; Cowork ofrece instalación de plugins. Estas convenciones justifican adaptadores distintos. Fuentes oficiales consultadas el 2026-09-08: [Codex](https://learn.chatgpt.com/es-419/docs/customization/overview), [Claude Code](https://code.claude.com/docs/en/skills), [Cowork](https://claude.com/docs/cowork/guide/plugins).
+Distribution examples observed during the original review: Codex documents `AGENTS.md` and `.agents/skills`; Claude Code documents `.claude/skills`; Cowork offers plugin installation. These conventions justify distinct adapters. Official sources consulted on 2026-09-08: [Codex](https://learn.chatgpt.com/es-419/docs/customization/overview), [Claude Code](https://code.claude.com/docs/en/skills), [Cowork](https://claude.com/docs/cowork/guide/plugins). These are historical observations to recheck during implementation.
 
-El acceso compartido también debe resolverse. Para una primera versión, usar un almacenamiento común y un escritor por tarea. Entre dispositivos se requiere sincronización o un servicio de almacenamiento con detección de conflictos. Copiar un repositorio a dos sitios no crea automáticamente memoria coherente. MCP puede exponer operaciones comunes donde resulte necesario; no sustituye el modelo de datos ni la verificación.
+Shared access also needs resolution. For a first version, use common storage and one writer per task. Across devices, synchronization or storage services need conflict detection. Two repository copies do not automatically create coherent memory. MCP may expose common operations when useful; it does not replace the data model or verification.
 
-## Construcción por incrementos verificables
+## Construction through verifiable increments
 
-| Incremento | Entrega | Prueba de salida |
+| Increment | Deliverable | Exit test |
 |---|---|---|
-| 1. Modelo y blueprint | Entidades, autoridades, capacidades y criterios del caso inicial. | La especificación no exige una herramienta ni un layout concreto. |
-| 2. Memoria útil | Captura, recuperación y actualización de un proyecto. | Una sesión nueva encuentra una decisión y su origen. |
-| 3. Workflow completo | Un resultado útil, por ejemplo un brief con fuentes. | Cumple criterios y deja siguiente paso sin guardar ruido. |
-| 4. Continuidad | Estado persistente y detección de cambios. | Interrumpir/reanudar no duplica acciones ni pisa una edición. |
-| 5. Portabilidad de agente y backend | Segundo runtime y segundo backend de distinta representación. | Recupera significado y estado equivalentes; exportación/importación conserva identidad, relaciones y procedencia. |
-| 6. Construcción y adopción | Generar planes; crear, adoptar, actualizar, reparar y verificar. | Un destino vacío funciona y uno existente conserva datos y personalizaciones. |
-| 7. Mejora operativa | Auditoría y corrección de un defecto conocido. | La segunda prueba demuestra reparación sin borrar el historial. |
-| 8. Expansión necesaria | Conector, especialización o cadencia. | El caso adicional funciona en las condiciones reales de ejecución. |
+| 1. Model and blueprint | Initial entities, authorities, capabilities and criteria. | Specification requires no specific tool/layout. |
+| 2. Useful memory | Capture, retrieval and project updates. | New sessions find a decision and its origin. |
+| 3. Complete workflow | Useful result, such as a sourced brief. | Meets criteria and leaves a next step without retaining noise. |
+| 4. Continuity | Persistent state and change detection. | Interrupt/resume without duplicate actions or overwritten edits. |
+| 5. Agent/backend portability | Second runtime and differently represented backend. | Equivalent meaning/state; export/import preserves identity, relationships and provenance. |
+| 6. Construction/adoption | Plans; create, adopt, update, repair and verify. | Empty targets work; existing targets preserve data/customizations. |
+| 7. Operational improvement | Audit and repair a known defect. | Second test proves repair without erasing history. |
+| 8. Necessary expansion | Connector, specialization or cadence. | Additional case works under real execution conditions. |
 
-La primera implementación puede ser un único repositorio modular. El primer backend se elige por el caso piloto; un segundo backend de representación distinta debe probar pronto que el modelo es independiente. La validación automatizable de esquemas, relaciones, versiones y escritura pertenece a código; las tareas de síntesis y clasificación pueden apoyarse en el agente. No se necesita comenzar implementando todos los destinos.
+The first implementation may be one modular repository. Choose the first backend for the pilot; test a differently represented second backend early. Code handles automatable schema, relationship, version and write validation; agents may support synthesis/classification. Implementing every target initially is unnecessary.
 
-## Ejemplo de uso completo
+## Complete usage example
 
-Una persona usa el repositorio para crear un sistema de investigación y preparación de propuestas. El constructor compone un blueprint y verifica los adaptadores elegidos. Según el backend, genera registros, documentos o archivos; según la interfaz, configura las vistas o navegación pertinentes. Verifica un primer recorrido y entrega la instancia y su manifiesto.
+A person uses the repository to create a research/proposal system. The builder composes a blueprint and verifies selected adapters. It generates records, documents or files according to the backend, and configures interface views/navigation. It verifies a first path and delivers the instance/manifest.
 
-En esa instancia, el agente consulta el contrato, recupera el proyecto, sus decisiones y fuentes, genera un borrador y comprueba sus requisitos. Otro agente con acceso al mismo backend continúa desde el estado persistido. Una decisión final se actualiza con procedencia y el aprendizaje reutilizable se incorpora a conocimiento. El workflow mantiene su contrato al desplegar otra instancia sobre un backend distinto, sin exigir una carpeta de Knowledge. Enviar la propuesta exige autorización y un conector disponible.
+The agent reads the contract, retrieves project/decisions/sources, drafts and checks requirements. Another agent with the same backend access continues from persisted state. A final decision is updated with provenance; reusable lessons enter knowledge. The workflow preserves its contract in another instance/backend without requiring a Knowledge folder. Sending a proposal requires authorization and an available connector.
 
-## Activation Map y continuidad
+## Activation Map and continuity
 
-- Regiones activadas: AutoBrain y Second Brain (alta); arquitectura e instaladores de agentes (alta).
-- Reutilización: revisión anterior, Arquitectura de sistemas con memoria y control, Agent Design Spec, Knowledge Flow (referencia histórica del vault; no necesaria para implementar), Project States (referencia histórica del vault; no necesaria para implementar) y Neural Vault Protocol (referencia histórica del vault; no necesaria para implementar).
-- Nueva nota: especificación aplicada al proyecto existente, separada de los hallazgos de investigación.
-- Conexiones aplicadas: la revisión alimenta esta especificación; esta especificación concreta las responsabilidades del framework anterior.
-- Conexiones propuestas: adopción como base de implementación y reutilización de contratos del framework instalador. Pendientes de validación práctica.
-- Límite: estructura propuesta, sin scaffolding, paquetes instalados ni cambios de manuales. Se guarda en el vault local; no se publica contenido.
+- Activated regions: AutoBrain and Second Brain (high); agent architecture/installers (high).
+- Reuse: earlier review, Memory and control systems architecture, Agent Design Spec, Knowledge Flow, Project States and Neural Vault Protocol (historical vault references; not required for implementation).
+- New note: specification applied to the existing project, separate from research findings.
+- Applied connections: the review informs this specification; the specification makes the earlier framework's responsibilities concrete.
+- Proposed connections: adoption as an implementation baseline and reuse of installer-framework contracts; practical validation pending.
+- Limit: proposed structure only; no scaffolding, installed packages or manual changes. Saved in the local vault; no content publication.
 
-Siguiente paso: definir el blueprint y modelo lógico del primer recorrido captura → recuperación → brief → continuidad, y verificarlo en dos representaciones de almacenamiento. Esta prioridad actualiza la v0.1 y coincide con la decisión existente de diseñar primero un modelo de backend independiente (referencia histórica del vault; no necesaria para implementar).
+Historical next step: define the first capture → retrieval → brief → continuity blueprint/logical model and verify it across two storage representations. This updates v0.1's priority and matches the earlier independent-backend-first decision (historical vault reference; not required for implementation).
 
-
-[Volver a la entrada del proyecto](../README.md)
+[Back to the project](../README.md)

@@ -2,7 +2,7 @@
   "package": "second-brain-ai-os-builder",
   "package_version": "handoff-2026-09-08",
   "status": "preimplementation",
-  "note": "Inventario del paquete documental, no manifiesto de una instancia instalada. No incluye su propia huella.",
+  "note": "Documentation package inventory, not an installed instance manifest. Excludes its own hash.",
   "validation": {
     "internal_markdown_links": "passed",
     "markdown_fences": "passed",

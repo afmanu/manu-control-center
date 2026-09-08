@@ -1,30 +1,30 @@
-# Antecedentes y procedencia
+# Background and provenance
 
-Material de consulta opcional. La arquitectura actual y las decisiones del producto prevalecen sobre estas propuestas históricas. Los textos migrados mantienen el contenido conceptual, retiran metadatos del vault y convierten enlaces; los destinos históricos no incluidos se presentan como referencias de contexto, no como dependencias de implementación.
+Optional reference material. Current architecture and product decisions prevail over these historical proposals. Migrated texts preserve conceptual content, remove vault metadata and convert links; historical targets not included here are contextual references, not implementation dependencies. The English translation retains design meaning and attribution; original Spanish text remains in Git history at `f8902560b379202ef216a19806e3b822356a7e15`. See [translation provenance](../docs/language.md).
 
-| Documento | Papel |
+| Document | Role |
 |---|---|
-| [Análisis de memoria y control](memory-and-control-analysis.md) | Síntesis inicial del patrón del vault y comparación con AIS-OS. |
-| [Revisión del instalador](installer-review.md) | Hallazgos de construcción, adopción, actualización y desacoplamiento. |
-| [Arquitectura v0.2](architecture-v0.2.md) | Antecedente del alcance backend/runtime independiente. |
-| [Revisión de conversación compartida](shared-conversation-review.md) | Cobertura de sesenta apartados, trece ajustes y límites. |
-| [Modelo de backend](backend-model.md) | Principio de entidades antes de representación. |
-| [Framework de instalación](installer-framework.md) | Arquitectura previa de instalación guiada. |
+| [Memory and control analysis](memory-and-control-analysis.md) | Initial synthesis of the vault pattern and comparison with AIS-OS. |
+| [Installer review](installer-review.md) | Findings on construction, adoption, updates and decoupling. |
+| [Architecture v0.2](architecture-v0.2.md) | Background for backend/runtime-independent scope. |
+| [Shared conversation review](shared-conversation-review.md) | Coverage of sixty sections, thirteen adjustments and limits. |
+| [Backend model](backend-model.md) | Entities before representation. |
+| [Installer framework](installer-framework.md) | Earlier architecture for guided installation. |
 
-## Fuentes originales consultadas en el trabajo previo
+## Original sources consulted in prior work
 
-- [Instalador original](https://github.com/afmanu/claude-obsidian-second-brain-installer), snapshot inspeccionado `9cb05973a04b6e2b945fac591ccec8bf6f43f85c`.
-- [AIS-OS](https://github.com/nateherkai/AIS-OS), snapshot inspeccionado `ce9cb93a1145da5daba84ea37208ec35fd03606e`.
-- [Conversación compartida](https://chatgpt.com/share/6a9fb953-4dd4-83eb-82da-79510772401c): se incluye la revisión, no la transcripción completa.
+- [Original installer](https://github.com/afmanu/claude-obsidian-second-brain-installer), inspected snapshot `9cb05973a04b6e2b945fac591ccec8bf6f43f85c`.
+- [AIS-OS](https://github.com/nateherkai/AIS-OS), inspected snapshot `ce9cb93a1145da5daba84ea37208ec35fd03606e`.
+- [Shared conversation](https://chatgpt.com/share/6a9fb953-4dd4-83eb-82da-79510772401c): this package contains its review, not the complete transcript.
 
-En la sesión del 2026-09-08 Manu aportó [este otro enlace de conversación](https://chatgpt.com/share/6a9fb943-0ab4-83eb-ae6d-715dcafc3e98), leído y contrastado junto con los dos repositorios. Coinciden el título y la estructura de la revisión conservada; no se certifica igualdad byte a byte entre ambos enlaces. Los snapshots de repositorio inspeccionados coinciden con los commits anteriores. Esta consulta refuerza el contexto; las instrucciones vigentes y el diseño local conservan su autoridad.
+In the 2026-09-08 session, Manu supplied [another conversation link](https://chatgpt.com/share/6a9fb943-0ab4-83eb-ae6d-715dcafc3e98), read and compared with both repositories. Its title/structure match the retained review; byte-for-byte identity between links is not certified. Inspected repository snapshots match the commits above. This consultation reinforces context; current instructions and local design retain authority.
 
-Los commits son los inspeccionados durante el análisis; no se vuelven a presentar como últimos commits. Las observaciones del código fueron estáticas y no prueban instalaciones operativas. Las afirmaciones sobre productos externos deben verificarse de nuevo en su documentación oficial al implementar cada adaptador.
+These commits identify the inspected analysis snapshots, not the latest commits. Code observations were static and do not prove operational installations. Recheck external-product claims against official documentation when implementing each adapter.
 
-El ejemplo de Three Ms y Four Cs aportado por el usuario sirvió como referencia de claridad metodológica. Las denominaciones y atribuciones pertenecen a su autor; no se adoptan como marca de este producto. Las conclusiones útiles están recogidas en los análisis. No se ha copiado código ni skills completos de los repositorios originales.
+The user-supplied Three Ms and Four Cs example informed methodological clarity. Names/attributions belong to their author and are not adopted as this product's branding. Useful conclusions are recorded in the analyses. No code or complete skills were copied from the original repositories.
 
-[Mapa de fuentes y transformaciones](source-map.json). No se incluye el hub antiguo completo porque mezcla estados de otro repositorio de mayo con este proyecto; su estado no acredita implementación actual. La continuidad vigente se recoge en [handoff](../docs/handoff.md).
+[Source and transformation map](source-map.json). The full old hub is omitted because it mixes May status from another repository with this project; it does not establish current implementation. Current continuity lives in the [handoff](../docs/handoff.md).
 
-El [manifiesto del handoff original](package-manifest-handoff-2026-09-08.json) conserva el inventario y las comprobaciones de la entrega anterior al roadmap. El [manifiesto del roadmap](package-manifest-roadmap-2026-09-08.json) conserva la siguiente entrega documental, anterior a M0. Ambos son históricos y no validan los archivos modificados después. El [manifiesto raíz](../package-manifest.json) registra documentación y esquemas vigentes; se verifica y regenera con los comandos de [desarrollo](../docs/development.md).
+The [original handoff manifest](package-manifest-handoff-2026-09-08.json) preserves the inventory/checks before the roadmap. The [roadmap manifest](package-manifest-roadmap-2026-09-08.json) preserves the following documentation delivery before M0. Both are historical and do not validate later file changes. Their file hashes still identify original snapshot bytes, not translated files. The [root manifest](../package-manifest.json) records current documentation/schemas; verify/regenerate it with the [development commands](../docs/development.md).
 
-[Entrada](../README.md)
+[Home](../README.md)

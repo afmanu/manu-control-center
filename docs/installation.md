@@ -1,12 +1,12 @@
-# Crear, inspeccionar y adoptar una instancia
+# Creating, inspecting and adopting an instance
 
-M2 entrega el perfil `foundation` del blueprint `project-knowledge-foundation@0.1.0-draft`: configuración resuelta, catálogo de módulos y un proyecto persistente con manifiesto y evidencia. `verified` acredita este perfil de instalación. El runtime permanece `not_verified` y los workflows se incorporarán en M3.
+M2 delivers the `foundation` profile of `project-knowledge-foundation@0.1.0-draft`: resolved configuration, a module catalog and a persistent project with a manifest and evidence. `verified` certifies this installation profile. The runtime remains `not_verified`; workflows arrive in M3.
 
-## Crear con un plan revisable
+## Create from a reviewable plan
 
-Instala dependencias y ejecuta `npm run build`. Usa una copia de [install-request.json](../examples/install-request.json) para definir identidad, propietario y propósito. `owner_id` es una identidad que debe fijar el host confiable; la CLI local no autentica cuentas remotas. `runtime` admite `unconfigured`, `codex` y `claude-code` como selección de integración futura, sin atribuirles capacidades ejecutadas.
+Install dependencies and run `npm run build`. Copy [install-request.json](../examples/install-request.json) to define identity, owner and purpose. A trusted host must set `owner_id`; the local CLI does not authenticate remote accounts. `runtime` accepts `unconfigured`, `codex` and `claude-code` as future integration selections, without claiming executed capabilities. User-written purposes may remain in Spanish; use `--lang es` for localized help and error summaries. See [language behavior](language.md).
 
-Ejemplo macOS, con datos fuera del repositorio:
+macOS example, with data outside the repository:
 
 ```bash
 mcc_demo="$HOME/Library/Application Support/manu-control-center/instances/demo"
@@ -17,74 +17,74 @@ node dist/cli/main.js verify examples/install-request.json "$mcc_demo"
 node dist/cli/main.js inspect examples/install-request.json "$mcc_demo"
 ```
 
-Usa `node dist/cli/main.js` o el binario instalado para redirigir JSON a un fichero: `npm start` añade cabeceras de npm a stdout. El plan debe guardarse fuera del directorio que se va a crear. `resolve`, `plan` e `inspect` no escriben en el destino; la comprobación del motor utiliza bases temporales desechables.
+Use `node dist/cli/main.js` or the installed binary to redirect JSON to a file: `npm start` adds npm headers to stdout. Save the plan outside the directory being created. `resolve`, `plan` and `inspect` do not write to the destination; engine checks use disposable temporary databases.
 
-`apply` autoriza explícitamente las operaciones del plan para el actor indicado y deja `installed_unverified`. `verify` registra un informe nuevo y pasa a `verified` si se cumplen las comprobaciones requeridas. `inspect` recupera proyecto, estado y evidencia sin modificar la base. Una capacidad configurada pero sin invocación probada continúa `not_run` en el manifiesto.
+`apply` explicitly authorizes the plan's operations for the specified actor and leaves `installed_unverified`. `verify` records a new report and changes the state to `verified` when required checks pass. `inspect` retrieves the project, state and evidence without modifying the database. A configured capability without a demonstrated invocation stays `not_run` in the manifest.
 
-Para resolver, aplicar y verificar en una sola invocación explícita:
+To resolve, apply and verify in one explicit invocation:
 
 ```bash
 node dist/cli/main.js create examples/install-request.json "$mcc_demo" --actor local-user
 ```
 
-La carpeta de instancia contiene `store.sqlite`. Se crean con propiedad `managed` la configuración, el catálogo de dos módulos y el proyecto inicial. La configuración deseada y el plan utilizados también quedan registrados en el estado de construcción. Identidades y revisiones son independientes de la ruta y del propósito visible.
+The instance folder contains `store.sqlite`. Configuration, the two-module catalog and the initial project are created with `managed` ownership. Desired configuration and the applied plan are also recorded in construction state. Identities and revisions are independent of paths and visible purposes.
 
-## Instancia base de Manu
+## Manu's foundation instance
 
-En esta entrega se ha creado y verificado una base local con identidad `manu` y proyecto `manu-control-center`. Solo contiene el propósito inicial de construir este sistema; no se han incorporado fuentes personales ni invocado un modelo.
+M2 created and verified a local foundation with identity `manu` and project `manu-control-center`. It contains only the initial purpose of building this system; no personal sources have been imported and no model has been invoked.
 
-- Solicitud editable: `~/Library/Application Support/manu-control-center/configuration/manu.json`.
-- Plan original: `~/Library/Application Support/manu-control-center/configuration/manu-installation-plan.json`.
-- Instancia: `~/Library/Application Support/manu-control-center/instances/manu`.
+- Editable request: `~/Library/Application Support/manu-control-center/configuration/manu.json`.
+- Original plan: `~/Library/Application Support/manu-control-center/configuration/manu-installation-plan.json`.
+- Instance: `~/Library/Application Support/manu-control-center/instances/manu`.
 
 ```bash
-node dist/cli/main.js inspect   "$HOME/Library/Application Support/manu-control-center/configuration/manu.json"   "$HOME/Library/Application Support/manu-control-center/instances/manu"
+node dist/cli/main.js inspect "$HOME/Library/Application Support/manu-control-center/configuration/manu.json" "$HOME/Library/Application Support/manu-control-center/instances/manu"
 ```
 
-La identidad local `manu` es una elección inicial reversible del despliegue, no una cuenta autenticada. M3 completará el perfil de uso con captura, consulta, ejecución y agente. Editar la solicitud por sí solo no modifica la instalación: una diferencia de configuración gestionada requiere su evolución explícita.
+The local identity `manu` is a reversible initial deployment choice, not an authenticated account. M3 will complete capture, queries, execution and agent use. Editing the request alone does not change the installation: a managed configuration difference requires explicit evolution. Repository translation preserves the original request, plan and stored catalog; it does not migrate this instance.
 
-## Adoptar un proyecto existente
+## Adopt an existing project
 
-La adopción M2 admite proyectos del backend MCC SQLite con identidad y revisión conocidas. No importa una carpeta arbitraria, un vault, otro motor o archivos sueltos. Esos destinos requieren su adaptador de ingreso/portabilidad.
+M2 adoption supports projects in the MCC SQLite backend with known identities and revisions. It does not import arbitrary folders, vaults, other engines or loose files. Those targets require ingestion/portability adapters.
 
-1. En la solicitud, fija `instance_id`, `owner_id` y `project.id` correspondientes al registro existente.
-2. Ejecuta `inspect` sobre su directorio. Recupera la revisión exacta del proyecto dentro del alcance autorizado.
-3. Sustituye `adoption: null` por una correspondencia explícita:
+1. Set the request's `instance_id`, `owner_id` and `project.id` to match the existing record.
+2. Run `inspect` on its directory. Retrieve the exact project revision within the authorized scope.
+3. Replace `adoption: null` with an explicit mapping:
 
 ```json
 {
-  "revision": "revision-exacta-observada",
+  "revision": "exact-observed-revision",
   "ownership": "user_owned"
 }
 ```
 
-4. Genera/revisa el plan y aplícalo, o ejecuta `adopt <solicitud.json> <directorio> --actor <id>`.
+4. Generate/review and apply the plan, or run `adopt <request.json> <directory> --actor <id>`.
 
-Se admite `shared` o `user_owned`. El plan reutiliza el proyecto y conserva contenido, ID, acceso, revisión e historial. No renombra, normaliza ni sobrescribe su propósito con el texto de la solicitud. Un proyecto oculto al actor, una revisión obsoleta o una colisión de tipo detiene la operación. Una nueva planificación no puede convertir un recurso adoptado en propiedad gestionada.
+Both `shared` and `user_owned` are supported. The plan reuses the project and preserves its content, ID, access, revision and history. It does not rename, normalize or overwrite its purpose with the request text. A project hidden from the actor, a stale revision or a type collision stops the operation. Replanning cannot promote an adopted resource to managed ownership.
 
-## Interrupción y recuperación
+## Interruption and recovery
 
-Cada recurso y su checkpoint se guardan en una misma transacción SQLite. Si la transacción se revierte, ambos se revierten; si ya estaba confirmada, reanudar comprueba su revisión y no crea otra copia. El estado `partial` identifica una aplicación incompleta.
+Each resource and its checkpoint are saved in one SQLite transaction. If the transaction rolls back, both roll back; if committed, resumption checks the revision without creating a duplicate. `partial` identifies an incomplete application.
 
 ```bash
 node dist/cli/main.js apply /tmp/mcc-demo-plan.json --actor local-user
 node dist/cli/main.js resume examples/install-request.json "$mcc_demo" --actor local-user
 ```
 
-Ambos caminos conservan el plan original. `resume` requiere la misma solicitud y recupera el plan durable, útil si se utilizó `create`. Si queda un journal tras una caída durante una transacción, la invocación autorizada permite a SQLite recuperarlo antes de continuar. No se borra el journal. La inspección sin escrituras informa de ese estado; no intenta repararlo.
+Both paths preserve the original plan. `resume` requires the same request and retrieves the durable plan, which is useful after `create`. If a crash during a transaction leaves a journal, the authorized invocation lets SQLite recover it before continuing. The journal is not deleted. Read-only inspection reports this condition without repairing it.
 
-Un plan obsoleto no se fuerza. Si cambia un recurso antes de aplicar, genera uno nuevo después de revisar la edición. Si hay un plan parcial, conserva su solicitud y resuelve su conflicto antes de sustituirlo. M2 no sobrescribe configuraciones gestionadas distintas ni implementa migraciones de versión; la evolución se ampliará en las fases siguientes.
+Do not force a stale plan. If a resource changes before application, review the edit and generate a new plan. If a partial plan exists, retain its request and resolve its conflict before replacing it. M2 does not overwrite different managed configurations or implement version migrations; later phases expand evolution support.
 
-## Alcance técnico y errores
+## Technical scope and errors
 
-- El adaptador local usa SQLite en modo rollback journal, un host y una carpeta dedicada. Rechaza modo WAL y sus archivos auxiliares antes de abrir una inspección, para mantenerla sin escrituras. No convierte el modo automáticamente.
-- Los grants de construcción vinculan actor, instancia, hash del plan, destino, efecto y caducidad. Proceden del host confiable y quedan registrados con los checkpoints; el hash del plan comprueba integridad, no firma ni autentica al emisor.
-- El estado de construcción, los recursos, los informes de verificación y el conocimiento tienen tablas distintas en la misma base transaccional. No se crean servicios adicionales.
-- La recuperación automática cubre operaciones de recursos sobre un almacén MCC inicializado. Una caída durante la creación inicial del propio formato de base, antes de tener su identidad MCC válida, se conserva para reparación explícita; no se trata un archivo desconocido como reemplazable.
-- No hay runtime invocado, scheduler, exportación, fencing distribuido ni importador de otros formatos en M2. Las fuentes del usuario siguen fuera de esta entrega inicial.
+- The local adapter uses SQLite rollback journaling, one host and a dedicated folder. It rejects WAL mode and sidecar files before opening an inspection to keep inspection free of writes. It does not automatically convert journal mode.
+- Construction grants bind the actor, instance, plan hash, destination, effect and expiry. They come from the trusted host and are recorded with checkpoints; the plan hash checks integrity but does not sign or authenticate the issuer.
+- Construction state, resources, verification reports and knowledge use separate tables in the same transactional database. No additional services are created.
+- Automatic recovery covers resource operations on an initialized MCC store. A crash while initially creating the database format, before a valid MCC identity exists, is preserved for explicit repair; unknown files are not treated as replaceable.
+- M2 has no invoked runtime, scheduler, export, distributed fencing or other-format importer. User sources remain outside this initial delivery.
 
-Código de salida 0: operación completada; 2: argumentos/JSON inválidos; 1: conflicto, permiso, capacidad o verificación fallida. Los errores son líneas JSON con código y detalles en stderr; el aviso experimental de `node:sqlite` puede compartir ese canal. Los resultados y planes usan JSON en stdout.
+Exit code 0: completed operation; 2: invalid arguments/JSON; 1: conflict, permission, capability or verification failure. Constructor errors are JSON lines with codes and details on stderr; the experimental `node:sqlite` warning may share that channel. Results and plans use JSON on stdout. Spanish adds an error summary while preserving canonical diagnostics.
 
-Implementación: [planner](../builder/planner.ts), [adaptador local](../adapters/interfaces/local/installation.ts) y [almacén de construcción](../adapters/backends/sqlite/installation.ts). Los exports públicos son `manu-control-center/builder` y `manu-control-center/local`. La comprobación del modo de archivo sigue la [cabecera oficial de SQLite](https://www.sqlite.org/fileformat.html#the_database_header).
+Implementation: [planner](../builder/planner.ts), [local adapter](../adapters/interfaces/local/installation.ts) and [construction store](../adapters/backends/sqlite/installation.ts). Public exports are `manu-control-center/builder` and `manu-control-center/local`. File-mode checking follows the [official SQLite header](https://www.sqlite.org/fileformat.html#the_database_header).
 
-[Evidencia M2](m2-verification.json) · [Roadmap](implementation-plan.md) · [Entrada](../README.md)
+[M2 evidence](m2-verification.json) · [Roadmap](implementation-plan.md) · [Home](../README.md)

@@ -1,10 +1,10 @@
-# Desarrollo y uso de la base M0–M2
+# Developing and using the M0–M2 foundation
 
-Repositorio principal: [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). La documentación del constructor se ha integrado aquí conservando el historial inicial y su licencia MIT. Las carpetas anteriores son antecedentes de la migración; los siguientes cambios se mantienen en este repositorio.
+Primary repository: [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). Builder documentation has been integrated here while preserving the initial history and MIT license. Earlier folders are migration background; subsequent changes are maintained in this repository.
 
-## Instalación de desarrollo
+## Development installation
 
-Requisitos: Node.js de la línea 24, mínimo 24.14.1; npm. La versión usada para las pruebas está fijada en `.nvmrc` y las dependencias en `package-lock.json`.
+Requirements: Node.js 24, at least 24.14.1; npm. The tested version is pinned in `.nvmrc` and dependencies in `package-lock.json`.
 
 ```bash
 git clone https://github.com/afmanu/manu-control-center.git
@@ -14,12 +14,13 @@ npm ci --ignore-scripts --no-audit --no-fund
 npm run check
 ```
 
-`nvm use` corresponde a instalaciones con nvm. También puede utilizarse otro gestor que proporcione la versión de `.nvmrc`. La autenticación de GitHub se resuelve con las credenciales del entorno; el repositorio es privado.
+`nvm use` applies to nvm installations. Another manager providing the `.nvmrc` version may be used. GitHub authentication uses environment credentials; the repository is private.
 
-## Comandos disponibles
+## Available commands
 
 ```bash
 npm start -- --help
+npm start -- --lang es --help
 npm start -- --version
 npm start -- doctor
 npm start -- validate-record examples/record-envelope.json
@@ -28,43 +29,43 @@ npm start -- validate eval_fixture examples/meeting.json
 npm start -- validate-bundle examples/contracts/construction-bundle.json
 ```
 
-Después de cambiar código, `npm run build` recompila. `npm test` compila y ejecuta 92 pruebas de contratos, estados, permisos, SQLite, constructor, recuperación, CLI y harness de evaluación. `npm run check` añade la comparación del esquema generado y la comprobación documental. `npm run typecheck` comprueba tipos sin generar archivos.
+After code changes, `npm run build` recompiles. `npm test` compiles and runs contract, state, permission, SQLite, constructor, recovery, CLI and evaluation harness tests. `npm run check` adds generated-schema comparison and documentation checks. `npm run typecheck` checks types without generating files. Repository content is English; [runtime localization](language.md) is independent of user data and machine protocols.
 
-`doctor` crea una base temporal, prueba escritura condicional entre dos conexiones, rechazo de una revisión obsoleta, rollback y persistencia al reabrir, y elimina los datos de prueba. Devuelve JSON y código 0 cuando todas esas comprobaciones pasan. Muestra la ubicación prevista de datos sin crearla. **No verifica todavía un backend completo, permisos de agentes ni una instancia.**
+`doctor` creates a temporary database, tests conditional writes between two connections, stale-revision rejection, rollback and persistence after reopening, then removes test data. It returns JSON and exit code 0 when all these checks pass. It shows the intended data location without creating it. **It does not verify a complete backend, agent permissions or an instance.**
 
-`validate-record` comprueba exclusivamente los metadatos de [RecordEnvelope](../schemas/record-envelope.schema.json): identidad, instancia, revisión opaca, versión del contrato y fechas UTC válidas. Rechaza campos adicionales y una actualización anterior a la creación. No convierte metadatos válidos en una entidad autorizada ni valida los ejemplos de instancia/reunión. Código 0: válido; código 2: argumentos o datos inválidos; código 1: fallo del diagnóstico o del entorno.
+`validate-record` checks only [RecordEnvelope](../schemas/record-envelope.schema.json) metadata: identity, instance, opaque revision, contract version and valid UTC timestamps. It rejects extra fields and updates preceding creation. Valid metadata does not establish an authorized entity or validate instance/meeting examples. Exit code 0: valid; 2: invalid arguments/data; 1: diagnostic or environment failure.
 
-`contracts` lista los 22 contratos. `validate <kind> <file.json>` comprueba su estructura e invariantes; `validate-bundle <file.json>` comprueba coherencia entre necesidad, blueprint, módulos, especificación, plan y manifiesto. Ninguno ejecuta planes. Los resultados resumen validez y errores sin volcar el contenido ni las expectativas del fixture.
+`contracts` lists the 22 contracts. `validate <kind> <file.json>` checks structure and invariants; `validate-bundle <file.json>` checks consistency between the need, blueprint, modules, specification, plan and manifest. Neither executes plans. Results summarize validity and errors without dumping content or fixture expectations.
 
-Los comandos del constructor M2 y el despliegue de Manu están en la [guía de instalación](installation.md). `resolve`, `plan` e `inspect` no escriben en el destino; `apply`, `verify`, `create`, `adopt` y `resume` realizan sus operaciones explícitas. Para producir un fichero JSON de plan utiliza el binario instalado o `node dist/cli/main.js`, sin las cabeceras de `npm start`.
+The M2 constructor commands and Manu deployment are in the [installation guide](installation.md). `resolve`, `plan` and `inspect` do not write to the destination; `apply`, `verify`, `create`, `adopt` and `resume` perform their explicit operations. To produce a JSON plan file, use the installed binary or `node dist/cli/main.js`, without the headers emitted by `npm start`.
 
-## Biblioteca y esquemas
+## Library and schemas
 
-El paquete exporta el núcleo desde `manu-control-center`, el backend desde `manu-control-center/sqlite` y el harness desde `manu-control-center/evals`, el resolver desde `manu-control-center/builder` y la construcción local desde `manu-control-center/local`. Ejemplo JavaScript para un consumidor con el paquete instalado:
+The package exports the core from `manu-control-center`, the backend from `manu-control-center/sqlite`, the harness from `manu-control-center/evals`, the resolver from `manu-control-center/builder` and local construction from `manu-control-center/local`. JavaScript example for a consumer with the package installed:
 
 ```js
 import { SqliteBackend } from 'manu-control-center/sqlite';
 
 const backend = new SqliteBackend(':memory:');
 try {
-  // El host fija esta identidad; nunca tomarla de una fuente o respuesta LLM.
+  // The host sets this identity; never take it from a source or an LLM response.
   const store = backend.forScope({ instance_id: 'demo', actor_id: 'local-user' });
   const project = store.create({
     schema_version: '0.1.0-draft', kind: 'project', id: 'project-1', instance_id: 'demo',
     access: { owner_id: 'local-user', readers: [], writers: [] },
-    data: { purpose: 'Proyecto sintético', status: 'active', responsible: 'local-user',
+    data: { purpose: 'Synthetic project', status: 'active', responsible: 'local-user',
       next_action: null, decision_refs: [], source_refs: [] },
   });
-  const updated = store.update({ ...project, data: { ...project.data, next_action: 'Añadir fuente' } }, project.revision);
+  const updated = store.update({ ...project, data: { ...project.data, next_action: 'Add a source' } }, project.revision);
   console.log(updated.revision, store.history(project.id).length);
 } finally {
   backend.close();
 }
 ```
 
-Para persistencia, el constructor de SQLite recibe una ruta a una base dedicada. La API directa de SQLite requiere que exista la carpeta padre; `create`/`apply` del constructor M2 la preparan fuera de la distribución. La API de alcance exige un host confiable y no autentica usuarios por sí misma. Consulte [M1 implementado](m1-implementation.md) antes de conectar un runtime.
+For persistence, the SQLite constructor takes a dedicated database path. The direct SQLite API requires the parent folder to exist; the M2 constructor's `create`/`apply` prepares it outside the distribution. The scoped API requires a trusted host and does not authenticate users itself. Read [M1 implementation](m1-implementation.md) before connecting a runtime.
 
-Las fuentes de esquemas son [schema-definitions.ts](../core/schema-definitions.ts) y [planner.ts](../builder/planner.ts), que añade la solicitud de instalación. Tras cambiarla junto con tipos y validación:
+Schema sources are [schema-definitions.ts](../core/schema-definitions.ts) and [planner.ts](../builder/planner.ts), which adds the installation request. After changing a schema together with types and validation:
 
 ```bash
 npm run schemas:write
@@ -73,52 +74,52 @@ npm run manifest:docs
 npm run check
 ```
 
-No editar manualmente el JSON generado: `check` detecta su divergencia. Los contratos siguen en versión draft; cambios de forma deben registrar su decisión, fixtures y pruebas afectados.
+Do not manually edit generated JSON: `check` detects divergence. Contracts remain drafts; shape changes must record their decision and affected fixtures/tests.
 
-## Ubicación de los datos
+## Data location
 
-La configuración del adaptador local resuelve una ubicación fuera de la distribución:
+The local adapter resolves a location outside the distribution:
 
-| Plataforma | Ubicación predeterminada |
+| Platform | Default location |
 |---|---|
 | macOS | `~/Library/Application Support/manu-control-center` |
-| Linux | `$XDG_DATA_HOME/manu-control-center` si XDG es absoluto; si no, `~/.local/share/manu-control-center` |
-| Windows | `%LOCALAPPDATA%/manu-control-center`, con fallback al directorio local del usuario |
+| Linux | `$XDG_DATA_HOME/manu-control-center` if XDG is absolute; otherwise `~/.local/share/manu-control-center` |
+| Windows | `%LOCALAPPDATA%/manu-control-center`, falling back to the user's local directory |
 
-`MANU_CONTROL_CENTER_DATA_DIR` permite indicar otra ruta absoluta. `doctor` solo muestra esa configuración; los comandos de construcción reciben un directorio absoluto explícito y crean allí la instancia. La base de Manu utiliza el directorio local predeterminado. M1–M2 prueban identidad y límites de acceso. Secretos, bases de datos y ejecuciones reales quedan fuera del paquete y del repositorio.
+`MANU_CONTROL_CENTER_DATA_DIR` accepts another absolute path. `doctor` only shows this configuration; constructor commands take an explicit absolute directory and create the instance there. Manu's foundation uses the default local directory. M1–M2 test identity and access boundaries. Secrets, databases and real runs remain outside the package and repository.
 
-El primer estado operativo tendrá un host responsable. El código puede residir en una carpeta sincronizada; la sincronización del archivo SQLite no se utiliza como coordinación entre máquinas. Los traslados se implementarán con exportación/importación y transferencia de autoridad en M4.
+Initial operational state has one responsible host. Code may live in a synced folder; SQLite file synchronization is not used for coordination between machines. Transfers will use export/import and authority transfer in M4.
 
-## Instalación limpia y empaquetado
+## Clean installation and packaging
 
 ```bash
 npm run smoke:install
 npm pack
 ```
 
-La prueba limpia necesita haber ejecutado primero `npm ci` con la misma caché de npm. Copia las fuentes a una carpeta temporal, instala con el lockfile en modo offline, compila y repite los tests. Luego empaqueta e instala el archivo en otra carpeta **con una caché de consumidor vacía y acceso al registro npm**, comprueba versión, diagnóstico, validación de contratos/bundle, comando instalado e imports públicos de núcleo, SQLite, evals y constructor. También crea, verifica e inspecciona una instancia desde el paquete instalado. Limpia las carpetas y la caché temporal al terminar. Puede pasarse `--cache /ruta/a/cache` a npm para la instalación de fuentes cuando el entorno lo requiera.
+The clean test requires an earlier `npm ci` using the same npm cache. It copies sources to a temporary folder, installs from the lockfile offline, compiles and repeats the tests. It then packs and installs the archive in another folder **with an empty consumer cache and npm registry access**, checking the version, diagnostic, contract/bundle validation, installed command, localized help, and public core, SQLite, eval and builder imports. It also creates, verifies and inspects an instance from the installed package. Temporary folders and the consumer cache are removed afterward. When needed, pass `--cache /path/to/cache` to npm for the source installation.
 
-La instalación del paquete necesita resolver sus dependencias como un consumidor nuevo. Una caché creada por `npm ci` puede contener los archivos de dependencias sin sus metadatos de registro; por eso esta segunda comprobación no presupone que sea posible instalar el paquete offline.
+Package installation must resolve dependencies as a new consumer would. A cache populated by `npm ci` may contain dependency archives without registry metadata; the second check therefore does not assume an offline package installation is possible.
 
-`npm pack` genera un paquete local; no lo publica. El paquete mantiene `private: true`. Las instrucciones de instalación del sistema completo llegarán en M2–M3; estos comandos instalan la base de desarrollo M0–M1.
+`npm pack` creates a local archive; it does not publish it. The package retains `private: true`. These commands install the development foundation and M2 constructor; full system use with an agent arrives in M3.
 
-## Documentación y evidencia
+## Documentation and evidence
 
-Después de una modificación documental revisada:
+After reviewing a documentation change:
 
 ```bash
 npm run manifest:docs
 npm run check:docs
 ```
 
-El manifiesto raíz inventaría documentación y esquemas, no todo el código. Los manifiestos anteriores de `references/` son históricos y conservan sus huellas originales. La comprobación valida JSON, enlaces locales a archivos, bloques de código y cobertura de componentes/escenarios/fases; no consulta enlaces externos ni comprueba anclas de secciones.
+The root manifest inventories documentation and schemas, not all code. Earlier manifests in `references/` are historical and retain their original file hashes. Checks validate JSON, local Markdown file links, code fences and component/scenario/phase coverage; they do not fetch external links or check section anchors.
 
-La configuración de [GitHub Actions](../.github/workflows/ci.yml) ejecuta las mismas comprobaciones y la instalación limpia. La evidencia local vigente se registra en [m2-verification.json](m2-verification.json), conservando [M0](m0-verification.json) y [M1](m1-verification.json) como históricos; el estado real de cada fase se mantiene en [handoff.md](handoff.md).
+[GitHub Actions](../.github/workflows/ci.yml) runs the same checks and clean installation. [M2 evidence](m2-verification.json), [M0](m0-verification.json) and [M1](m1-verification.json) preserve milestone results. The [handoff](handoff.md) records current phase status and subsequent verification. Translation provenance and retained historical hashes are explained in [language.md](language.md).
 
-## Límites técnicos actuales
+## Current technical limitations
 
-En Node 24.14.1, `node:sqlite` emite un aviso experimental. Su uso queda aislado en el adaptador de referencia y su diagnóstico desechable. El backend prueba almacenamiento local, permisos e historial; no implementa exportación ni fencing distribuido. El diagnóstico no silencia ese aviso.
+In Node 24.14.1, `node:sqlite` emits an experimental warning. It is isolated in the reference adapter and disposable diagnostic. The backend tests local storage, permissions and history; it does not implement export or distributed fencing. The diagnostic does not suppress the warning.
 
-Codex se selecciona como primer candidato y Claude Code como segundo por disponibilidad observada de sus ejecutables. No se han invocado modelos, verificado sesiones ni implementado adaptadores del producto. Las rutas predeterminadas de otras plataformas no acreditan una instalación probada allí; la evidencia enumera únicamente los entornos ejecutados.
+Codex is the first candidate and Claude Code the second because their executables were observed. Models have not been invoked, sessions verified or product runtime adapters implemented. Default paths on other platforms do not establish tested installation there; evidence lists only environments actually exercised.
 
-[Entrada](../README.md)
+[Home](../README.md)

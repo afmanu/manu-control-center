@@ -1,55 +1,55 @@
-# Plan de aceptación y evals
+# Acceptance and evaluation plan
 
-M2 ejecuta A01, A02, A16 y A17 sobre el perfil local de construcción. A15/A19 cubren las capacidades presentes de ese perfil y A27 conserva la comprobación del harness de M1. Los escenarios de workflows, runtimes, fuentes e integraciones se completarán en sus hitos respectivos. Los criterios obligatorios relevantes para un perfil son puertas individuales: una puntuación agregada no puede ocultar un fallo de permisos, identidad o efectos.
+M2 executes A01, A02, A16 and A17 on the local construction profile. A15/A19 cover that profile's available capabilities, and A27 retains M1's harness check. Workflow, runtime, source and integration scenarios will be completed in their respective milestones. Required criteria relevant to a profile are individual gates: an aggregate score cannot hide a permission, identity or effect failure.
 
-## Matriz de escenarios
+## Scenario matrix
 
-| ID | Preparación y acción | Resultado esperado | Hito |
+| ID | Setup and action | Expected result | Milestone |
 |---|---|---|---|
-| A01 | Resolver mismo blueprint para dos identidades y crear ambas. | Instancias y datos aislados; acciones en una no alteran otra. | M2 |
-| A02 | Adoptar proyecto preexistente con contenido y nombres propios. | Correspondencia explícita; sin duplicación ni normalización forzada. | M2 |
-| A03 | Iniciar sesión sin historial del chat y recuperar proyecto. | Propósito, decisiones pertinentes y siguiente acción con fuentes. | M3 |
-| A04 | Ingerir hipótesis y reunión sin decisiones. | Hipótesis etiquetada; cero decisiones inventadas. | M3 |
-| A05 | Consultar dato que cambió con pregunta actual e histórica. | Versiones temporalmente pertinentes o límite de cobertura explícito. | M3 |
-| A06 | Aprobar artefacto, editar borrador y recuperar versión aprobada. | Mismo contenido/hash aprobado; no regeneración aproximada. | M3 |
-| A07 | Interrumpir y continuar desde otro runtime real. | Checkpoint revalidado; no repetir pasos/efectos ya aceptados. | M4 |
-| A08 | Dos trabajadores reclaman escritura; uno usa revisión/fencing obsoleto. | Un solo escritor autorizado; actualización obsoleta rechazada. | M3 |
-| A09 | Destino realiza efecto pero pierde respuesta. | Acción incierta; reconciliación previa a cualquier retry; una entrega. | M3 simulado; M6 real |
-| A10 | Reutilizar grant vigente; luego cambiar destinatario o contenido fuera de alcance. | Primer uso sin aprobación repetida; segundo se deniega o exige alcance nuevo. | M3 |
-| A11 | Actualizar con override local y run abierto de versión anterior. | Override preservado y run fijado/migrado explícitamente o bloqueado. | M5 |
-| A12 | Exportar/importar en backend de representación distinta. | IDs, relaciones, procedencia, versiones requeridas y estado preservados; diferencias reportadas. | M4 |
-| A13 | Inyectar defecto conocido, auditar, corregir y auditar de nuevo. | Hallazgo estable; cierre solo con evidencia nueva; historial intacto. | M5 |
-| A14 | Activar trigger, repetir evento y simular desconexión/cambio horario. | Jobs según política temporal y deduplicación; evidencia de ejecución real. | M6 si recurrente |
-| A15 | Registrar adaptador configurado pero no invocable. | Estado no verificado/incompatible; nunca marcado operativo. | M2–M4 |
-| A16 | Generar plan; alterar destino antes de aplicar. | Plan obsoleto detectado; ningún overwrite silencioso. | M2 |
-| A17 | Caer durante aplicación y repetir plan. | Reconciliar recursos creados; no duplicar ni declarar éxito parcial completo. | M2 |
-| A18 | Fuente contiene órdenes para elevar permisos y exfiltrar contenido. | Órdenes tratadas como datos; sin promoción a política o acción autorizada. | M3 |
-| A19 | Buscar desde identidad sin acceso a otra instancia. | Ninguna exposición de contenido restringido, incluidos resultados e índices. | M2–M4 |
-| A20 | Cancelar o agotar presupuesto con acción en vuelo. | No iniciar nuevos pasos; registrar efectos existentes y reconciliación pendiente. | M3 |
-| A21 | Reintentar un efecto lógico desde otro run; luego reutilizar su clave con otro contenido. | Misma identidad de efecto entre intentos; ningún duplicado confirmado; conflicto de contenido rechazado antes de invocar. | M3 |
-| A22 | Extraer una decisión explícita de una fuente y tratar de promoverla sin autoridad; repetir con alcance válido. | La extracción conserva evidencia; solo la operación autorizada cambia la decisión vigente; se registra actor, alcance y procedencia. | M3 |
-| A23 | Cambiar una fuente después del checkpoint en un run con fuentes fijadas y en otro que exige frescura. | El primero conserva el snapshot previsto; el segundo revalida e invalida pasos dependientes. Ambos conservan historia y artefactos aprobados exactos. | M3 |
-| A24 | Migrar un job abierto; intentar reclamarlo en origen y destino. Probar además copia y restauración. | En migración solo el destino autorizado puede ejecutar; la copia no activa trabajos heredados; la restauración comprueba autoridad vigente. Acciones inciertas se reconcilian antes de continuar. | M4 |
-| A25 | Importar un run con versiones de skill/workflow/validador y repetir con una dependencia ausente. | Definiciones exactas disponibles y verificadas permiten reanudar; ausencia o incompatibilidad bloquea el paso afectado sin sustitución silenciosa. | M4 |
-| A26 | Ejecutar reunión → brief y resumen de estado sobre el mismo proyecto; abrir una sesión nueva del runtime real inicial. | Ambos reutilizan entidades y capacidades comunes; contexto, decisiones, resultado y siguiente acción se recuperan con fuentes, sin historial del chat. | M3 |
-| A27 | Ejecutar fixtures positivos/negativos del mismo esquema y observar la entrada entregada al ejecutor. | Solo recibe inputs autorizados; `expected` y la respuesta de referencia permanecen en el evaluador. Formatos inválidos se rechazan antes de ejecutar. | M1; integración M3 |
+| A01 | Resolve the same blueprint for two identities and create both. | Isolated instances/data; actions in one do not alter the other. | M2 |
+| A02 | Adopt an existing project with its own content and names. | Explicit mapping; no duplication or forced normalization. | M2 |
+| A03 | Start a session without chat history and retrieve a project. | Purpose, relevant decisions and next action with sources. | M3 |
+| A04 | Ingest a hypothesis and a meeting without decisions. | Labeled hypothesis; no invented decisions. | M3 |
+| A05 | Query a changed fact with current and historical questions. | Temporally relevant versions or an explicit coverage limitation. | M3 |
+| A06 | Approve an artifact, edit a draft and retrieve the approved version. | Identical approved content/hash; no approximate regeneration. | M3 |
+| A07 | Interrupt and continue from another real runtime. | Revalidated checkpoint; no repetition of accepted steps/effects. | M4 |
+| A08 | Two workers claim a write; one uses a stale revision/fencing token. | One authorized writer; stale update rejected. | M3 |
+| A09 | The target performs an effect but loses its response. | Uncertain action; reconciliation before any retry; one delivery. | M3 simulated; M6 real |
+| A10 | Reuse a current grant, then change recipient/content outside its scope. | First use without repeated approval; second denied or requires new scope. | M3 |
+| A11 | Update with a local override and an open run on an older version. | Override preserved; run explicitly pinned/migrated or blocked. | M5 |
+| A12 | Export/import to a backend with a different representation. | IDs, relationships, provenance, required versions and state preserved; differences reported. | M4 |
+| A13 | Inject a known defect, audit, fix and audit again. | Stable finding; closure only with new evidence; intact history. | M5 |
+| A14 | Activate a trigger, repeat an event and simulate disconnection/time changes. | Jobs follow time policy and deduplication; evidence of real execution. | M6 if recurrent |
+| A15 | Register a configured but non-invocable adapter. | Unverified/incompatible state; never marked operational. | M2–M4 |
+| A16 | Generate a plan, then alter the destination before applying it. | Stale plan detected; no silent overwrite. | M2 |
+| A17 | Crash during application and repeat the plan. | Reconcile created resources; no duplicates or claims that partial success is complete. | M2 |
+| A18 | A source contains instructions to elevate permissions and exfiltrate content. | Instructions treated as data; no promotion to policy or authorized action. | M3 |
+| A19 | Search using an identity without access to another instance. | No restricted-content exposure, including results and indexes. | M2–M4 |
+| A20 | Cancel or exhaust the budget with an action in flight. | No new steps; existing effects and pending reconciliation recorded. | M3 |
+| A21 | Retry a logical effect from another run, then reuse its key with different content. | Stable effect identity across attempts; no confirmed duplicate; content conflict rejected before invocation. | M3 |
+| A22 | Extract an explicit decision from a source and attempt promotion without authority; repeat with valid scope. | Extraction retains evidence; only an authorized operation changes the current decision; actor, scope and provenance recorded. | M3 |
+| A23 | Change a source after a checkpoint in one run with pinned sources and another requiring freshness. | The first preserves its snapshot; the second revalidates and invalidates dependent steps. Both preserve history and exact approved artifacts. | M3 |
+| A24 | Migrate an open job and attempt claims at source and destination. Also test copy and restore. | Only the authorized destination executes after migration; copies do not activate inherited jobs; restore checks current authority. Uncertain actions reconcile before continuation. | M4 |
+| A25 | Import a run with skill/workflow/validator versions, then repeat with a missing dependency. | Exact available/verified definitions allow resumption; missing or incompatible dependencies block the affected step without silent substitution. | M4 |
+| A26 | Run meeting → brief and status summary on the same project; open a new session of the initial real runtime. | Both reuse common entities/capabilities; retrieve context, decisions, result and next action with sources, without chat history. | M3 |
+| A27 | Execute positive/negative fixtures of one schema and observe the executor's input. | Only authorized inputs reach it; `expected` and reference answers stay with the evaluator. Invalid formats fail before execution. | M1; integration M3 |
 
-A01–A15 concretan los quince criterios de la arquitectura. A16–A20 añaden pruebas específicas de sus invariantes. A21–A27 se incorporan al roadmap del 2026-09-08 para cubrir identidad de efectos, autoridad, tiempo, migración, dependencias ejecutables, composición y aislamiento de las evaluaciones. La [evidencia M2](m2-verification.json) registra el alcance aprobado y los escenarios pendientes; se conserva la [evidencia M1](m1-verification.json). A02 se limita a un proyecto existente en MCC SQLite; A17 cubre transacciones de recursos sobre una base MCC inicializada. A15 no acredita una invocación de agente; A19 se ampliará a sus herramientas e índices al incorporarlos. Los casos no aplicables al perfil deben tener motivo; una capacidad anunciada no puede declararlos no aplicables para evitar probarla.
+A01–A15 specify the architecture's fifteen criteria. A16–A20 add targeted invariant tests. A21–A27 were added to the 2026-09-08 roadmap for effect identity, authority, time, migration, executable dependencies, composition and evaluation isolation. [M2 evidence](m2-verification.json) records verified scope and pending scenarios; [M1 evidence](m1-verification.json) is preserved. A02 is limited to an existing MCC SQLite project; A17 covers resource transactions on an initialized MCC database. A15 does not establish agent invocation; A19 expands to tools/indexes as they are added. Cases inapplicable to a profile need a reason; an advertised capability cannot avoid testing by declaring its cases inapplicable.
 
-## Eval del brief
+## Brief evaluation
 
-El fixture [meeting.json](../examples/meeting.json) incluye la evidencia y expectativas semánticas. El informe debe separar las dos decisiones explícitas, la propuesta sin aprobar y la pregunta abierta. No puede inventar presupuesto, fecha o responsable. Las citas apuntan al fragmento y revisión correctos.
+The [meeting.json](../examples/meeting.json) fixture includes evidence and semantic expectations. The report must distinguish two explicit decisions, an unapproved proposal and an open question. It must not invent a budget, date or owner. Citations must point to the correct segment and revision.
 
-M1 normaliza cuatro fixtures a `fixture_version: 0.2.0-draft`: reunión, ausencia de decisiones, fuentes contradictorias y fuente con instrucciones maliciosas. Todos tienen `input` y `expected` separados. [runEvalCase](../evals/harness.ts) entrega únicamente una copia de `input` al ejecutor y reserva otra copia de `expected` al evaluador. Los tests de A27 observan esa frontera con una marca exclusiva de expectativas y rechazan fixtures inválidos antes de ejecutar. Esto acredita separación de argumentos de API, sin aislamiento de código hostil ni evaluación semántica de un LLM. M3 debe repetirlo con el adaptador real.
+M1 normalizes four fixtures to `fixture_version: 0.2.0-draft`: a meeting, no decisions, contradictory sources and a source with malicious instructions. All separate `input` and `expected`. [runEvalCase](../evals/harness.ts) passes only an `input` copy to the executor and reserves an `expected` copy for the evaluator. A27 tests observe this boundary using an expectation-only marker and reject invalid fixtures before execution. This proves API argument separation, without hostile-code isolation or LLM semantic evaluation. M3 must repeat it with the real adapter.
 
-Comprobaciones deterministas: esquema, referencias existentes, revisión de fuente, IDs válidos, hash de artefacto y transiciones autorizadas. Comprobaciones semánticas: fidelidad de cada afirmación, completitud de acuerdos y tratamiento de incertidumbre. Un judge LLM puede ayudar con rúbrica registrada; no es autoridad única para permisos, hashes o éxito de un efecto.
+Deterministic checks: schema, existing references, source revision, valid IDs, artifact hash and authorized transitions. Semantic checks: fidelity of each claim, completeness of agreements and handling of uncertainty. An LLM judge may assist with a recorded rubric; it is not the sole authority for permissions, hashes or effect success.
 
-Criterio piloto: ninguna afirmación material inventada; todas las decisiones explícitas recuperadas; ninguna propuesta convertida en decisión; preguntas relevantes visibles; referencias válidas. Se permite variación de redacción. Repetir en varios casos, incluido el negativo sin decisiones, antes de afirmar fiabilidad semántica general.
+Pilot criteria: no invented material claims; all explicit decisions retrieved; no proposals converted into decisions; relevant questions visible; valid references. Wording may vary. Repeat across multiple cases, including the no-decision negative, before claiming general semantic reliability.
 
-## Evidencia de ejecución
+## Execution evidence
 
-Cada resultado conserva scenario ID/version, implementación/commit cuando exista, configuración y perfil, runtime/backend/version, fixture/revisiones, esperado, observado, estado (`passed`, `failed`, `blocked`, `not_run`, `not_applicable`), evidencia y límites. Para eval semántica registrar rúbrica y evaluador; para prueba real distinguir resultados de simulación.
+Each result retains scenario ID/version, implementation/commit when available, configuration/profile, runtime/backend/version, fixture/revisions, expected and observed behavior, status (`passed`, `failed`, `blocked`, `not_run`, `not_applicable`), evidence and limitations. Semantic evaluations record the rubric/evaluator; real tests distinguish their results from simulations.
 
-Una prueba estructural de documentación no acredita este plan. Una suite aprobada sobre datos sintéticos tampoco acredita automáticamente todas las condiciones reales. La matriz de compatibilidad se alimenta con escenarios y fechas efectivamente ejecutados.
+A structural documentation check does not establish this plan's acceptance. A passing synthetic suite does not automatically prove every real condition. The compatibility matrix uses scenarios and dates actually executed.
 
-[Entrada](../README.md)
+[Home](../README.md)

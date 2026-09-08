@@ -2,7 +2,7 @@
   "schema_version": "0.1.0-draft",
   "example_only": true,
   "instance_id": "demo-instance-a",
-  "purpose": "Convertir reuniones en briefs con fuentes y continuidad",
+  "purpose": "Turn meetings into briefs with sources and continuity",
   "blueprint": {
     "id": "project-knowledge-operations",
     "version": "0.1.0-draft"

@@ -4,8 +4,8 @@ import { assertConstructionBundle } from '../core/construction.js';
 import { cloneJson, hashJson } from '../core/hashing.js';
 import { DomainError } from '../core/errors.js';
 import type { InstanceSpec, Need, Plan } from '../core/models.js';
-import { BACKEND_ID, BUILDER_VERSION, EFFECT, foundationCatalog } from './catalog.js';
-import type { CapabilityCheck, InitialProject, Inspection, InstallAuthority, InstallPlan, InstallRequest } from './model.js';
+import { BACKEND_ID, BUILDER_VERSION, EFFECT, foundationCatalog, legacyFoundationCatalog } from './catalog.js';
+import type { Catalog, CapabilityCheck, InitialProject, Inspection, InstallAuthority, InstallPlan, InstallRequest } from './model.js';
 
 const text = { type: 'string', minLength: 1, pattern: '\\S' };
 const object = (properties: Record<string, unknown>) => ({ type: 'object', properties, required: Object.keys(properties), additionalProperties: false });
@@ -49,7 +49,12 @@ export function resolveSpecification(input: unknown, destination: string, checks
   return assertContract('instance_spec', { ...base, revision: hashJson(base) });
 }
 export function createPlan(input: unknown, spec: InstanceSpec, observation: Inspection): InstallPlan {
-  const request = assertRequest(input), catalog = foundationCatalog();
+  const legacy = legacyFoundationCatalog();
+  const catalog = observation.resources.some(resource => resource.id === 'catalog' && resource.hash === hashJson(legacy)) ? legacy : foundationCatalog();
+  return buildPlan(input, spec, observation, catalog);
+}
+function buildPlan(input: unknown, spec: InstanceSpec, observation: Inspection, catalog: Catalog): InstallPlan {
+  const request = assertRequest(input);
   if (observation.instance_id !== request.instance_id || observation.owner_id !== request.owner_id || observation.destination !== spec.targets.backend.configuration['directory']) throw new DomainError('FORBIDDEN', 'Inspection scope differs from request.');
   const adopted = observation.project;
   if (request.adoption && (!adopted || adopted.revision !== request.adoption.revision)) throw new DomainError('STALE_PLAN', 'Adoption requires an explicit current project revision.');
@@ -77,7 +82,10 @@ function validateInstallPlan(input: unknown): InstallPlan {
   const request = assertRequest(value.request);
   const checks = foundationCatalog().blueprint.required_capabilities.map(capability => ({ capability, required: true, status: 'passed' as const, evidence_refs: ['validation:declared-only'] }));
   const spec = resolveSpecification(request, value.observation.destination, checks);
-  const expected = createPlan(request, spec, value.observation);
+  // Only two exact, trusted metadata variants are supported. Neither comes from CLI locale.
+  const legacy = legacyFoundationCatalog();
+  const catalog = hashJson(value.catalog) === hashJson(legacy) ? legacy : foundationCatalog();
+  const expected = buildPlan(request, spec, value.observation, catalog);
   if (hashJson(expected) !== hashJson(value)) throw new DomainError('INVALID_INPUT', 'Plan content, catalog or digest differs from the supported resolution.');
   return expected;
 }

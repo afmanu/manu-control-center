@@ -1,10 +1,10 @@
-> ANTECEDENTE HISTÓRICO. No establece el estado ni el alcance actuales. Prevalecen [las decisiones vigentes](../docs/decisions.md) y [la arquitectura](../docs/architecture.md). Las recomendaciones antiguas se conservan como contexto.
+> HISTORICAL BACKGROUND. This does not establish current status or scope. [Current decisions](../docs/decisions.md) and [architecture](../docs/architecture.md) prevail. Earlier recommendations are retained as context. English translation; original text is preserved in Git history.
 
 # Universal Backend Model
 
-Modelo abstracto común para que un sistema instalable no dependa de Obsidian, Notion, Postgres u otra herramienta concreta.
+A shared abstract model to keep an installable system independent of Obsidian, Notion, Postgres or any other specific tool.
 
-## Componentes
+## Components
 
 - Object primitives.
 - Schema and relations.
@@ -14,7 +14,7 @@ Modelo abstracto común para que un sistema instalable no dependa de Obsidian, N
 - Verification model.
 - Migration and fallbacks.
 
-## Flujo
+## Flow
 
 ```text
 Define abstract backend model
@@ -30,17 +30,17 @@ Create backend adapter
 Verify backend fit
 ```
 
-## Reglas
+## Rules
 
-- No diseñar para Obsidian primero.
-- Obsidian no es una base de datos estricta.
-- Notion no es una base relacional estricta.
-- Postgres no es una interfaz humana completa por sí solo.
+- Do not design for Obsidian first.
+- Obsidian is not a strict database.
+- Notion is not a strict relational database.
+- Postgres alone is not a complete human interface.
 
-## Relacionado
+## Related
 
-- Backend Adapter (referencia histórica del vault; no necesaria para implementar)
-- ADR — El framework no debe ser Obsidian-first (referencia histórica del vault; no necesaria para implementar)
+- Backend Adapter (historical vault reference; not required for implementation)
+- ADR — The framework must not be Obsidian-first (historical vault reference; not required for implementation)
 
 
-[Volver a la entrada del proyecto](../README.md)
+[Back to the project](../README.md)

@@ -1,205 +1,204 @@
-> ANTECEDENTE HISTÓRICO. No establece el estado ni el alcance actuales. Prevalecen [las decisiones vigentes](../docs/decisions.md) y [la arquitectura](../docs/architecture.md). Las recomendaciones antiguas se conservan como contexto.
+> HISTORICAL BACKGROUND. This does not establish current status or scope. [Current decisions](../docs/decisions.md) and [architecture](../docs/architecture.md) prevail. Earlier recommendations are retained as context. English translation; original text is preserved in Git history.
 
-# Arquitectura de sistemas con memoria y control
+# Memory and control systems architecture
 
-## Contexto y estado
+## Context and status
 
-Propuesta de base de creación derivada del análisis de la estructura, los protocolos y una muestra dirigida de notas del vault de Manu. El objetivo es hacer explícitas sus decisiones de diseño y convertirlas en una base aplicable a proyectos y agentes.
+Proposed construction baseline derived from the structure, protocols and a targeted note sample in Manu's vault. Its purpose is to make design choices explicit and turn them into a foundation applicable to projects/agents.
 
-El nombre y la agrupación son una síntesis propuesta el 2026-09-08. No consta que este framework guiara desde el inicio la construcción del vault. Tampoco constituye una auditoría exhaustiva de enlaces, calidad del conocimiento o funcionamiento de repositorios externos.
+The name/grouping is a synthesis proposed on 2026-09-08. There is no evidence this framework guided the vault from the start. This is not an exhaustive audit of links, knowledge quality or external repository operation.
 
-## Definición
+## Definition
 
-Diseñar sistemas que expliciten su propósito, recuperen el contexto necesario, ejecuten procedimientos delimitados, conserven continuidad y mejoren a partir de evidencia.
+Design systems that make purpose explicit, retrieve necessary context, execute bounded procedures, preserve continuity and improve from evidence.
 
-La arquitectura del vault combina organización por responsabilidad y ciclo de vida, memoria en varias capas, navegación mediante hubs y relaciones, procedimientos especializados y reglas de control humano.
+The vault architecture combines responsibility/lifecycle organization, layered memory, hub/relationship navigation, specialized procedures and human-control rules.
 
-## Cómo se construyó: evidencia histórica
+## How it developed: historical evidence
 
-| Momento | Evidencia documental | Principio transferible |
+| Time | Documentary evidence | Transferable principle |
 |---|---|---|
-| Abril de 2026 | El historial de AGENTS (referencia histórica del vault; no necesaria para implementar) registra la base organizativa y la introducción de hubs. | Dar a cada información un lugar y una vía de recuperación. |
-| 8 de mayo | La sesión de arquitectura (referencia histórica del vault; no necesaria para implementar) decide conservar la base PARA, añadir `_system`, separar logs y conocimiento y crear continuidad. | Evolucionar sobre una estructura útil; separar reglas, contenido e historia. |
-| 21 de mayo | Agent Components Taxonomy (referencia histórica del vault; no necesaria para implementar) y Agents as Operational Systems (referencia histórica del vault; no necesaria para implementar) formalizan contratos, capacidades, memoria, estado, permisos y evaluación. | Describir el sistema operativo que rodea al modelo. |
-| 22 de mayo | La sesión Neural Vault (referencia histórica del vault; no necesaria para implementar) añade activación y conexiones mediante protocolo y skills, manteniendo la estructura base. | Incorporar capacidades de forma incremental, con autonomía delimitada. |
+| April 2026 | AGENTS history records the organizational foundation and introduction of hubs. | Give information a location and retrieval path. |
+| May 8 | The architecture session preserves PARA, adds `_system`, separates logs/knowledge and establishes continuity. | Evolve a useful structure; separate rules, content and history. |
+| May 21 | Agent Components Taxonomy and Agents as Operational Systems formalize contracts, capabilities, memory, state, permissions and evaluation. | Describe the operating system around the model. |
+| May 22 | The Neural Vault session adds activation/connections through a protocol and skills while retaining the foundation. | Add capabilities incrementally with bounded autonomy. |
 
-Interpretación: el patrón observado es evolución incremental por capas, con especial atención a preservar contexto y continuidad. Las fechas describen lo registrado en el vault; no reconstruyen cada cambio físico del repositorio.
+The named records are historical vault references, not implementation dependencies. Interpretation: the observed pattern is incremental layered evolution focused on context/continuity preservation. Dates describe vault records, not every physical repository change.
 
-## Principios mentales
+## Design principles
 
-1. **Propósito antes que componentes.** Definir qué problema se resuelve y qué resultado útil permite cerrar el trabajo. Elegir después entre documentación, script, workflow, skill o agente.
-2. **Separación de responsabilidades.** Distinguir reglas, fuentes, hipótesis, decisiones, resultados, memoria duradera y estado temporal. La carpeta materializa esa distinción, pero no la sustituye.
-3. **Contexto antes que acción.** Buscar lo existente, localizar su autoridad y vigencia y cargar únicamente lo relevante para la tarea.
-4. **Continuidad como requisito.** Dejar el sistema listo para ser retomado por otra sesión o persona: estado, decisiones, pendientes y siguiente paso explícitos.
-5. **Evidencia antes que consolidación.** Diferenciar lo propuesto, implementado y verificado. Guardar aprendizajes selectivos con su procedencia y grado de certeza.
+1. **Purpose before components.** Define the problem/useful completion result, then choose documentation, scripts, workflows, skills or agents.
+2. **Responsibility separation.** Distinguish rules, sources, hypotheses, decisions, results, durable memory and temporary state. Folders materialize but do not replace that distinction.
+3. **Context before action.** Find existing information, its authority/currency and load only task-relevant material.
+4. **Continuity as a requirement.** Prepare for another session/person: explicit state, decisions, open items and next step.
+5. **Evidence before consolidation.** Distinguish proposed, implemented and verified. Retain selective lessons with provenance/certainty.
 
-Estos principios son una síntesis de reglas documentadas. No describen rasgos psicológicos del propietario ni garantizan cumplimiento uniforme en todas las notas.
+These synthesize documented rules. They neither describe the owner's psychological traits nor guarantee uniform compliance across notes.
 
-## Seis capas arquitectónicas
+## Six architectural layers
 
-| Capa | Pregunta | Manifestación en el vault | Traducción a un agente | Prueba de presencia efectiva |
+| Layer | Question | Vault manifestation | Agent equivalent | Effective-presence test |
 |---|---|---|---|---|
-| Propósito y contrato | ¿Para qué existe y qué debe entregar? | Identidad del vault y objetivos de hubs. | Misión, entradas, salidas, alcance y criterios de éxito. | Se puede aceptar o rechazar un resultado por criterios definidos antes de ejecutarlo. |
-| Contexto y acceso | ¿Qué necesita saber y dónde lo encuentra? | Mapa, hubs, wikilinks y resolver. | Recuperación selectiva, fuentes autorizadas y conectores cuando hagan falta. | Una sesión nueva localiza las fuentes pertinentes y distingue una fuente ausente de un dato confirmado. |
-| Capacidades y proceso | ¿Cómo transforma entradas en resultados? | Skills de resolución, captura y revisión. | Procedimientos, herramientas y rutas de ejecución. | Un caso representativo produce un artefacto útil y verificable. |
-| Memoria y estado | ¿Qué conserva y dónde quedó? | Knowledge, sesiones, decisiones y hubs de continuidad. | Memoria duradera separada del checkpoint de cada ejecución. | Tras interrumpir y reanudar, conserva decisiones vigentes y evita repetir acciones ya completadas. |
-| Control y evaluación | ¿Qué puede hacer y cómo sabemos que lo hizo bien? | Reglas de edición, nivel de autonomía y criterios de integración. | Permisos efectivos, condiciones de parada, validadores y pruebas. | Un caso fuera de alcance se detiene; un resultado incorrecto falla la validación. |
-| Mantenimiento y evolución | ¿Cómo conserva su utilidad? | Protocolo de síntesis y skill de consolidación. | Revisión de vigencia, fallos, costes y mejoras verificadas. | Se detecta un problema y queda evidencia de su corrección; si hay programación, existen registros reales de ejecución. |
+| Purpose and contract | Why does it exist and what must it deliver? | Vault identity and hub objectives. | Mission, inputs, outputs, scope and success criteria. | Accept/reject results against pre-execution criteria. |
+| Context and access | What must it know and where is it? | Map, hubs, wikilinks and resolver. | Selective retrieval, authorized sources and necessary connectors. | Fresh sessions locate relevant sources and distinguish missing sources from confirmed facts. |
+| Capabilities and process | How do inputs become results? | Resolution, capture and review skills. | Procedures, tools and execution paths. | A representative case produces a useful, verifiable artifact. |
+| Memory and state | What is retained and where did work stop? | Knowledge, sessions, decisions and continuity hubs. | Durable memory separate from per-run checkpoints. | Interrupt/resume preserves current decisions and avoids repeated completed actions. |
+| Control and evaluation | What may it do and how is correctness known? | Editing rules, autonomy level and integration criteria. | Effective permissions, stop conditions, validators and tests. | Out-of-scope cases stop; wrong results fail validation. |
+| Maintenance and evolution | How does it stay useful? | Synthesis protocol and consolidation skill. | Currency, failure, cost and verified-improvement reviews. | Problems are detected and evidenced repairs recorded; schedules have real run records. |
 
-Las capas son responsabilidades, no seis agentes ni seis carpetas obligatorias. Propósito y control se definen desde el comienzo; contexto, memoria y capacidades pueden crecer durante una primera ejecución completa. La autonomía recurrente se añade cuando esa ejecución es fiable.
+Layers are responsibilities, not six agents/mandatory folders. Define purpose/control from the start; context, memory/capabilities may grow during a first complete run. Add recurring autonomy once that run is reliable.
 
-## Secuencia de creación
+## Creation sequence
 
 ```text
-Problema concreto
-  → Resultado y criterios de éxito
-  → Fuentes, contexto y límites
-  → Proceso mínimo y componentes necesarios
-  → Primera ejecución completa
-  → Validación del resultado y de los límites
-  → Estado, evidencia y aprendizaje selectivo
-  → Repetición y mantenimiento
+Concrete problem
+  → Result and success criteria
+  → Sources, context and limits
+  → Minimal process and necessary components
+  → First complete execution
+  → Validation of result and boundaries
+  → State, evidence and selective learning
+  → Repetition and maintenance
 ```
 
-Ante un fallo se vuelve al contrato, al contexto o al proceso afectado. El aprendizaje solo modifica reglas o memoria cuando su evidencia lo justifica.
+Failures return to the affected contract, context or process. Learning changes rules/memory only when evidence supports it.
 
-| Paso | Artefacto mínimo |
+| Step | Minimum artifact |
 |---|---|
-| Formular el problema | Una frase con usuario, necesidad y resultado útil. |
-| Definir el contrato | Entradas, salida, exclusiones, aceptación y parada. |
-| Resolver contexto | Mapa breve de fuentes y autoridad; información faltante explícita. |
-| Diseñar el proceso | Pasos y decisiones; responsabilidades y herramientas necesarias. |
-| Ejecutar y validar | Un resultado real, evidencia y un caso de fallo relevante. |
-| Preparar continuidad | Estado actual, decisiones, siguiente paso e historial de la ejecución. |
-| Mantener | Disparador de revisión y señal observable que motive cambios. |
+| State the problem | One sentence with user, need and useful result. |
+| Define the contract | Inputs, output, exclusions, acceptance and stop conditions. |
+| Resolve context | Brief source/authority map and explicit missing information. |
+| Design the process | Steps/decisions, responsibilities and required tools. |
+| Execute and validate | Real result, evidence and a relevant failure case. |
+| Prepare continuity | Current state, decisions, next step and run history. |
+| Maintain | Review trigger and observable signal justifying changes. |
 
-## Relación con el ejemplo aportado
+## Relationship to the supplied example
 
-El usuario proporcionó un extracto que atribuye a Nate Herk los marcos Three Ms y Four Cs. Se usa como ejemplo de cómo comunicar una metodología; no se inspeccionó el kit ni se verificó su funcionamiento.
+The user supplied an excerpt attributing Three Ms and Four Cs to Nate Herk. It illustrates methodological communication; the kit had not been inspected or its operation verified at this stage.
 
-- **Three Ms:** el ejemplo separa mentalidad, método y construcción. Esta propuesta separa principios, capas arquitectónicas y secuencia de creación.
-- **Context:** corresponde a contexto y recuperación; en este vault también incluye continuidad y memoria.
-- **Connections:** en el ejemplo son accesos vivos a herramientas y datos. Los wikilinks del vault aportan navegación semántica, pero no demuestran integración con servicios externos.
-- **Capabilities:** corresponde a procedimientos y herramientas. Un archivo de skill acredita una definición disponible, no una ejecución correcta por sí mismo.
-- **Cadence:** corresponde a operación recurrente. Una skill de revisión puede invocarse manualmente; su existencia no demuestra una automatización activa.
+- **Three Ms:** the example separates mindset, method and construction; this proposal separates principles, architectural layers and creation sequence.
+- **Context:** context/retrieval; the vault also includes continuity/memory.
+- **Connections:** live tool/data access in the example. Vault wikilinks supply semantic navigation but prove no external-service integration.
+- **Capabilities:** procedures/tools. A skill file establishes an available definition, not correct execution by itself.
+- **Cadence:** recurrent operation. A review skill may run manually; its existence proves no active automation.
 
-La aportación central de esta síntesis es hacer explícitas misión, memoria/estado y control/evaluación junto a las capacidades. Es una propuesta de diseño adaptada al material del vault, no una comparación de superioridad entre productos.
+This synthesis explicitly places mission, memory/state and control/evaluation alongside capabilities. It is a design proposal adapted to vault material, not a claim of product superiority.
 
-## Ejemplo: agente de seguimiento de proyectos
+## Example: project follow-up agent
 
-**Misión:** producir una lista priorizada de proyectos que requieren atención, con motivo, fuente y siguiente paso.
+**Mission:** produce a prioritized list of projects needing attention, with reasons, sources and next steps.
 
-**Contexto:** hubs y decisiones relevantes, fecha de actualización y criterios de actividad. La ausencia de logs se trata como falta de información, no como prueba de inactividad.
+**Context:** relevant hubs/decisions, update dates and activity criteria. Missing logs mean missing information, not proven inactivity.
 
-**Proceso:** localizar proyectos dentro del alcance, recuperar continuidad, detectar bloqueos y preparar propuestas. Puede comenzar como un único workflow.
+**Process:** locate scoped projects, retrieve continuity, detect blocks and prepare proposals. It may start as one workflow.
 
-**Memoria:** conservar decisiones confirmadas y reglas estables. **Estado:** registrar qué proyectos se revisaron, qué quedó pendiente y qué resultado corresponde a esta ejecución.
+**Memory:** retain confirmed decisions/stable rules. **State:** record reviewed projects, open items and the result belonging to this run.
 
-**Control:** no declarar terminado un proyecto ni modificar su prioridad por inferencia. Cualquier cambio debe estar dentro de la autorización concreta de la tarea.
+**Control:** do not infer completion or change project priority. Changes must stay within the task's specific authorization.
 
-**Evaluación:** cada recomendación enlaza a su evidencia, distingue hechos e incertidumbres y propone un paso coherente con el hub. Probar un hub actualizado, uno contradictorio y uno sin siguiente paso.
+**Evaluation:** recommendations link evidence, distinguish facts/uncertainty and propose hub-consistent steps. Test a current hub, a contradictory hub and one without a next step.
 
-**Mantenimiento:** revisar manualmente primero. Si se necesita recurrencia, configurar el disparador y comprobar registros de ejecuciones reales.
+**Maintenance:** begin with manual review. If recurrence is needed, configure its trigger and check actual run records.
 
-## Plantilla breve para un proyecto nuevo
+## Short template for a new project
 
 ```text
-Propósito: qué problema y para quién.
-Resultado: qué entregable demuestra utilidad.
-Contrato: entradas, alcance, exclusiones y aceptación.
-Contexto: fuentes, autoridad, vigencia e información faltante.
-Proceso: pasos, decisiones y componente mínimo suficiente.
-Capacidades: herramientas y procedimientos requeridos.
-Memoria: qué merece persistir y bajo qué criterio.
-Estado: qué guardar para retomar esta ejecución.
-Control: permisos, límites y condiciones de parada.
-Evidencia: cómo verificar resultado y restricciones.
-Mantenimiento: qué señal exige revisión y quién la ejecuta.
+Purpose: which problem and for whom.
+Result: which deliverable demonstrates usefulness.
+Contract: inputs, scope, exclusions and acceptance.
+Context: sources, authority, currency and missing information.
+Process: steps, decisions and smallest sufficient component.
+Capabilities: required tools and procedures.
+Memory: what deserves persistence and under which criteria.
+State: what to save to resume this run.
+Control: permissions, limits and stop conditions.
+Evidence: how to verify results and restrictions.
+Maintenance: which signal requires review and who performs it.
 ```
 
-Para agentes, desarrollar esta ficha mediante la Agent Design Spec (referencia histórica del vault; no necesaria para implementar) existente. No hace falta duplicar la plantilla técnica.
+For agents, expand this using the existing Agent Design Spec (historical vault reference; not required for implementation). Do not duplicate the technical template.
 
-## Límites y siguiente validación
+## Limits and next validation
 
-- El vault demuestra una arquitectura documental; este análisis no verifica todos sus mecanismos en ejecución.
-- Los hubs consultados de SPPF-G y Nano contienen validaciones o integraciones pendientes. Documentación de diseño y disponibilidad operativa deben mantenerse separadas.
-- Una nota con `validado: true` no sustituye la revisión de su evidencia.
-- La recurrencia de consolidación y la calidad global de recuperación no se auditaron.
-- El principal riesgo de aplicación es convertir cada proyecto en una arquitectura demasiado grande. Cada responsabilidad puede resolverse inicialmente con pocas líneas si basta para el caso.
+- The vault demonstrates documentary architecture; this analysis does not verify every mechanism in execution.
+- Reviewed SPPF-G/Nano hubs contain pending validations/integrations. Keep design documentation separate from operational availability.
+- A note labeled `validado: true` (the original Spanish metadata field) does not replace evidence review.
+- Consolidation recurrence and global retrieval quality were not audited.
+- The main application risk is oversizing every project's architecture. A few lines may initially satisfy each responsibility.
 
-**Siguiente validación propuesta:** aplicar la ficha a un proyecto pequeño y comprobar tres comportamientos: produce el entregable, se retoma sin reconstruir contexto y detecta un fallo relevante. Medir utilidad antes de convertir esta propuesta en estándar general.
+**Proposed next validation:** apply the template to a small project and check delivery, resumption without context reconstruction, and detection of a relevant failure. Measure usefulness before adopting it as a general standard.
 
 ## Activation Map
 
-**Regiones activadas:** Second Brain y sistema del vault (alta); AI Agents y diseño operativo (alta); SPPF-G y Nano como contraste documental (media).
+**Activated regions:** Second Brain/vault system (high); AI Agents/operational design (high); SPPF-G/Nano as documentary comparisons (medium).
 
-**Neuronas reutilizadas:** Knowledge Flow, Project States, Neural Vault Protocol, Agent Components Taxonomy, Agent Anatomy, Compiled Truth + Timeline y Agent Design Spec.
+**Reused neurons:** Knowledge Flow, Project States, Neural Vault Protocol, Agent Components Taxonomy, Agent Anatomy, Compiled Truth + Timeline and Agent Design Spec.
 
-**Neuronas nuevas:** este framework en borrador y el registro temporal del análisis.
+**New neurons:** this draft framework and the analysis's temporary record.
 
-**Conexiones aplicadas:** las notas anteriores alimentan esta síntesis; la ficha remite a Agent Design Spec para su desarrollo técnico.
+**Applied connections:** earlier notes feed the synthesis; the template points to Agent Design Spec for technical expansion.
 
-**Conexiones propuestas:** reutilizar esta base en nuevos proyectos y evaluar su ajuste a SPPF-G. No se cambian sus contratos ni se adopta como estándar por defecto.
+**Proposed connections:** reuse in new projects and assess SPPF-G fit. No contract changes or default-standard adoption.
 
-**Riesgos:** confundir inferencia con historia, documentación con operación o metáfora neural con implementación literal. La nota permanece en el vault privado y no incorpora contenido operativo privado de los proyectos consultados.
+**Risks:** confusing inference with history, documentation with operation or neural metaphor with literal implementation. The note remains in the private vault and includes no private operational content from reviewed projects.
 
-## Contraste posterior con AIS-OS — 2026-09-08
+## Subsequent AIS-OS comparison — 2026-09-08
 
-Tras la propuesta inicial, Manu pidió comparar esta arquitectura con [nateherkai/AIS-OS](https://github.com/nateherkai/AIS-OS). Se inspeccionó una copia del commit `ce9cb93a1145da5daba84ea37208ec35fd03606e`: manuales, registro de conexiones, expansión, seis skills, rúbrica e historial de auditoría, sincronización y definición del paquete visual. No se ejecutaron entrevistas, automatizaciones ni el explorador.
+After the initial proposal, Manu requested comparison with [nateherkai/AIS-OS](https://github.com/nateherkai/AIS-OS). An inspected copy at `ce9cb93a1145da5daba84ea37208ec35fd03606e` included manuals, connection registry, expansions, six skills, audit rubric/history, synchronization and visual package definition. No interviews, automations or explorer were executed.
 
-### Corrección del alcance de la comparación inicial
+### Correction to the initial comparison's scope
 
-La sección anterior se basaba solo en el extracto aportado y queda como registro de aquella lectura. El repositorio completo sí especifica memoria, continuidad, autoridad de fuentes, límites de actuación y evaluación. Por tanto, que estas responsabilidades aparezcan como capas explícitas en nuestra síntesis no demuestra que sean exclusivas ni ausentes en AIS-OS.
+The earlier section used only the supplied excerpt and remains a record of that reading. The full repository does specify memory, continuity, source authority, action limits and evaluation. Explicit layers in this synthesis do not make these responsibilities exclusive or absent from AIS-OS.
 
-Además, esta propuesta es una abstracción derivada de un vault personal existente; AIS-OS es un kit de inicio que debe personalizarse. Comparar cantidad de notas o amplitud temática entre ambos no mediría calidad arquitectónica.
+This proposal abstracts an existing personal vault; AIS-OS is a starter kit requiring personalization. Comparing note count/topic breadth would not measure architectural quality.
 
-### Conclusiones del contraste
+### Comparison conclusions
 
-| Dimensión | Vault y propuesta derivada | AIS-OS inspeccionado | Conclusión |
+| Dimension | Vault and derived proposal | Inspected AIS-OS | Conclusion |
 |---|---|---|---|
-| Foco | Conservar conocimiento, conectar aprendizajes y retomar líneas de trabajo. | Personalizar un asistente para prioridades operativas y desarrollar capacidades útiles. | Diferentes centros de diseño, con bastante arquitectura compartida. |
-| Organización | Capas explícitas de captura, aplicación, conocimiento, historia y recursos; hubs y relaciones tipadas. | Base pequeña de contexto, referencias, decisiones y conexiones, ampliada cuando hay necesidad. | Conservar las distinciones semánticas sin obligar a replicar toda la jerarquía en cada proyecto. |
-| Captura | Procesamiento selectivo mediante el workflow y skills del vault. | Onboarding y entrevistas con guardado por respuesta, correcciones trazables y promoción de hechos confirmados. | Incorporar una entrada guiada reduciría la dependencia del conocimiento previo de Manu. |
-| Navegación | Activation Map y conexiones que expresan significado. | `/link` registra cuándo usar una fuente y verifica la ruta desde el manual. | Distinguir relación conceptual de ruta de recuperación; ambas tienen valor. |
-| Evaluación | Las skills locales revisadas se centran en conexiones, duplicados, hubs y continuidad. | `/audit` define pruebas de recuperación, criterios puntuables, evidencia y límites de cobertura. | La auditoría operativa de AIS-OS está más especificada que estas skills concretas del vault. |
-| Evolución | Síntesis y propuestas de mantenimiento. | Auditoría → mejora seleccionada → verificación posterior, con historial de hallazgos. | Añadir un ciclo cerrado de mejora sin crear capacidades innecesarias. |
-| Portabilidad | El manifiesto sirve de entrada al contexto del vault; no se auditó su portabilidad completa. | Dos manuales y paquetes de skills con origen y transformación declarados. | Definir una fuente canónica y comprobar copias generadas cuando se soporten varios entornos. |
+| Focus | Preserve knowledge, connect lessons and resume work streams. | Personalize an assistant for operational priorities/useful capabilities. | Different design centers with substantial shared architecture. |
+| Organization | Explicit capture, application, knowledge, history and resource layers; hubs/typed relations. | Small context, reference, decision and connection base expanded as needed. | Preserve semantic distinctions without replicating the full hierarchy per project. |
+| Capture | Selective processing through vault workflow/skills. | Onboarding/interviews with per-answer saving, traceable corrections and confirmed-fact promotion. | Guided entry would reduce dependence on Manu's prior knowledge. |
+| Navigation | Activation Map and meaningful connections. | `/link` records when to use sources and verifies manual-to-source paths. | Distinguish conceptual relationships from retrieval routes; both matter. |
+| Evaluation | Reviewed local skills focus on connections, duplicates, hubs and continuity. | `/audit` defines retrieval tests, scored criteria, evidence and coverage limits. | AIS-OS operational auditing is more specified than those particular vault skills. |
+| Evolution | Synthesis and maintenance proposals. | Audit → selected improvement → later verification, with finding history. | Add a closed improvement cycle without unnecessary capabilities. |
+| Portability | Manifest enters vault context; full portability unaudited. | Two manuals and skill packages with declared origins/transformation. | Define canonical sources and check generated copies for multiple environments. |
 
-### Evidencia concreta y límites
+### Concrete evidence and limits
 
-- [La skill de auditoría](https://github.com/nateherkai/AIS-OS/blob/ce9cb93a1145da5daba84ea37208ec35fd03606e/.claude/skills/audit/SKILL.md) exige cinco pruebas de recuperación y separa defectos, falta de verificación y oportunidades. Las reglas de [historial](https://github.com/nateherkai/AIS-OS/blob/ce9cb93a1145da5daba84ea37208ec35fd03606e/.claude/skills/audit/history.md) mantienen identificadores y requieren evidencia fresca para cerrar hallazgos.
-- [Grill Me](https://github.com/nateherkai/AIS-OS/blob/ce9cb93a1145da5daba84ea37208ec35fd03606e/.claude/skills/grill-me/SKILL.md) distingue captura, hechos confirmados, propuestas e información canónica. Confirma una coincidencia importante con la separación de capas del vault.
-- [El registro de conexiones](https://github.com/nateherkai/AIS-OS/blob/ce9cb93a1145da5daba84ea37208ec35fd03606e/connections.md) contiene espacios por personalizar. El kit descargado no demuestra acceso real a sistemas del usuario ni ejecución recurrente.
-- Se compararon los 40 archivos de las seis skills canónicas con su copia, aplicando en memoria la sustitución de rutas declarada por [el script de sincronización](https://github.com/nateherkai/AIS-OS/blob/ce9cb93a1145da5daba84ea37208ec35fd03606e/scripts/sync-codex-skills.sh). Coincidieron todos y no hubo archivos adicionales. Los dos manuales raíz también coincidieron. Es una comprobación estática, no una prueba de comportamiento entre runtimes.
-- Las skills contienen reglas de control expresadas en texto. No basta una etiqueta de fase en frontmatter para demostrar un bloqueo técnico de autonomía. Los permisos y controles reales dependen también del entorno de ejecución.
+- [Audit skill](https://github.com/nateherkai/AIS-OS/blob/ce9cb93a1145da5daba84ea37208ec35fd03606e/.claude/skills/audit/SKILL.md) requires five retrieval tests and separates defects, missing verification and opportunities. [History rules](https://github.com/nateherkai/AIS-OS/blob/ce9cb93a1145da5daba84ea37208ec35fd03606e/.claude/skills/audit/history.md) preserve IDs and require fresh evidence for closure.
+- [Grill Me](https://github.com/nateherkai/AIS-OS/blob/ce9cb93a1145da5daba84ea37208ec35fd03606e/.claude/skills/grill-me/SKILL.md) distinguishes capture, confirmed facts, proposals and canonical information, matching the vault's layer separation.
+- [Connection registry](https://github.com/nateherkai/AIS-OS/blob/ce9cb93a1145da5daba84ea37208ec35fd03606e/connections.md) has personalization placeholders. The downloaded kit proves neither real user-system access nor recurring execution.
+- All 40 files in the six canonical skills were compared with their copies after applying the [synchronization script's](https://github.com/nateherkai/AIS-OS/blob/ce9cb93a1145da5daba84ea37208ec35fd03606e/scripts/sync-codex-skills.sh) declared path substitution in memory. Every file matched, with no extras. Root manuals matched too. This is static checking, not cross-runtime behavioral proof.
+- Skills express control rules in text. A frontmatter phase label alone does not prove a technical autonomy block; effective permissions/controls also depend on the runtime.
 
-### Qué adoptar y qué adaptar
+### What to adopt and adapt
 
-**Adoptar como principios de la futura implementación:** entrada guiada, rutas de recuperación comprobables, pruebas concretas, registro persistente de hallazgos y una mejora verificada por ciclo. Estas son propuestas; no se instalaron las skills ni se modificó el comportamiento operativo del vault.
+**Proposed future principles:** guided entry, verifiable retrieval routes, concrete tests, persistent findings and one verified improvement per cycle. These are proposals; no skills were installed or vault operating behavior changed.
 
-**Adaptar el criterio de éxito:** la [rúbrica](https://github.com/nateherkai/AIS-OS/blob/ce9cb93a1145da5daba84ea37208ec35fd03606e/.claude/skills/audit/rubric.md) limita Cadence a 10/25 en un sistema exclusivamente manual y el total a 69/100 sin la evidencia automática exigida. Es coherente con su objetivo de operación recurrente, pero no sería una medida universal de calidad para investigación o conocimiento personal.
+**Adapt success criteria:** the [rubric](https://github.com/nateherkai/AIS-OS/blob/ce9cb93a1145da5daba84ea37208ec35fd03606e/.claude/skills/audit/rubric.md) caps Cadence at 10/25 for manual-only systems and the total at 69/100 without required automation evidence. This fits recurrent-operation goals but is not a universal quality measure for research/personal knowledge.
 
-**Adaptar el criterio de utilidad:** [Level Up](https://github.com/nateherkai/AIS-OS/blob/ce9cb93a1145da5daba84ea37208ec35fd03606e/.claude/skills/level-up/SKILL.md) pide categoría de impacto empresarial y métrica. Para este vault, también pueden servir recuperar evidencia, resolver una pregunta, reducir errores o mejorar la continuidad, sin traducir todo a ingresos.
+**Adapt utility criteria:** [Level Up](https://github.com/nateherkai/AIS-OS/blob/ce9cb93a1145da5daba84ea37208ec35fd03606e/.claude/skills/level-up/SKILL.md) requires a business-impact category/metric. This vault can also value evidence retrieval, answering questions, error reduction and continuity without translating everything to revenue.
 
-**Adaptar la estructura:** [Expansions](https://github.com/nateherkai/AIS-OS/blob/ce9cb93a1145da5daba84ea37208ec35fd03606e/EXPANSIONS.md) evita una inbox y las carpetas anticipadas. El vault tiene un propósito legítimo de captura sin procesar; el criterio trasladable es controlar su acumulación y procesamiento, no eliminarla por adoptar otra convención.
+**Adapt structure:** [Expansions](https://github.com/nateherkai/AIS-OS/blob/ce9cb93a1145da5daba84ea37208ec35fd03606e/EXPANSIONS.md) avoids an inbox and speculative folders. This vault legitimately captures unprocessed material; the transferable principle is controlling accumulation/processing, not deleting it to adopt another convention.
 
-### Base resultante para proyectos y agentes
+### Resulting foundation for projects and agents
 
-Conservar las seis responsabilidades de este framework y añadir una interfaz de uso y pruebas: puesta en marcha guiada, caso mínimo útil, recuperación y reentrada comprobadas, límites verificados y una mejora concreta por ciclo. La profundidad del sistema debe crecer según la necesidad del proyecto.
+Preserve the six responsibilities and add a usage/testing interface: guided setup, minimum useful case, tested retrieval/reentry, verified limits and one concrete improvement per cycle. Depth should grow with project needs.
 
-Estado: propuesta pendiente de aplicación práctica. Este contraste no demuestra superioridad operativa global de ninguno de los dos sistemas.
+Status: proposal pending practical application. This comparison proves neither system globally superior in operation.
 
-## Referencias principales
+## Main references
 
-**Revisión de origen — 2026-09-08:** [Revisión del instalador original y propuesta Second Brain / AI OS](installer-review.md) incorpora el repositorio identificado por Manu. La propuesta se concreta en un núcleo compartido, dos ciclos de uso y modos de crear/adoptar/actualizar/reparar. Prioridad: resolver la divergencia de manuales y skills, reutilizar el framework instalador existente y validar comportamientos antes de ampliar estructura. Continúa siendo una propuesta, sin migración operativa.
+**Origin review — 2026-09-08:** [Original installer review and Second Brain / AI OS proposal](installer-review.md) adds Manu's identified repository. The proposal becomes one shared core, two usage cycles and create/adopt/update/repair modes. Prioritize manual/skill drift, reuse the installer framework and validate behavior before expanding structure. Still a proposal without operational migration.
 
-- Flujo de información (referencia histórica del vault; no necesaria para implementar)
-- Estados y hubs de continuidad (referencia histórica del vault; no necesaria para implementar)
-- Neural Vault Protocol (referencia histórica del vault; no necesaria para implementar)
-- Agent Components Taxonomy (referencia histórica del vault; no necesaria para implementar)
-- Agent Anatomy (referencia histórica del vault; no necesaria para implementar)
-- Compiled Truth + Timeline (referencia histórica del vault; no necesaria para implementar)
-- Second Brain (referencia histórica del vault; no necesaria para implementar)
+- Information Flow (historical vault reference; not required for implementation).
+- Project States and continuity hubs (historical vault reference; not required for implementation).
+- Neural Vault Protocol (historical vault reference; not required for implementation).
+- Agent Components Taxonomy (historical vault reference; not required for implementation).
+- Agent Anatomy (historical vault reference; not required for implementation).
+- Compiled Truth + Timeline (historical vault reference; not required for implementation).
+- Second Brain (historical vault reference; not required for implementation).
 
-
-[Volver a la entrada del proyecto](../README.md)
+[Back to the project](../README.md)

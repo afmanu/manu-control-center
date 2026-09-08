@@ -1,81 +1,81 @@
-# Contratos de construcción e información
+# Construction and information contracts
 
-Versión adoptada en M1: `0.1.0-draft`. Existen 22 [esquemas](../schemas/contracts.schema.json), tipos, validadores, comprobación de composición y backend SQLite de referencia. [M1 implementado](m1-implementation.md) detalla campos exactos, mecanismos y límites. M2 implementa resolución, planificación, aplicación, verificación y adopción local en el perfil [foundation](installation.md); ejecución y exportación siguen el roadmap M3–M4. Complementa [la arquitectura](architecture.md) sin sustituirla.
+Version adopted in M1: `0.1.0-draft`. There are 22 [schemas](../schemas/contracts.schema.json), types, validators, composition checks and a reference SQLite backend. [M1 implementation](m1-implementation.md) details exact fields, mechanisms and limits. M2 implements local resolution, planning, application, verification and adoption for the [foundation](installation.md) profile; execution and export follow M3–M4. This complements [the architecture](architecture.md) without replacing it.
 
-## Convenciones comunes
+## Common conventions
 
-Los registros persistentes usan `schema_version`, `id`, `instance_id` cuando corresponda, `revision`, `created_at` y `updated_at`. Identidad y revisión son distintas: editar no cambia el ID. Los tiempos llevan zona y se normalizan a UTC para comparación. Las referencias vinculan ID y revisión cuando el resultado depende de una versión exacta.
+Persistent records use `schema_version`, `id`, `instance_id` where applicable, `revision`, `created_at` and `updated_at`. Identity differs from revision: editing does not change the ID. Timestamps include zones and normalize to UTC for comparison. References bind ID and revision when a result depends on an exact version.
 
-En M1, `StoredRecord` añade `kind`, `access` y `data` a los metadatos; el backend genera revisión y fechas. `InstanceSpec` tiene revisión propia para fijar la configuración aplicada. Los hashes de objetos usan JSON canónico; los de artefactos se calculan sobre contenido UTF-8 exacto.
+M1's `StoredRecord` adds `kind`, `access` and `data` to metadata; the backend generates revisions/timestamps. `InstanceSpec` has its own revision to pin applied configuration. Object hashes use canonical JSON; artifact hashes use exact UTF-8 content.
 
-Las escrituras reciben `expected_revision` o una precondición de ausencia. Un conflicto devuelve la revisión actual y no sobrescribe silenciosamente. Los IDs no deben derivarse únicamente del título ni de una ruta física. La representación de revisiones puede variar por adaptador, con comparación opaca por el núcleo.
+Writes take `expected_revision` or an absence precondition. Conflicts return the current revision without silent overwrite. IDs must not derive solely from a title or physical path. Revision representation may vary by adapter; the core compares it opaquely.
 
-Una operación devuelve éxito con datos y evidencia, o error con `code`, `message`, `retryable`, `details`, `evidence_refs` y, si hubo un intento de escritura, `effect_status`. La API de M1 usa `DomainError` serializable; `effect_status` corresponderá al resultado de invocación del coordinador. Una consulta vacía devuelve una página vacía. Para un registro individual, `NOT_FOUND` agrupa ausencia y falta de lectura en ese alcance para no revelar existencia; una escritura sin permiso sobre un registro legible devuelve `FORBIDDEN`.
+An operation returns success with data/evidence, or an error with `code`, `message`, `retryable`, `details`, `evidence_refs` and, after a write attempt, `effect_status`. M1 uses serializable `DomainError`; `effect_status` belongs to the coordinator's invocation result. Empty queries return empty pages. For individual records, `NOT_FOUND` covers absence and unreadability within scope to avoid revealing existence; an unauthorized write to a readable record returns `FORBIDDEN`.
 
-Errores mínimos: `INVALID_INPUT`, `NOT_FOUND`, `CONFLICT`, `FORBIDDEN`, `AUTH_REQUIRED`, `CAPABILITY_UNAVAILABLE`, `INCOMPATIBLE_VERSION`, `STALE_PLAN`, `VALIDATION_FAILED`, `RATE_LIMITED`, `TIMEOUT`, `EFFECT_UNKNOWN`, `BUDGET_EXCEEDED`, `CANCELLED`. `retryable` no autoriza por sí solo a repetir un efecto.
+Minimum errors: `INVALID_INPUT`, `NOT_FOUND`, `CONFLICT`, `FORBIDDEN`, `AUTH_REQUIRED`, `CAPABILITY_UNAVAILABLE`, `INCOMPATIBLE_VERSION`, `STALE_PLAN`, `VALIDATION_FAILED`, `RATE_LIMITED`, `TIMEOUT`, `EFFECT_UNKNOWN`, `BUDGET_EXCEEDED`, `CANCELLED`. `retryable` does not itself authorize repeating an effect.
 
-## Blueprint y módulos — C02
+## Blueprint and modules — C02
 
-Blueprint: ID, versión, propósito, entidades, módulos requeridos/opcionales, configuración requerida, capacidades de destino y escenarios de aceptación. Módulo: ID, versión, dependencias, contratos exportados, skills, workflows, migraciones y verificaciones. Preset: valores iniciales sobre campos permitidos, sin redefinir contratos.
+Blueprint: ID, version, purpose, entities, required/optional modules, required configuration, target capabilities and acceptance scenarios. Module: ID, version, dependencies, exported contracts, skills, workflows, migrations and checks. Preset: initial values for allowed fields, without redefining contracts.
 
-Operación `resolve(blueprint, choices, catalog, observed_capabilities)` → especificación resuelta o conflictos. Detectar dependencias ausentes, ciclos, versiones incompatibles y una capacidad obligatoria no disponible. La resolución no crea recursos. Una alternativa más débil requiere quedar explícita en la especificación y en sus límites.
+`resolve(blueprint, choices, catalog, observed_capabilities)` → resolved specification or conflicts. Detect missing dependencies, cycles, incompatible versions and unavailable required capabilities. Resolution creates no resources. A weaker alternative must be explicit in the specification and its limitations.
 
-## Especificación de instancia — C03
+## Instance specification — C03
 
-Contiene identidad de instancia, propósito, blueprint y módulos fijados, kernel versionado, destinos de backend/runtime/interfaz, políticas y referencias a secretos, configuración y overrides. El estado deseado no afirma que los destinos ya estén instalados.
+Contains instance identity, purpose, pinned blueprint/modules, versioned kernel, backend/runtime/interface targets, policies, secret references, configuration and overrides. Desired state does not claim that targets are installed.
 
-Separar la entrada del usuario con rangos o preferencias del resultado resuelto con versiones exactas. Guardar las elecciones y sus supuestos. Las rutas o nombres de tablas son configuración del adaptador; no campos obligatorios del modelo universal.
+Separate user input containing ranges/preferences from resolution with exact versions. Save choices and assumptions. Paths/table names are adapter configuration, not mandatory fields in a universal model.
 
-## Plan y aplicación — C04–C05
+## Plan and application — C04–C05
 
-Plan: ID, hash de especificación resuelta, observaciones/revisiones del destino, operaciones ordenadas, dependencias, precondiciones, efectos, alcance requerido, pruebas y estrategia de recuperación. Cada operación identifica recurso lógico, destino físico mediante adaptador y ownership esperado.
+Plan: ID, resolved-specification hash, destination observations/revisions, ordered operations, dependencies, preconditions, effects, required scope, tests and recovery strategy. Each operation identifies a logical resource, a physical target through its adapter and expected ownership.
 
-Operaciones lógicas iniciales: inspeccionar, crear, reutilizar, actualizar y verificar. Retirar recursos debe modelarse explícitamente cuando se implemente; no se deduce de su ausencia en una plantilla nueva.
+Initial logical operations: inspect, create, reuse, update and verify. Resource removal must be explicitly modeled when implemented; absence from a new template does not imply removal.
 
-`plan(spec, observed_state, manifest?)` no modifica el destino. A igualdad de entradas y revisiones debe dar el mismo contenido lógico; IDs de informe y timestamps pueden diferir. `apply(plan, grant_refs)` revalida permisos y precondiciones antes de cada cambio y persiste checkpoints. Un destino que cambió produce conflicto o plan nuevo; no continúa sobre observaciones obsoletas.
+`plan(spec, observed_state, manifest?)` does not modify the destination. Equal inputs/revisions must produce the same logical content; report IDs/timestamps may differ. `apply(plan, grant_refs)` revalidates permissions/preconditions before every change and persists checkpoints. A changed destination causes a conflict or a new plan; application does not continue using stale observations.
 
-Adopción: inventario → correspondencias propuestas → conflictos → plan de vinculación/creación → verificación. Coincidir en nombre no demuestra identidad ni propiedad. Registrar si cada recurso es gestionado, compartido o propiedad del usuario; la política de actualización depende de ese dato.
+Adoption: inventory → proposed mappings → conflicts → binding/creation plan → verification. Matching names prove neither identity nor ownership. Record whether each resource is managed, shared or user-owned; update policy depends on it.
 
-Si el proceso cae tras crear un recurso pero antes de guardar su recibo, la operación necesita clave estable o mecanismo de descubrimiento para reconciliarlo. Sin ese mecanismo, se mantiene incierta: no se crea otra copia automáticamente.
+If a process crashes after resource creation but before saving its receipt, the operation needs a stable key or discovery mechanism for reconciliation. Without one, the outcome remains uncertain: another copy is not created automatically.
 
-## Manifiesto y evolución — C06
+## Manifest and evolution — C06
 
-Manifiesto: instancia, revisión, especificación aplicada, versiones efectivas, recursos lógicos/físicos gestionados, ownership, revisión/hash de referencia, overrides, estado de aplicación y últimas verificaciones. Su estado distingue al menos parcial, instalado sin verificar y verificado con cobertura.
+Manifest: instance, revision, applied specification, effective versions, managed logical/physical resources, ownership, baseline revision/hash, overrides, application state and latest checks. It distinguishes at least partial, installed-but-unverified and verified with coverage.
 
-Actualización compara tres elementos: versión gestionada anterior, estado observado y nueva versión deseada. Conservar ediciones del usuario; señalar conflicto si ambas partes cambian el mismo contenido. Una migración declara versiones origen/destino, precondiciones, transformación, prueba, backup/restauración o compensación y tratamiento de ejecuciones abiertas. No prometer restauración de efectos externos irreversibles.
+Updates compare three inputs: previous managed version, observed state and new desired version. Preserve user edits; report conflicts if both sides change the same content. A migration declares source/destination versions, preconditions, transformation, tests, backup/restore or compensation, and treatment of open runs. Do not promise to restore irreversible external effects.
 
-## Entidades y relaciones — C10–C16
+## Entities and relationships — C10–C16
 
-| Entidad | Campos semánticos específicos mínimos |
+| Entity | Minimum type-specific semantic fields |
 |---|---|
-| Proyecto | Propósito, estado, responsable, siguiente acción, decisiones y fuentes pertinentes. |
-| Fuente | Referencia externa o local, propietario, alcance, fecha observada, versión y acceso. |
-| Captura | Fuente/revisión, fragmentos pertinentes, clasificación, estado de procesamiento y clave de deduplicación cuando exista. |
-| Afirmación | Contenido, estado epistemológico, evidencia, ámbito y vigencia. |
-| Decisión | Elección, actor, contexto, alternativas pertinentes, evidencia, fecha y criterio de revisión. |
-| Artefacto | Tipo, contenido o referencia inmutable, hash, versión, estado de aceptación y evidencia. |
-| Relación | ID origen/destino, tipo, procedencia y revisión; no inferir identidad por similitud de nombres. |
+| Project | Purpose, status, owner/responsible person, next action, relevant decisions and sources. |
+| Source | External/local reference, owner, scope, observation date, version and access. |
+| Capture | Source/revision, relevant segments, classification, processing state and deduplication key when available. |
+| Claim | Content, epistemic state, evidence, scope and validity period. |
+| Decision | Choice, actor, context, relevant alternatives, evidence, date and review criterion. |
+| Artifact | Type, content or immutable reference, hash, version, acceptance state and evidence. |
+| Relation | Source/target ID, type, provenance and revision; do not infer identity from similar names. |
 
-Estados epistemológicos adoptados en M1 (enums ingleses en el esquema): declarado, hipótesis, propuesto, confirmado, refutado. Son distintos del procesamiento de una captura (pendiente, integrado, descartado con motivo) y del estado de una decisión (vigente, sustituida, revocada).
+M1 epistemic states: declared, hypothesis, proposed, confirmed, refuted. These differ from capture processing (pending, integrated, discarded with a reason) and decision state (active, superseded, revoked).
 
-Una fuente de autoridad declara entidad/campo/pregunta a la que aplica, propietario, prioridad o regla de resolución, periodo válido, momento de observación y política de actualización. La consulta histórica distingue fecha de validez y fecha en que el sistema conoció el dato. Si el backend no conserva la historia requerida, devolver cobertura insuficiente.
+An authoritative source declares the entity/field/question it governs, owner, priority or resolution rule, validity period, observation time and update policy. Historical queries distinguish valid time from when the system learned the fact. If the backend lacks required history, return insufficient coverage.
 
-La búsqueda devuelve resultados con referencias y revisión, cobertura y vigencia. Debe filtrar permisos antes de exponer contenido. La ausencia de coincidencias no demuestra inexistencia. La selección de contexto conserva por qué esas fuentes son pertinentes sin registrar razonamiento interno del modelo.
+Search returns results with references/revisions, coverage and currency. Filter permissions before exposing content. No matches do not prove nonexistence. Context selection preserves why sources are relevant without recording the model's internal reasoning.
 
-La promoción de conocimiento exige evidencia y autoridad pertinentes; una orden clara ya autorizada puede integrarse directamente. No convertir automáticamente propuestas de una transcripción en decisiones de la persona.
+Knowledge promotion requires relevant evidence and authority; a clear, already-authorized instruction may be integrated directly. Do not automatically turn transcript proposals into the person's decisions.
 
-## Backend y exportación — C24
+## Backend and export — C24
 
-Interfaz implementada en M1: `capabilities`, `forScope`, `get`, `query`, `create`, `update(record, expectedRevision)`, `history`, `link` y `close`. La consulta filtra tipo e identidad con paginación por ID. `export`, `import` y la verificación funcional de instancias quedan para sus hitos posteriores; las capacidades no implementadas se anuncian como falsas. Extensiones específicas del backend se declaran, no se filtran como requisitos generales.
+M1 interface: `capabilities`, `forScope`, `get`, `query`, `create`, `update(record, expectedRevision)`, `history`, `link` and `close`. Queries filter type/identity with ID-based pagination. `export`, `import` and functional instance verification arrive in later milestones; unimplemented capabilities are declared false. Backend-specific extensions are declared, not leaked into general requirements.
 
-Matriz de capacidades: revisiones, escritura condicional, atomicidad, exclusión de escritor, historial, relaciones, búsqueda, exportación, límites y aislamiento. Si falta una garantía del coordinador, elegir un almacén de estado adecuado o modo de un único escritor comprobable; no simular transacciones mediante una instrucción al agente.
+Capability matrix: revisions, conditional writes, atomicity, writer exclusion, history, relationships, search, export, limits and isolation. If a coordinator guarantee is missing, choose suitable state storage or a verifiable single-writer mode; do not simulate transactions through instructions to an agent.
 
-Exportar incluye identidades, relaciones, revisiones históricas requeridas, procedencia, artefactos exactos, trabajos abiertos, efectos y referencias de configuración. Las credenciales se reconfiguran en destino. Importar produce informe de correspondencias y pérdidas/no soportados; una importación incompleta no se declara portable. Un estado interno de infraestructura como un lease activo se invalida y reacquiere de forma segura, conservando el historial de autoridad.
+Export includes identities, relationships, required historical revisions, provenance, exact artifacts, open jobs, effects and configuration references. Credentials are reconfigured at the destination. Import reports mappings and losses/unsupported features; incomplete imports are not declared portable. Internal infrastructure state such as an active lease is invalidated and safely reacquired, preserving authority history.
 
-## Adaptación y compatibilidad — C20, C25–C27
+## Adaptation and compatibility — C20, C25–C27
 
-Runtime: identidad/versión, capacidades declaradas, disponibilidad observada por sesión, alcance autorizado, método de invocación y resultados de pruebas. `prepare_context` y `handoff` pueden existir sin despacho remoto; `invoke` solo cuando el host lo soporte realmente.
+Runtime: identity/version, declared capabilities, per-session observed availability, authorized scope, invocation method and test results. `prepare_context` and `handoff` may exist without remote dispatch; `invoke` exists only when genuinely supported by the host.
 
-Conector: operación, esquema de argumentos, retorno, alcance, efectos, límites, idempotencia real y consulta de resultado. UI/gateway: utiliza las mismas operaciones lógicas y controles; distinguir leer, escribir y ejecutar. Los tests de conectores simulados prueban al coordinador, no a una integración comercial.
+Connector: operation, argument schema, return value, scope, effects, limits, actual idempotency and outcome lookup. UI/gateway: use the same logical operations and controls; distinguish reading, writing and execution. Simulated connector tests exercise the coordinator, not a commercial integration.
 
-[Entrada](../README.md)
+[Home](../README.md)

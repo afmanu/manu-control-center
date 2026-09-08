@@ -28,6 +28,8 @@ try {
   const cli = join(installed, 'dist', 'cli', 'main.js');
   const version = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8')).version;
   assert.equal(run(process.execPath, [cli, '--version'], consumer).trim(), version);
+  assert.match(run(process.execPath, [cli, '--lang', 'en', '--help'], consumer), /Usage:/);
+  assert.match(run(process.execPath, [cli, '--lang', 'es', '--help'], consumer), /Uso:/);
   assert.equal(JSON.parse(run(process.execPath, [cli, 'doctor'], consumer)).ok, true);
   assert.equal(JSON.parse(run(process.execPath, [cli, 'validate-record', join(installed, 'examples', 'record-envelope.json')], consumer)).ok, true);
   assert.equal(JSON.parse(run(process.execPath, [cli, 'validate-bundle', join(installed, 'examples', 'contracts', 'construction-bundle.json')], consumer)).ok, true);

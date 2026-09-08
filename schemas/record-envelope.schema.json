@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "urn:manu-control-center:record-envelope:0.1.0-draft",
   "title": "RecordEnvelope",
-  "description": "Metadatos mínimos; no valida todavía una entidad, permiso o instancia completa.",
+  "description": "Minimal metadata; does not yet validate an entire entity, permission or instance.",
   "type": "object",
   "additionalProperties": false,
   "required": ["schema_version", "id", "instance_id", "revision", "created_at", "updated_at"],

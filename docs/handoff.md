@@ -1,63 +1,73 @@
-# Handoff de desarrollo
+# Development handoff
 
-Actualizado: 2026-09-08. Repositorio principal: [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). **M0–M2 completados; siguiente fase: M3.**
+Updated: 2026-09-08. Primary repository: [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). **M0–M2 complete; next phase: M3.**
 
-## Instrucción vigente
+## Current instruction
 
-Manu pide construir el sistema para usarlo y ha elegido este repositorio como destino. El trabajo verificado y su entrega en GitHub están autorizados. Se conservan el historial inicial y MIT; las carpetas documentales anteriores son snapshots, sin sincronización automática con este repositorio ni con el vault original. No se necesita otra entrevista de descubrimiento.
+Manu requests a system he can use and has selected this repository as its destination. Verified work and GitHub delivery are authorized. Preserve the initial history and MIT license; earlier documentation folders are snapshots, without automatic synchronization with this repository or the source vault. Another discovery interview is unnecessary.
 
-M3 entrega el primer uso con agente; M4 demuestra otra representación y otro runtime; M5 añade mantenimiento. Las integraciones imprescindibles de M6 pueden incorporarse desde M3.
+Before M3, Manu requires the repository to be in English. Runtime interaction and user content may remain Spanish. This language change is documented in D24 and [language.md](language.md); it does not start M3.
 
-## Estado ejecutable
+M3 delivers first agent use; M4 demonstrates another representation and runtime; M5 adds maintenance. Essential M6 integrations may be brought forward from M3.
 
-Paquete privado `manu-control-center@0.1.0-dev.2`, TypeScript/Node 24, dependencias exactas y lockfile. M2 no añade dependencias. Se mantienen los 22 contratos M1, backend SQLite con acceso/revisiones/historial y harness A27.
+## Executable status
 
-M2 añade catálogo `project-knowledge-foundation@0.1.0-draft`, dos módulos, solicitud validada, resolver y plan reproducible. El adaptador comprueba el backend real en bases desechables, inspecciona el destino sin escribir y aplica operaciones con checkpoints atómicos. La adopción reutiliza proyectos de MCC SQLite fijando revisión y ownership, preservando su contenido e historial.
+Private package `manu-control-center@0.1.0-dev.3`, TypeScript/Node 24, exact dependencies and a lockfile. M2 and the language update add no dependencies. The 22 M1 contracts, SQLite backend with access/revisions/history, and A27 harness remain in place.
 
-CLI operativa: `resolve`, `plan`, `inspect`, `apply`, `verify`, `create`, `adopt`, `resume`, además de los comandos M0–M1. Biblioteca: exports `./builder` y `./local`. La [guía de instalación](installation.md) contiene argumentos, ejemplo, recuperación y límites; [desarrollo](development.md) describe empaquetado y esquemas.
+M2 adds the `project-knowledge-foundation@0.1.0-draft` catalog, two modules, validated request, resolver and reproducible plan. The adapter checks the real backend in disposable databases, inspects destinations without writes, and applies operations with atomic checkpoints. Adoption reuses MCC SQLite projects with pinned revisions and ownership, preserving content/history.
 
-Cada instancia guarda configuración y catálogo, conocimiento, estado de construcción e informes de verificación en tablas separadas de `store.sqlite`. Un recurso y su checkpoint comparten transacción. Se registran las autorizaciones de construcción utilizadas. Los informes son recuperables y se comprueba su hash al leerlos. `verified` se limita al perfil `foundation`; `runtime.invoke` sigue `not_run`.
+Operational CLI: `resolve`, `plan`, `inspect`, `apply`, `verify`, `create`, `adopt`, `resume`, plus M0–M1 commands. Library exports: `./builder` and `./local`. The [installation guide](installation.md) covers arguments, examples, recovery and limits; [development](development.md) covers packaging and schemas. Help and error summaries support `--lang en|es`; English is the default. Structured protocols and user data retain their original values.
 
-## Instancia base de Manu
+Each instance stores configuration/catalog, knowledge, construction state and verification reports in separate `store.sqlite` tables. Resources and checkpoints share a transaction. Used construction authorizations are recorded. Reports are retrievable and hash-checked when read. `verified` is limited to `foundation`; `runtime.invoke` remains `not_run`.
 
-Se ha preparado fuera del repositorio, sin sustituir archivos preexistentes:
+New plans have English catalog descriptions. Original M2 plans remain supported without changing their hashes; replanning preserves an existing original catalog. Do not remove this compatibility path while those plans are in use.
 
-- Identidad y propietario local: `manu`; proyecto inicial: `manu-control-center`.
-- Directorio: `~/Library/Application Support/manu-control-center/instances/manu`.
-- Solicitud: `~/Library/Application Support/manu-control-center/configuration/manu.json`.
-- Plan original: `~/Library/Application Support/manu-control-center/configuration/manu-installation-plan.json`.
-- Estado: `verified` para configuración, catálogo, proyecto y almacenamiento; integración de agente pendiente.
+## Manu's foundation instance
 
-Solo incluye el propósito inicial de construir este sistema. No se han importado fuentes personales ni invocado modelos. M3 debe completar esta base conservando su identidad y datos; no reinstalar encima ni asumir que editar la solicitud aplica un cambio. La identidad local es una configuración inicial del host, no autenticación de una cuenta.
+Prepared outside the repository without replacing pre-existing files:
 
-## Evidencia
+- Local identity and owner: `manu`; initial project: `manu-control-center`.
+- Directory: `~/Library/Application Support/manu-control-center/instances/manu`.
+- Request: `~/Library/Application Support/manu-control-center/configuration/manu.json`.
+- Original plan: `~/Library/Application Support/manu-control-center/configuration/manu-installation-plan.json`.
+- State: `verified` for configuration, catalog, project and storage; agent integration pending.
 
-92 tests aprobados, incluidos dos instaladores concurrentes, planes obsoletos, adopción, salida real del proceso dentro de una transacción y después de un checkpoint, recuperación por CLI y aislamiento. La prueba limpia repite los 92 tests e instala el paquete con caché de consumidor vacía; crea y verifica una instancia desde el paquete instalado y comprueba sus exports.
+It contains only the initial purpose of building this system. No personal sources were imported or models invoked. M3 must complete this foundation while preserving its identity/data; do not reinstall over it or assume editing the request applies a change. The local identity is initial host configuration, not account authentication. Repository translation preserves private content, including Spanish text.
 
-A01, A02, A16 y A17 pasan para el destino local soportado. A15/A19 pasan para el perfil de instalación; requieren ampliación al integrar runtimes y otros backends. A27 sigue pasando como frontera de API del harness. Los demás recorridos del sistema permanecen pendientes.
+## Evidence
 
-[Evidencia M2](m2-verification.json), [M1 histórica](m1-verification.json), [M0 histórica](m0-verification.json) y [GitHub Actions](https://github.com/afmanu/manu-control-center/actions). Las huellas de evidencia se vinculan al código de la entrega; el resultado remoto identifica el commit exacto sin un hash circular dentro de ese commit.
+M2 passed 92 tests, including concurrent installers, stale plans, adoption, actual process exit inside a transaction and after a checkpoint, CLI recovery and isolation. Its clean test repeated the 92 tests, installed the package with an empty consumer cache, created/verified an instance from it and checked public exports.
 
-## Fronteras que debe conservar M3
+A01, A02, A16 and A17 pass for the supported local target. A15/A19 pass for the installation profile and need expansion with runtimes/other backends. A27 still passes as a harness API boundary. Other system workflows remain pending.
 
-- El host autentica y fija `AccessScope`, `can_authorize` y autoridad de construcción. Estos argumentos nunca proceden de una fuente ni de una respuesta LLM. La CLI es un host local confiable, sin autenticación remota.
-- Los recibos de acciones M1 son referencias estructuradas; M3 debe mediar la invocación y probar el resultado del destino. El constructor M2 no implementa esa coordinación de workflows.
-- SQLite usa rollback journal. Planificación/inspección rechazan WAL o un journal pendiente antes de intentar recuperación. Solo una aplicación/reanudación autorizada recupera transacciones sobre un almacén MCC identificado. Una inicialización del formato de base incompleta requiere reparación explícita, sin reemplazar archivos desconocidos.
-- No hay fencing distribuido, scheduler, exportación ni otro backend/runtime. El guard de monotonía M1 no es un lease efectivo. El harness A27 no es un sandbox ni una eval semántica de un modelo.
-- La adopción M2 se limita a proyectos ya representados en MCC SQLite. No anuncia importación de un vault o carpeta arbitraria.
-- Replanificar no cambia ownership ni sobrescribe configuraciones gestionadas distintas. M3 debe definir expresamente cualquier evolución de la base necesaria para activar capacidades; M5 ampliará el mantenimiento general.
-- `node:sqlite` emite un aviso experimental en Node 24.14.1. Las rutas de otras plataformas no prueban compatibilidad: evidencia local macOS; CI registra sus propias ejecuciones.
+[M2 evidence](m2-verification.json), [historical M1](m1-verification.json), [historical M0](m0-verification.json) and [GitHub Actions](https://github.com/afmanu/manu-control-center/actions). Historical hashes belong to their original releases. Subsequent language verification is recorded separately; remote results identify the exact commit without a circular hash embedded in that commit.
 
-D20–D23 documentan estas decisiones y el despliegue inicial en [decisions.md](decisions.md).
+## English-repository update verification
 
-## Próximo trabajo: M3
+The language update passes 98 tests, generated-schema comparison and documentation checks. Clean installation repeats all 98 tests, installs the tarball with an empty consumer cache, checks English/Spanish help and creates/verifies an instance from the installed CLI. A read-only regression check confirms that Manu's request, original plan, database bytes and directory listing are unchanged; replanning retains the original catalog and specification. See [language-update evidence](language-verification.json).
 
-1. M3.1: captura de texto/archivos locales, fuentes y revisiones, consultas con permisos y procedencia.
-2. M3.2: autoridad de decisiones, consultas actuales/históricas y preservación de artefactos aprobados.
-3. M3.3–M3.4: reunión → brief y resumen de proyecto, coordinador durable, checkpoints, cancelación, presupuestos y control de efectos.
-4. M3.5–M3.7: adaptador real del runtime, continuidad desde otra sesión y puesta en uso de la instancia base de Manu.
-5. Comprobar los escenarios M3 del [roadmap](implementation-plan.md), ampliando A15/A19/A27 al destino realmente invocado.
+One existing concurrent-install test encountered the documented initial database-format boundary: a competing process can observe a journal before the MCC header commits. The test now accepts that exact fail-closed response only alongside a successful installer and the final single-project/history checks. Production recovery behavior is unchanged.
 
-Al cerrar una sesión, registrar fase, comandos reales, resultados y límites; actualizar handoff, decisiones y evidencia, y regenerar el inventario documental. Mantener conocimiento del usuario y estado de instancia fuera de la distribución.
+## Boundaries M3 must preserve
 
-[Entrada](../README.md)
+- The host authenticates and sets `AccessScope`, `can_authorize` and construction authority. These arguments never come from sources or LLM responses. The CLI is a trusted local host without remote authentication.
+- M1 action receipts are structured references; M3 must mediate invocation and test the target result. The M2 constructor does not coordinate workflows.
+- SQLite uses rollback journaling. Planning/inspection reject WAL or a pending journal before attempting recovery. Only authorized apply/resume recovers transactions on an identified MCC store. Incomplete database-format initialization requires explicit repair without replacing unknown files.
+- There is no distributed fencing, scheduler, export or second backend/runtime. The M1 monotonicity guard is not an effective lease. The A27 harness is neither a sandbox nor a model semantic evaluation.
+- M2 adoption is limited to projects already represented in MCC SQLite. It does not claim vault or arbitrary-folder import.
+- Replanning does not change ownership or overwrite different managed configurations. M3 must explicitly define any foundation evolution needed to activate capabilities; M5 expands general maintenance.
+- `node:sqlite` emits an experimental warning in Node 24.14.1. Other platforms' path rules do not prove compatibility: local evidence is macOS; CI records its own runs.
+
+D20–D24 record these choices, initial deployment and language policy in [decisions.md](decisions.md).
+
+## Next work: M3
+
+1. M3.1: local text/file capture, sources and revisions, queries with permissions and provenance.
+2. M3.2: decision authority, current/historical queries and approved-artifact preservation.
+3. M3.3–M3.4: meeting → brief and project summary, durable coordinator, checkpoints, cancellation, budgets and effect control.
+4. M3.5–M3.7: real runtime adapter, continuity from another session and first use of Manu's foundation instance.
+5. Check M3 scenarios in the [roadmap](implementation-plan.md), extending A15/A19/A27 to the actually invoked target.
+
+At session completion, record the phase, actual commands, results and limits; update handoff, decisions and evidence, and regenerate the documentation inventory. Keep user knowledge and instance state outside the distribution.
+
+[Home](../README.md)

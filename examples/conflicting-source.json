@@ -7,7 +7,7 @@
   "input": {
     "project": {
       "id": "project-demo",
-      "purpose": "Elegir el primer entregable de un proyecto ficticio"
+      "purpose": "Choose the first deliverable for a fictional project"
     },
     "source": {
       "id": "conflicting-source",
@@ -15,13 +15,13 @@
       "segments": [
         {
           "id": "s1",
-          "speaker": "Colaborador A",
-          "text": "Creo que aprobamos un presupuesto de 100."
+          "speaker": "Contributor A",
+          "text": "I think we approved a budget of 100."
         },
         {
           "id": "s2",
           "speaker": "Responsable",
-          "text": "Eso no está confirmado. Aún tenemos que decidir el presupuesto."
+          "text": "That is not confirmed. We still need to decide the budget."
         }
       ],
       "observed_at": "2026-09-08T10:00:00Z"
@@ -31,13 +31,13 @@
     "decisions": [],
     "open_questions": [
       {
-        "meaning": "Qué presupuesto se ha autorizado",
+        "meaning": "Which budget has been authorized",
         "source_segment": "s2"
       }
     ],
     "proposals": [],
     "must_not_assert": [
-      "Presupuesto de 100 confirmado"
+      "Confirmed budget of 100"
     ]
   }
 }

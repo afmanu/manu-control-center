@@ -1,77 +1,77 @@
-# Kernel, skills, workflows y estado de ejecución
+# Kernel, skills, workflows and execution state
 
-Contratos y transiciones `0.1.0-draft` adoptados en M1. Existen guards de estado, presupuestos, versiones y autorización, junto con persistencia de referencia. El coordinador, leases, medición de consumo e invocaciones se implementarán en M3. El [alcance M1](m1-implementation.md) delimita las garantías comprobadas. La separación de responsabilidades proviene de [la arquitectura](architecture.md).
+Contracts and transitions `0.1.0-draft` were adopted in M1. State, budget, version and authorization guards exist with reference persistence. The coordinator, leases, usage measurement and invocations arrive in M3. [M1 scope](m1-implementation.md) bounds verified guarantees. Responsibility separation follows [the architecture](architecture.md).
 
-## Kernel y política
+## Kernel and policy
 
-El kernel conserva tipos, invariantes y reglas comunes de autoridad, escritura, contexto, continuidad y aceptación. Las preferencias concretas y fuentes de una persona pertenecen a su instancia. Entradas de runtime se generan o referencian desde el kernel, con comprobación de coherencia; copiar textos no demuestra equivalencia semántica.
+The kernel retains types, invariants and shared rules for authority, writes, context, continuity and acceptance. A person's preferences/sources belong to their instance. Runtime entry points are generated from or reference the kernel, with consistency checks; copied text does not prove semantic equivalence.
 
-La decisión de política vincula actor, instancia, operación, recurso, destino, versión/hash del contenido cuando aplique, alcance temporal y estado de revocación. Devuelve permitir, denegar o requisito pendiente. El punto que realiza el efecto vuelve a comprobar alcance, revisiones y fencing; no basta un permiso leído al principio de la conversación.
+A policy decision binds actor, instance, operation, resource, destination, content version/hash where applicable, time scope and revocation state. It returns allow, deny or an unmet requirement. The point performing an effect rechecks scope, revisions and fencing; a permission read at conversation start is insufficient.
 
-## Skill y workflow
+## Skill and workflow
 
-Contrato de skill: ID/version, propósito, esquema de entrada/salida, fuentes y herramientas permitidas, efectos, dependencias, límites, errores y evaluaciones. El procedimiento puede usar recursos o scripts. `SKILL.md` es un posible formato de distribución; un `contract.yaml` personalizado requiere esquema y validador propios. Ningún host se presume compatible con ese validador.
+Skill contract: ID/version, purpose, input/output schemas, permitted sources/tools, effects, dependencies, limits, errors and evaluations. The procedure may use resources/scripts. `SKILL.md` is one possible distribution format; a custom `contract.yaml` needs its own schema/validator. No host is presumed compatible with that validator.
 
-Workflow: ID/version, trigger, entrada, pasos, dependencias, condiciones, política, outputs y aceptación. Cada paso declara tipo (determinista, agente o humano), capability/version, input bindings, resultados requeridos, efectos y recuperación. Un flujo inválido con dependencia ausente, ruta sin salida o aceptación indefinida falla antes de iniciar.
+Workflow: ID/version, trigger, input, steps, dependencies, conditions, policy, outputs and acceptance. Each step declares its type (deterministic, agent or human), capability/version, input bindings, required results, effects and recovery. Missing dependencies, dead-end paths or undefined acceptance make a workflow fail before starting.
 
-## Registros de ejecución
+## Execution records
 
-- **Job:** solicitud identificada con instancia, workflow/version, entradas/revisiones, clave de deduplicación, prioridad si se usa, presupuestos y estado general.
-- **Run:** intento de ejecutar un job, con ejecutor, estado, revisión, pasos, evidencia y causa de interrupción o cierre. Un retry puede crear otro run conservando la misma identidad de efectos lógicos.
-- **Step:** estado, inputs fijados, output/evidencia, propietario temporal, fencing token y checkpoint. El control técnico debe validar el propietario al escribir.
-- **Action:** intención de efecto, clave estable, destino, payload/hash, autorización, revisión esperada, estado, intentos y referencias remotas.
-- **Handoff:** vista generada a partir de los registros anteriores: objetivo, versiones, fuentes, pasos válidos, artefactos, efectos confirmados/inciertos, límites y siguiente acción.
+- **Job:** identified request with instance, workflow/version, inputs/revisions, deduplication key, optional priority, budgets and overall state.
+- **Run:** attempt to execute a job, with executor, state, revision, steps, evidence and interruption/completion cause. A retry may create another run while preserving logical effect identities.
+- **Step:** state, pinned inputs, output/evidence, temporary owner, fencing token and checkpoint. Technical control must validate ownership when writing.
+- **Action:** effect intent, stable key, destination, payload/hash, authorization, expected revision, state, attempts and remote references.
+- **Handoff:** view generated from those records: objective, versions, sources, valid steps, artifacts, confirmed/uncertain effects, limits and next action.
 
-Todos se mantienen bajo la autoridad de C19. C21 opera sobre Action; C23 solicita transiciones de recuperación; C28 observa. Un resumen de handoff no es otro registro canónico editable de la ejecución.
+C19 owns all these records. C21 operates on Action; C23 requests recovery transitions; C28 observes. A handoff summary is not another editable canonical execution record.
 
-## Estados de run
+## Run states
 
-| Desde | A | Condición |
+| From | To | Condition |
 |---|---|---|
-| `queued` | `running` | Ejecutor elegible adquiere control mediante operación atómica. |
-| `running` | `waiting_input` | Dato o aprobación imprescindible ausente y registrado. |
-| `running` | `blocked` | Dependencia, acceso o efecto incierto impide el siguiente paso. |
-| `running` | `paused` | Checkpoint persistido y propietario liberado de forma segura. |
-| `waiting_input`, `blocked`, `paused` | `queued` | Causa resuelta; revalidar versiones y acceso al adquirir de nuevo. |
-| `running` | `succeeded` | Todos los outputs obligatorios tienen aceptación y efectos requeridos confirmados. |
-| No terminal | `failed` | Fallo irrecuperable o política de reintentos agotada. |
-| No terminal | `cancel_requested` | Solicitud de cancelación registrada; no planificar pasos nuevos. |
-| `cancel_requested` | `cancelled` | Finalizado control de operaciones en vuelo; conservar acciones inciertas para reconciliación. |
+| `queued` | `running` | An eligible executor acquires control atomically. |
+| `running` | `waiting_input` | Essential missing data/approval is recorded. |
+| `running` | `blocked` | A dependency, access issue or uncertain effect prevents the next step. |
+| `running` | `paused` | Checkpoint persisted and ownership safely released. |
+| `waiting_input`, `blocked`, `paused` | `queued` | Cause resolved; revalidate versions/access when reacquiring. |
+| `running` | `succeeded` | All required outputs accepted and required effects confirmed. |
+| Nonterminal | `failed` | Unrecoverable failure or exhausted retry policy. |
+| Nonterminal | `cancel_requested` | Cancellation recorded; schedule no new steps. |
+| `cancel_requested` | `cancelled` | In-flight operations handled; retain uncertain actions for reconciliation. |
 
-La tabla combina aristas validadas en M1 con condiciones que debe ejecutar el coordinador de M3. Una revisión condicional no acredita por sí sola elegibilidad del ejecutor, adquisición de lease ni aceptación semántica.
+This table combines M1-validated edges with conditions the M3 coordinator must enforce. A conditional revision alone proves neither executor eligibility, lease acquisition nor semantic acceptance.
 
-Estados terminales no se reabren para ocultar intentos: un nuevo intento referencia el anterior. El estado del job deriva de runs y política de reintentos mediante el coordinador. Una cancelación no afirma que un efecto ya iniciado haya sido deshecho.
+Terminal states do not reopen to hide attempts: a new attempt references its predecessor. The coordinator derives job state from runs and retry policy. Cancellation does not claim that an already-started effect was undone.
 
-## Estados de acción y protocolo de efecto
+## Action states and effect protocol
 
-`prepared → in_flight → confirmed | failed | unknown`. Una acción rechazada antes de invocar puede terminar `rejected`. Una acción incierta pasa a `confirmed` con evidencia del destino o a fallo sin efecto únicamente si se prueba que no ocurrió. Si se demuestra seguro reintentar, se conserva la identidad lógica y el historial de intentos.
+`prepared → in_flight → confirmed | failed | unknown`. An action refused before invocation may end as `rejected`. An uncertain action becomes `confirmed` with target evidence, or a no-effect failure only when non-occurrence is proven. If retry is demonstrated safe, retain logical identity and attempt history.
 
-1. Persistir intención, payload/version, destino, clave estable, autorización y revisión.
-2. Adquirir autoridad de escritura; comprobar alcance y precondiciones en el punto de ejecución.
-3. Registrar intento y llamar al destino usando idempotency key si la implementa.
-4. Guardar recibo y comprobar resultado; solo entonces confirmar.
-5. Ante respuesta perdida, reconciliar por referencia remota o clave. Si no es resoluble, bloquear esa dependencia sin repetirla.
+1. Persist intent, payload/version, destination, stable key, authorization and revision.
+2. Acquire write authority; check scope/preconditions at execution time.
+3. Record the attempt and call the target using an idempotency key if supported.
+4. Save the receipt and check the result; only then confirm.
+5. After a lost response, reconcile by remote reference or key. If unresolved, block the dependency without repeating it.
 
-M1 exige `reconciliation: no_effect_proven` y recibos para declarar fallo desde `in_flight` o `unknown`. Solo `failed → prepared` permite volver a intentar; al entrar en `in_flight` incrementa el contador exactamente una vez y comprueba el grant actual. Resolver `unknown → confirmed` exige `effect_confirmed`. El backend valida referencias de recibo y estados; M3/M6 deben comprobar la evidencia del destino y mediar la llamada.
+M1 requires `reconciliation: no_effect_proven` and receipts to declare failure from `in_flight` or `unknown`. Only `failed → prepared` permits another attempt; entering `in_flight` increments the counter exactly once and checks the current grant. Resolving `unknown → confirmed` requires `effect_confirmed`. The backend validates receipt references/states; M3/M6 must verify target evidence and mediate invocation.
 
-No hay transacción universal entre base local y servicio remoto. La deduplicación de jobs, exclusión del escritor e idempotencia del destino son mecanismos diferentes y complementarios.
+There is no universal transaction between a local database and a remote service. Job deduplication, writer exclusion and target idempotency are distinct, complementary mechanisms.
 
-## Concurrencia, reanudación y versiones
+## Concurrency, resumption and versions
 
-El claim necesita compare-and-swap/transacción o un único escritor técnicamente impuesto. Un lease con vencimiento necesita fencing o mecanismo equivalente que impida escrituras de un ejecutor anterior. La expiración del lease no demuestra que una operación externa terminó.
+Claiming needs compare-and-swap/a transaction or a technically enforced single writer. Expiring leases need fencing or an equivalent mechanism that prevents a former executor from writing. Lease expiry does not prove an external operation finished.
 
-Al reanudar, comprobar versión del workflow, revisiones de fuentes, autorizaciones, ownership y efectos abiertos. Reutilizar pasos cuyo output siga válido; invalidar solo los dependientes de cambios, conservando evidencias anteriores. Una actualización puede fijar runs a versiones antiguas o migrarlos expresamente, pero no reinterpretar silenciosamente su estado.
+On resumption, check workflow version, source revisions, authorizations, ownership and open effects. Reuse steps whose outputs remain valid; invalidate only those dependent on changes, preserving earlier evidence. Updates may pin runs to older versions or migrate them explicitly, but must not silently reinterpret their state.
 
-## Errores, presupuestos y observabilidad
+## Errors, budgets and observability
 
-Definir por operación límites de reintentos y espera, timeout, tiempo total y llamadas/coste/contexto donde sean observables. Un error de validación de entrada no mejora repitiendo la misma llamada. Un error de acceso no concede permiso para cambiar a otro mecanismo más amplio. El agotamiento deja un estado y siguiente acción legibles.
+Define retry/wait limits, timeouts, total time and call/cost/context limits where observable. Repeating identical input does not fix input-validation errors. Access failures do not grant permission to switch to a broader mechanism. Exhaustion leaves a readable state and next action.
 
-Registrar IDs, versiones, transiciones, tiempos, actor, errores y referencias mínimas a evidencia. Los contenidos y secretos no se vuelcan indiscriminadamente en logs. Un evaluador semántico conserva modelo/configuración/rúbrica usados y ejemplos revisables; su resultado no sustituye las comprobaciones deterministas de permiso o identidad.
+Record IDs, versions, transitions, timing, actor, errors and minimal evidence references. Do not indiscriminately dump content/secrets into logs. Semantic evaluators retain the model/configuration/rubric and reviewable examples; their results do not replace deterministic permission/identity checks.
 
-## Cadencia y mejora
+## Cadence and improvement
 
-Trigger: ID/version, workflow, evento u horario, timezone, dedup key, política de misfire, fuente y permisos. El scheduler genera jobs; no implementa otra máquina de ejecución. La cadencia se verifica con ejecuciones reales, desconexión y eventos repetidos.
+Trigger: ID/version, workflow, event or schedule, timezone, dedup key, misfire policy, source and permissions. The scheduler generates jobs; it does not implement a second execution state machine. Verify cadence through real runs, disconnection and repeated events.
 
-Auditoría: hallazgo estable, criterio, cobertura, evidencia, estado y revisión. Estados posibles: nuevo, abierto, resuelto, reabierto, no revisado y no aplicable. Cerrar exige evidencia nueva. El cambio propuesto se prueba antes de activar; el aprendizaje de conocimiento y la modificación de políticas no se fusionan en un único paso automático.
+Audit: stable finding, criterion, coverage, evidence, state and revision. Possible states: new, open, resolved, reopened, not reviewed and not applicable. Closure requires new evidence. Test proposed changes before activation; knowledge learning and policy modification are not one automatic operation.
 
-[Entrada](../README.md)
+[Home](../README.md)

@@ -7,7 +7,7 @@
   "input": {
     "project": {
       "id": "project-demo",
-      "purpose": "Elegir el primer entregable de un proyecto ficticio"
+      "purpose": "Choose the first deliverable for a fictional project"
     },
     "source": {
       "id": "meeting-no-decisions",
@@ -15,7 +15,7 @@
       "segments": [
         {
           "id": "s1",
-          "text": "Podríamos hacer una página o una presentación. No hemos elegido todavía.",
+          "text": "We could make a page or a presentation. We have not chosen yet.",
           "speaker": null
         }
       ],
@@ -26,7 +26,7 @@
     "decisions": [],
     "open_questions": [
       {
-        "meaning": "Qué entregable elegir",
+        "meaning": "Which deliverable to choose",
         "source_segment": "s1"
       }
     ],

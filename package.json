@@ -1,8 +1,8 @@
 {
   "name": "manu-control-center",
-  "version": "0.1.0-dev.2",
+  "version": "0.1.0-dev.3",
   "private": true,
-  "description": "Constructor portable de sistemas de conocimiento y trabajo con IA.",
+  "description": "Portable builder for AI knowledge and work systems.",
   "type": "module",
   "license": "MIT",
   "repository": {

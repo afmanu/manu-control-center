@@ -1,4 +1,4 @@
-# Datos locales de desarrollo e instancias; no son fuentes del producto.
+# Local development and instance data; not product sources.
 .DS_Store
 .env
 .env.*
