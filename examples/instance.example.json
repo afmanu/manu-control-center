@@ -1,0 +1,33 @@
+{
+  "schema_version": "0.1.0-draft",
+  "example_only": true,
+  "instance_id": "demo-instance-a",
+  "purpose": "Convertir reuniones en briefs con fuentes y continuidad",
+  "blueprint": {
+    "id": "project-knowledge-operations",
+    "version": "0.1.0-draft"
+  },
+  "modules": [
+    "context-knowledge",
+    "project-workflows",
+    "execution-verification"
+  ],
+  "targets": {
+    "backend": {
+      "adapter_id": "TO_BE_SELECTED",
+      "configuration": {}
+    },
+    "runtime": {
+      "adapter_id": "TO_BE_SELECTED",
+      "mode": "interactive"
+    },
+    "interface": {
+      "adapter_id": "TO_BE_SELECTED"
+    }
+  },
+  "policy": {
+    "instance_scope": "demo-instance-a",
+    "external_delivery": "requires-scoped-grant"
+  },
+  "secret_refs": []
+}

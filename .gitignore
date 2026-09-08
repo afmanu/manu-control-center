@@ -1,0 +1,22 @@
+# Datos locales de desarrollo e instancias; no son fuentes del producto.
+.DS_Store
+.env
+.env.*
+!.env.example
+*.log
+.local/
+private/
+instance-data/
+node_modules/
+.venv/
+__pycache__/
+.pytest_cache/
+dist/
+build/
+coverage/
+.cache/
+*.tgz
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+*.db

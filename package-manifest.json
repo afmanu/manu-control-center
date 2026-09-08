@@ -1,0 +1,170 @@
+{
+  "package": "manu-control-center",
+  "format_version": 1,
+  "scope": "Documentación y esquemas del repositorio; excluye código, dependencias y su propia huella. No es un manifiesto de instancia.",
+  "validation": {
+    "internal_markdown_links": 143,
+    "markdown_fences": "passed",
+    "json_parse": 9,
+    "components": 30,
+    "acceptance_scenarios": 27,
+    "roadmap_phases": 7
+  },
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "bytes": 3821,
+      "sha256": "28afbec4eb5d9f74be3b06e2ad3e0ec7d04e781409ab07bb3637cd0eecd8f7f2"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 1083,
+      "sha256": "9de657aad635f35657cb3ffaa957fa3510985494ccd144806235733d05be346a"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4017,
+      "sha256": "92ef98cf838a6a0fca60ab953a54a0bfbec68f98b3201d93b71b7d107d866109"
+    },
+    {
+      "path": "START-HERE.md",
+      "bytes": 1216,
+      "sha256": "b40af0314e714cfddd9e2e42e78d243fd72fafd2e9eaeb5fe1e8f4c3750f2f91"
+    },
+    {
+      "path": "docs/acceptance.md",
+      "bytes": 7808,
+      "sha256": "18d17809e74bdf7150a77d992fc4e0c95e9b2e2d55e20cfb289a9e3934cb15c8"
+    },
+    {
+      "path": "docs/architecture.md",
+      "bytes": 54611,
+      "sha256": "fc0c3b0074b6ecd6ce2347e6eced841eef9f5802a2557d11742b794856cdb9f1"
+    },
+    {
+      "path": "docs/component-map.md",
+      "bytes": 5932,
+      "sha256": "c9fedcb9d2202f61861a5c329ec05427a10397ecbd4788760297d43bfff44ee7"
+    },
+    {
+      "path": "docs/contracts.md",
+      "bytes": 9059,
+      "sha256": "8a6c5c7204b1c8c109f531ff32a2a710d576d3edf7e29738af2c4b63609b72e6"
+    },
+    {
+      "path": "docs/decisions.md",
+      "bytes": 9630,
+      "sha256": "6b04c2981edd98ee6a11ecb27365f932986bea705a779d3d9e948417aed741e0"
+    },
+    {
+      "path": "docs/development.md",
+      "bytes": 5540,
+      "sha256": "8e3bd65648b7cf9b02d1a3fbd5238daf438f5bc1cc38b8617da6a88222126030"
+    },
+    {
+      "path": "docs/execution.md",
+      "bytes": 7216,
+      "sha256": "dcc9308e100e58616820f44b4c56c666be8f22bd3d71625e6cd6fbdf629c41f5"
+    },
+    {
+      "path": "docs/first-blueprint.md",
+      "bytes": 5064,
+      "sha256": "fe5051cadf4dba5eb975c8b8e1aba112b04d2eea3cf8a0358122d90cfc9d230d"
+    },
+    {
+      "path": "docs/handoff.md",
+      "bytes": 5414,
+      "sha256": "02e5b8d632fcf3a766c1100202a26d20506b3e189cd08ff2e9e850c899e6c023"
+    },
+    {
+      "path": "docs/implementation-plan.md",
+      "bytes": 20985,
+      "sha256": "211c6252ba446ed5861aeb9aba89b9ed97d410f266301a3a8ea47a3b3855dd09"
+    },
+    {
+      "path": "docs/m0-verification.json",
+      "bytes": 3304,
+      "sha256": "3e5c8d0e63b073e369e0e11856e275a9fe9a19c34a2ee358e25dc81ffaf9107c"
+    },
+    {
+      "path": "examples/README.md",
+      "bytes": 954,
+      "sha256": "d614f5dcd0cae0d0e8d1d21240211249643d472f00b325b366ada37633125e98"
+    },
+    {
+      "path": "examples/instance.example.json",
+      "bytes": 752,
+      "sha256": "7856d50b413873afffff1500facccdf8ea6c5211c8c9ee63018f10164445ac72"
+    },
+    {
+      "path": "examples/meeting.json",
+      "bytes": 1633,
+      "sha256": "e12e67f3981ee042bef803403da30a1f8108457b39fbf625a7904045c5c9a88f"
+    },
+    {
+      "path": "examples/no-decisions.json",
+      "bytes": 432,
+      "sha256": "ea836d04dc288e0d13bc09b89bb839155987db437891f1070aefcea87cf4655e"
+    },
+    {
+      "path": "examples/record-envelope.json",
+      "bytes": 229,
+      "sha256": "6d5b08c92c396942e064db1701aa79ede564c5b4b8d26f16d3d75359aeb09252"
+    },
+    {
+      "path": "references/README.md",
+      "bytes": 3609,
+      "sha256": "b476d42977de1ad672e3a7d65c242d3ffa03be79e66fbd1f637e82ef28d502d3"
+    },
+    {
+      "path": "references/architecture-v0.2.md",
+      "bytes": 22900,
+      "sha256": "e596aac1280f1890ad9b03fb2ab71a573b91ca31ec9b2de3a49fa11298547fe8"
+    },
+    {
+      "path": "references/backend-model.md",
+      "bytes": 1253,
+      "sha256": "763238c279cce593778fa7b5024be313f380419e5c6aa4826ae40567c00be172"
+    },
+    {
+      "path": "references/installer-framework.md",
+      "bytes": 2180,
+      "sha256": "858789ffb37c20b9e8d6fd44df0fc279e92a54150cfcaef424646a32a4faaf19"
+    },
+    {
+      "path": "references/installer-review.md",
+      "bytes": 18187,
+      "sha256": "f21541c118ab8c54fd0c60cb393af0e1674ecce1b2226658c6dbd3c71ece312b"
+    },
+    {
+      "path": "references/memory-and-control-analysis.md",
+      "bytes": 20410,
+      "sha256": "95d28073957420b08d21a4df3ab3f16819c5bdf163df130289264ccada06a4be"
+    },
+    {
+      "path": "references/package-manifest-handoff-2026-09-08.json",
+      "bytes": 4431,
+      "sha256": "7ee98e63a2e93413c60fba74e74df65d4b483e6b2c988cc68c82ad6699cd1b80"
+    },
+    {
+      "path": "references/package-manifest-roadmap-2026-09-08.json",
+      "bytes": 5348,
+      "sha256": "16a942b4e7b0dd5c659b7efdc3c572730e8cd30e3409ee4961b94f9832da88d1"
+    },
+    {
+      "path": "references/shared-conversation-review.md",
+      "bytes": 22717,
+      "sha256": "51d3a20ecf99f6472c0f6764ccee396e965259b9377e4ee280ce2c4a321a56d2"
+    },
+    {
+      "path": "references/source-map.json",
+      "bytes": 3065,
+      "sha256": "51512e216b00d72bb1d2a43aedb0546bd1a0ec757024452d52a609f99b041503"
+    },
+    {
+      "path": "schemas/record-envelope.schema.json",
+      "bytes": 847,
+      "sha256": "bf8493e1bb888de54d31968466660a44baca342b41a6e18f49a0ba652dfa555a"
+    }
+  ]
+}

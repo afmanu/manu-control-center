@@ -1,0 +1,78 @@
+{
+  "milestone": "M0",
+  "status": "passed_local",
+  "date": "2026-09-08",
+  "package_version": "0.1.0-dev.0",
+  "environment": {
+    "os": "macOS",
+    "architecture": "arm64",
+    "node": "24.14.1",
+    "npm": "11.11.0",
+    "typescript": "7.0.2",
+    "sqlite": "3.51.2"
+  },
+  "checks": [
+    {
+      "command": "npm test",
+      "status": "passed",
+      "tests": 18,
+      "scope": "metadata, CLI, disposable SQLite probe and local path resolution"
+    },
+    {
+      "command": "npm run smoke:install --cache /tmp/manu-control-center-npm-cache",
+      "status": "passed",
+      "scope": "clean source npm ci offline, build and 18 tests; tarball install, installed bin, version, doctor and schema from a separate directory"
+    },
+    {
+      "command": "node dist/cli/main.js doctor",
+      "status": "passed",
+      "scope": "temporary local storage only",
+      "assertions": [
+        "persistence after reopen",
+        "conditional update",
+        "stale update rejected",
+        "transaction rollback",
+        "private directory not created"
+      ]
+    }
+  ],
+  "runtime_candidates": [
+    {
+      "name": "Codex",
+      "observed_cli_version": "0.146.0",
+      "integration": "not_verified"
+    },
+    {
+      "name": "Claude Code",
+      "observed_cli_version": "2.1.104",
+      "integration": "not_verified"
+    }
+  ],
+  "acceptance_scenarios": {
+    "A01-A27": "not_run: full system contracts and mechanisms are not implemented"
+  },
+  "limitations": [
+    "node:sqlite is experimental in the pinned Node version",
+    "No instance backend or deployed user instance",
+    "No model invocation or runtime adapter verified",
+    "Only local macOS results recorded here; remote CI results are recorded in GitHub Actions"
+  ],
+  "source_sha256": {
+    ".github/workflows/ci.yml": "06c0338b7edeebea29fcf9b587eb510af8f3bc40569636ee42bb877b7ee50f48",
+    ".npmrc": "3b88d1057add6f92ec23dc22dd017e312ded13a042deb0ba6f08bad85d936456",
+    ".nvmrc": "51849cee918b92b09b95121b54380f6124c0f578d8c2323221c0d75bbbadb08d",
+    "adapters/backends/sqlite/probe.ts": "061525d27747d3c95aa4fc439fb429f14c86b519e0ffd1be0efc8e0122bef1f4",
+    "adapters/interfaces/local/data-directory.ts": "d78b5e98503067656ba98e730f95771eddf840d4c09d094680342dcada8b42c9",
+    "cli/main.ts": "0dd00bc39de712fb96587cf1a7c3928da1beb4de53aa50258d27c838b3f5e446",
+    "core/record.ts": "cfc04b623d0c645665e79ae37ec7b1975971d8626b1b7094eba15f3cacf84df8",
+    "package-lock.json": "4741c8f0496d0d6469c0b6ed739e264c4ae0944893ab1b6b173336220dc7ac7b",
+    "package.json": "1428eaf3f422b35c34af4a6df7dae0f8bfcb2d5b678ccc1e971296eab92f5a99",
+    "schemas/record-envelope.schema.json": "bf8493e1bb888de54d31968466660a44baca342b41a6e18f49a0ba652dfa555a",
+    "scripts/check-docs.mjs": "db13b6971c829dd55c99184f9d5e9783f1087517d5cb604c389c3ac8431dac14",
+    "scripts/smoke-install.mjs": "f9f52ab56a1d582f9852a6fee4d04d4b5a06066b9ea8fe4b9e568d26c4640193",
+    "tests/cli.test.ts": "dc5fce698cf61c1a5d73c4cf5e375996073d61af6f2873e2c9e002895829c360",
+    "tests/record.test.ts": "0393ea17e308658b48c3120c97d4d6c9d219ebeb4491b8400f743e61acdeeeb8",
+    "tests/storage.test.ts": "a411821197a4904bc3bf703eefbd7cf82099b8682005802bb519ed4af67f10fd",
+    "tsconfig.json": "c7a40257a8af86df74dd0b19478d3168c1bc92fdc3c0f33aa9f2c2e3f0cbf89d"
+  }
+}
