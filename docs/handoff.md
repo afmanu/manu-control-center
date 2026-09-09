@@ -12,6 +12,12 @@ GitHub delivery remains authorized. Preserve the MIT license, source attribution
 
 The sections below preserve the technical implementation and evidence completed before the correction. Those results do not mean that the intended kit has been delivered.
 
+### Original-objective review
+
+On 2026-09-09, the exact shared conversation was reopened and compared with both source repositories and the recorded analysis of Manu's evolved Second Brain. [Product direction](product-direction.md) now maps the actual user outcomes to lightweight kit implementation: guided setup/adoption, capture, retrieval and conceptual links, selective synthesis, project continuity, audit/improvement, the optional explorer, and verified agent portability. The assistant's earlier kernel/adapters proposal is distinguished from the current user requirement. This is a scope/source review, not kit implementation; the next step remains delivering the file-based kit. No application code, original vault or private instance was changed.
+
+Verification: `npm run manifest:docs` regenerated the inventory; `npm run check` passed all 279 existing tests, schema comparison and documentation checks (395 internal links across 81 inventoried files). These checks preserve the prior application's baseline and validate the documentation; they do not demonstrate the future kit's user experience.
+
 ## Executable status
 
 Private development package `manu-control-center@0.1.0-dev.11`, TypeScript/Node 24, exact dependencies and a lockfile. M3.2 adds no dependencies or database migration. Claim validity is an optional draft-schema addition; prior records remain readable. The 22 M1 contracts, SQLite backend with access/revisions/history, and A27 harness remain in place.

@@ -3,7 +3,7 @@
   "format_version": 1,
   "scope": "Repository documentation and schemas; excludes code, dependencies and its own hash. This is not an instance manifest.",
   "validation": {
-    "internal_markdown_links": 391,
+    "internal_markdown_links": 395,
     "markdown_fences": "passed",
     "json_parse": 33,
     "components": 30,
@@ -78,8 +78,8 @@
     },
     {
       "path": "docs/decisions.md",
-      "bytes": 51345,
-      "sha256": "bd14e29988e14fd0db41b3be1de01d2be0b88f6bd313dad04c5e47d090d4965a"
+      "bytes": 52189,
+      "sha256": "c882fb8bd20d9a6dd5c5a8b7ffa725999c2500b62ff7c226b39154aacf171abd"
     },
     {
       "path": "docs/development.md",
@@ -108,8 +108,8 @@
     },
     {
       "path": "docs/handoff.md",
-      "bytes": 34510,
-      "sha256": "f132c7a794ebfba3f0b7449284aa4291c885ca6f94f59b9cdb39ad7a09f7c5b8"
+      "bytes": 35620,
+      "sha256": "0f03b48052f6d0923335ef82b919f2f6023c586f96aefe21eb755364a2205b04"
     },
     {
       "path": "docs/implementation-plan.md",
@@ -223,8 +223,8 @@
     },
     {
       "path": "docs/product-direction.md",
-      "bytes": 4363,
-      "sha256": "e0efd6cdac8604eaf7fe8a98e7743031f8c45fbcbc00fed5c56d60b258341e8b"
+      "bytes": 10804,
+      "sha256": "c48c9735fd09e7b15b64825514a6c5a36f10d43dfc5d17203d86106e9341be8b"
     },
     {
       "path": "docs/review.md",
