@@ -1,8 +1,10 @@
-# Kit development handoff
+# AI OS development handoff
 
-Updated: 2026-09-09. **All reviewed improvements are adopted and integrated into K1–K4 under D36. K1 implementation is next.** Main is dedicated to the kit; the application remains on its archive branch. Kit implementation is pending.
+Updated: 2026-09-09. **D37: build an AI OS like Nate's, enhanced with Manu's Second Brain systems. All D36 improvements remain adopted. K1 must deliver a first useful workflow.** Main is dedicated to the AI OS repository kit; the application remains on its archive branch. Implementation is pending.
 
 ## Current task and outcome
+
+Manu corrected the repeated Second Brain-only framing. The AI OS is the product: context, connections, capabilities/workflows, recurring operation and improvement, supported by his memory and knowledge systems. Active entry documents, product direction and the roadmap now reflect that distinction. K1 brings forward a minimal project-status/action-brief procedure from K2 and requires a useful saved deliverable plus fresh-session continuation. Note capture/retrieval alone is not sufficient. This is a product/acceptance clarification, not an implemented workflow or a request to restore platform infrastructure.
 
 Manu approved integrating all quality-review improvements. All Q1–Q10 items and the six additional capabilities now appear in the [delivery mapping](kit-conversion.md#quality-coverage-and-delivery-mapping), with stage, implementation destination and useful completion evidence. The existing four stages are retained. Optional-use capabilities are included in delivery scope but are not activated automatically. This is a scope integration, not implementation or a personal installation.
 
@@ -22,7 +24,7 @@ The adopted refinements cover source/connection registry; memory correction/supe
 
 ## Next action
 
-Implement the expanded [K1 target](kit-conversion.md): ordinary-file setup/adoption, source/connection register, scoped retention, capture/retrieval and fresh-session continuity with Codex. Include the unavailable-source, no-save and project-local-context cases. Use disposable synthetic workspaces and the existing host. No further scope-selection or platform architecture phase is required.
+Implement the expanded [K1 target](kit-conversion.md): personalize the AI OS, map operating context/sources/capabilities, deliver ordinary-file setup/adoption, scoped retention and capture/retrieval, then execute the first work procedure and save a useful sourced deliverable. Verify that a fresh Codex session locates and continues that work. Include the unavailable-source, no-save and project-local-context cases. Use disposable synthetic workspaces and the existing host. No further scope-selection or platform architecture phase is required.
 
 Preserve English repository content, Spanish interaction, source attribution and private-workspace separation. Use synthetic inputs and disposable workspaces for implementation checks. Source access is not authorization to publish private notes, configure services or activate schedules.
 
@@ -37,3 +39,7 @@ Application tests were not rerun on main because the application now belongs on 
 ## Scope-integration checks
 
 `python3 scripts/check_docs.py` passes for 11 Markdown files and 55 local links; `git diff --check` passes. A bounded coverage check confirms that the delivery mapping contains every Q1–Q10 item and all six additional capabilities from the review, with exactly four implementation stages retained and every implementation row pending. The archive ref remains `9fdf92ff919615c0efdf3b71710038b699b57404`. Only nine Markdown files changed; no skills, templates, account connections or schedules were installed. K1 is ready to implement under the approved scope.
+
+## AI OS clarification checks
+
+After D37, documentation checks still pass for 11 Markdown files and 55 local links, and `git diff --check` passes. A bounded scope check confirms that all 16 adopted items and four stages remain, K1 explicitly requires a useful work deliverable and fresh-session continuation, and the archive ref is unchanged. Only eight Markdown files changed. No workflow execution or kit implementation is claimed by these documentation checks.

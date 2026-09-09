@@ -1,6 +1,8 @@
-# Kit quality gaps: AIS-OS and Manu's Second Brain
+# AI OS quality improvements: AIS-OS and Manu's Second Brain
 
 Reviewed: 2026-09-09. **All reviewed improvements adopted by Manu on 2026-09-09 under D36; implementation pending.** The comparison baseline is the prepared K1–K4 [conversion plan](kit-conversion.md) at `9fdf92f`. The application is preserved on [`archive/application-m4.1`](https://github.com/afmanu/manu-control-center/tree/archive/application-m4.1) and is not counted as kit functionality.
+
+D37 clarifies the product identity: this review strengthens an AI OS with Second Brain systems. Its focus on knowledge quality does not narrow the overall product to a note-management system. The operating scope and first workflow are defined in the current conversion plan.
 
 ## Conclusion
 

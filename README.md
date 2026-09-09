@@ -1,12 +1,14 @@
 # Manu Control Center
 
-An agent-operated Second Brain kit combining guided setup, context and improvement practices from AIS-OS with Manu's capture, knowledge connections, synthesis and project continuity.
+An AI OS distributed as a repository, inspired by AIS-OS and enhanced with Manu's Second Brain systems. It brings together operating context, connections, skills, workflows, recurring work and improvement, supported by durable memory, meaningful knowledge relationships and continuity.
 
 **Status: full reviewed scope adopted; kit implementation is pending.** The active [conversion plan](docs/kit-conversion.md) defines the deliverables and practical checks. The complete former application is preserved on [`archive/application-m4.1`](https://github.com/afmanu/manu-control-center/tree/archive/application-m4.1). Main is dedicated to the kit and contains no application code, database adapters, npm package or application test suite.
 
 ## The intended experience
 
-Open the kit with an existing agent, create or adopt a personal knowledge workspace, and start working with your information. Capture sources, connect ideas, synthesize useful knowledge and resume projects in a new session. Audit the workspace and verify useful improvements as it grows.
+Open the repository with an existing agent, personalize the OS around your work and priorities, and give it a task. It finds the relevant context, uses available sources and tools, executes a suitable workflow, produces a useful deliverable and retains what is needed to continue. Repeated work can use the host's scheduling facilities when enabled. Audits and improvement cycles help the OS become more useful.
+
+Manu's Second Brain strengthens how the OS remembers, connects, corrects and consolidates knowledge. An Obsidian vault can supply that knowledge workspace; setting up a vault is only one part of the product.
 
 The repository will supply English instructions, skills, templates and small supporting tools. Interaction and personal content can use Spanish. A user's context and notes stay outside the public distribution; existing workspace conventions and customizations are preserved.
 
@@ -17,8 +19,8 @@ The normal kit experience will use readable files and the agent's existing tools
 | Stage | User-visible result | Status |
 |---|---|---|
 | Preparation | Scope, source coverage, target layout and checks, including all ten quality improvements and six additional capabilities. | Complete; documentation only. |
-| K1 | Set up or adopt a workspace, register sources/connections, capture selectively and resume in a fresh Codex session. | Next. |
-| K2 | Correct and connect memory, capture URLs, resurface useful knowledge, maintain scoped projects and versioned outputs. | Pending. |
+| K1 | Personalize the AI OS, map context/connections/capabilities, complete a first useful workflow and resume from its deliverable. | Next. |
+| K2 | Expand workflows and reusable deliverables with corrected, connected memory, URL intake and scoped project knowledge. | Pending. |
 | K3 | Consolidate, audit, build selected skills, review decisions/days/weeks, reuse SOPs and preserve customizations. | Pending. |
 | K4 | Clean kit distribution, verified skill discovery and second agent, optional explorer and native-scheduling recipe. | Pending. |
 

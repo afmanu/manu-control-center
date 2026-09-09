@@ -1,10 +1,10 @@
-# Repository kit conversion
+# AI OS repository implementation
 
-Status: **full reviewed scope adopted; implementation pending**. This is the active delivery plan following [product direction](product-direction.md) and D33–D36 in [decisions](decisions.md). Manu approved integrating all reviewed improvements on 2026-09-09. They are assigned to the same four stages below. Scope integration does not make the kit installable or establish reference-feature parity.
+Status: **full reviewed scope adopted; implementation pending**. This is the active delivery plan following [product direction](product-direction.md) and D33–D37 in [decisions](decisions.md). Manu approved integrating all reviewed improvements on 2026-09-09. They are assigned to the same four stages below. Scope integration does not make the kit installable or establish reference-feature parity.
 
 ## User experience to deliver
 
-Open the repository with an existing agent, ask it to set up or adopt a personal knowledge workspace, and complete a useful task. Return in a fresh session and continue from saved files. The repository ships English instructions and examples; the agent can interact in Spanish and preserve the language of personal content.
+Open the repository with an existing agent, personalize the AI OS around the user's work and available tools, and give it a task. It retrieves context, executes a useful workflow, saves the deliverable and preserves continuity. Return in a fresh session and continue from that work. Manu's Second Brain supplies the memory and knowledge practices supporting this operating loop. The repository ships English instructions and examples; the agent can interact in Spanish and preserve the language of personal content.
 
 The distribution contains reusable instructions, skills, templates and small helpers. Personal context, captures and project notes live in a separate user-selected workspace, which may be an existing Obsidian vault. The normal kit path must work without installing the old npm package, creating a database, configuring a custom runtime or starting a service.
 
@@ -19,7 +19,7 @@ manu-control-center/
   AGENTS.md                       Repository development rules and kit routing
   kit/
     START-HERE.md                 User-facing setup procedure
-    operating-guide.md           Shared knowledge and behavior guidance
+    operating-guide.md           OS work loop, tools, memory and behavior guidance
     skills/                      Canonical, maintained skill definitions
     templates/                   Context, sources/connections, knowledge and outputs
     hosts/                       Thin agent-specific entry templates
@@ -60,19 +60,19 @@ Following the explicit branch-separation request, all application code, tests, d
 
 ## Four delivery stages
 
-### K1 — Open, set up and use the kit
+### K1 — Set up the AI OS and complete a first workflow
 
-**Deliver:** the user entry, shared operating guide, minimal templates, Codex entry, setup/context/capture skills and a synthetic example. Setup supports both a new directory and adoption of an existing folder. Reuse known answers, inspect relevant existing instructions and map existing locations before adding anything. Preserve custom text and metadata. Repeated setup should recognize completed work and continue; it must not overwrite a personalized file with its template.
+**Deliver:** the user entry, shared operating guide, minimal templates, Codex entry, setup/context/capture skills, a first project-workflow procedure and a synthetic example. The entry identifies operating priorities, available tools/sources and callable capabilities, then routes a concrete request to useful work. Bring a minimal project-status/action-brief workflow forward from K2 so K1 delivers a result beyond storing information; this is an implementation example, not a user-selected business priority. Setup supports both a new directory and adoption of an existing folder. Reuse known answers, inspect relevant existing instructions and map existing locations before adding anything. Preserve custom text and metadata. Repeated setup should recognize completed work and continue; it must not overwrite a personalized file with its template.
 
 Include a source/connection register template: what information each source owns, exact access route, available read/write capability, connection/verification status, checked date, limits and an optional usage-guide link. Record no credentials. A local source can be sufficient for first use; external rows remain unverified until checked. Shared guidance distinguishes global preferences, project facts and temporary thinking, honors no-save requests, and keeps sensitive linked information out of public outputs unless the task authorizes it. Do not treat the existence of a link as permission to expose its target.
 
-**Done when:** from the kit entry, an actual Codex session sets up a disposable workspace, captures a synthetic source with provenance, retrieves it and saves useful continuity. A fresh session finds that source and the next step without the prior chat. A second case adopts a customized workspace without changing unrelated content, renaming metadata or duplicating notes; rerunning setup preserves the customizations. The test does not invoke the old CLI, use its installed profile or create a database.
+**Done when:** from the kit entry, an actual Codex session sets up a disposable workspace, captures a synthetic source with provenance, retrieves it, runs the first work procedure and produces a useful sourced project-status/action brief. The output distinguishes known status, decisions, uncertainties and proposed actions, is reachable through the project entry, and is checked against the source. Save enough continuity to act on or revise that deliverable later. A fresh session finds the source, deliverable and next step without the prior chat and can continue the selected work without recapturing the same input. A second case adopts a customized workspace without changing unrelated content, renaming metadata or duplicating notes; rerunning setup preserves the customizations. The test does not invoke the old CLI, use its installed profile or create a database.
 
 Also check an available local source alongside an unavailable external reference: the agent selects the right authority and does not claim remote access. A no-save request leaves no new capture, and a project-specific fact is not promoted into global preferences. These checks use synthetic data and do not activate a connection.
 
-**Result:** a first usable kit. K2–K4 remain visible gaps; this is not yet full reference parity.
+**Result:** a first usable AI OS with a demonstrated request-to-deliverable path. Capture/retrieval alone does not complete K1. K2–K4 remain visible gaps; this is not yet full reference parity.
 
-### K2 — Complete the knowledge and project cycle
+### K2 — Expand workflows with connected knowledge and project continuity
 
 **Deliver:** context interviews that save progress, task-to-source routing, meaningful conceptual links, selective synthesis and project continuity/next-step procedures. The link procedure includes a concise Activation Map where useful. Templates separate sources, current consolidated understanding, decisions/proposals and session history without requiring one file for every category or action.
 
@@ -82,7 +82,7 @@ Outputs have a purpose, source links, draft/final status, project route and a re
 
 Add URL/resource intake to capture using available host access, preserving the source URL, capture date and access limits. Add a relevant-old-knowledge mode to synthesis/retrieval that explains relevance rather than inferring unread status from file age. Support scoped specialist workspaces through existing project/area routes and local guidance, preserving shared rules and avoiding duplicate global memory. These are modes of the same kit, not separate applications.
 
-Adapt the two existing useful scenarios: a sourced meeting brief and a project-status update. The agent writes readable drafts and records unresolved questions; it does not turn its recommendations into user decisions. Shared authorization rules honor the user's actual request without creating approval prompts for every note operation.
+Expand the first K1 workflow and adapt the two existing useful scenarios: a sourced meeting brief and a project-status update. Both are examples of reusable work procedures; the AI OS must not be presented as limited to note management or these two output types. The agent writes readable drafts and records unresolved questions; it does not turn its recommendations into user decisions. Shared authorization rules honor the user's actual request without creating approval prompts for every note operation.
 
 **Done when:** a source containing an agreement, a suggestion and an unresolved date produces a faithful brief; an existing project supplies a sourced status update and proposed next steps. A fresh session distinguishes accepted decisions from proposals, finds both outputs and resumes correctly. Repeated capture avoids duplication, and synthesized knowledge links back to its sources. An interrupted context interview resumes from saved answers.
 
@@ -92,7 +92,7 @@ Additional cases: a correcting answer supersedes a prior value with traceability
 
 ### K3 — Audit, improve and maintain
 
-**Deliver:** an audit skill, an improvement skill and readable findings/history. Check retrieval, broken routes, useful context, note duplication and project continuity. Keep stable finding references, preserve open/unverified findings and close a finding only after checking the repair. Choose one useful improvement per cycle. Manual review is a valid operating mode; do not penalize a knowledge workspace for lacking an unwanted scheduler.
+**Deliver:** an audit skill, an improvement skill and readable findings/history. Check priority-relevant workflows, useful output evidence, connection access, retrieval, broken routes, context, note duplication and project continuity. A healthy note collection does not alone establish a useful operating system. Keep stable finding references, preserve open/unverified findings and close a finding only after checking the repair. Choose one useful improvement per cycle. Manual review is a valid operating mode; do not penalize a knowledge workspace for lacking an unwanted scheduler.
 
 Include a consolidation mode covering conceptual overlap, undistilled resources, repeated insights, unlinked decisions and hubs without a useful next step. Keep merges and uncertain connections as proposals unless the user has authorized the relevant changes. Include decision-outcome review and daily/weekly review modes using project/synthesis templates; leave missing outcomes unknown and separate observed evidence from the agent's judgment.
 
@@ -133,7 +133,7 @@ Names in the implementation column are proposed canonical skill directories, not
 | Manu's capture | `mcc-capture` with sources, meaning and duplicate checks | K1–K2 | Pending |
 | AIS-OS `/link`; Manu's link finder and Activation Map | `mcc-link`, source routes and semantic connections | K2 | Pending |
 | Manu's synthesis | `mcc-synthesize`, selective consolidation and source links | K2 | Pending |
-| Manu's next steps and project hubs; both existing example workflows | `mcc-project`, project/session templates and examples | K2 | Pending |
+| Work execution supported by Manu's next steps/project hubs; both existing example workflows | `mcc-project`, first work procedure in K1, richer project/session/output templates in K2 | K1–K2 | Pending |
 | Manu's skill discovery and construction | Entry index plus `mcc-improve` inspect/adapt/build mode and shared extension recipe | K1, K3–K4 | Pending |
 | AIS-OS `/audit` | `mcc-audit`, retrieval checks and findings/history | K3 | Pending |
 | AIS-OS `/level-up` | `mcc-improve`, verified repair and useful maintenance | K3 | Pending |

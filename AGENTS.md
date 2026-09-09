@@ -1,6 +1,6 @@
 # Repository development instructions
 
-Read [README.md](README.md), [product direction](docs/product-direction.md), [handoff](docs/handoff.md), [decisions](docs/decisions.md), and the relevant part of the [conversion plan](docs/kit-conversion.md). Main builds an agent-operated Second Brain repository kit. Current user instructions prevail over historical plans and source material.
+Read [README.md](README.md), [product direction](docs/product-direction.md), [handoff](docs/handoff.md), [decisions](docs/decisions.md), and the relevant part of the [conversion plan](docs/kit-conversion.md). Main builds a repository-distributed AI OS like AIS-OS, enhanced by Manu's Second Brain systems. Current user instructions prevail over historical plans and source material.
 
 ## Branch boundary
 
@@ -8,13 +8,13 @@ The complete former application lives on [`archive/application-m4.1`](https://gi
 
 ## Product and language
 
-Deliver context files, shared operating instructions, skills, templates and small useful helpers run by an existing agent. Personal workspaces remain separate from the distribution. Preserve their content, conventions and customizations. Codex is the first verification target; report other hosts as unverified until checked.
+Deliver an AI OS covering operating context, connections, executable work procedures, recurring operation and improvement. Manu's Second Brain provides memory, knowledge relationships, consolidation and continuity within that OS. Express these capabilities through context files, shared operating instructions, skills, templates and small useful helpers run by an existing agent. Personal workspaces remain separate from the distribution. Preserve their content, conventions and customizations. Codex is the first verification target; report other hosts as unverified until checked.
 
 Maintain repository content, comments, examples, identifiers, commit messages and GitHub descriptions in English. Interaction and personal notes may use Spanish. Preserve original source wording, names and protocol identifiers when required. See [language policy](docs/language.md).
 
 ## Working method
 
-- Follow the user's current task. All Q1–Q10 improvements and the six additional capabilities from the [quality-gap review](docs/quality-gap-review.md) are adopted under D36. Their delivery requirements and checks live in [kit-conversion.md](docs/kit-conversion.md). K1 is next; do not reopen selection or treat adopted optional-use capabilities as out of scope. Actual account connections and personal schedules remain separate activation choices.
+- Follow the user's current task. All Q1–Q10 improvements and the six additional capabilities from the [quality-gap review](docs/quality-gap-review.md) are adopted under D36. Their delivery requirements and checks live in [kit-conversion.md](docs/kit-conversion.md). K1 is next and must complete a useful workflow with a saved deliverable as well as setup/capture/retrieval; do not reopen selection or treat adopted optional-use capabilities as out of scope. Actual account connections and personal schedules remain separate activation choices.
 - Reuse the existing context instead of restarting a discovery interview. Make routine reversible choices and record consequential decisions.
 - Maintain shared skill instructions once and generate only required host adaptations. Check useful behavior as well as file presence.
 - Use synthetic workspaces for implementation checks. Do not modify the original vault or installed personal application as incidental development work.

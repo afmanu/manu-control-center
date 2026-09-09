@@ -1,10 +1,10 @@
-# Product direction: an agent-operated Second Brain kit
+# Product direction: an AI OS enhanced with Second Brain systems
 
 ## User correction
 
 Manu clarified the intended product: a repository like Nate Herk's AIS-OS, incorporating the useful improvements from Manu's existing Second Brain installer and evolved knowledge system. Building databases, entity-control infrastructure and a custom execution platform was not the intended outcome. This explicit correction supersedes the infrastructure-first M0–M6 delivery sequence and any conflicting earlier architecture guidance.
 
-The product is a usable repository of context, operating instructions, skills, templates and small supporting tools. The user's existing agent runs it. A user should be able to open the kit, personalize or adopt a knowledge workspace, and do useful work in that workspace. English repository content and Spanish runtime interaction remain required.
+The product is an AI OS like Nate's AIS-OS, distributed as a usable repository of context, operating instructions, skills, templates and small supporting tools. The user's existing agent runs it. It understands the user's work, reaches relevant sources/tools, executes workflows, produces deliverables and supports recurring operation and improvement. Manu's Second Brain systems strengthen its memory, knowledge relationships, consolidation and continuity. English repository content and Spanish runtime interaction remain required.
 
 ## What belongs in the kit
 
@@ -14,7 +14,22 @@ The [exact conversation originally supplied by Manu](https://chatgpt.com/share/6
 
 The conversation did contain that broader architecture, and Manu approved developing its conceptual explanation. However, it does not justify retaining every proposed mechanism after his explicit product correction. Preserve the useful behavior and portability goal; do not treat the assistant's component list as a binding platform backlog. The earlier [conversation review](https://github.com/afmanu/manu-control-center/blob/archive/application-m4.1/references/shared-conversation-review.md) cites a different share URL and remains historical background, not a substitute for the exact source or the current instruction.
 
-**Delivery objective:** publish a reusable, agent-operated repository that combines AIS-OS's guided context, routing and improvement cycle with Manu's personalized setup and deeper knowledge capture, connections, synthesis and continuity. A user opens it with an existing agent, creates or adopts a personal workspace, and starts using it. Codex is the first verified agent; other environments need their own practical compatibility checks.
+**Delivery objective:** publish a reusable AI OS that combines AIS-OS's context, connections, capabilities, cadence and improvement cycle with Manu's personalized setup and deeper knowledge capture, relationships, synthesis and continuity. A user opens it with an existing agent, personalizes its operating workspace and starts delegating useful work. Codex is the first verification target; other environments need their own practical compatibility checks.
+
+### Product identity clarified on 2026-09-09
+
+Manu explicitly corrected the repeated Second Brain-only description. The AI OS is the product; Second Brain systems are integrated capabilities within it. This clarification changes the emphasis of implementation and verification, not just the product label. The first usable release must complete a useful work request and leave a retrievable deliverable. Creating, linking and recalling notes alone is insufficient.
+
+| OS responsibility | Expected behavior |
+|---|---|
+| Operating context | Understand role, priorities, ongoing work, preferences and relevant limits. |
+| Connections | Reach the appropriate source/tool through available host capabilities and distinguish documented access from verified access. |
+| Capabilities and workflows | Turn a request into bounded work and a useful deliverable with clear inputs, output location and completion evidence. |
+| Recurring operation | Offer host-native routines for already working workflows, enabled for the user's actual need with observable execution and stop controls. |
+| Memory and knowledge | Preserve current understanding, source history, decisions, semantic relationships and reusable learning through Manu's Second Brain systems. |
+| Audit and improvement | Check the usefulness of workflows and outputs as well as retrieval and knowledge health; repair or build one useful capability at a time. |
+
+The repository kit is the distribution format. An Obsidian vault is a supported knowledge workspace, not the definition of the whole product. The former custom application remains archived; this AI OS uses existing agents and tools instead of rebuilding their execution environment. All D36 improvements remain in scope, and personal integrations/schedules are still activated according to actual user needs.
 
 ### Contributions to retain
 
@@ -74,7 +89,7 @@ The next implementation should establish the kit's ordinary file-based entry and
 
 The previous application and its operating skill remain available on the archive branch; neither is part of main or a kit dependency. Do not describe this direction correction as a completed product conversion. The previous M4.2 export/import milestone is no longer the next task.
 
-Success is a user opening the repository with a compatible agent, using their context and knowledge, producing useful results, resuming later, and improving the workspace without losing personal content. Verification must support the capabilities actually delivered; a large mechanism-test count is not a substitute for that experience.
+Success is a user opening the repository with a compatible agent, requesting work, obtaining a useful sourced deliverable through a workflow, resuming later, and improving or repeating that work with retained context and knowledge. Verification must support the capabilities actually delivered; a large mechanism-test count is not a substitute for that experience.
 
 ## Adopted quality improvements
 

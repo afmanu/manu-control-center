@@ -2,7 +2,7 @@
 
 Current user instructions take precedence. D33 and D34 below are retained history; D35 supersedes their decision to keep application files on main. The complete earlier decision log is preserved on the [application branch](https://github.com/afmanu/manu-control-center/blob/archive/application-m4.1/docs/decisions.md).
 
-**Current scope: D36 adopts all reviewed improvements.** Their delivery requirements are integrated into K1–K4. Earlier statements that recommendations await selection describe the state before this approval.
+**Current product identity: D37 defines an AI OS enhanced with Second Brain systems. D36 adopts all reviewed improvements.** Their delivery requirements are integrated into K1–K4. Earlier descriptions limited to a Second Brain and statements that recommendations await selection describe superseded framing.
 
 ### D33 — Restore the intended repository-kit product
 
@@ -39,3 +39,13 @@ The [updated conversion plan](kit-conversion.md#quality-coverage-and-delivery-ma
 Use existing planned skills for related modes and ordinary files for their records. Avoid a new skill for every variation, extra architecture stages, a generic runtime runner or any restoration of the former application. Native scheduling depends on an existing host and a working manual workflow; published support requires actual bounded evidence. Deliver guidance without configuring Manu's accounts or personal schedules during scope integration. No specialist agents, connections or original-vault changes are implied.
 
 This change integrates scope, stage deliverables, acceptance cases and handoff instructions. All implementation rows remain pending; source definitions are not runtime evidence. K1 is next under the expanded scope. The archive branch, Git history, English repository policy and private content remain unchanged.
+
+### D37 — The product is an AI OS; Second Brain systems enhance it
+
+Status: **adopted by explicit user clarification**, 2026-09-09. Manu clarified that we are building an AI OS like Nate's, improved by incorporating his Second Brain systems. Repeatedly calling the product a Second Brain kit narrowed its intended purpose. The repository kit is its distribution format; the existing agent operates it.
+
+The product covers operating context, connections to sources/tools, skills and workflows that produce useful deliverables, host-native recurring operation, memory/knowledge, and audit/improvement. Manu's capture, semantic relationships, consolidation, scoped memory and continuity strengthen those operating capabilities. A vault is one supported knowledge workspace. All D36 additions remain adopted; this correction neither restores the former application nor adds a new platform phase.
+
+K1 now requires a first useful request-to-deliverable workflow as well as setup, capture and retrieval. Bring forward a minimal project-status/action-brief procedure from K2, verify it against synthetic sources, and retrieve/continue the resulting work in a fresh session. This is a testable implementation example, not a claim that Manu selected it as his business priority. K2 expands the work procedures and knowledge cycle; K3 audits useful workflows as well as memory; K4 retains compatibility, distribution, explorer and native-scheduling verification.
+
+Update active identity, entry instructions, stage descriptions and completion criteria accordingly. Implementation remains pending. Existing agent/tool capabilities supply execution; account connections and recurring personal work are activated for actual user needs. No private data, installed application or archive ref changes in this clarification.
