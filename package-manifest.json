@@ -3,7 +3,7 @@
   "format_version": 1,
   "scope": "Repository documentation and schemas; excludes code, dependencies and its own hash. This is not an instance manifest.",
   "validation": {
-    "internal_markdown_links": 385,
+    "internal_markdown_links": 391,
     "markdown_fences": "passed",
     "json_parse": 33,
     "components": 30,
@@ -28,8 +28,8 @@
     },
     {
       "path": "AGENTS.md",
-      "bytes": 4042,
-      "sha256": "3e457091021f9af5697da0286b98d4c624a0c288af9493a9a4a2d29a8bef6073"
+      "bytes": 4435,
+      "sha256": "8bcea308324e6b11af8fa1a41d04489e89caa5fcf293301dac94e0e307c498a3"
     },
     {
       "path": "LICENSE",
@@ -38,13 +38,13 @@
     },
     {
       "path": "README.md",
-      "bytes": 6773,
-      "sha256": "0661225f6b8bb583f6b8e78a0dd5be3ce5354468d9270870677d6323ad039e59"
+      "bytes": 7562,
+      "sha256": "ce6a39abc28f75917d93fc10bf4538383a7bc6d788d7df18bee41cfe095a8be8"
     },
     {
       "path": "START-HERE.md",
-      "bytes": 2873,
-      "sha256": "a0b344e9ef698b3c06fd67ea3514d193b9eb9379f37ce79fd5877ab651b72680"
+      "bytes": 1272,
+      "sha256": "5449d22973b16275b6e9d42a15ad66eb80779e91b127f4cd4357f0d27c73899e"
     },
     {
       "path": "docs/acceptance.md",
@@ -53,8 +53,8 @@
     },
     {
       "path": "docs/architecture.md",
-      "bytes": 46935,
-      "sha256": "62bc1c7188525f2505f67c1e236a32f2ade688146d0551a3594d52dee717428d"
+      "bytes": 47213,
+      "sha256": "70118c4f5925fcdb77d754e2d980a09ad0cc6397a84b5a3a61a24f52c6744b74"
     },
     {
       "path": "docs/codex-runtime.md",
@@ -78,8 +78,8 @@
     },
     {
       "path": "docs/decisions.md",
-      "bytes": 49422,
-      "sha256": "33769410de718963feeb34bc6cc0c7c43dd84c196e99456e63c3c1172a6f1339"
+      "bytes": 51345,
+      "sha256": "bd14e29988e14fd0db41b3be1de01d2be0b88f6bd313dad04c5e47d090d4965a"
     },
     {
       "path": "docs/development.md",
@@ -108,13 +108,13 @@
     },
     {
       "path": "docs/handoff.md",
-      "bytes": 34482,
-      "sha256": "b66206d4ba6e82336c8e2905a3776425f93bf5dedb4bb98c2969048dba92339c"
+      "bytes": 34510,
+      "sha256": "f132c7a794ebfba3f0b7449284aa4291c885ca6f94f59b9cdb39ad7a09f7c5b8"
     },
     {
       "path": "docs/implementation-plan.md",
-      "bytes": 25810,
-      "sha256": "a51f9ba2414a4488fb0f00b0c1e949ad3ad37921db3d3c63f765119e4dd89d66"
+      "bytes": 25617,
+      "sha256": "f4181d9a26f2c6b66f83d696cd70d48df65c5ded82f0507eba674b13a6364adc"
     },
     {
       "path": "docs/installation.md",
@@ -220,6 +220,11 @@
       "path": "docs/m4.1-verification.json",
       "bytes": 5360,
       "sha256": "e3bb1874c79600b8cbf80089e6972881e59c75dd78912a735c30e138b15f381d"
+    },
+    {
+      "path": "docs/product-direction.md",
+      "bytes": 4363,
+      "sha256": "e0efd6cdac8604eaf7fe8a98e7743031f8c45fbcbc00fed5c56d60b258341e8b"
     },
     {
       "path": "docs/review.md",

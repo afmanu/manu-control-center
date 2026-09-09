@@ -1,6 +1,10 @@
 # Scope decisions and implementation choices
 
-## Current scope
+## Current scope correction — D33
+
+**The user's explicit correction takes precedence over the earlier infrastructure-first scope.** Manu wants a repository like AIS-OS combined with the useful improvements from his installer and Second Brain, not a database/record-control platform. [Product direction](product-direction.md) is the current brief. Earlier decisions below are historical context and remain relevant only where compatible with this correction or when maintaining existing code.
+
+## Earlier scope
 
 | ID | Decision | Rationale and consequence |
 |---|---|---|
@@ -262,3 +266,11 @@ Local writers serialize with exclusive directory creation, reload the current sn
 Operational authority remains with the current SQLite coordinator. The document backend represents execution entity kinds and enforces their generic guards, but no existing job is copied or executed there. Higher-level constructor/capture/review/session/coordinator APIs remain SQLite-specific. Export/import and authority transfer must be implemented in M4.2–M4.3 before advertising those combinations; the second runtime remains M4.4. This explicit boundary avoids treating a second persistence implementation as a demonstrated live migration.
 
 Rejected alternatives: wrap another SQL engine, copy the full coordinator into a second authority, silently overwrite an existing directory, rebuild approved artifacts from prose, allow unlocked HEAD replacement, or steal a lock based only on elapsed time/PID. Consequences: the library-level document profile is usable independently now, with an honest limited capability matrix; cross-backend continuity remains pending. Shared backend tests cover entity/query/revision/access and authority semantics, and document-specific tests cover representation, read-only access, limits, malformed files and actual exits around publication. [Guide](document-backend.md), [evidence](m4.1-verification.json).
+
+### D33 — Restore the intended repository-kit product
+
+Status: **adopted by explicit user correction**, 2026-09-09. Manu clarified that the objective was the same type of repository system as Nate Herk's, integrating improvements from his own, rather than building databases and entity controls. The implementation had overemphasized infrastructure. This correction changes the delivery target, not merely the priority of another infrastructure milestone.
+
+Build an agent-operated kit of context, instructions, skills, templates and directly useful helpers. Use existing agent capabilities and readable workspace files. Preserve the English repository policy, Spanish interaction, personal-workspace separation, original meaning, customization and evidence-based verification. The kit's user journey must not depend on finishing or adopting the custom TypeScript/SQLite platform.
+
+Pause M4.2–M4.5 and stop treating M5/M6's application sequence as the active delivery plan. Preserve existing implementation, evidence and private data without deletion or migration. Reuse only material that directly serves the kit. Current documentation is corrected now; the kit itself is not yet converted or delivered. Next: implement its file-based entry/workspace and the explicitly mapped reference skills plus Manu's improvements, using existing context rather than another discovery interview. [Current brief](product-direction.md).

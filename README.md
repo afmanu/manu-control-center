@@ -1,12 +1,18 @@
 # Manu Control Center
 
+**Direction correction:** the intended product is an agent-operated Second Brain kit like AIS-OS, integrating Manu's installer and knowledge-workspace improvements. It should be usable through context files, instructions, skills and templates, without requiring the custom database or execution platform. See [current product direction](docs/product-direction.md).
+
+The technical application described below is preserved prior work. M0–M4.1 completion does not establish completion of the intended kit. Further infrastructure milestones are paused; the kit conversion remains to be implemented.
+
+## Existing technical implementation
+
 A builder for AI knowledge and work systems. It creates and maintains instances with context, sources, decisions, capabilities and durable state through storage and agent adapters.
 
 **M0–M3 are complete for the documented local profiles.** Capture sources, manage authority and complete human-reviewed meeting briefs or project status through a durable coordinator. Leases, fencing, budgets, cancellation, source invalidation and effect receipts are enforced; external delivery is simulated. Codex now synthesizes cited drafts for both workflows; conversational entry points and persisted session handoff are available; an editable operational profile and dedicated operating folder are available.
 
 Primary repository: [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). The original repository's [MIT license](LICENSE) is preserved.
 
-## Getting started
+## Running the existing technical application
 
 With Node.js 24.14.1 (pinned in `.nvmrc`) and npm:
 
@@ -24,7 +30,7 @@ npm start -- validate-bundle examples/contracts/construction-bundle.json
 
 The repository is maintained in English. For Spanish CLI help and error summaries, use `npm start -- --lang es --help` or set `MANU_CONTROL_CENTER_LANG=es`. User content can remain in Spanish; changing the interface language never translates stored data or protocol fields. See [language and compatibility](docs/language.md).
 
-## What we are building
+## Previous implementation scope
 
 Manu is the first user of a reusable builder. A need becomes an instance specification, a plan and a verifiable installation. The instance preserves knowledge and continuity beyond the conversation. The product, configuration and private data retain distinct locations and responsibilities.
 
@@ -36,11 +42,11 @@ Entities and contracts define the core. Obsidian, files, databases, Codex, Claud
 | M1 | Complete | Contracts, reference persistence and evaluator separation. |
 | M2 | Complete | Instance creation, adoption, verification and recovery. |
 | M3 | Complete for the local pilot | Codex synthesis, session continuity, operational profiles and first personal draft verified; owner review of that draft remains pending. |
-| M4 | In progress: M4.1 complete for the document library profile | Document backend available; export/import, safe transfer and a second runtime remain pending. |
-| M5 | Pending | Updates, repair, auditing and maintainable distribution. |
-| M6 | As needed, from M3 | Integrations, recurrence and additional interfaces. |
+| M4 | Paused after M4.1; superseded as the next priority | Document backend available; export/import, safe transfer and a second runtime remain pending. |
+| M5 | Previous application roadmap; no longer the kit delivery sequence | Updates, repair, auditing and maintainable distribution. |
+| M6 | Previous extension catalog; reassess against kit needs | Integrations, recurrence and additional interfaces. |
 
-The [roadmap](docs/implementation-plan.md) defines tasks and completion criteria. M3.7 implementation passes 258 mechanism tests and clean package installation. Actual Codex CLI runs cover both workflows, four calibrated meeting fixtures and a separate new-transcript CLI path. Model drafts retain exact citations and require owner review; deterministic checks enforce coverage and permissions. Installation tests use a declared mock, separate from real model evidence. A01, A02, A16 and A17 pass for local construction; A19 also covers scoped source and derived-knowledge retrieval; A05/A06/A22 pass for the local review profile. A15 construction verification remains foundation-scoped; runtime invocation and A27 calibration evidence are recorded separately. Fresh-session Codex retrieval and resumption are verified for the documented local profile. Operational activation and the authorized first personal model invocation are verified. The saved draft remains pending owner review; its private contents stay outside the repository. See [acceptance](docs/acceptance.md), [M3.7 evidence](docs/m3.7-verification.json), [runtime evaluation](docs/m3.7-runtime-evaluation.json) and the [handoff](docs/handoff.md).
+The [previous roadmap](docs/implementation-plan.md) records the technical implementation sequence and its checks. M3.7 implementation passes 258 mechanism tests and clean package installation. Actual Codex CLI runs cover both workflows, four calibrated meeting fixtures and a separate new-transcript CLI path. Model drafts retain exact citations and require owner review; deterministic checks enforce coverage and permissions. Installation tests use a declared mock, separate from real model evidence. A01, A02, A16 and A17 pass for local construction; A19 also covers scoped source and derived-knowledge retrieval; A05/A06/A22 pass for the local review profile. A15 construction verification remains foundation-scoped; runtime invocation and A27 calibration evidence are recorded separately. Fresh-session Codex retrieval and resumption are verified for the documented local profile. Operational activation and the authorized first personal model invocation are verified. The saved draft remains pending owner review; its private contents stay outside the repository. See [acceptance](docs/acceptance.md), [M3.7 evidence](docs/m3.7-verification.json), [runtime evaluation](docs/m3.7-runtime-evaluation.json) and the [handoff](docs/handoff.md).
 
 ## Documentation
 

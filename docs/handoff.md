@@ -1,16 +1,16 @@
 # Development handoff
 
-Updated: 2026-09-09. Primary repository: [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). **M0–M3 complete for the documented local profiles; M4.1 document backend verified; M4.2 export/import next. The first personal draft still awaits owner review.**
+Updated: 2026-09-09. Primary repository: [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). **Product direction corrected by Manu: build an agent-operated repository kit. The previous infrastructure roadmap is paused after M4.1. Kit conversion is pending.**
 
 ## Current instruction
 
-Manu requests a system he can use and has selected this repository as its destination. Verified work and GitHub delivery are authorized. Preserve the initial history and MIT license; earlier documentation folders are snapshots, without automatic synchronization with this repository or the source vault. Another discovery interview is unnecessary.
+Manu wants the same type of repository system as Nate Herk's AIS-OS, integrating the useful improvements in his existing installer and Second Brain. He explicitly rejects making database and entity-control infrastructure the development objective. Read [product-direction.md](product-direction.md) and D33 before continuing. They supersede conflicting earlier architecture guidance and the former next milestone M4.2.
 
-Manu authorized the next roadmap step after the English-repository update. M3.1–M3.4 are delivered for the local human/coordinator profiles, including the explicitly authorized continuation into coordination and simulated effect control. Keep repository content in English; runtime interaction and user content may remain Spanish (D24 and [language.md](language.md)).
+Deliver context files, operating instructions, skills, templates and directly useful helpers, using the user's existing agent. The kit must be usable without the custom database/execution platform. Reuse the context and reference analysis already available; do not begin another discovery process. Keep the repository in English and runtime interaction in the user's language.
 
-Manu explicitly authorized M3.5 with Codex as the first agent. The runtime integration and authorized M3.6 conversational continuity are implemented and tested; M3.7 operational activation and the explicitly authorized first personal model invocation are verified. The resulting draft awaits owner review.
+GitHub delivery remains authorized. Preserve the MIT license, source attribution, existing code/history and private data. No deletion, personal migration, external integration or artifact acceptance is implied by this direction correction. The first personal draft from the previous application remains unchanged and unapproved.
 
-M3 delivers first agent use; M4 demonstrates another representation and runtime; M5 adds maintenance. Essential M6 integrations may be brought forward from M3.
+The sections below preserve the technical implementation and evidence completed before the correction. Those results do not mean that the intended kit has been delivered.
 
 ## Executable status
 
@@ -180,11 +180,11 @@ M4.1 is a library-level backend profile, not another working constructor/coordin
 
 D20–D32 record these choices, initial deployment and language policy in [decisions.md](decisions.md).
 
-## Next work: M4.2 and optional personal draft review
+## Next work: implement the repository kit
 
-1. M3.7 first use is verified. M4.1 adds the second representation; continue with M4.2 export/import, then M4.3 safe transfer and M4.4 second-runtime handoff. Do not claim those combinations before actual verification.
-2. The saved personal draft awaits exact owner review. If requested, read its current record and evidence before recording acceptance; do not treat authorization to generate it as approval.
-3. Preserve the existing foundation, operational profile and private execution history. No reinstallation or repeat inference is needed for review.
+1. Follow [product-direction.md](product-direction.md): establish the ordinary file-based entry/workspace, reference skills and Manu's practical improvements. Verify a useful install/adopt/use path.
+2. Do not continue export/import or backend/runtime orchestration as prerequisites. Existing code may be retained without being part of the kit's normal use.
+3. Preserve private data and the earlier draft. Source attribution and preservation of customized content remain requirements.
 
 At session completion, record the phase, actual commands, results and limits; update handoff, decisions and evidence, and regenerate the documentation inventory. Keep user knowledge and instance state outside the distribution.
 

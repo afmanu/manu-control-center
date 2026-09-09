@@ -1,6 +1,6 @@
-# Implementation roadmap
+# Previous infrastructure roadmap
 
-Updated: 2026-09-09. **Status: M0–M3 complete for the documented local profiles; the first personal draft awaits owner review; M4.1 complete for the document library profile; M4.2–M4.5 and M5–M6 pending.** Development in [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). Identifiers remain stable for architecture/component/acceptance traceability. [M2 evidence](m2-verification.json) and the [handoff](handoff.md) record current scope; historical [M0](m0-verification.json) and [M1](m1-verification.json) evidence is preserved.
+**Superseded as the active delivery sequence on 2026-09-09 by the user's product correction.** Read [product-direction.md](product-direction.md), [D33](decisions.md) and the [handoff](handoff.md). Manu wants an agent-operated repository kit combining AIS-OS and his Second Brain improvements. Further database/runtime-platform work is not a prerequisite. This document preserves the original milestones and acceptance history; completed work is not erased, and pending work is not implicitly authorized as the next task.
 
 ## Intended delivery
 
@@ -185,4 +185,4 @@ Add code when it has useful behavior: `core` defines contracts; `builder`, `life
 
 Each completion updates [handoff.md](handoff.md) with version/commit if available, completed tasks, actual commands, results, evidence, limits, decisions and next task. A phase may be pending, in progress, partially verified or complete. Completion requires all applicable criteria to pass; a simulation never proves a real integration.
 
-**Next development milestone: M4.2, export/import.** M4.1 adds the local document adapter and shared entity/access/revision suite; it does not enable destination execution. M3.7 first use is verified. The existing personal draft remains available for exact owner review; do not regenerate or approve it without that instruction. Preserve the installed foundation and private state. Keep the repository in English (D24).
+**Current next task:** implement the repository kit described in [product-direction.md](product-direction.md). M4.2 export/import is paused. Preserve all prior implementation and private state; the kit must not depend on finishing the infrastructure roadmap.

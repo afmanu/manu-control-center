@@ -1,5 +1,7 @@
 # Ecosystem foundations and architecture
 
+> Prior platform architecture. The user correction in [product-direction.md](product-direction.md) and D33 supersedes this document as the kit implementation brief. Retain it when maintaining the existing application; do not make its infrastructure a prerequisite for the kit.
+
 Foundational document for a platform that builds AI knowledge and operating systems.
 
 **Design status:** approved scope; reference definition written before implementation. Components and guarantees below are product requirements, not deployed capabilities already verified. Product naming and specific technologies are resolved during development without changing these responsibilities. Current implementation status lives in the [handoff](handoff.md).
