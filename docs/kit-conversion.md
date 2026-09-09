@@ -1,6 +1,6 @@
 # AI OS repository implementation
 
-Status: **K1 and K2 implemented and verified with Codex; K3 next**. This is the active delivery plan following [product direction](product-direction.md) and D33–D39 in [decisions](decisions.md). Manu approved integrating all reviewed improvements on 2026-09-09. They are assigned to the same four stages below. The first two deliveries are available; K3–K4 remain required for full reference-feature parity.
+Status: **K1–K3 implemented and verified with Codex; K4 next**. This is the active delivery plan following [product direction](product-direction.md) and D33–D40 in [decisions](decisions.md). Manu approved integrating all reviewed improvements on 2026-09-09. They are assigned to the same four stages below. The first three deliveries are available; K4 remains required for full reference-feature parity.
 
 ## User experience to deliver
 
@@ -10,7 +10,7 @@ The distribution contains reusable instructions, skills, templates and small hel
 
 ## Target layout
 
-K1–K2 provide the entry, six skills, shared memory guidance, templates, Codex entry and setup helper below. Other capabilities remain implementation destinations. Do not generate empty folders merely to match this diagram.
+K1–K3 provide the entry, eight skills, shared memory guidance, templates, Codex entry and setup helper below. Other capabilities remain implementation destinations. Do not generate empty folders merely to match this diagram.
 
 ```text
 manu-control-center/
@@ -96,6 +96,8 @@ Additional cases: a correcting answer supersedes a prior value with traceability
 
 ### K3 — Audit, improve and maintain
 
+Status: **complete**, 2026-09-09. Actual Codex sessions verified stable audit findings, a repaired route and targeted recheck, consolidation proposals, a selected personal skill and fresh reuse, daily/weekly and pending decision reviews, SOP retrieval, and repeated customization-preserving updates. See [K3 evidence](k3-verification.md) for exact outcomes and limits.
+
 **Deliver:** an audit skill, an improvement skill and readable findings/history. Check priority-relevant workflows, useful output evidence, connection access, retrieval, broken routes, context, note duplication and project continuity. A healthy note collection does not alone establish a useful operating system. Keep stable finding references, preserve open/unverified findings and close a finding only after checking the repair. Choose one useful improvement per cycle. Manual review is a valid operating mode; do not penalize a knowledge workspace for lacking an unwanted scheduler.
 
 Include a consolidation mode covering conceptual overlap, undistilled resources, repeated insights, unlinked decisions and hubs without a useful next step. Keep merges and uncertain connections as proposals unless the user has authorized the relevant changes. Include decision-outcome review and daily/weekly review modes using project/synthesis templates; leave missing outcomes unknown and separate observed evidence from the agent's judgment.
@@ -128,7 +130,7 @@ A missing bundled resource is detected, a duplicate skill identity is resolved o
 
 ## Reference coverage and current status
 
-K1–K2 ship the six named setup/context/capture/project/link/synthesize skill directories. Audit, improvement and explorer remain proposed implementation destinations. Users may request the capabilities in natural language; the host determines invocation syntax.
+K1–K3 ship eight canonical setup/context/capture/project/link/synthesize/audit/improve skill directories. The explorer remains a K4 implementation destination. Users may request the capabilities in natural language; the host determines invocation syntax.
 
 | Source capability | Kit implementation | Stage | Current status |
 |---|---|---|---|
@@ -136,17 +138,17 @@ K1–K2 ship the six named setup/context/capture/project/link/synthesize skill d
 | AIS-OS saved context interviews | `mcc-context` with saved answers and resumable interviews | K1–K2 | K1–K2 delivered and checked |
 | Manu's capture | `mcc-capture` with sources, meaning and duplicate checks | K1–K2 | K1–K2 delivered and checked |
 | AIS-OS `/link`; Manu's link finder and Activation Map | `mcc-link`, source routes and semantic connections | K2 | Delivered and checked |
-| Manu's synthesis | `mcc-synthesize`, scoped distillation and source links | K2 | Delivered and checked; broader consolidation remains K3 |
+| Manu's synthesis | `mcc-synthesize`, scoped distillation and source links | K2 | Delivered and checked; K3 consolidation proposals also checked |
 | Work execution supported by Manu's next steps/project hubs; both existing example workflows | `mcc-project`, first work procedure in K1, richer project/session/output templates in K2 | K1–K2 | K1–K2 delivered and checked |
-| Manu's skill discovery and construction | Entry index plus `mcc-improve` inspect/adapt/build mode and shared extension recipe | K1, K3–K4 | Six-capability entry delivered; K3–K4 expansion pending |
-| AIS-OS `/audit` | `mcc-audit`, retrieval checks and findings/history | K3 | Pending |
-| AIS-OS `/level-up` | `mcc-improve`, verified repair and useful maintenance | K3 | Pending |
+| Manu's skill discovery and construction | Entry index plus `mcc-improve` inspect/adapt/build mode and shared extension recipe | K1, K3–K4 | Eight-capability entry and personal skill build/reuse checked; broader K4 discovery checks pending |
+| AIS-OS `/audit` | `mcc-audit`, retrieval checks and findings/history | K3 | Delivered and checked |
+| AIS-OS `/level-up` | `mcc-improve`, verified repair and useful maintenance | K3 | Delivered and checked |
 | AIS-OS `/3d-brain` | `mcc-brain`, optional reference-derived local explorer | K4 | Pending |
 | Shared agent instructions and portability | Canonical skills, generated host entries and clean kit export | K1, K4 | Codex entry and canonical resources checked; K4 pending |
 
 ## Quality coverage and delivery mapping
 
-All rows are adopted requirements. **K1–K2 deliver source registration, corrected memory, relationships, basic navigation, reusable artifacts, scoped retention, resurfacing, URL intake and scoped work areas. Q9 decision records are delivered; outcome review remains K3. Audit/consolidation, skill building, deeper discovery checks and scheduling remain K3–K4.** Optional use means the capability is available without being enabled or imposed on every user. The source rationale and original coverage assessment remain in [quality-gap-review.md](quality-gap-review.md).
+All rows are adopted requirements. **K1–K3 deliver source registration, corrected memory, relationships, navigation, reusable artifacts, scoped retention, resurfacing, URL intake, scoped work areas, audit/consolidation, selected skill building, reviews, SOP reuse and customization-preserving updates. Q10 broader discovery failures, second-host compatibility, explorer and scheduling remain K4.** Optional use means the capability is available without being enabled or imposed on every user. The source rationale and original coverage assessment remain in [quality-gap-review.md](quality-gap-review.md).
 
 | Adopted item | Delivery location or mode | Stage | Completion evidence |
 |---|---|---|---|
@@ -169,8 +171,8 @@ All rows are adopted requirements. **K1–K2 deliver source registration, correc
 
 ## Execution and evidence
 
-Implement K3 next; do not initiate another requirements interview or create additional architecture phases before it. The existing documented objective is enough to begin. A missing personal destination does not block synthetic implementation and verification.
+Implement K4 next; do not initiate another requirements interview or create additional architecture phases before it. The existing documented objective is enough to begin. A missing personal destination does not block synthetic implementation and verification.
 
 For each stage, update its status here and the [handoff](handoff.md) with the delivered paths, actual commands/sessions, observed result and material gaps. Use disposable synthetic workspaces for checks. The old application's test count does not prove any row above is complete. Do not add a generic test framework or custom agent runner to perform these bounded checks.
 
-The current main tree contains the K2 kit, [K1](k1-verification.md) and [K2](k2-verification.md) practical verification, adopted scope, source review and lightweight checks. The application remains on its archive branch. K1–K2 skills were installed and exercised in disposable synthetic workspaces; no personal installation, real account connection or full K4 release is claimed. Continue K3 without reopening scope selection.
+The current main tree contains the K3 kit, [K1](k1-verification.md), [K2](k2-verification.md) and [K3](k3-verification.md) practical verification, adopted scope, source review and lightweight checks. The application remains on its archive branch. K1–K3 skills were installed and exercised in disposable synthetic workspaces; no personal installation, real account connection or full K4 release is claimed. Continue K4 without reopening scope selection.

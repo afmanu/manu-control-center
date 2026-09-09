@@ -1,6 +1,6 @@
 ---
 name: mcc-project
-description: Produce or revise sourced project status updates and meeting briefs, preserve deliverable continuity, or set up a requested scoped work area. Use for project work and proposed next steps; not accepting decisions, sending outputs or installing specialist agents.
+description: Produce or revise sourced project status updates and meeting briefs, preserve deliverable continuity, review days/weeks/decision outcomes or set up a requested scoped work area. Use for project work and proposed next steps; not accepting decisions, sending outputs or installing specialist agents.
 ---
 
 # Produce useful work with continuity
@@ -13,7 +13,9 @@ Read [shared guidance](../../operating-guide.md), the workspace map, selected pr
 - **Meeting brief:** use the [meeting template](../../templates/meeting.md). For preparation, distinguish proposed agenda/questions from previous agreements. For a recap, separate what was agreed, suggested or left open, and retain action owners/dates only when supplied. Never invent attendance, a meeting date or commitments.
 - **Scoped work area:** use the [area template](../../templates/area.md) only when requested. Reuse an existing project/area if suitable; link shared operating guidance, canonical context and the parent hub. Keep local goals, source routes and facts local. Do not copy global memory or install another agent merely to represent a specialty.
 
-Reuse the user's selected template, voice example and relevant assets where available; preserve its required sections and intent. If a required resource is unavailable, identify that limit rather than pretending to use it. Capture meaningful confirmed decisions with rationale, alternatives and a review condition when supplied, using the [decision template](../../templates/decision.md) as an optional section, not a mandatory file per decision. Unknown rationale/outcome stays unknown; outcome review is a later capability.
+Reuse the user's selected template, voice example and relevant assets where available; preserve its required sections and intent. If a required resource is unavailable, identify that limit rather than pretending to use it. Capture meaningful confirmed decisions with rationale, alternatives and a review condition when supplied, using the [decision template](../../templates/decision.md) as an optional section, not a mandatory file per decision. Unknown rationale/outcome stays unknown; use [review modes](../../reviews.md) for an explicitly requested outcome check.
+
+For requested daily/weekly or decision-outcome reviews, follow [review modes](../../reviews.md). They reuse project/synthesis evidence and same-period records without creating schedules.
 
 ## Save, check and continue
 

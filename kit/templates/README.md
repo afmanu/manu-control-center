@@ -16,3 +16,8 @@ Use these only when a corresponding file is needed. Adapt headings and metadata 
 - [Meeting](meeting.md): preparation/recap with decisions distinct from proposals.
 - [Decision](decision.md): rationale, alternatives and review condition.
 - [Scoped area](area.md): local context reusing shared guidance.
+
+- [Audit](audit.md): stable findings, evidence and history.
+- [Improvement](improvement.md): scoped changes and verification.
+- [Review](review.md): daily, weekly and decision outcomes.
+- [SOP](sop.md): reusable workflow/tool guidance with checks and limits.

@@ -67,3 +67,16 @@ Status: **implementation adopted**, 2026-09-09, after Manu authorized K2. Add `m
 Keep current understanding and meaningful changes together through dated evidence links. Preserve raw sources and accepted artifacts; mark their status at the hub or make a linked revision. Ambiguous authority stays unresolved. Context interviews are requested work, checkpoint answers and resume without restarting discovery. Task routing differs from conceptual relationships and live connections. Useful older knowledge is resurfaced by relevance, not inferred unread status.
 
 Use existing host access for URL intake, keeping URL/date/limits and inaccessible references honest. Reuse selected output templates and keep public drafts free of private content and revealing citation routes. Scoped areas link shared instructions and global context rather than cloning them or installing another agent. The six-skill copy helper remains dependency-free; customized K1 installs retain conflict protection, and upgrade merging remains K3. Practical K2 completion must be supported by actual host sessions; broader audit/build/update behavior and full host/release parity remain K3–K4.
+
+
+### D40 — Deliver maintenance through evidence and ordinary file comparisons
+
+Status: **implementation adopted**, 2026-09-09, after Manu authorized the next implementation. K3 adds `mcc-audit` and `mcc-improve` to the six existing canonical skills. Audit reports keep stable findings, prior failure evidence and dated checks. A repair closes only the tested finding; unverified connections and unselected consolidation proposals remain visible. Manual operation is valid and creates no scheduling defect.
+
+Requested daily/weekly and decision reviews extend project work through shared instructions and templates. Same-period records are reused, original decisions retain their rationale and alternatives, and missing outcomes remain pending. SOPs describe an actually used or supplied process, its evidence/date and limits, including outdated or unverified tools.
+
+User-selected extensions inspect existing skills first. Keep a personal canonical definition and resources in `.mcc/skills/`, separate from the installed product snapshot, with a verified Codex discovery entry and an appropriate capability route. Fresh-session use must produce the requested artifact; the existence of a skill file is insufficient. Reuse an overlapping capability instead of multiplying identities.
+
+Kit updates use the existing agent's ordinary file tools with trusted old/current/incoming comparison, recoverable copies and readable progress. Keep local-only edits and preserve both-changed conflicts for reviewed merges or explicit pending proposals. Maintain core mirrors together and retain the last completed version marker when the update is partial; record the mixed target and exact pending paths. Repeat attempts reuse the record/backups. The initial copier stays non-overwriting; no migration engine, database, runtime wrapper or maintenance service is added.
+
+[K3 evidence](k3-verification.md) records bounded actual checks and their limitations. K4 still owns release packaging, the second host, broader discovery/failure cases, the explorer and opt-in native scheduling. No private workspace, real account, schedule or archive branch is changed.

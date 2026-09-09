@@ -86,7 +86,7 @@ class KitCopyChecks(unittest.TestCase):
     def test_generated_skills_resolve_canonical_resources(self):
         self.install()
         skills = sorted((self.workspace / ".agents/skills").glob("*/SKILL.md"))
-        self.assertEqual(len(skills), 6)
+        self.assertEqual(len(skills), 8)
         for skill in skills:
             canonical = ROOT / "kit/skills" / skill.parent.name / "SKILL.md"
             expected = canonical.read_text().replace("(../../", "(../../../.mcc/kit/")

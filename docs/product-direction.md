@@ -83,9 +83,9 @@ The complete prior application, its documentation and evidence are preserved on 
 
 ## Immediate development direction
 
-The [kit conversion plan](kit-conversion.md) now defines the target layout, reusable material, preservation boundaries and K1–K4 delivery checks. K1 and K2 are implemented and verified with Codex; continue K3 without another discovery or architecture phase.
+The [kit conversion plan](kit-conversion.md) now defines the target layout, reusable material, preservation boundaries and K1–K4 delivery checks. K1–K3 are implemented and verified with Codex; continue K4 without another discovery or architecture phase.
 
-K1 establishes the file-based entry, new-workspace setup/adoption and a sourced project brief that a fresh session can revise. [Practical evidence](k1-verification.md) records the bounded checks. K2 delivers corrected memory, meaningful links, synthesis and richer project continuity; [its evidence](k2-verification.md) records the bounded cases. K3 adds audit, improvement, consolidation, selected skill building and customization-preserving maintenance. Keep an explicit feature comparison so that user-facing capabilities are not replaced by infrastructure milestones. Reuse existing source material and preserve applicable licenses and attribution.
+K1 establishes the file-based entry, new-workspace setup/adoption and a sourced project brief that a fresh session can revise. [Practical evidence](k1-verification.md) records the bounded checks. K2 delivers corrected memory, meaningful links, synthesis and richer project continuity; [its evidence](k2-verification.md) records the bounded cases. K3 delivers audit, improvement, consolidation proposals, selected skill building, reviews, SOP reuse and customization-preserving maintenance; [its evidence](k3-verification.md) records the bounded checks. Keep an explicit feature comparison so that user-facing capabilities are not replaced by infrastructure milestones. Reuse existing source material and preserve applicable licenses and attribution.
 
 The previous application and its operating skill remain available on the archive branch; neither is part of main or a kit dependency. Do not describe this direction correction as a completed product conversion. The previous M4.2 export/import milestone is no longer the next task.
 
@@ -99,4 +99,4 @@ The kit scope now explicitly includes source/connection registers; memory correc
 
 It also includes relevant-old-knowledge resurfacing, URL/resource capture, daily/weekly reviews, tool usage notes and recurring SOPs, native-scheduling guidance, and scoped specialist workspaces. These are available modes or recipes using the existing skills and host capabilities. They need not be enabled for every user, but their delivery is part of the approved scope. Review outcomes remain evidence-based; file age alone proves neither unread knowledge nor stalled work.
 
-There are still four stages, K1–K4. Scope adoption is complete; K1 and K2 are verified and K3–K4 remain pending. No account connections, personal schedules or specialist agents are installed by this approval, and the previous application remains exclusively on its archive branch.
+There are still four stages, K1–K4. Scope adoption is complete; K1–K3 are verified and K4 remains pending. No account connections, personal schedules or specialist agents are installed by this approval, and the previous application remains exclusively on its archive branch.
