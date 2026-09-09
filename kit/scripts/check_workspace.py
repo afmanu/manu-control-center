@@ -5,6 +5,9 @@ import json
 from pathlib import Path
 import re
 import sys
+
+# Diagnostics must not create __pycache__ in the inspected installation.
+sys.dont_write_bytecode = True
 from urllib.parse import unquote, urlsplit
 
 

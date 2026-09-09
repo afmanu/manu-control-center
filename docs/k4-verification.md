@@ -49,3 +49,5 @@ See [capability status](../kit/capabilities.md), [host guidance](../kit/hosts.md
 ## Package checks
 
 The staged-tree clean export passed 60 Markdown-file / 198 local-link checks, nine installation checks and two optional-view checks. A fresh both-host installation from that export passed local resource/identity diagnostics. All nine canonical skills passed frontmatter validation. The bundled renderer is marked generated and preserves embedded shader whitespace; handwritten changes pass Git whitespace checks. The original license bytes match the preserved application archive.
+
+The first Linux CI run exposed a diagnostic side effect hidden by the local Python cache configuration: importing the copier generated `__pycache__` in the inspected kit. The checker now disables bytecode writes before that import. The no-mutation regression is retained and was rerun with bytecode caching explicitly enabled in the environment.
