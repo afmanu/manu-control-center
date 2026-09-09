@@ -1,5 +1,7 @@
 # Previous infrastructure roadmap
 
+The active implementation sequence is now [K1–K4: repository kit conversion](kit-conversion.md). This file retains historical milestones and evidence only.
+
 **Superseded as the active delivery sequence on 2026-09-09 by the user's product correction.** Read [product-direction.md](product-direction.md), [D33](decisions.md) and the [handoff](handoff.md). Manu wants an agent-operated repository kit combining AIS-OS and his Second Brain improvements. Further database/runtime-platform work is not a prerequisite. This document preserves the original milestones and acceptance history; completed work is not erased, and pending work is not implicitly authorized as the next task.
 
 ## Intended delivery

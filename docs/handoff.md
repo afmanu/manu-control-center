@@ -1,8 +1,12 @@
 # Development handoff
 
-Updated: 2026-09-09. Primary repository: [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). **Product direction corrected by Manu: build an agent-operated repository kit. The previous infrastructure roadmap is paused after M4.1. Kit conversion is pending.**
+Updated: 2026-09-09. Primary repository: [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). **Kit conversion prepared; K1 implementation is next.** The previous infrastructure roadmap is paused after M4.1. The kit itself is not yet implemented.
 
 ## Current instruction
+
+Follow [kit-conversion.md](kit-conversion.md) and D34 for the active delivery sequence. Preparation establishes the `kit/` target, source-to-feature coverage, preservation rules and practical completion checks for K1–K4. README and START-HERE now lead with kit status; prior application details are retained in the [legacy guide](legacy-application.md). Only documentation/navigation changed. No kit skills, host entries or templates exist yet; no private installation or migration occurred.
+
+Preparation verification: `npm run check` passed 279 existing application tests, generated-schema comparison and documentation checks (420 internal links, 83 inventoried files). `npm run manifest:docs` regenerated the inventory and `git diff --check` passed. K1–K4 usage checks remain pending; the preparation adds no kit execution evidence.
 
 Manu wants the same type of repository system as Nate Herk's AIS-OS, integrating the useful improvements in his existing installer and Second Brain. He explicitly rejects making database and entity-control infrastructure the development objective. Read [product-direction.md](product-direction.md) and D33 before continuing. They supersede conflicting earlier architecture guidance and the former next milestone M4.2.
 
@@ -186,9 +190,9 @@ M4.1 is a library-level backend profile, not another working constructor/coordin
 
 D20–D32 record these choices, initial deployment and language policy in [decisions.md](decisions.md).
 
-## Next work: implement the repository kit
+## Next work: K1 — first usable kit
 
-1. Follow [product-direction.md](product-direction.md): establish the ordinary file-based entry/workspace, reference skills and Manu's practical improvements. Verify a useful install/adopt/use path.
+1. Implement K1 in [kit-conversion.md](kit-conversion.md): the kit entry, shared operating guide, context/source/project/session templates, Codex entry and setup/context/capture skills. Verify new setup, customized-workspace adoption, capture/retrieval and fresh-session continuation with ordinary files. Do not use the old CLI or instance profile to demonstrate kit use.
 2. Do not continue export/import or backend/runtime orchestration as prerequisites. Existing code may be retained without being part of the kit's normal use.
 3. Preserve private data and the earlier draft. Source attribution and preservation of customized content remain requirements.
 

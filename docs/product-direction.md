@@ -68,6 +68,8 @@ Preserve existing code, evidence, Git history and private data while restructuri
 
 ## Immediate development direction
 
+The [kit conversion plan](kit-conversion.md) now defines the target layout, reusable material, preservation boundaries and K1–K4 delivery checks. Preparation is complete; implement K1 next without another discovery or architecture phase.
+
 The next implementation should establish the kit's ordinary file-based entry and workspace structure, bring over the reference capabilities and Manu's improvements, and verify an installation/adoption and useful end-to-end session. Keep an explicit feature comparison so that user-facing capabilities are not replaced by infrastructure milestones. Reuse existing source material and preserve applicable licenses and attribution.
 
 The existing application and its operating skill remain available, but they do not yet constitute this kit. Do not describe this direction correction as a completed product conversion. The previous M4.2 export/import milestone is no longer the next task.

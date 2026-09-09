@@ -2,6 +2,8 @@
 
 ## Current scope correction — D33
 
+The active [kit conversion plan](kit-conversion.md) is recorded in D34. Its next implementation target is K1.
+
 **The user's explicit correction takes precedence over the earlier infrastructure-first scope.** Manu wants a repository like AIS-OS combined with the useful improvements from his installer and Second Brain, not a database/record-control platform. [Product direction](product-direction.md) is the current brief. Earlier decisions below are historical context and remain relevant only where compatible with this correction or when maintaining existing code.
 
 ## Earlier scope
@@ -276,3 +278,11 @@ Build an agent-operated kit of context, instructions, skills, templates and dire
 Pause M4.2–M4.5 and stop treating M5/M6's application sequence as the active delivery plan. Preserve existing implementation, evidence and private data without deletion or migration. Reuse only material that directly serves the kit. Current documentation is corrected now; the kit itself is not yet converted or delivered. Next: implement its file-based entry/workspace and the explicitly mapped reference skills plus Manu's improvements, using existing context rather than another discovery interview. [Current brief](product-direction.md).
 
 Source-review follow-up, 2026-09-09: the exact original share link was reopened. Manu requested the combination and cross-ecosystem usability; the assistant introduced the kernel/state/adapters architecture, which Manu subsequently asked to have explained as an approved concept. His current explicit correction supersedes that platform interpretation. The current brief now preserves concrete source contributions, including semantic connections versus retrieval routes, selective knowledge consolidation versus session history, project continuity, customization-preserving adoption and purpose-appropriate audits. Cross-agent usability remains a goal to verify through existing hosts, not a requirement to finish a custom runtime platform. This review changes no application behavior or private data and does not claim the kit is delivered.
+
+### D34 — Prepare conversion through four user-visible kit deliveries
+
+Status: **adopted for conversion preparation**, 2026-09-09. Manu asked to prepare the conversion to the kit. The [conversion plan](kit-conversion.md) establishes K1 setup/adoption and first use, K2 the knowledge/project cycle, K3 audit/improvement and customization-preserving maintenance, and K4 clean distribution, second-agent verification and the optional reference-derived explorer. Every reference capability stays visible until implemented and checked; optional explorer use does not remove it from the parity target.
+
+Use `kit/` as the future maintained source for shared skills, operating guidance, templates, host entries and useful helpers. Its standalone export must work without the legacy application. Personal workspaces remain outside the distribution. Preserve the existing source layout, application skill, installed personal instance and Git history. The old README's application details move to a legacy guide with corrected links; the root README and START-HERE now expose actual kit status and the next delivery.
+
+Preparation changes documentation and navigation only. No kit skills or templates are installed, no runtime compatibility is claimed, and no private data is changed. K1 is the next implementation task using disposable examples and actual Codex sessions. Update source-license checks when adapting source files. Verification must distinguish old application regression checks from kit outcomes. Do not build a new runner, database or migration platform to execute this plan.
