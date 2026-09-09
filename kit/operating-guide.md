@@ -17,8 +17,9 @@ Read the applicable workspace instructions and `.mcc/workspace.md`. Follow its d
 | Audit useful operation or propose consolidation | `mcc-audit` |
 | Repair, build a selected skill, save an SOP or update the kit | `mcc-improve` |
 | Review a day, week or decision outcome | `mcc-project` |
+| Explore a local 3D knowledge view | `mcc-brain` |
 
-Skills live in the workspace's `.agents/skills/`. The installed kit lives in `.mcc/kit/`. Source, template and helper paths inside skills resolve from the skill file, not from the current shell directory. Shared skill content is maintained in the distribution's `skills/` and transformed only for local resource paths during installation.
+Use the selected [host entries](hosts.md): Codex skills live in `.agents/skills/`, Claude Code skills in `.claude/skills/`. The installed kit lives in `.mcc/kit/`. Source, template and helper paths inside skills resolve from the skill file, not from the current shell directory. Shared skill content is maintained in the distribution's `skills/` and transformed only for local resource paths during installation.
 
 ## Knowledge and authority
 
@@ -36,7 +37,7 @@ Select the available procedure for the user's outcome. If the required capabilit
 
 Read back saved output and follow its source links. Update the relevant project hub with the actual deliverable, known state, open questions and next suggested action. Do not call a draft accepted or a proposal a decision. Save a concise session note only when needed to resume significant work and when retention is allowed. On interruption, say what was actually saved and where to continue; no silent retry of external effects.
 
-Default templates are in [templates](templates/README.md). K3 is interactive and can read URLs through available host tools. No background scheduling, live connectors or second-agent compatibility is implied by installation.
+Default templates are in [templates](templates/README.md). The kit is interactive and can read URLs through available host tools. No background operation or account connection is activated by installation. See [capability status](capabilities.md) for exercised hosts and [native scheduling](scheduling.md) for opt-in routines.
 
 
 ## Context, knowledge and work

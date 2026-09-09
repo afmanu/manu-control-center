@@ -99,4 +99,4 @@ The kit scope now explicitly includes source/connection registers; memory correc
 
 It also includes relevant-old-knowledge resurfacing, URL/resource capture, daily/weekly reviews, tool usage notes and recurring SOPs, native-scheduling guidance, and scoped specialist workspaces. These are available modes or recipes using the existing skills and host capabilities. They need not be enabled for every user, but their delivery is part of the approved scope. Review outcomes remain evidence-based; file age alone proves neither unread knowledge nor stalled work.
 
-There are still four stages, K1–K4. Scope adoption is complete; K1–K3 are verified and K4 remains pending. No account connections, personal schedules or specialist agents are installed by this approval, and the previous application remains exclusively on its archive branch.
+There are still four stages, K1–K4. Scope adoption is complete; K1–K3 are verified; the K4 candidate is delivered with required host and due-execution checks still open. No account connections, personal schedules or specialist agents are installed by this approval, and the previous application remains exclusively on its archive branch.

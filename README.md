@@ -2,7 +2,7 @@
 
 An AI OS distributed as a repository, inspired by AIS-OS and enhanced with Manu's Second Brain systems. It brings together operating context, connections, skills, workflows, recurring work and improvement, supported by durable memory, meaningful knowledge relationships and continuity.
 
-**Status: K1–K3 implemented and verified with Codex. K4 is next.** The active [conversion plan](docs/kit-conversion.md) defines the deliverables and practical checks. The complete former application is preserved on [`archive/application-m4.1`](https://github.com/afmanu/manu-control-center/tree/archive/application-m4.1). Main is dedicated to the kit and contains no application code, database adapters, npm package or application test suite.
+**Status: K1–K3 verified with Codex; K4 candidate delivered with explicit verification gaps.** The active [conversion plan](docs/kit-conversion.md) defines the deliverables and practical checks. The complete former application is preserved on [`archive/application-m4.1`](https://github.com/afmanu/manu-control-center/tree/archive/application-m4.1). Main contains the file-based kit and an optional local 3D viewer with a prebuilt bundle and its isolated rebuild dependencies. The former application and database infrastructure remain on the archive branch.
 
 ## The intended experience
 
@@ -43,4 +43,6 @@ The kit includes `mcc-setup`, `mcc-context`, `mcc-capture`, `mcc-project`, `mcc-
 - [Quality-gap review: source rationale for the adopted additions](docs/quality-gap-review.md).
 - [Application branch: code, dependencies, tests and historical evidence](https://github.com/afmanu/manu-control-center/tree/archive/application-m4.1).
 
-The original [MIT license](LICENSE) and Git history are preserved. Source adaptations retain [licenses and attribution](kit/THIRD-PARTY-NOTICES.md). No personal data is included. Run `python3 scripts/check_docs.py` to check the kit documentation. All reviewed improvements are included in the [delivery mapping](docs/kit-conversion.md#quality-coverage-and-delivery-mapping). Optional modes will be available without being activated by default. K4 remains pending; full reference parity is not yet established.
+The original [MIT license](LICENSE) and Git history are preserved. Source adaptations retain [licenses and attribution](kit/THIRD-PARTY-NOTICES.md). No personal data is included. Run `python3 scripts/check_docs.py` to check the kit documentation. All reviewed improvements are included in the [delivery mapping](docs/kit-conversion.md#quality-coverage-and-delivery-mapping). Optional modes will be available without being activated by default. See [K4 evidence and remaining checks](docs/k4-verification.md). Full reference parity is not yet established.
+
+K4 supplies nine shared skills, generated Codex/Claude entries, [host diagnostics](kit/hosts.md), an optional [local explorer](kit/explorer/README.md) and [scheduling guidance](kit/scheduling.md). Start with the [capability table](kit/capabilities.md); Claude execution and native due-run verification remain open. [Packaging](docs/release.md) exports the same self-contained kit.

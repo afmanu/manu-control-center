@@ -1,0 +1,2 @@
+# Preserve bundled shader/template strings exactly as emitted by esbuild.
+kit/explorer/template/dist/app.js -whitespace linguist-generated=true

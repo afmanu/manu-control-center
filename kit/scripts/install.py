@@ -7,7 +7,7 @@ import sys
 
 
 KIT = Path(__file__).resolve().parents[1]
-SKILLS = ("mcc-setup", "mcc-context", "mcc-capture", "mcc-project", "mcc-link", "mcc-synthesize", "mcc-audit", "mcc-improve")
+SKILLS = ("mcc-setup", "mcc-context", "mcc-capture", "mcc-project", "mcc-link", "mcc-synthesize", "mcc-audit", "mcc-improve", "mcc-brain")
 
 
 def check_path(path):
@@ -19,7 +19,10 @@ def check_path(path):
             raise ValueError(f"Parent is not a directory: {parent}")
 
 
-def plan(workspace):
+def plan(workspace, host="codex"):
+    hosts = ("codex", "claude") if host == "both" else (host,)
+    if any(h not in ("codex", "claude") for h in hosts):
+        raise ValueError("Choose codex, claude or both.")
     if not workspace.is_absolute() or ".." in workspace.parts:
         raise ValueError("Use an absolute workspace path without '..'.")
     check_path(workspace)
@@ -38,17 +41,22 @@ def plan(workspace):
         if source.is_file():
             files.append((workspace / ".mcc/kit" / source.relative_to(KIT),
                           source.read_bytes(), False))
-    for name in SKILLS:
-        source = KIT / "skills" / name / "SKILL.md"
-        content = source.read_text(encoding="utf-8").replace(
-            "(../../", "(../../../.mcc/kit/")
-        files.append((workspace / ".agents/skills" / name / "SKILL.md",
-                      content.encode("utf-8"), False))
+    for selected in hosts:
+        directory = ".agents" if selected == "codex" else ".claude"
+        for name in SKILLS:
+            source = KIT / "skills" / name / "SKILL.md"
+            content = source.read_text(encoding="utf-8").replace(
+                "(../../", "(../../../.mcc/kit/")
+            if selected == "claude":
+                content = content.replace(".agents/skills/", ".claude/skills/")
+            files.append((workspace / directory / "skills" / name / "SKILL.md",
+                          content.encode("utf-8"), False))
+        entry = "AGENTS.md" if selected == "codex" else "CLAUDE.md"
+        files.append((workspace / entry,
+                      (KIT / "hosts" / f"{selected}.md.in").read_bytes(), True))
     for name in ("workspace", "context", "connections"):
         files.append((workspace / ".mcc" / f"{name}.md",
                       (KIT / "templates" / f"{name}.md").read_bytes(), True))
-    files.append((workspace / "AGENTS.md",
-                  (KIT / "hosts/codex.md.in").read_bytes(), True))
 
     actions = []
     for destination, content, editable in files:
@@ -70,9 +78,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("workspace", type=Path)
     parser.add_argument("--apply", action="store_true", help="Copy missing files; default is preview only")
+    parser.add_argument("--host", choices=("codex", "claude", "both"), default="codex")
     args = parser.parse_args()
     try:
-        actions = plan(args.workspace)
+        actions = plan(args.workspace, args.host)
         if args.apply:
             for action, destination, content in actions:
                 if action == "create":
@@ -86,7 +95,7 @@ def main():
             print(f"{action}: {destination.relative_to(args.workspace)}")
         print(f"{label}: {args.workspace}")
         print("Next: follow mcc-setup to personalize the route map, check the "
-              "AGENTS.md route, and perform the first task. Copying is not onboarding.")
+              "selected host entry route, and perform the first task. Copying is not onboarding.")
         return 0
     except (OSError, ValueError) as error:
         print(f"Setup stopped: {error}", file=sys.stderr)

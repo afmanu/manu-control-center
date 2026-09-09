@@ -1,7 +1,7 @@
 # My AI OS
 
 Setup: copied; personalization and route verification pending.
-Kit version: 0.3.0-k3.
+Kit version: 0.4.0-k4.
 First workflow: not run.
 
 ## Operating context
@@ -25,7 +25,7 @@ Paths below are relative to the personal workspace root. Existing equivalent not
 
 ## Available capabilities
 
-`mcc-setup`: configure/adopt; `mcc-context`: retrieve/interview/correct; `mcc-capture`: save text/files/URLs; `mcc-project`: sourced project/meeting briefs and scoped areas; `mcc-link`: relationships/routes; `mcc-synthesize`: reusable understanding/resurfacing; `mcc-audit`: evidence and consolidation review; `mcc-improve`: repairs, skills, SOPs and updates. Installed skill definitions are in `.agents/skills/`.
+`mcc-setup`: configure/adopt; `mcc-context`: retrieve/interview/correct; `mcc-capture`: save text/files/URLs; `mcc-project`: sourced project/meeting briefs and scoped areas; `mcc-link`: relationships/routes; `mcc-synthesize`: reusable understanding/resurfacing; `mcc-audit`: evidence and consolidation review; `mcc-improve`: repairs, skills, SOPs and updates. `mcc-brain`: optional local explorer. Host skill entries are `.agents/skills/` for Codex and `.claude/skills/` for Claude Code; setup records the selected host.
 
 ## Current work
 

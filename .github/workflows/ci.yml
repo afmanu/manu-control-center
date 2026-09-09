@@ -14,4 +14,6 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - run: python3 scripts/check_docs.py
       - run: python3 scripts/test_kit.py
+      - run: node --version
+      - run: python3 scripts/test_explorer.py
       - run: git diff --check

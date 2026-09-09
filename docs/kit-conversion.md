@@ -130,7 +130,7 @@ A missing bundled resource is detected, a duplicate skill identity is resolved o
 
 ## Reference coverage and current status
 
-K1–K3 ship eight canonical setup/context/capture/project/link/synthesize/audit/improve skill directories. The explorer remains a K4 implementation destination. Users may request the capabilities in natural language; the host determines invocation syntax.
+K1–K3 ship eight canonical setup/context/capture/project/link/synthesize/audit/improve skill directories. K4 adds a ninth skill, `mcc-brain`, with a bundled local explorer; required host and scheduling checks remain open in [K4 evidence](k4-verification.md). Users may request the capabilities in natural language; the host determines invocation syntax.
 
 | Source capability | Kit implementation | Stage | Current status |
 |---|---|---|---|
@@ -143,8 +143,8 @@ K1–K3 ship eight canonical setup/context/capture/project/link/synthesize/audit
 | Manu's skill discovery and construction | Entry index plus `mcc-improve` inspect/adapt/build mode and shared extension recipe | K1, K3–K4 | Eight-capability entry and personal skill build/reuse checked; broader K4 discovery checks pending |
 | AIS-OS `/audit` | `mcc-audit`, retrieval checks and findings/history | K3 | Delivered and checked |
 | AIS-OS `/level-up` | `mcc-improve`, verified repair and useful maintenance | K3 | Delivered and checked |
-| AIS-OS `/3d-brain` | `mcc-brain`, optional reference-derived local explorer | K4 | Pending |
-| Shared agent instructions and portability | Canonical skills, generated host entries and clean kit export | K1, K4 | Codex entry and canonical resources checked; K4 pending |
+| AIS-OS `/3d-brain` | `mcc-brain`, optional reference-derived local explorer | K4 | Implemented and locally exercised; see K4 evidence |
+| Shared agent instructions and portability | Canonical skills, generated host entries and clean kit export | K1, K4 | Both generated entries/resources checked; Claude execution and full K4 verification pending |
 
 ## Quality coverage and delivery mapping
 
@@ -171,8 +171,8 @@ All rows are adopted requirements. **K1–K3 deliver source registration, correc
 
 ## Execution and evidence
 
-Implement K4 next; do not initiate another requirements interview or create additional architecture phases before it. The existing documented objective is enough to begin. A missing personal destination does not block synthetic implementation and verification.
+Finish the open checks in [K4 evidence](k4-verification.md); do not initiate another requirements interview or create additional architecture phases before it. The existing documented objective is enough to begin. A missing personal destination does not block synthetic implementation and verification.
 
 For each stage, update its status here and the [handoff](handoff.md) with the delivered paths, actual commands/sessions, observed result and material gaps. Use disposable synthetic workspaces for checks. The old application's test count does not prove any row above is complete. Do not add a generic test framework or custom agent runner to perform these bounded checks.
 
-The current main tree contains the K3 kit, [K1](k1-verification.md), [K2](k2-verification.md) and [K3](k3-verification.md) practical verification, adopted scope, source review and lightweight checks. The application remains on its archive branch. K1–K3 skills were installed and exercised in disposable synthetic workspaces; no personal installation, real account connection or full K4 release is claimed. Continue K4 without reopening scope selection.
+The current main tree contains the K4 delivery candidate, [K1](k1-verification.md), [K2](k2-verification.md) and [K3](k3-verification.md) practical verification, adopted scope, source review and lightweight checks. The application remains on its archive branch. K1–K3 skills were installed and exercised in disposable synthetic workspaces; no personal installation, real account connection or full K4 release is claimed. Continue K4 without reopening scope selection.

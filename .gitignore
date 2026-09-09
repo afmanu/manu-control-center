@@ -20,3 +20,7 @@ coverage/
 *.sqlite-shm
 *.sqlite-wal
 *.db
+
+# Reviewed, prebuilt optional explorer shipped with its source and licenses.
+!kit/explorer/template/dist/
+!kit/explorer/template/dist/app.js

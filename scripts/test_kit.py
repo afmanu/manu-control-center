@@ -86,7 +86,7 @@ class KitCopyChecks(unittest.TestCase):
     def test_generated_skills_resolve_canonical_resources(self):
         self.install()
         skills = sorted((self.workspace / ".agents/skills").glob("*/SKILL.md"))
-        self.assertEqual(len(skills), 8)
+        self.assertEqual(len(skills), 9)
         for skill in skills:
             canonical = ROOT / "kit/skills" / skill.parent.name / "SKILL.md"
             expected = canonical.read_text().replace("(../../", "(../../../.mcc/kit/")
@@ -99,6 +99,37 @@ class KitCopyChecks(unittest.TestCase):
                                 capture_output=True, text=True)
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("outside the distribution", result.stderr)
+
+    def test_two_hosts_share_resources_and_preserve_entries(self):
+        self.workspace.mkdir()
+        (self.workspace / "CLAUDE.md").write_text("# Personal Claude rules\nKeep this text.\n")
+        result = subprocess.run([sys.executable, str(HELPER), str(self.workspace), "--host", "both", "--apply"], capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual((self.workspace / "CLAUDE.md").read_text(), "# Personal Claude rules\nKeep this text.\n")
+        for host in (".agents", ".claude"):
+            self.assertEqual(len(list((self.workspace / host / "skills").glob("*/SKILL.md"))), 9)
+        check = self.workspace / ".mcc/kit/scripts/check_workspace.py"
+        good = subprocess.run([sys.executable, str(check), str(self.workspace), "--host", "both"], capture_output=True, text=True)
+        self.assertEqual(good.returncode, 0, good.stdout)
+        missing = self.workspace / ".mcc/kit/templates/brief.md"
+        missing.unlink()
+        bad = subprocess.run([sys.executable, str(check), str(self.workspace), "--host", "both"], capture_output=True, text=True)
+        self.assertNotEqual(bad.returncode, 0)
+        self.assertIn("Missing resource", bad.stdout)
+        # Recovery is additive and retains the personalized host entry.
+        self.install()
+        self.assertTrue(missing.is_file())
+
+    def test_duplicate_identity_is_reported_without_mutation(self):
+        self.install()
+        duplicate = self.workspace / ".agents/skills/another-folder/SKILL.md"
+        duplicate.parent.mkdir()
+        duplicate.write_text("---\nname: mcc-project\ndescription: A conflicting local workflow.\n---\nDifferent behavior.\n")
+        before = self.snapshot()
+        result = subprocess.run([sys.executable, str(self.workspace / ".mcc/kit/scripts/check_workspace.py"), str(self.workspace)], capture_output=True, text=True)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("Ambiguous identity", result.stdout)
+        self.assertEqual(before, self.snapshot())
 
 
 if __name__ == "__main__":

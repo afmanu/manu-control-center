@@ -80,3 +80,12 @@ User-selected extensions inspect existing skills first. Keep a personal canonica
 Kit updates use the existing agent's ordinary file tools with trusted old/current/incoming comparison, recoverable copies and readable progress. Keep local-only edits and preserve both-changed conflicts for reviewed merges or explicit pending proposals. Maintain core mirrors together and retain the last completed version marker when the update is partial; record the mixed target and exact pending paths. Repeat attempts reuse the record/backups. The initial copier stays non-overwriting; no migration engine, database, runtime wrapper or maintenance service is added.
 
 [K3 evidence](k3-verification.md) records bounded actual checks and their limitations. K4 still owns release packaging, the second host, broader discovery/failure cases, the explorer and opt-in native scheduling. No private workspace, real account, schedule or archive branch is changed.
+
+
+### D41 — Package shared host entries and an optional local view
+
+Status: **implementation adopted; required execution checks open**, 2026-09-09. K4 generates Codex and Claude Code entries from nine canonical skills. Host adaptations are explicit resource-path substitutions; local diagnostics report missing resources, drift, duplicate identities and candidate scoped instructions without claiming runtime discovery from file presence.
+
+Adapt the pinned AIS-OS explorer with source notices, a prebuilt browser bundle, selected local inputs and a loopback reader. Its isolated rebuild manifest is part of the optional view, not a restoration of the archived platform. Default age hints are disabled, and structural hints are not quality verdicts. The installer activates no server or scheduler.
+
+Native scheduling stays on existing hosts. Registration, due execution, useful output and stopping are distinct evidence. Ship a candidate and preserve the open checks when authentication or execution is unavailable. See [K4 verification](k4-verification.md); do not claim full parity from this implementation alone.

@@ -8,6 +8,12 @@ K2 re-inspected AIS-OS `link` and `grill-me` and the installer's `link-finder` a
 
 K3 re-inspected AIS-OS `audit` and `level-up` at the pinned revision for evidence-backed findings and selected improvements. Its new procedures also apply the reviewed Second Brain consolidation and reusable-workflow patterns. Fixed scoring, mandatory business interviews/KPIs and framework branding are not imposed on personal work.
 
+## K4 optional explorer
+
+`explorer/template/` adapts the AIS-OS `.claude/skills/3d-brain/assets/template/` and `explorer/scaffold.mjs` adapts its scaffold script at the pinned revision above. The renderer retains the globe, growth and interaction design. Changes disable default age judgments, make structural hints scoped and non-prescriptive, remove remote font requests, handle failed note reads and reject symlink output routes. A prebuilt renderer is included alongside its maintainable source; the optional nested package/lockfile is only for rebuilding that renderer, not an AI OS runtime dependency.
+
+The original AIS-OS license is also copied into the generated view as `AIS-OS-LICENSE.txt`. Bundled third-party dependency notices are retained in `explorer/template/THIRD-PARTY-NOTICES.txt`. No user configuration, graph snapshot, notes or dependency installation is included.
+
 ## AIS-OS notice
 
 ```text
