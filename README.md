@@ -2,7 +2,7 @@
 
 A builder for AI knowledge and work systems. It creates and maintains instances with context, sources, decisions, capabilities and durable state through storage and agent adapters.
 
-**M0–M2 and M3.1–M3.6 are complete for the local profiles.** Capture sources, manage authority and complete human-reviewed meeting briefs or project status through a durable coordinator. Leases, fencing, budgets, cancellation, source invalidation and effect receipts are enforced; external delivery is simulated. Codex now synthesizes cited drafts for both workflows; conversational entry points and persisted session handoff are available; an editable operational profile and dedicated operating folder are available.
+**M0–M3 are complete for the documented local profiles.** Capture sources, manage authority and complete human-reviewed meeting briefs or project status through a durable coordinator. Leases, fencing, budgets, cancellation, source invalidation and effect receipts are enforced; external delivery is simulated. Codex now synthesizes cited drafts for both workflows; conversational entry points and persisted session handoff are available; an editable operational profile and dedicated operating folder are available.
 
 Primary repository: [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). The original repository's [MIT license](LICENSE) is preserved.
 
@@ -35,12 +35,12 @@ Entities and contracts define the core. Obsidian, files, databases, Codex, Claud
 | M0 | Complete | Executable repository, tooling and technical decisions. |
 | M1 | Complete | Contracts, reference persistence and evaluator separation. |
 | M2 | Complete | Instance creation, adoption, verification and recovery. |
-| M3 | In progress: M3.1–M3.6 complete | Codex synthesis, session handoff and continuation available; operational profiles available; first personal model use pending. |
+| M3 | Complete for the local pilot | Codex synthesis, session continuity, operational profiles and first personal draft verified; owner review of that draft remains pending. |
 | M4 | Pending | A real second backend and second runtime. |
 | M5 | Pending | Updates, repair, auditing and maintainable distribution. |
 | M6 | As needed, from M3 | Integrations, recurrence and additional interfaces. |
 
-The [roadmap](docs/implementation-plan.md) defines tasks and completion criteria. M3.7 implementation passes 258 mechanism tests and clean package installation. Actual Codex CLI runs cover both workflows, four calibrated meeting fixtures and a separate new-transcript CLI path. Model drafts retain exact citations and require owner review; deterministic checks enforce coverage and permissions. Installation tests use a declared mock, separate from real model evidence. A01, A02, A16 and A17 pass for local construction; A19 also covers scoped source and derived-knowledge retrieval; A05/A06/A22 pass for the local review profile. A15 construction verification remains foundation-scoped; runtime invocation and A27 calibration evidence are recorded separately. Fresh-session Codex retrieval and resumption are verified for the documented local profile. Operational activation is verified; the first personal model invocation awaits explicit data-transfer authorization. See [acceptance](docs/acceptance.md), [M3.7 evidence](docs/m3.7-verification.json), [runtime evaluation](docs/m3.7-runtime-evaluation.json) and the [handoff](docs/handoff.md).
+The [roadmap](docs/implementation-plan.md) defines tasks and completion criteria. M3.7 implementation passes 258 mechanism tests and clean package installation. Actual Codex CLI runs cover both workflows, four calibrated meeting fixtures and a separate new-transcript CLI path. Model drafts retain exact citations and require owner review; deterministic checks enforce coverage and permissions. Installation tests use a declared mock, separate from real model evidence. A01, A02, A16 and A17 pass for local construction; A19 also covers scoped source and derived-knowledge retrieval; A05/A06/A22 pass for the local review profile. A15 construction verification remains foundation-scoped; runtime invocation and A27 calibration evidence are recorded separately. Fresh-session Codex retrieval and resumption are verified for the documented local profile. Operational activation and the authorized first personal model invocation are verified. The saved draft remains pending owner review; its private contents stay outside the repository. See [acceptance](docs/acceptance.md), [M3.7 evidence](docs/m3.7-verification.json), [runtime evaluation](docs/m3.7-runtime-evaluation.json) and the [handoff](docs/handoff.md).
 
 ## Documentation
 

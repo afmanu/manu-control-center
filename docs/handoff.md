@@ -1,6 +1,6 @@
 # Development handoff
 
-Updated: 2026-09-09. Primary repository: [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). **M0–M2 and M3.1–M3.6 local profiles complete; M3.7 implementation and operational activation delivered; first personal model invocation awaiting authorization.**
+Updated: 2026-09-09. Primary repository: [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). **M0–M3 complete for the documented local profiles; first personal draft generated and awaiting owner review.**
 
 ## Current instruction
 
@@ -8,7 +8,7 @@ Manu requests a system he can use and has selected this repository as its destin
 
 Manu authorized the next roadmap step after the English-repository update. M3.1–M3.4 are delivered for the local human/coordinator profiles, including the explicitly authorized continuation into coordination and simulated effect control. Keep repository content in English; runtime interaction and user content may remain Spanish (D24 and [language.md](language.md)).
 
-Manu explicitly authorized M3.5 with Codex as the first agent. The runtime integration and authorized M3.6 conversational continuity are implemented and tested; M3.7 operational activation is delivered; the first personal model invocation awaits explicit data-transfer authorization.
+Manu explicitly authorized M3.5 with Codex as the first agent. The runtime integration and authorized M3.6 conversational continuity are implemented and tested; M3.7 operational activation and the explicitly authorized first personal model invocation are verified. The resulting draft awaits owner review.
 
 M3 delivers first agent use; M4 demonstrates another representation and runtime; M5 adds maintenance. Essential M6 integrations may be brought forward from M3.
 
@@ -40,13 +40,13 @@ Prepared outside the repository without replacing pre-existing files:
 - Directory: `~/Library/Application Support/manu-control-center/instances/manu`.
 - Request: `~/Library/Application Support/manu-control-center/configuration/manu.json`.
 - Original plan: `~/Library/Application Support/manu-control-center/configuration/manu-installation-plan.json`.
-- State: `verified` for configuration, catalog, project and storage; operational profile and private package are installed. Personal model invocation is not yet executed.
+- State: `verified` for configuration, catalog, project and storage; operational profile and private package are installed. The first personal project-status draft is saved and awaits owner review.
 - Operational profile: `~/Library/Application Support/manu-control-center/configuration/manu-operational.json`.
 - Operating workspace and short guide: `~/Library/Application Support/manu-control-center/workspace/START-HERE.md`.
 - Installed product: `~/Library/Application Support/manu-control-center/runtime/0.1.0-dev.10/node_modules/manu-control-center`.
 - Private activation evidence: `~/Library/Application Support/manu-control-center/verification/m3.7-activation.json`.
 
-It contains only the initial purpose of building this system. No personal sources were imported or models invoked. M3 must complete this foundation while preserving its identity/data; do not reinstall over it or assume editing the request applies a change. The local identity is initial host configuration, not account authentication. Repository translation preserves private content, including Spanish text.
+It retains the initial project fields and now contains one authorized project-status job, run and draft. No personal sources were imported. Preserve its identity/data; do not reinstall over it or assume editing the request applies a change. The local identity is initial host configuration, not account authentication. Repository translation preserves private content, including Spanish text.
 
 ## Evidence
 
@@ -144,15 +144,17 @@ The packaged Codex skill under `.agents/skills/manu-control-center` routes captu
 
 The conversational agent is a trusted shell-capable CLI host, distinct from the restricted M3.5 inference subprocess. Its skill does not confine host tools. The public evidence records hashes and English summaries; unchanged Spanish test interactions remain in explicit locale evidence. Personal user approval is not implied. Manu's foundation, original request/plan/catalog, database bytes and directory entries remain unchanged; personal activation is M3.7. [Guide](sessions.md), [verification](m3.6-verification.json), [actual results](m3.6-runtime-evaluation.json).
 
-## M3.7 implementation and activation
+## M3.7 first use completed for the local pilot
 
 `profile-create`, `profile-inspect`, `profile-workspace` and `use` bind an existing foundation to a separate editable operational profile. Identity and exact request bytes are checked before every operation. Profile creation publishes complete bytes without replacement; identical races replay. Existing workspaces and user edits are not overwritten. The generated launcher and copied skill use the installed package without global PATH or skill changes. Profile fields select language/model but never grant approval or source access. [Guide](first-use.md), [verification](m3.7-verification.json).
 
 258 tests and clean installed-package checks pass. Both synthetic workflows ran with Codex through the profile and completed after independent build-agent inspection and synthetic test-owner approval. A fresh Codex session found its profile from generated workspace instructions alone. Initial presentation failures were retained and corrected; the later answer used complete hashes and distinguished current approval from historical evaluation metadata. [Synthetic evaluation](m3.7-runtime-evaluation.json).
 
-Manu's versioned private package, operational profile (Spanish presentation, gpt-5.6-sol) and dedicated operating folder are installed. Original request, plan and database bytes remain unchanged. No sources or execution records were added to the personal instance. The operating folder can already retrieve the project with `node mcc.mjs session`; source ingestion is explicit only.
+Manu's versioned private package, operational profile (Spanish presentation, gpt-5.6-sol) and dedicated operating folder are installed. Installation preserved the original request, plan and database bytes. Subsequent authorized first use added one job, run and draft; original request/plan bytes and project fields remain unchanged. No personal sources were imported. The operating folder can already retrieve the project with `node mcc.mjs session`; source ingestion is explicit only.
 
-The attempted first personal project-status invocation was rejected before process execution by automatic permission review. It required explicit authorization to transmit the existing purpose, status, responsible identity and next action to Codex and save a draft. The user has been asked for that specific authorization; do not work around the rejection. On approval, use the installed profile to submit `first-use-project-status-2026-09-09`, advance inference and preparation, inspect the exact draft, and leave owner acceptance as a separate step unless explicitly supplied. Do not infer personal approval from synthetic checks.
+The attempted first personal project-status invocation was rejected before process execution by automatic permission review. It required explicit authorization to transmit the existing purpose, status, responsible identity and next action to Codex and save a draft. Manu subsequently supplied that explicit authorization. The installed profile submitted `first-use-project-status-2026-09-09` and advanced inference and preparation once. All three generated statements were compared with the exact project evidence and found supported; no next action was invented. A fresh CLI session recovered the unchanged draft and its `waiting_input` run with no recorded owner review. Data-transfer authorization does not approve this artifact. Do not regenerate it or infer acceptance from build-agent inspection.
+
+Private files: `workspace/first-project-status.json` (exact artifact), `workspace/first-project-status-run.json` (execution snapshot), and `verification/m3.7-first-use.json` (inspection evidence), under the existing private root. Public evidence includes only non-content checks. The activation report remains the historical pre-invocation snapshot; original M2 verification is still foundation-scoped.
 
 The public report records implementation, synthetic verification and non-content activation checks. Private activation evidence identifies installed paths and tarball hash; the installed package's code/skill match this implementation, while repository evidence is updated after activation. No npm publication, personal source import, real external delivery or second runtime is claimed.
 
@@ -168,11 +170,11 @@ The public report records implementation, synthetic verification and non-content
 
 D20–D31 record these choices, initial deployment and language policy in [decisions.md](decisions.md).
 
-## Next work: finish M3.7 personal invocation
+## Next work: M4 and optional personal draft review
 
-1. Resolve the specific pending data-transfer authorization. The installed profile/workspace and synthetic checks are ready; do not reinstall the foundation.
-2. If authorized, prepare the first personal status draft from existing project metadata only, verify its evidence and present it for exact owner review.
-3. Record actual personal runtime evidence separately from original construction verification. Then M4 begins with the second representation/backend; do not claim second-runtime portability yet.
+1. M3.7 first use is verified. Continue development with M4, starting with the second representation/backend; do not claim second-runtime portability yet.
+2. The saved personal draft awaits exact owner review. If requested, read its current record and evidence before recording acceptance; do not treat authorization to generate it as approval.
+3. Preserve the existing foundation, operational profile and private execution history. No reinstallation or repeat inference is needed for review.
 
 At session completion, record the phase, actual commands, results and limits; update handoff, decisions and evidence, and regenerate the documentation inventory. Keep user knowledge and instance state outside the distribution.
 

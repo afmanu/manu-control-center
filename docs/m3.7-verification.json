@@ -1,6 +1,6 @@
 {
   "milestone": "M3.7",
-  "status": "implementation_and_activation_verified_personal_runtime_pending",
+  "status": "passed_local_pilot_personal_draft_waiting_owner_review",
   "date": "2026-09-09",
   "package_version": "0.1.0-dev.10",
   "baseline_commit": "fd50d04607d19503e602c0786312af87b656865e",
@@ -53,9 +53,9 @@
       "scope": "Original request, saved plan, instance database bytes and instance directory entries retained; copied code/skill match the checked implementation"
     },
     {
-      "command": "Generate first personal project-status draft through the installed profile",
-      "status": "not_executed_permission_required",
-      "scope": "Automatic permission review rejected the attempted process before execution and required specific authorization to send existing project metadata to Codex. User approval was requested; no personal source, job, run or artifact was created."
+      "command": "Generate first personal project-status draft through the installed profile; read session from a fresh CLI process",
+      "status": "passed",
+      "scope": "Explicit user authorization resolved the initial permission block. One actual Codex invocation created one draft; exact bytes and pending owner review were recovered in a fresh CLI process. No personal sources were imported or artifact approved."
     }
   ],
   "actual_synthetic_evaluation": {
@@ -82,7 +82,8 @@
     "personal_runtime_invoked": false,
     "private_evidence": "verification/m3.7-activation.json under the existing private data directory",
     "installed_profile_code_matches_checkout": true,
-    "installed_skill_matches_checkout": true
+    "installed_skill_matches_checkout": true,
+    "scope": "Historical activation snapshot before the separately authorized personal invocation"
   },
   "original_foundation_regression": {
     "ok": true,
@@ -95,13 +96,14 @@
     "no_sources_claims_decisions_artifacts_jobs_runs_actions": true,
     "english_spanish_context_equal": true,
     "runtime_invoked": false,
-    "verification_retained": true
+    "verification_retained": true,
+    "timing": "Before personal first use; later authorized execution intentionally changes database bytes"
   },
   "acceptance_scope": {
     "A01_A02_A16_A17": "Existing foundation identity, original catalog/plan and persistence retained; operational files are separate host configuration",
     "A03_A26": "Profile-bound synthetic workflows and a new Codex session retrieve context/results through generated workspace instructions",
     "A19": "Each profile command revalidates owner, original request bytes and matching instance/project; existing coordinator and source permissions remain authoritative",
-    "personal_first_use": "Workspace retrieval is usable; actual personal model invocation awaits the specific data-transfer authorization"
+    "personal_first_use": "Authorized actual invocation through the installed profile, semantic inspection against exact project fields, and fresh-process retrieval of unchanged draft; owner acceptance remains pending."
   },
   "limitations": [
     "Profile and shell-capable operating agent are trusted host configuration, not a sandbox or new grant.",
@@ -216,5 +218,32 @@
     "tests/storage.test.ts": "a411821197a4904bc3bf703eefbd7cf82099b8682005802bb519ed4af67f10fd",
     "tests/workflows.test.ts": "ada1fbdfa2b08fc78869a7c1532d4b4417b3b1afd5adab7e4000b410d3e207ab",
     "tsconfig.json": "43c235c4f86ff3110e8265f3ad6be77b3af5aaa608abcb3be2b4b5039f5fd70d"
+  },
+  "personal_first_use": {
+    "status": "passed_draft_waiting_owner_review",
+    "requested_model": "gpt-5.6-sol",
+    "cli_version": "codex-cli 0.146.0",
+    "artifact_status": "draft",
+    "run_status": "waiting_input",
+    "owner_review_recorded": false,
+    "original_request_and_plan_bytes_unchanged": true,
+    "project_ref_and_fields_unchanged": true,
+    "database_changed_for_authorized_execution": true,
+    "fresh_cli_session_recovers_exact_draft": true,
+    "read_only_session_database_bytes_unchanged": true,
+    "personal_sources_imported": 0,
+    "jobs": 1,
+    "runs": 1,
+    "artifacts": 1,
+    "tools_observed": 0,
+    "semantic_inspection": {
+      "reviewer": "build_agent",
+      "supported_statements": 3,
+      "unsupported_factual_assertions": 0,
+      "scope": "Compared each statement to the exact project evidence; the missing next action is an observation, not an assigned task.",
+      "owner_acceptance_implied": false
+    },
+    "external_delivery": false,
+    "private_evidence": "verification/m3.7-first-use.json under the existing private data directory"
   }
 }
