@@ -41,6 +41,8 @@ The M3.1 [knowledge guide](knowledge.md) covers capture, source/history retrieva
 
 ## Library and schemas
 
+M4.1 adds `DocumentBackend` at `manu-control-center/documents`. Run `node examples/document-demo.mjs` after building. See the [document guide](document-backend.md) for representation, access, commit boundaries and the explicit lack of coordinator/transfer wiring. The installed personal instance continues using its existing versioned SQLite package.
+
 The package exports the core from `manu-control-center`, the backend from `manu-control-center/sqlite`, the harness from `manu-control-center/evals`, the resolver from `manu-control-center/builder` and local construction from `manu-control-center/local`. M3.1 adds the local knowledge entry points at `manu-control-center/knowledge` and `SqliteKnowledgeBackend` at `manu-control-center/sqlite-knowledge`; see [API and limits](knowledge.md). M3.2 exports local review at `manu-control-center/review` and `SqliteReviewBackend` at `manu-control-center/sqlite-review`. M3.3 exports local workflows at `manu-control-center/workflows`, `SqliteWorkflowBackend` at `manu-control-center/sqlite-workflows`, and neutral workflow types/definitions from the core. M3.4 exports `manu-control-center/coordinator`, `manu-control-center/sqlite-coordinator` and the identified `manu-control-center/simulated-mailbox` target. JavaScript example for a consumer with the package installed:
 
 ```js

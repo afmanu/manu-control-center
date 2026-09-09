@@ -3,9 +3,9 @@
   "format_version": 1,
   "scope": "Repository documentation and schemas; excludes code, dependencies and its own hash. This is not an instance manifest.",
   "validation": {
-    "internal_markdown_links": 369,
+    "internal_markdown_links": 385,
     "markdown_fences": "passed",
-    "json_parse": 32,
+    "json_parse": 33,
     "components": 30,
     "acceptance_scenarios": 27,
     "roadmap_phases": 7
@@ -38,18 +38,18 @@
     },
     {
       "path": "README.md",
-      "bytes": 6607,
-      "sha256": "d58a2a1248ff01a2cef53d2300892655821b481e5ec6032a58612404baddf002"
+      "bytes": 6773,
+      "sha256": "0661225f6b8bb583f6b8e78a0dd5be3ce5354468d9270870677d6323ad039e59"
     },
     {
       "path": "START-HERE.md",
-      "bytes": 2653,
-      "sha256": "881d0ac6c1f0c4a0c57f02766cd6330c82be837c6edc270cf0f5583352ebf9ab"
+      "bytes": 2873,
+      "sha256": "a0b344e9ef698b3c06fd67ea3514d193b9eb9379f37ce79fd5877ab651b72680"
     },
     {
       "path": "docs/acceptance.md",
-      "bytes": 13425,
-      "sha256": "ad2d6d1491b0b9ab5434f7b3d3b037e88de890d03da9e24d680d15c6f8a7cad5"
+      "bytes": 14011,
+      "sha256": "1226f819229bca9e533127a59536655e119e73ad833bcd063a0053eedcd04868"
     },
     {
       "path": "docs/architecture.md",
@@ -78,13 +78,18 @@
     },
     {
       "path": "docs/decisions.md",
-      "bytes": 46502,
-      "sha256": "db947659adc1fad252d071c304e31bfe0eb22f0c2d3026cedc259194b7f2c659"
+      "bytes": 49422,
+      "sha256": "33769410de718963feeb34bc6cc0c7c43dd84c196e99456e63c3c1172a6f1339"
     },
     {
       "path": "docs/development.md",
-      "bytes": 11677,
-      "sha256": "0c4dd2eec110f31188f74a5a750f6bcfab0528e6324df3333af35ee761337111"
+      "bytes": 12029,
+      "sha256": "e73229706c5720cbb480d70156d32445675072f5a8f6f80169ad81c9e83eaff7"
+    },
+    {
+      "path": "docs/document-backend.md",
+      "bytes": 7699,
+      "sha256": "77c16f9902b4dd37a2a341f791c4a0c9b020d23df73db938388f1d850bbce435"
     },
     {
       "path": "docs/execution.md",
@@ -103,13 +108,13 @@
     },
     {
       "path": "docs/handoff.md",
-      "bytes": 32325,
-      "sha256": "1304307fae52c0f517005d022baa53a9feed65623747e57aaceebb5472c990a5"
+      "bytes": 34482,
+      "sha256": "b66206d4ba6e82336c8e2905a3776425f93bf5dedb4bb98c2969048dba92339c"
     },
     {
       "path": "docs/implementation-plan.md",
-      "bytes": 24992,
-      "sha256": "1a4b899b1490c569f5c9b769602465a32672b0a54d40a96bd26df82a4485cd4d"
+      "bytes": 25810,
+      "sha256": "a51f9ba2414a4488fb0f00b0c1e949ad3ad37921db3d3c63f765119e4dd89d66"
     },
     {
       "path": "docs/installation.md",
@@ -212,6 +217,11 @@
       "sha256": "01e051935d192626945113a1d4e528c949678ce25c5f5690ddd3a45769ac3de0"
     },
     {
+      "path": "docs/m4.1-verification.json",
+      "bytes": 5360,
+      "sha256": "e3bb1874c79600b8cbf80089e6972881e59c75dd78912a735c30e138b15f381d"
+    },
+    {
       "path": "docs/review.md",
       "bytes": 13765,
       "sha256": "85c3ec79e4d9b7222f25afe15ba1fa542f751ff34769cb0b8d56a0e3a27a0a10"
@@ -228,8 +238,8 @@
     },
     {
       "path": "examples/README.md",
-      "bytes": 2009,
-      "sha256": "4ebfb97702a3a1ba147074ca418a29fb90008578915b68a4da195b717210d119"
+      "bytes": 2151,
+      "sha256": "cb8d73813a3fe9d36cd4bd365c506dc98edd4780f710c8505e23b75809ea186b"
     },
     {
       "path": "examples/agent-demo.mjs",
@@ -265,6 +275,11 @@
       "path": "examples/coordinator-demo.mjs",
       "bytes": 4853,
       "sha256": "2919840a0517d2d94a57fd7dced4842ec44b567a86f7f1e602f3388c411c1bb6"
+    },
+    {
+      "path": "examples/document-demo.mjs",
+      "bytes": 2079,
+      "sha256": "1995e40a556959454fa74a95d4b824d26473b7d08e53d2abf3c16d777c99f637"
     },
     {
       "path": "examples/injected-source.json",

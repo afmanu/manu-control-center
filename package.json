@@ -1,6 +1,6 @@
 {
   "name": "manu-control-center",
-  "version": "0.1.0-dev.10",
+  "version": "0.1.0-dev.11",
   "private": true,
   "description": "Portable builder for AI knowledge and work systems.",
   "type": "module",
@@ -34,7 +34,8 @@
     "./codex": "./dist/adapters/runtimes/codex.js",
     "./session": "./dist/adapters/interfaces/local/session.js",
     "./sqlite-session": "./dist/adapters/backends/sqlite/session.js",
-    "./profile": "./dist/adapters/interfaces/local/profile.js"
+    "./profile": "./dist/adapters/interfaces/local/profile.js",
+    "./documents": "./dist/adapters/backends/documents/store.js"
   },
   "types": "dist/core/index.d.ts",
   "files": [

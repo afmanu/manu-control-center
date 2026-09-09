@@ -83,3 +83,7 @@ A03/A26 pass for the documented local Codex session profile: a history-free real
 ## M3.7 implementation and activation evidence
 
 The operational profile and workspace preserve A01/A02/A16/A17 foundation identity/history and add a usable host binding for the A03/A26 session path. Synthetic capture, both actual Codex workflows, independent review and a new workspace-only session pass for this profile. No broader migration, global installation or external delivery is implied. Manu's original request, plan and database bytes were preserved during activation; the proposed personal model invocation did not execute because automatic permission review required explicit data-transfer authorization. That evidence remains pending independently of the implementation and synthetic tests. [First use](first-use.md), [verification](m3.7-verification.json).
+
+## M4.1 document profile
+
+A19's entity scope is verified by the same 13 backend scenarios on SQLite and JSON documents, including current access for historical reads, filtered pagination, grants, exact artifacts and conditional-writer races. The physical document representation and interrupted publication have separate tests. This is a library-level backend: constructor/runtime combinations under A15 and A07/A12/A24/A25 portability remain pending. Storage of execution records does not enable a second coordinator. [Guide](document-backend.md), [evidence](m4.1-verification.json).

@@ -1,6 +1,6 @@
 # Implementation roadmap
 
-Updated: 2026-09-09. **Status: M0–M3 complete for the documented local profiles; the first personal draft awaits owner review; M4–M6 pending.** Development in [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). Identifiers remain stable for architecture/component/acceptance traceability. [M2 evidence](m2-verification.json) and the [handoff](handoff.md) record current scope; historical [M0](m0-verification.json) and [M1](m1-verification.json) evidence is preserved.
+Updated: 2026-09-09. **Status: M0–M3 complete for the documented local profiles; the first personal draft awaits owner review; M4.1 complete for the document library profile; M4.2–M4.5 and M5–M6 pending.** Development in [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). Identifiers remain stable for architecture/component/acceptance traceability. [M2 evidence](m2-verification.json) and the [handoff](handoff.md) record current scope; historical [M0](m0-verification.json) and [M1](m1-verification.json) evidence is preserved.
 
 ## Intended delivery
 
@@ -129,6 +129,8 @@ Work, in order:
 4. **M4.4 · Second runtime.** Execute the same contract in another real environment; interrupt work in the first and resume in the second after revalidating inputs, permissions, versions and effects.
 5. **M4.5 · Compatibility matrix.** Record runtime/backend/version combinations, executed scenarios, evidence and limits. Test every declared supported combination; do not infer all combinations from one working pair.
 
+**M4.1 complete for the document library profile:** versioned JSON documents with a single atomically published index, shared record policy with SQLite, and the same scoped backend scenarios on both representations. Operational authority remains in the existing SQLite coordinator; document storage does not implicitly activate a destination. Conditional-writer races, malformed files and actual process exits are tested. The public library and installed example expose the bounded document profile. [Guide](document-backend.md), [D32](decisions.md), [evidence](m4.1-verification.json). Export/import and safe transfer remain separate next steps.
+
 **Completion:** A07, A12, A24 and A25 pass; A15/A19 pass in each declared combination. Accepted results/confirmed effects are not repeated. A missing dependency prevents the affected step from resuming with a readable error, without silent substitution.
 
 **Delivery:** verified export/import and demonstrated continuity with two representations and two real runtimes. If a target is inaccessible, finish independent work and leave that compatibility pending.
@@ -183,4 +185,4 @@ Add code when it has useful behavior: `core` defines contracts; `builder`, `life
 
 Each completion updates [handoff.md](handoff.md) with version/commit if available, completed tasks, actual commands, results, evidence, limits, decisions and next task. A phase may be pending, in progress, partially verified or complete. Completion requires all applicable criteria to pass; a simulation never proves a real integration.
 
-**Next development milestone: M4, second representation/backend.** M3.7 first use is verified. The existing personal draft remains available for exact owner review; do not regenerate or approve it without that instruction. Preserve the installed foundation and private state. Keep the repository in English (D24).
+**Next development milestone: M4.2, export/import.** M4.1 adds the local document adapter and shared entity/access/revision suite; it does not enable destination execution. M3.7 first use is verified. The existing personal draft remains available for exact owner review; do not regenerate or approve it without that instruction. Preserve the installed foundation and private state. Keep the repository in English (D24).

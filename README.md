@@ -36,7 +36,7 @@ Entities and contracts define the core. Obsidian, files, databases, Codex, Claud
 | M1 | Complete | Contracts, reference persistence and evaluator separation. |
 | M2 | Complete | Instance creation, adoption, verification and recovery. |
 | M3 | Complete for the local pilot | Codex synthesis, session continuity, operational profiles and first personal draft verified; owner review of that draft remains pending. |
-| M4 | Pending | A real second backend and second runtime. |
+| M4 | In progress: M4.1 complete for the document library profile | Document backend available; export/import, safe transfer and a second runtime remain pending. |
 | M5 | Pending | Updates, repair, auditing and maintainable distribution. |
 | M6 | As needed, from M3 | Integrations, recurrence and additional interfaces. |
 
@@ -44,6 +44,7 @@ The [roadmap](docs/implementation-plan.md) defines tasks and completion criteria
 
 ## Documentation
 
+- [Use the local document backend](docs/document-backend.md).
 - [Connect an existing instance for first use](docs/first-use.md).
 - [Open and resume an instance session](docs/sessions.md).
 - [Capture text/files and query sources](docs/knowledge.md).
@@ -63,6 +64,6 @@ The [roadmap](docs/implementation-plan.md) defines tasks and completion criteria
 
 ## Status and distribution
 
-`0.1.0-dev.10` is a development release with npm publication disabled. The `foundation` profile installs storage, configuration and a project; its `verified` state certifies that scope. Operational profiles can connect existing instances without replacing their construction plans. `node:sqlite` emits an experimental warning in the pinned Node version. Codex CLI 0.146.0 is tested for the documented synthesis profile; Claude Code remains the second-runtime candidate.
+`0.1.0-dev.11` is a development release with npm publication disabled. The `foundation` profile installs storage, configuration and a project; its `verified` state certifies that scope. Operational profiles can connect existing instances without replacing their construction plans. `node:sqlite` emits an experimental warning in the pinned Node version. Codex CLI 0.146.0 is tested for the documented synthesis profile; Claude Code remains the second-runtime candidate.
 
 Private data and secrets stay outside Git and the package. Sources were integrated from the earlier documentation folder; subsequent decisions and implementation changes are maintained in this repository.

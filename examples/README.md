@@ -2,6 +2,7 @@
 
 These files are test/design data; they contain no user-instance data. Maintained examples use English. Runtime user content may use Spanish or another language without translation by the persistence layer.
 
+- [Document backend demo](document-demo.mjs): run after building to verify scoped document persistence and history in a disposable directory.
 - [Installation request](install-request.json): executable M2 constructor input; create a synthetic instance with the [installation guide](../docs/installation.md).
 - [Minimal metadata](record-envelope.json): M0 fixture checked with `validate-record`.
 - [Valid contracts](contracts/valid.json): one example for each of the 22 contracts. Tests validate members individually; fixed revisions are not already-persisted records.

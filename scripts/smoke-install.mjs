@@ -35,6 +35,9 @@ try {
   assert.equal(JSON.parse(run(process.execPath, [cli, 'validate-bundle', join(installed, 'examples', 'contracts', 'construction-bundle.json')], consumer)).ok, true);
   assert.equal(JSON.parse(run(process.execPath, [cli, 'validate', 'eval_fixture', join(installed, 'examples', 'meeting.json')], consumer)).ok, true);
   run(process.execPath, ['--input-type=module', '-e', "import {assertContract} from 'manu-control-center'; import {SqliteBackend} from 'manu-control-center/sqlite'; import {prepareEvalInput} from 'manu-control-center/evals'; if(typeof assertContract!=='function'||typeof prepareEvalInput!=='function')throw new Error('Missing public exports'); const store=new SqliteBackend(':memory:'); store.close();"], consumer);
+  run(process.execPath, ['--input-type=module', '-e', "import {DocumentBackend} from 'manu-control-center/documents'; if(typeof DocumentBackend!=='function')throw new Error('Missing document export');"], consumer);
+  const documentDemo = JSON.parse(run(process.execPath, [join(installed, 'examples', 'document-demo.mjs')], consumer));
+  assert.equal(documentDemo.ok, true); assert.equal(documentDemo.document_representation, true); assert.equal(documentDemo.exact_historical_read, true);
   const instance = join(temporary, 'installed-instance');
   const request = join(installed, 'examples', 'install-request.json');
   const created = JSON.parse(run(process.execPath, [cli, 'create', request, instance, '--actor', 'local-user'], consumer));
@@ -79,7 +82,7 @@ try {
   if (process.platform !== 'win32') {
     assert.equal(run(join(consumer, 'node_modules', '.bin', 'manu-control-center'), ['--version'], consumer).trim(), version);
   }
-  process.stdout.write(JSON.stringify({ ok: true, clean_source_install: true, source_tests: true, packed_cli_install: true, packed_instance_create_verify: true, packed_knowledge_capture_query: true, packed_authority_time_review: true, packed_local_human_workflows: true, packed_coordinator_and_simulated_effects: true, packed_agent_contracts_with_mock: true, packed_session_continuity: true, packed_operational_profile: true, version }) + '\n');
+  process.stdout.write(JSON.stringify({ ok: true, clean_source_install: true, source_tests: true, packed_cli_install: true, packed_instance_create_verify: true, packed_knowledge_capture_query: true, packed_authority_time_review: true, packed_local_human_workflows: true, packed_coordinator_and_simulated_effects: true, packed_agent_contracts_with_mock: true, packed_session_continuity: true, packed_operational_profile: true, packed_document_backend: true, version }) + '\n');
 } catch (error) {
   process.stderr.write(error.stdout?.toString() ?? '');
   process.stderr.write(error.stderr?.toString() ?? '');

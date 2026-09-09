@@ -1,6 +1,6 @@
 # Development handoff
 
-Updated: 2026-09-09. Primary repository: [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). **M0–M3 complete for the documented local profiles; first personal draft generated and awaiting owner review.**
+Updated: 2026-09-09. Primary repository: [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). **M0–M3 complete for the documented local profiles; M4.1 document backend verified; M4.2 export/import next. The first personal draft still awaits owner review.**
 
 ## Current instruction
 
@@ -14,7 +14,7 @@ M3 delivers first agent use; M4 demonstrates another representation and runtime;
 
 ## Executable status
 
-Private package `manu-control-center@0.1.0-dev.10`, TypeScript/Node 24, exact dependencies and a lockfile. M3.2 adds no dependencies or database migration. Claim validity is an optional draft-schema addition; prior records remain readable. The 22 M1 contracts, SQLite backend with access/revisions/history, and A27 harness remain in place.
+Private development package `manu-control-center@0.1.0-dev.11`, TypeScript/Node 24, exact dependencies and a lockfile. M3.2 adds no dependencies or database migration. Claim validity is an optional draft-schema addition; prior records remain readable. The 22 M1 contracts, SQLite backend with access/revisions/history, and A27 harness remain in place.
 
 M2 adds the `project-knowledge-foundation@0.1.0-draft` catalog, two modules, validated request, resolver and reproducible plan. The adapter checks the real backend in disposable databases, inspects destinations without writes, and applies operations with atomic checkpoints. Adoption reuses MCC SQLite projects with pinned revisions and ownership, preserving content/history.
 
@@ -158,6 +158,16 @@ Private files: `workspace/first-project-status.json` (exact artifact), `workspac
 
 The public report records implementation, synthetic verification and non-content activation checks. Private activation evidence identifies installed paths and tarball hash; the installed package's code/skill match this implementation, while repository evidence is updated after activation. No npm publication, personal source import, real external delivery or second runtime is claimed.
 
+## M4.1 second representation
+
+`DocumentBackend` is exported at `manu-control-center/documents`; `node examples/document-demo.mjs` demonstrates creation, conditional update, exact history, scoped query and physical JSON persistence after reopening. Shared `RecordPolicy` contains the existing domain guards; the SQLite coordinator and higher-level adapters retain their transactions and SQL behavior. No core schema, dependency, database migration or installed personal package was changed.
+
+Each entity revision is a separate JSON document selected by its exact-byte SHA-256. HEAD identifies the current revision and full retained history. Writers serialize through exclusive local directory creation and publish a new HEAD by atomic rename. Current access, revision, grants and references are checked against the locked snapshot. Readers resolve one HEAD without taking the writer lock. A process exit retains an abandoned lock rather than allowing a second writer to infer ownership; reads remain usable. There is no automatic lock repair, orphan cleanup, multi-host guarantee or general power-loss guarantee.
+
+279 tests pass in the local development suite, including 13 shared scenarios for each backend and seven document-specific scenarios. The public adapter and example are checked from a clean tarball. [Guide](document-backend.md) and [evidence](m4.1-verification.json) record commands and final results, including any limitations. All new material is synthetic; the existing personal request, plan, profile, database and draft remain outside this work.
+
+M4.1 is a library-level backend profile, not another working constructor/coordinator target. The current SQLite store remains the sole operational authority. Document storage supports the generic record contract but does not receive or execute existing jobs. M4.2 must add exact export/import and dependency handling; M4.3 must establish migration/copy/restore authority before destination execution. A07/A12/A24/A25 and the second runtime are not yet verified.
+
 ## Boundaries M3 must preserve
 
 - The host authenticates and sets `AccessScope`, `can_authorize` and construction authority. These arguments never come from sources or LLM responses. The CLI is a trusted local host without remote authentication.
@@ -168,11 +178,11 @@ The public report records implementation, synthetic verification and non-content
 - Replanning does not change ownership or overwrite different managed configurations. M3 must explicitly define any foundation evolution needed to activate capabilities; M5 expands general maintenance.
 - `node:sqlite` emits an experimental warning in Node 24.14.1. Other platforms' path rules do not prove compatibility: local evidence is macOS; CI records its own runs.
 
-D20–D31 record these choices, initial deployment and language policy in [decisions.md](decisions.md).
+D20–D32 record these choices, initial deployment and language policy in [decisions.md](decisions.md).
 
-## Next work: M4 and optional personal draft review
+## Next work: M4.2 and optional personal draft review
 
-1. M3.7 first use is verified. Continue development with M4, starting with the second representation/backend; do not claim second-runtime portability yet.
+1. M3.7 first use is verified. M4.1 adds the second representation; continue with M4.2 export/import, then M4.3 safe transfer and M4.4 second-runtime handoff. Do not claim those combinations before actual verification.
 2. The saved personal draft awaits exact owner review. If requested, read its current record and evidence before recording acceptance; do not treat authorization to generate it as approval.
 3. Preserve the existing foundation, operational profile and private execution history. No reinstallation or repeat inference is needed for review.
 
