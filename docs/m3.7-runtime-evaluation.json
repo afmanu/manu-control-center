@@ -1,0 +1,193 @@
+{
+  "milestone": "M3.7",
+  "date": "2026-09-09",
+  "scope": "Actual Codex synthesis through a synthetic operational profile, followed by independent synthetic review and fresh-session retrieval from the generated operating workspace.",
+  "status": "passed_synthetic",
+  "requested_model": "gpt-5.6-sol",
+  "cli_version": "0.146.0",
+  "cases": [
+    {
+      "workflow": "meeting-to-brief",
+      "output": {
+        "classifications": [
+          {
+            "category": "proposal",
+            "quote": "A prototype is proposed;",
+            "segment_id": "body"
+          },
+          {
+            "category": "open_question",
+            "quote": " no delivery date has been agreed.",
+            "segment_id": "body"
+          }
+        ],
+        "statements": [
+          {
+            "evidence_ids": [
+              "source-0"
+            ],
+            "text": "A prototype has been proposed, but no delivery date has been agreed."
+          }
+        ]
+      },
+      "runtime_metadata": {
+        "adapter": "0.146.0-mcc.1",
+        "cli_version": "codex-cli 0.146.0",
+        "context_hash": "e171e5f7a386b44f0b97d104f1e66828d314f945b6ab4f15edd5004779f0a4e2",
+        "cost": null,
+        "elapsed_ms": 9069,
+        "ephemeral": true,
+        "ignored_user_config": true,
+        "model_selection": "explicit_host",
+        "policy_sha256": "e9909a443c6057ec62e49dacf03b123ad1cd5cc734d92d8484d252df6ccc78c1",
+        "prompt_sha256": "aa205e175fc7dbe9dccf2ac7d5193df592e39e44733998967039bd53d01b0752",
+        "requested_model": "gpt-5.6-sol",
+        "sandbox": "read-only",
+        "schema_sha256": "767e13bbabeb4c9d3575dfdd6d05507b832bcb0a58665731a6086d8a55caefee",
+        "tools_observed": 0,
+        "usage": {
+          "cache_write_input_tokens": 0,
+          "cached_input_tokens": 0,
+          "input_tokens": 7307,
+          "output_tokens": 82,
+          "reasoning_output_tokens": 0
+        }
+      },
+      "evidence": [
+        {
+          "id": "project",
+          "ref": {
+            "id": "demo-project",
+            "revision": "4ba99262-2306-4927-ac31-af683394b376"
+          },
+          "text": "{\"purpose\":\"Synthetic project for installation verification\",\"status\":\"active\",\"responsible\":\"local-user\",\"next_action\":null}"
+        },
+        {
+          "id": "source-0",
+          "ref": {
+            "id": "meeting",
+            "revision": "d3e01f06-e3e4-4817-ab7f-fd423e417976"
+          },
+          "text": "A prototype is proposed; no delivery date has been agreed."
+        }
+      ],
+      "artifact_hash": "c6a0c14f4995f8ba4418247cb70ed44e1c5198014dde0dac48d3ec9b4bcd5f2a",
+      "status": "succeeded",
+      "approved_bytes_unchanged": true,
+      "earlier_succeeded_steps_unchanged": true,
+      "review": "Independent build-agent inspection followed by synthetic test-owner approval; no personal approval is implied."
+    },
+    {
+      "workflow": "project-status",
+      "output": {
+        "classifications": [],
+        "statements": [
+          {
+            "evidence_ids": [
+              "project"
+            ],
+            "text": "The project is described as a synthetic project for installation verification and is reported as active, with local-user listed as responsible."
+          },
+          {
+            "evidence_ids": [
+              "project"
+            ],
+            "text": "No next action is recorded; this is a gap in the project status."
+          }
+        ]
+      },
+      "runtime_metadata": {
+        "adapter": "0.146.0-mcc.1",
+        "cli_version": "codex-cli 0.146.0",
+        "context_hash": "d987fcb6b6dcf9b02584f52fdef3107b1a0a1e0b0a37634bd2ab604353e4f17f",
+        "cost": null,
+        "elapsed_ms": 6214,
+        "ephemeral": true,
+        "ignored_user_config": true,
+        "model_selection": "explicit_host",
+        "policy_sha256": "e9909a443c6057ec62e49dacf03b123ad1cd5cc734d92d8484d252df6ccc78c1",
+        "prompt_sha256": "aa205e175fc7dbe9dccf2ac7d5193df592e39e44733998967039bd53d01b0752",
+        "requested_model": "gpt-5.6-sol",
+        "sandbox": "read-only",
+        "schema_sha256": "767e13bbabeb4c9d3575dfdd6d05507b832bcb0a58665731a6086d8a55caefee",
+        "tools_observed": 0,
+        "usage": {
+          "cache_write_input_tokens": 0,
+          "cached_input_tokens": 0,
+          "input_tokens": 7198,
+          "output_tokens": 77,
+          "reasoning_output_tokens": 0
+        }
+      },
+      "evidence": [
+        {
+          "id": "project",
+          "ref": {
+            "id": "demo-project",
+            "revision": "4ba99262-2306-4927-ac31-af683394b376"
+          },
+          "text": "{\"purpose\":\"Synthetic project for installation verification\",\"status\":\"active\",\"responsible\":\"local-user\",\"next_action\":null}"
+        }
+      ],
+      "artifact_hash": "76275a52b86dae9fa694c3d9d602524a1360356821b9696d25affb05e21ad9f7",
+      "status": "succeeded",
+      "approved_bytes_unchanged": true,
+      "earlier_succeeded_steps_unchanged": true,
+      "review": "Independent build-agent inspection followed by synthetic test-owner approval; no personal approval is implied."
+    }
+  ],
+  "fresh_session": {
+    "thread_id": "01a08544-89eb-7cd1-8ae0-acb44ca796ca",
+    "history_supplied": false,
+    "binding_in_prompt": false,
+    "workspace_instructions_sha256": "ca2a2fc631810755908bca45347383d78be3eeb59f622b8431e1b2ee6c5e1113",
+    "skill_sha256": "8b223b008a8f8421ed91b4f29e4dc1312a45e4a753fee436291d0dd5433a699a",
+    "events_sha256": "2499d76296ed1b9dde6397b5650fa7e59e84e099fb88129d96728f55fc64e791",
+    "answer_sha256": "92d8b3eace7d5434db716e07f5b722946b8e9610623e5b6c8ed3ad42550aeff8",
+    "usage": {
+      "input_tokens": 31329,
+      "cached_input_tokens": 7424,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 921,
+      "reasoning_output_tokens": 51
+    },
+    "commands": [
+      {
+        "command": "/bin/zsh -lc \"sed -n '1,240p' .agents/skills/manu-control-center/SKILL.md\"",
+        "exit_code": 0
+      },
+      {
+        "command": "/bin/zsh -lc 'node mcc.mjs session'",
+        "exit_code": 0
+      }
+    ],
+    "original_answer": "locales/es/m3.7-profile-results.md",
+    "independent_review": {
+      "binding_from_workspace": true,
+      "project_and_completed_workflows_retrieved": true,
+      "exact_hashes_checked": true,
+      "proposal_not_promoted": true,
+      "current_approval_state_distinguished": true,
+      "pending_capture_distinguished": true,
+      "no_mutation_commands": true
+    }
+  },
+  "calibration_history": [
+    {
+      "result": "presentation_failed",
+      "answer_sha256": "3cbeac849c6529aab93b1a3aa1e36e4d67deecb47354b09edd45ad842d1607a9",
+      "events_sha256": "a412007a0cb0381e06b3999d38a17b81160ca835d149cb0247303b1c7d4da731",
+      "findings": [
+        "The first answer omitted the final character of the meeting artifact hash.",
+        "It presented resolving a delivery date for an unaccepted proposal as pending work and quoted a historical requires_human_review label without explaining the current approved state."
+      ],
+      "correction": "The skill now distinguishes unresolved proposal questions from committed next actions, current approval state from immutable initial evaluation labels, and checks copied references. The next independent session retained the full hashes and distinctions."
+    }
+  ],
+  "limits": [
+    "Small synthetic calibration and inspection, not a blind accuracy benchmark.",
+    "The conversational CLI host has shell access; skill guidance does not confine it.",
+    "Personal instance runtime use is recorded separately and never inferred from synthetic results.",
+    "No real external delivery or general maintenance/upgrade path."
+  ]
+}

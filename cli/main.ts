@@ -19,6 +19,10 @@ async function main(args: string[]): Promise<void> {
     process.stdout.write(`${metadata.version}\n`);
     return;
   }
+  if (args[0]?.startsWith('profile-')) {
+    const { runProfile } = await import('./profile.js');
+    output(runProfile(args, language)); return;
+  }
   if (['resolve', 'plan', 'inspect', 'apply', 'verify', 'create', 'adopt', 'resume'].includes(args[0]!)) {
     const { runConstructor } = await import('./constructor.js');
     runConstructor(args); return;
@@ -108,6 +112,18 @@ async function dispatch(): Promise<void> {
     process.exitCode = 2; return;
   }
   language = parsed.language;
+  if (parsed.args[0] === 'use') {
+    const { prepareProfileCommand } = await import('../adapters/interfaces/local/profile.js');
+    if (parsed.args.length < 3) throw new Error('Use use /absolute/profile.json <instance-command> [arguments].');
+    const bound = prepareProfileCommand(parsed.args[1]!, parsed.args[2]!, parsed.args.slice(3));
+    if (parsed.args.length === process.argv.slice(2).length) language = bound.language;
+    const previous = process.env['MANU_CONTROL_CENTER_CODEX_MODEL'];
+    if (bound.model === null) delete process.env['MANU_CONTROL_CENTER_CODEX_MODEL'];
+    else process.env['MANU_CONTROL_CENTER_CODEX_MODEL'] = bound.model;
+    try { await main(bound.args); }
+    finally { if (previous === undefined) delete process.env['MANU_CONTROL_CENTER_CODEX_MODEL']; else process.env['MANU_CONTROL_CENTER_CODEX_MODEL'] = previous; }
+    return;
+  }
   await main(parsed.args);
 }
 

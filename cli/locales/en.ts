@@ -33,6 +33,10 @@ Usage:
   manu-control-center sources-check <request.json> <absolute-directory> <operation.json> --actor <id>
   manu-control-center knowledge <request.json> <absolute-directory> <claim|decision|artifact> --actor <id> [--as-of <timestamp>] [--text <text>] [--limit <n>] [--after <id>] [--valid-at <timestamp>]
 Agent synthesis: add runtime {id: "codex", version: "0.146.0-mcc.1"} to a knowledge workflow. See docs/codex-runtime.md.
+  manu-control-center profile-create <request.json> <absolute-instance> <absolute-profile.json> --actor <id> [--model <id>]
+  manu-control-center profile-inspect <absolute-profile.json>
+  manu-control-center profile-workspace <absolute-profile.json> <absolute-new-workspace>
+  manu-control-center use <absolute-profile.json> <instance-command> [arguments]
   manu-control-center session <request.json> <absolute-directory> --actor <id> [--limit 1..25]
   manu-control-center session-continue <request.json> <absolute-directory> <operation.json> --actor <id>
   manu-control-center coordinator-<submit|claim|renew|pause|advance|review|revise|authorize|cancel|reconcile|retry> <request.json> <absolute-directory> <operation.json> --actor <id>

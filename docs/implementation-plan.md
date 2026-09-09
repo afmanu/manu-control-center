@@ -1,6 +1,6 @@
 # Implementation roadmap
 
-Updated: 2026-09-09. **Status: M0–M2 and M3.1–M3.6 local profiles complete; M3 in progress; M4–M6 pending.** Development in [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). Identifiers remain stable for architecture/component/acceptance traceability. [M2 evidence](m2-verification.json) and the [handoff](handoff.md) record current scope; historical [M0](m0-verification.json) and [M1](m1-verification.json) evidence is preserved.
+Updated: 2026-09-09. **Status: M0–M2 and M3.1–M3.6 local profiles complete; M3.7 implementation/activation delivered, personal model invocation awaiting authorization; M4–M6 pending.** Development in [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). Identifiers remain stable for architecture/component/acceptance traceability. [M2 evidence](m2-verification.json) and the [handoff](handoff.md) record current scope; historical [M0](m0-verification.json) and [M1](m1-verification.json) evidence is preserved.
 
 ## Intended delivery
 
@@ -115,6 +115,8 @@ Work, in order:
 
 **M3.6 completed for the local Codex session profile:** packaged operating skill, read-only persisted-state handoff, paginated current knowledge and latest coordinator attempts, exact review/result references and guarded one-step continuation. 249 mechanism tests and clean installation cover both workflows. Actual fresh Codex sessions retrieve the project without chat history and complete already-reviewed results with unchanged artifact hashes. Conversational responses support Spanish without rewriting English artifacts. The shell-capable session is a trusted host, not the tool-disabled synthesis profile. [Guide](sessions.md), [D30](decisions.md), [verification](m3.6-verification.json), [model evidence](m3.6-runtime-evaluation.json).
 
+**M3.7 implementation and operational activation delivered:** editable profile with exact foundation binding, private operating folder/guide/launcher, explicit capture and profile-bound commands. 258 tests, clean installation and two actual synthetic workflows pass. Manu's versioned private product and operational profile are installed without changing the original request, plan or database bytes. The first personal model invocation was not executed: automatic permission review required explicit authorization to send existing project metadata to Codex. That pending action is separate from installation and from owner acceptance of any later draft. [Guide](first-use.md), [D31](decisions.md), [verification](m3.7-verification.json), [synthetic evaluation](m3.7-runtime-evaluation.json).
+
 **Delivery:** usable local pilot: install → add a source → query → run a workflow → review a result → resume another day. Includes real-runtime evidence, known limits and verified usage steps. Personal-data use does not imply migrating the entire vault.
 
 ## M4 — Demonstrated portability
@@ -181,4 +183,4 @@ Add code when it has useful behavior: `core` defines contracts; `builder`, `life
 
 Each completion updates [handoff.md](handoff.md) with version/commit if available, completed tasks, actual commands, results, evidence, limits, decisions and next task. A phase may be pending, in progress, partially verified or complete. Completion requires all applicable criteria to pass; a simulation never proves a real integration.
 
-**Next development action: M3.7.** Complete first personal use of Manu's existing foundation with an editable operational profile and short guide. Validate with synthetic material first, then make explicitly authorized source ingestion available. Preserve the original construction plan, catalog and instance identity; do not import personal material implicitly. Keep the repository in English (D24).
+**Next action: finish M3.7 personal invocation after the specific pending authorization.** The operational profile/workspace is installed and synthetic verification is complete. Do not reinstall or replace Manu's foundation. An authorized first status draft uses existing project fields only; owner acceptance remains exact and separate. Then continue the roadmap with M4. Keep the repository in English (D24).

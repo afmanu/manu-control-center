@@ -73,10 +73,13 @@ try {
   assert.equal(sessionDemo.ok, true); assert.equal(sessionDemo.fresh_process_resume, true);
   assert.equal(run(process.execPath, [join(installed, '.agents', 'skills', 'manu-control-center', 'scripts', 'mcc.mjs'), '--version'], consumer).trim(), version);
   run(process.execPath, ['--input-type=module', '-e', "import {readLocalSession} from 'manu-control-center/session';import {SqliteSessionBackend} from 'manu-control-center/sqlite-session';if(typeof readLocalSession!=='function'||typeof SqliteSessionBackend!=='function')throw new Error('Missing session exports');"], consumer);
+  const profileDemo = JSON.parse(run(process.execPath, [join(installed, 'examples', 'profile-demo.mjs')], consumer));
+  assert.equal(profileDemo.ok, true); assert.equal(profileDemo.profile_bound_cli, true); assert.equal(profileDemo.actual_runtime_invoked, false);
+  run(process.execPath, ['--input-type=module', '-e', "import {createOperationalProfile,readOperationalProfile} from 'manu-control-center/profile';if(typeof createOperationalProfile!=='function'||typeof readOperationalProfile!=='function')throw new Error('Missing profile exports');"], consumer);
   if (process.platform !== 'win32') {
     assert.equal(run(join(consumer, 'node_modules', '.bin', 'manu-control-center'), ['--version'], consumer).trim(), version);
   }
-  process.stdout.write(JSON.stringify({ ok: true, clean_source_install: true, source_tests: true, packed_cli_install: true, packed_instance_create_verify: true, packed_knowledge_capture_query: true, packed_authority_time_review: true, packed_local_human_workflows: true, packed_coordinator_and_simulated_effects: true, packed_agent_contracts_with_mock: true, packed_session_continuity: true, version }) + '\n');
+  process.stdout.write(JSON.stringify({ ok: true, clean_source_install: true, source_tests: true, packed_cli_install: true, packed_instance_create_verify: true, packed_knowledge_capture_query: true, packed_authority_time_review: true, packed_local_human_workflows: true, packed_coordinator_and_simulated_effects: true, packed_agent_contracts_with_mock: true, packed_session_continuity: true, packed_operational_profile: true, version }) + '\n');
 } catch (error) {
   process.stderr.write(error.stdout?.toString() ?? '');
   process.stderr.write(error.stderr?.toString() ?? '');

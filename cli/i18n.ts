@@ -8,14 +8,15 @@ export const messages = { en, es };
 export function parseLanguage(input: string[], environment?: string): { args: string[]; language: Language } {
   const args: string[] = [];
   let selected: string | undefined;
-  const valueFlags = new Set(['--after-run-id', '--after-source-id', '--after-decision-id', '--after-claim-id', '--after-capture-id', '--simulate', '--actor', '--key', '--file', '--text', '--expected-revision', '--revision', '--limit', '--after', '--after-revision', '--as-of', '--valid-at', '--kind']);
-  const positionals: Record<string, number> = { session: 2, 'session-continue': 3, 'workflow-prepare': 3, 'workflow-read': 3, 'workflow-complete': 3, capture: 3, source: 3, 'source-history': 3, search: 3, context: 2, claim: 3, 'decision-propose': 3, 'artifact-draft': 3, 'decision-grant': 3, 'decision-revoke-grant': 3, 'decision-set': 3, 'artifact-approve': 3, 'artifact-fork': 3, 'sources-check': 3, knowledge: 3, 'knowledge-record': 3 };
+  const valueFlags = new Set(['--model', '--after-run-id', '--after-source-id', '--after-decision-id', '--after-claim-id', '--after-capture-id', '--simulate', '--actor', '--key', '--file', '--text', '--expected-revision', '--revision', '--limit', '--after', '--after-revision', '--as-of', '--valid-at', '--kind']);
+  const positionals: Record<string, number> = { use: 1, 'profile-create': 3, 'profile-inspect': 1, 'profile-workspace': 2, session: 2, 'session-continue': 3, 'workflow-prepare': 3, 'workflow-read': 3, 'workflow-complete': 3, capture: 3, source: 3, 'source-history': 3, search: 3, context: 2, claim: 3, 'decision-propose': 3, 'artifact-draft': 3, 'decision-grant': 3, 'decision-revoke-grant': 3, 'decision-set': 3, 'artifact-approve': 3, 'artifact-fork': 3, 'sources-check': 3, knowledge: 3, 'knowledge-record': 3 };
   for (const operation of ['submit', 'read', 'claim', 'renew', 'pause', 'advance', 'review', 'revise', 'authorize', 'cancel', 'reconcile', 'retry']) positionals[`coordinator-${operation}`] = 3;
   let remaining = 0;
   for (let index = 0; index < input.length; index++) {
     const token = input[index]!;
     if (remaining > 0) { args.push(token); remaining--; continue; }
     if (token !== '--lang') {
+      if (args.length === 2 && args[0] === 'use') remaining = Math.max(0, (positionals[token] ?? 2) - 2);
       if (!args.length) remaining = positionals[token] ?? 0;
       args.push(token);
       if (valueFlags.has(token) && input[index + 1] !== undefined) args.push(input[++index]!);
