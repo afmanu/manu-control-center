@@ -7,7 +7,7 @@ import sys
 
 
 KIT = Path(__file__).resolve().parents[1]
-SKILLS = ("mcc-setup", "mcc-context", "mcc-capture", "mcc-project")
+SKILLS = ("mcc-setup", "mcc-context", "mcc-capture", "mcc-project", "mcc-link", "mcc-synthesize")
 
 
 def check_path(path):

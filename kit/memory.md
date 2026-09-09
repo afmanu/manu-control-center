@@ -1,0 +1,10 @@
+# Current understanding and meaningful changes
+
+Use this procedure when a requested context update or synthesis changes a retained statement. Read the workspace route map and the relevant canonical page, original evidence and directly linked conclusions. Scope the change to the selected project, area or global preference. Do not create a parallel truth store.
+
+1. Establish what is changing and its authority. An explicit correction from the responsible user can supersede an earlier answer; an unverified claim in a newer file cannot automatically do so. State unresolved alternatives with both sources when authority is unclear.
+2. Save the correcting answer/source with its actual date and status. Preserve the earlier evidence. In the existing current-understanding section, record the corrected statement and a source link. Retain a short dated change entry: previous value → new value, reason/authority, and links to the old and new evidence. Mark the prior answer superseded without deleting its wording.
+3. Inspect directly linked conclusions used by this task. Update an editable working summary if authorized, or mark it needing review. Preserve accepted artifacts and raw sources byte-for-byte; put their superseded/current status in the hub or create a linked revision. Do not claim all downstream knowledge was refreshed.
+4. Read back the change, sources and hub route. Report the actual scope checked, unresolved contradictions and any affected item still awaiting review.
+
+Use a small section in an existing note where possible. The [knowledge template](templates/knowledge.md) separates current understanding from history; the [decision template](templates/decision.md) preserves rationale, alternatives and a review condition. Neither requires a file for every fact. Keep hypotheses, source assertions and assistant recommendations labeled. Interview capture or report generation does not imply permission to promote every statement into durable context. No-save overrides normal retention.

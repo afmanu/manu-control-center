@@ -9,3 +9,5 @@ Then open the resulting personal workspace in a fresh Codex session and ask:
 > Where did the Harbor workshop work stop? Read the existing workspace, sources and output. Explain the agreements, unresolved choices and next suggested step in Spanish without changing files.
 
 A usable result includes a real saved brief, working source/hub links, the unchosen pilot date and public registration still labeled as a suggestion. An external task-board reference remains unverified. This example is a reproducible usage check, not evidence of a real business result.
+
+For corrections, synthesis, relationships and expanded work, use the [K2 cycle](k2/README.md).

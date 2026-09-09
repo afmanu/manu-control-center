@@ -1,26 +1,28 @@
 # AI OS development handoff
 
-Updated: 2026-09-09. **K1 implemented and verified with Codex; K2 is next.** This is an AI OS distributed as a repository, enhanced with Manu's Second Brain systems. All D36 improvements remain adopted. The former application remains exclusively on its archive branch.
+Updated: 2026-09-09. **K1 and K2 implemented and verified with Codex; K3 is next.** This is an AI OS distributed as a repository, enhanced with Manu's Second Brain systems. All D36 improvements remain adopted. The former application remains exclusively on its archive branch.
 
 ## Current delivery
 
-K1 supplies `kit/START-HERE.md`, the shared operating guide, four canonical skills (`mcc-setup`, `mcc-context`, `mcc-capture`, `mcc-project`), minimal templates, a Codex workspace entry, synthetic example, source notices and a Python standard-library copy helper. The helper previews by default, copies missing files, preserves personal content and reports conflicting kit instructions. It generates `.agents/skills/` resource routes from one maintained skill source. The existing agent personalizes the workspace and executes the procedures.
+K2 adds `mcc-link` and `mcc-synthesize` and extends context/capture/project work. Six canonical skills now share operating and memory guidance plus ordinary templates for interviews, current understanding, relationships, meetings, decisions and scoped work. The helper still copies files and generates Codex resource routes; it starts no agent or service. Version: `0.2.0-k2`.
 
-The useful work path is source → scoped capture/context → project status/action brief → hub → fresh-session continuation. It distinguishes agreements, proposals, unknown dates and unavailable external status. Installing files does not itself complete onboarding or a workflow. K1 supports new and existing personal destinations; the developer checks used only disposable synthetic folders, not Manu's real workspace.
+The work loop now supports saved interviews and explicit corrections, original evidence plus meaningful history, unresolved contradictions, useful relationships/Activation Maps, scoped synthesis and older knowledge resurfacing. Meeting and project drafts reuse selected formats, retain accepted predecessors and keep private evidence out of public deliverables. Scoped work areas reference shared guidance and global context. URL intake uses available host tools and preserves provenance/access limits.
 
-[Practical evidence](k1-verification.md) records four actual Codex CLI sessions: new setup and a saved sourced brief; a fresh-session linked revision preserving the first result; adoption of custom routes and Spanish metadata; and repeated setup followed by a no-save hypothetical response. Evidence includes preservation hashes, source fidelity, reachable outputs and source/retention limits. Seven copy/resource checks, four skill frontmatter validations, documentation checks and whitespace checks support the delivery. These bounded cases do not establish all-host compatibility or the complete reference feature set.
+[K2 evidence](k2-verification.md) records actual Codex sessions for these cases, including fresh retrieval and duplicate avoidance. Preserved accepted/source/global/unrelated files were compared by hash, and local navigation was inspected. A loopback HTTP fixture exercised readable and missing content; it was stopped afterward. Six frontmatter validations and the existing helper/resource, documentation and whitespace checks support the result. These are bounded cases, not universal agent reliability or authenticated-connector support.
+
+[K1 evidence](k1-verification.md) remains the historical record of actual setup/adoption, sourced work, fresh revision and no-save checks for that version. The original version's customized synthetic installation rejected the K2 overwrite attempt with all files unchanged. Upgrade merging is intentionally still K3; do not delete custom instructions to force installation. No personal workspace, account connection or schedule was configured.
 
 ## Next action
 
-Implement [K2](kit-conversion.md#k2--expand-workflows-with-connected-knowledge-and-project-continuity): expand context work and reusable project/meeting outputs; add meaningful links and the optional Activation Map, selective synthesis, corrected/superseded memory, URL intake, relevant knowledge resurfacing and scoped work areas. Preserve original evidence, unresolved conflicts, user-selected conventions and accepted artifacts. Verify the stage's concrete cases in synthetic workspaces and fresh host sessions.
+Implement [K3](kit-conversion.md#k3--audit-improve-and-maintain): add `mcc-audit` and `mcc-improve` with useful workflow/retrieval checks, findings/history and verified repair; bounded consolidation proposals; selected skill inspection/adaptation/construction; decision-outcome and daily/weekly reviews; reusable tool/SOP notes; and customization-preserving updates. Keep merges/destructive restructuring distinct from already authorized ordinary edits.
 
-Keep every Q1–Q10 and additional capability in the existing K2–K4 mapping. Do not reopen scope selection, add platform phases or interpret this as a Second Brain-only product. Account connections and personal schedules need an actual use request; developing their reusable guidance does not activate them. No personal destination was selected during this implementation.
+Verify the roadmap's actual cases in disposable workspaces and fresh host sessions. Preserve every remaining Q1–Q10 and additional capability through K3–K4. K4 still covers second-host/packaging/discovery edge cases, explorer and opt-in native scheduling. Do not reopen scope selection, add platform phases or narrow the product to a note store. Account/schedule activation needs a real use request.
 
 ## Preserved boundaries and provenance
 
 The complete former application is on [`archive/application-m4.1`](https://github.com/afmanu/manu-control-center/tree/archive/application-m4.1) at `9fdf92ff919615c0efdf3b71710038b699b57404`. Do not restore its npm/TypeScript/database/coordinator infrastructure to main. Git history, the original MIT license, the original vault and the installed private application remain preserved.
 
-Repository content stays in English; personal interaction can be Spanish. K1 adapts concepts from the inspected reference revisions with [source notices](../kit/THIRD-PARTY-NOTICES.md); no private source content or reference command bundle is published. Codex is the only exercised host. Other agents, background operation, advanced knowledge workflows and the explorer remain unverified/pending as mapped.
+Repository content stays in English; personal interaction can be Spanish. K1–K2 adapt concepts from the inspected reference revisions with [source notices](../kit/THIRD-PARTY-NOTICES.md); no private source content or reference command bundle is published. Codex is the only exercised host. Other agents, background operation, audit/improvement and the explorer remain unverified/pending as mapped.
 
 ## Source review
 

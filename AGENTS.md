@@ -16,7 +16,7 @@ Maintain repository content, comments, examples, identifiers, commit messages an
 
 ## Working method
 
-- Follow the user's current task. All Q1–Q10 improvements and the six additional capabilities from the [quality-gap review](docs/quality-gap-review.md) are adopted under D36. Their delivery requirements and checks live in [kit-conversion.md](docs/kit-conversion.md). K1 is verified through actual Codex setup, adoption, capture, sourced work and fresh-session continuation; K2 is next. Continue the useful request-to-deliverable loop; do not reopen selection or treat adopted optional-use capabilities as out of scope. Actual account connections and personal schedules remain separate activation choices.
+- Follow the user's current task. All Q1–Q10 improvements and the six additional capabilities from the [quality-gap review](docs/quality-gap-review.md) are adopted under D36. Their delivery requirements and checks live in [kit-conversion.md](docs/kit-conversion.md). K1 and K2 are verified through actual Codex setup, sourced work, context corrections, connected knowledge and fresh-session continuation; K3 is next. Continue the useful request-to-deliverable loop; do not reopen selection or treat adopted optional-use capabilities as out of scope. Actual account connections and personal schedules remain separate activation choices.
 - Reuse the existing context instead of restarting a discovery interview. Make routine reversible choices and record consequential decisions.
 - Maintain shared skill instructions once and generate only required host adaptations. Check useful behavior as well as file presence.
 - Use synthetic workspaces for implementation checks. Do not modify the original vault or installed personal application as incidental development work.

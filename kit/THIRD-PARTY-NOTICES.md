@@ -1,8 +1,10 @@
 # Sources and attribution
 
-K1 adapts guided onboarding and routing ideas from Nate Herk's [AIS-OS](https://github.com/nateherkai/AIS-OS/tree/ce9cb93a1145da5daba84ea37208ec35fd03606e), especially the onboard, link and context-interview procedures. It uses newly written, shorter instructions and preserves the applicable source notice below. The Three Ms/Four Cs branding is not the name of this product.
+K1–K2 adapt guided onboarding and routing ideas from Nate Herk's [AIS-OS](https://github.com/nateherkai/AIS-OS/tree/ce9cb93a1145da5daba84ea37208ec35fd03606e), especially the onboard, link and context-interview procedures. It uses newly written, shorter instructions and preserves the applicable source notice below. The Three Ms/Four Cs branding is not the name of this product.
 
-Manu's [Second Brain installer](https://github.com/afmanu/claude-obsidian-second-brain-installer/tree/9cb05973a04b6e2b945fac591ccec8bf6f43f85c) and reviewed personal system protocols inform adoption, source meaning, selective capture and continuity. K1 does not vendor that installer's command files or private vault content. The implementation and templates are maintained under the included project MIT license.
+Manu's [Second Brain installer](https://github.com/afmanu/claude-obsidian-second-brain-installer/tree/9cb05973a04b6e2b945fac591ccec8bf6f43f85c) and reviewed personal system protocols inform adoption, source meaning, selective capture and continuity. The kit does not vendor that installer's command files or private vault content. The implementation and templates are maintained under the included project MIT license.
+
+K2 re-inspected AIS-OS `link` and `grill-me` and the installer's `link-finder` and `vault-synthesis` at the same pinned revisions. New procedures combine concise routing, checkpointed answers and source-preserving corrections with scoped synthesis and meaningful connections. Installer-specific MCP requirements, blanket confirmation and numeric keyword scores are not imposed on this kit.
 
 ## AIS-OS notice
 

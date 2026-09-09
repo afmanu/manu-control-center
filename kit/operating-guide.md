@@ -10,8 +10,10 @@ Read the applicable workspace instructions and `.mcc/workspace.md`. Follow its d
 |---|---|
 | Set up or adopt a workspace | `mcc-setup` |
 | What matters, what do we know, where did we stop? | `mcc-context` |
-| Save this source, idea, agreement or reference | `mcc-capture` |
-| Prepare or continue a project status/action brief | `mcc-project` |
+| Save text, local evidence or a URL/resource | `mcc-capture` |
+| Prepare/revise a project or meeting brief; scope a work area | `mcc-project` |
+| Connect notes or make an Activation Map | `mcc-link` |
+| Distill or resurface useful knowledge | `mcc-synthesize` |
 
 Skills live in the workspace's `.agents/skills/`. The installed kit lives in `.mcc/kit/`. Source, template and helper paths inside skills resolve from the skill file, not from the current shell directory. Shared skill content is maintained in the distribution's `skills/` and transformed only for local resource paths during installation.
 
@@ -31,4 +33,11 @@ Select the available procedure for the user's outcome. If the required capabilit
 
 Read back saved output and follow its source links. Update the relevant project hub with the actual deliverable, known state, open questions and next suggested action. Do not call a draft accepted or a proposal a decision. Save a concise session note only when needed to resume significant work and when retention is allowed. On interruption, say what was actually saved and where to continue; no silent retry of external effects.
 
-Default templates are in [templates](templates/README.md). K1 is local and interactive. No background scheduling, live connectors or second-agent compatibility is implied by installation.
+Default templates are in [templates](templates/README.md). K2 is interactive and can read URLs through available host tools. No background scheduling, live connectors or second-agent compatibility is implied by installation.
+
+
+## Context, knowledge and work
+
+Use [the memory procedure](memory.md) for authorized corrections: current understanding plus meaningful dated changes, preserving original evidence and unresolved contradictions. Interview checkpoints belong to their declared scope. Ordinary retrieval never starts an interview. A synthesis does not automatically become permanent knowledge.
+
+Keep source evidence, conceptual relationships and retrieval routes distinct. Resolve aliases, same-name notes and headings in the intended project. Important outputs need a route from their hub and a useful way back. Preserve accepted artifacts when revising; identify the current intended result. Use public-safe citations for public work and keep internal evidence, hub and predecessor routes out of the shared artifact unless explicitly approved for that audience. Keep their traceability in the internal hub. No Git repository is required in a personal workspace; inspect ordinary files directly when Git is unavailable.

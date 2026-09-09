@@ -2,7 +2,7 @@
 
 An AI OS distributed as a repository, inspired by AIS-OS and enhanced with Manu's Second Brain systems. It brings together operating context, connections, skills, workflows, recurring work and improvement, supported by durable memory, meaningful knowledge relationships and continuity.
 
-**Status: K1 implemented and verified with Codex. K2 is next.** The active [conversion plan](docs/kit-conversion.md) defines the deliverables and practical checks. The complete former application is preserved on [`archive/application-m4.1`](https://github.com/afmanu/manu-control-center/tree/archive/application-m4.1). Main is dedicated to the kit and contains no application code, database adapters, npm package or application test suite.
+**Status: K1 and K2 implemented and verified with Codex. K3 is next.** The active [conversion plan](docs/kit-conversion.md) defines the deliverables and practical checks. The complete former application is preserved on [`archive/application-m4.1`](https://github.com/afmanu/manu-control-center/tree/archive/application-m4.1). Main is dedicated to the kit and contains no application code, database adapters, npm package or application test suite.
 
 ## The intended experience
 
@@ -20,26 +20,26 @@ The normal kit experience uses readable files and the agent's existing tools. It
 |---|---|---|
 | Preparation | Scope, source coverage, target layout and checks, including all ten quality improvements and six additional capabilities. | Complete; documentation only. |
 | K1 | Personalize the AI OS, map context/connections/capabilities, complete a first useful workflow and resume from its deliverable. | Complete; [practical evidence](docs/k1-verification.md). |
-| K2 | Expand workflows and reusable deliverables with corrected, connected memory, URL intake and scoped project knowledge. | Pending. |
+| K2 | Expand workflows and reusable deliverables with corrected, connected memory, URL intake and scoped project knowledge. | Complete; [practical evidence](docs/k2-verification.md). |
 | K3 | Consolidate, audit, build selected skills, review decisions/days/weeks, reuse SOPs and preserve customizations. | Pending. |
 | K4 | Clean kit distribution, verified skill discovery and second agent, optional explorer and native-scheduling recipe. | Pending. |
 
-## Start using K1
+## Start using the AI OS
 
 Open this repository with Codex and follow [START-HERE.md](START-HERE.md). Give the agent an absolute path for a separate personal workspace, or an existing folder to adopt, plus a source and first project task. It reuses known context and preserves existing conventions.
 
 > Set up my AI OS in the personal folder I select, capture this project source, and prepare a sourced status and action brief. Use Spanish for our interaction and keep project facts scoped to the project.
 
-K1 includes `mcc-setup`, `mcc-context`, `mcc-capture` and `mcc-project`. The [kit entry](kit/START-HERE.md) explains setup; the [synthetic example](kit/examples/README.md) needs no personal data. Python 3.9+ is needed for the copy helper; no third-party packages are required. Copying the kit does not connect external accounts or activate schedules.
+The kit includes `mcc-setup`, `mcc-context`, `mcc-capture`, `mcc-project`, `mcc-link` and `mcc-synthesize`. K2 adds resumable interviews, traceable corrections, meaningful links, synthesis, URL intake, meeting briefs and scoped work areas. The [kit entry](kit/START-HERE.md) explains setup; the [synthetic example](kit/examples/README.md) needs no personal data. Python 3.9+ is needed for the copy helper; no third-party packages are required. Copying the kit does not connect external accounts or activate schedules.
 
 ## Development and provenance
 
 - [Product direction and original-objective review](docs/product-direction.md).
 - [Active conversion plan and feature coverage](docs/kit-conversion.md).
-- [Current handoff](docs/handoff.md), [decisions](docs/decisions.md) and [K1 verification](docs/k1-verification.md).
+- [Current handoff](docs/handoff.md), [decisions](docs/decisions.md) and [K1 verification](docs/k1-verification.md) and [K2 verification](docs/k2-verification.md).
 - [Repository development instructions](AGENTS.md) and [development checks](docs/development.md).
 - [Reference sources and recorded attribution](references/README.md).
 - [Quality-gap review: source rationale for the adopted additions](docs/quality-gap-review.md).
 - [Application branch: code, dependencies, tests and historical evidence](https://github.com/afmanu/manu-control-center/tree/archive/application-m4.1).
 
-The original [MIT license](LICENSE) and Git history are preserved. Source adaptations retain [licenses and attribution](kit/THIRD-PARTY-NOTICES.md). No personal data is included. Run `python3 scripts/check_docs.py` to check the kit documentation. All reviewed improvements are included in the [delivery mapping](docs/kit-conversion.md#quality-coverage-and-delivery-mapping). Optional modes will be available without being activated by default. K2–K4 remain pending; K1 does not establish full reference parity.
+The original [MIT license](LICENSE) and Git history are preserved. Source adaptations retain [licenses and attribution](kit/THIRD-PARTY-NOTICES.md). No personal data is included. Run `python3 scripts/check_docs.py` to check the kit documentation. All reviewed improvements are included in the [delivery mapping](docs/kit-conversion.md#quality-coverage-and-delivery-mapping). Optional modes will be available without being activated by default. K3–K4 remain pending; full reference parity is not yet established.

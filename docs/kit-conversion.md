@@ -1,6 +1,6 @@
 # AI OS repository implementation
 
-Status: **K1 implemented and verified with Codex; K2 next**. This is the active delivery plan following [product direction](product-direction.md) and D33–D38 in [decisions](decisions.md). Manu approved integrating all reviewed improvements on 2026-09-09. They are assigned to the same four stages below. The first usable kit is available; K1 does not establish full reference-feature parity.
+Status: **K1 and K2 implemented and verified with Codex; K3 next**. This is the active delivery plan following [product direction](product-direction.md) and D33–D39 in [decisions](decisions.md). Manu approved integrating all reviewed improvements on 2026-09-09. They are assigned to the same four stages below. The first two deliveries are available; K3–K4 remain required for full reference-feature parity.
 
 ## User experience to deliver
 
@@ -10,7 +10,7 @@ The distribution contains reusable instructions, skills, templates and small hel
 
 ## Target layout
 
-K1 provides the entry, four skills, minimal templates, Codex entry and setup helper below. Other capabilities remain implementation destinations. Do not generate empty folders merely to match this diagram.
+K1–K2 provide the entry, six skills, shared memory guidance, templates, Codex entry and setup helper below. Other capabilities remain implementation destinations. Do not generate empty folders merely to match this diagram.
 
 ```text
 manu-control-center/
@@ -72,9 +72,11 @@ Include a source/connection register template: what information each source owns
 
 Also check an available local source alongside an unavailable external reference: the agent selects the right authority and does not claim remote access. A no-save request leaves no new capture, and a project-specific fact is not promoted into global preferences. These checks use synthetic data and do not activate a connection.
 
-**Result:** a first usable AI OS with a demonstrated request-to-deliverable path. Capture/retrieval alone does not complete K1. K2–K4 remain visible gaps; this is not yet full reference parity.
+**Result:** a first usable AI OS with a demonstrated request-to-deliverable path. Capture/retrieval alone does not complete K1. K1 alone does not establish full reference parity; later deliveries are tracked below.
 
 ### K2 — Expand workflows with connected knowledge and project continuity
+
+Status: **complete**, 2026-09-09. Actual Codex sessions verified interview pause/resume and correction, conflicting sources, selected-format meeting/project work, synthesis/relationships, private-output scope, scoped work, fresh retrieval, duplicate avoidance and bounded HTTP intake. See [K2 evidence](k2-verification.md) for exact outcomes and host limits.
 
 **Deliver:** context interviews that save progress, task-to-source routing, meaningful conceptual links, selective synthesis and project continuity/next-step procedures. The link procedure includes a concise Activation Map where useful. Templates separate sources, current consolidated understanding, decisions/proposals and session history without requiring one file for every category or action.
 
@@ -126,17 +128,17 @@ A missing bundled resource is detected, a duplicate skill identity is resolved o
 
 ## Reference coverage and current status
 
-K1 ships the four named setup/context/capture/project skill directories. The other names are proposed implementation destinations. Users may request the capabilities in natural language; the host determines invocation syntax.
+K1–K2 ship the six named setup/context/capture/project/link/synthesize skill directories. Audit, improvement and explorer remain proposed implementation destinations. Users may request the capabilities in natural language; the host determines invocation syntax.
 
 | Source capability | Kit implementation | Stage | Current status |
 |---|---|---|---|
 | AIS-OS onboarding; Manu's guided installer | `mcc-setup`, context and workspace templates | K1 | Delivered and checked |
-| AIS-OS saved context interviews | `mcc-context` with saved answers and resumable interviews | K1–K2 | K1 delivered; K2 expansion pending |
-| Manu's capture | `mcc-capture` with sources, meaning and duplicate checks | K1–K2 | K1 delivered; K2 expansion pending |
-| AIS-OS `/link`; Manu's link finder and Activation Map | `mcc-link`, source routes and semantic connections | K2 | Pending |
-| Manu's synthesis | `mcc-synthesize`, selective consolidation and source links | K2 | Pending |
-| Work execution supported by Manu's next steps/project hubs; both existing example workflows | `mcc-project`, first work procedure in K1, richer project/session/output templates in K2 | K1–K2 | K1 delivered; K2 expansion pending |
-| Manu's skill discovery and construction | Entry index plus `mcc-improve` inspect/adapt/build mode and shared extension recipe | K1, K3–K4 | K1 capability entry delivered; build/audit/discovery expansion pending |
+| AIS-OS saved context interviews | `mcc-context` with saved answers and resumable interviews | K1–K2 | K1–K2 delivered and checked |
+| Manu's capture | `mcc-capture` with sources, meaning and duplicate checks | K1–K2 | K1–K2 delivered and checked |
+| AIS-OS `/link`; Manu's link finder and Activation Map | `mcc-link`, source routes and semantic connections | K2 | Delivered and checked |
+| Manu's synthesis | `mcc-synthesize`, scoped distillation and source links | K2 | Delivered and checked; broader consolidation remains K3 |
+| Work execution supported by Manu's next steps/project hubs; both existing example workflows | `mcc-project`, first work procedure in K1, richer project/session/output templates in K2 | K1–K2 | K1–K2 delivered and checked |
+| Manu's skill discovery and construction | Entry index plus `mcc-improve` inspect/adapt/build mode and shared extension recipe | K1, K3–K4 | Six-capability entry delivered; K3–K4 expansion pending |
 | AIS-OS `/audit` | `mcc-audit`, retrieval checks and findings/history | K3 | Pending |
 | AIS-OS `/level-up` | `mcc-improve`, verified repair and useful maintenance | K3 | Pending |
 | AIS-OS `/3d-brain` | `mcc-brain`, optional reference-derived local explorer | K4 | Pending |
@@ -144,7 +146,7 @@ K1 ships the four named setup/context/capture/project skill directories. The oth
 
 ## Quality coverage and delivery mapping
 
-All rows are adopted requirements. **K1 delivers source registration and the no-save/project-scope portion of retention. Their later audit/public-output extensions and all other rows remain pending.** Optional use means the capability is available without being enabled or imposed on every user. The source rationale and original coverage assessment remain in [quality-gap-review.md](quality-gap-review.md).
+All rows are adopted requirements. **K1–K2 deliver source registration, corrected memory, relationships, basic navigation, reusable artifacts, scoped retention, resurfacing, URL intake and scoped work areas. Q9 decision records are delivered; outcome review remains K3. Audit/consolidation, skill building, deeper discovery checks and scheduling remain K3–K4.** Optional use means the capability is available without being enabled or imposed on every user. The source rationale and original coverage assessment remain in [quality-gap-review.md](quality-gap-review.md).
 
 | Adopted item | Delivery location or mode | Stage | Completion evidence |
 |---|---|---|---|
@@ -167,8 +169,8 @@ All rows are adopted requirements. **K1 delivers source registration and the no-
 
 ## Execution and evidence
 
-Implement K2 next; do not initiate another requirements interview or create additional architecture phases before it. The existing documented objective is enough to begin. A missing personal destination does not block synthetic implementation and verification.
+Implement K3 next; do not initiate another requirements interview or create additional architecture phases before it. The existing documented objective is enough to begin. A missing personal destination does not block synthetic implementation and verification.
 
 For each stage, update its status here and the [handoff](handoff.md) with the delivered paths, actual commands/sessions, observed result and material gaps. Use disposable synthetic workspaces for checks. The old application's test count does not prove any row above is complete. Do not add a generic test framework or custom agent runner to perform these bounded checks.
 
-The current main tree contains the K1 kit, [practical verification](k1-verification.md), adopted scope, source review and lightweight checks. The application remains on its archive branch. K1 skills were installed and exercised in disposable synthetic workspaces; no personal installation, real account connection or full K4 release is claimed. Continue K2 without reopening scope selection.
+The current main tree contains the K2 kit, [K1](k1-verification.md) and [K2](k2-verification.md) practical verification, adopted scope, source review and lightweight checks. The application remains on its archive branch. K1–K2 skills were installed and exercised in disposable synthetic workspaces; no personal installation, real account connection or full K4 release is claimed. Continue K3 without reopening scope selection.

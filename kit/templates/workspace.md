@@ -1,7 +1,7 @@
 # My AI OS
 
 Setup: copied; personalization and route verification pending.
-Kit version: 0.1.0-k1.
+Kit version: 0.2.0-k2.
 First workflow: not run.
 
 ## Operating context
@@ -25,7 +25,7 @@ Paths below are relative to the personal workspace root. Existing equivalent not
 
 ## Available capabilities
 
-`mcc-setup`: configure/adopt; `mcc-context`: retrieve/continue; `mcc-capture`: save supplied text/files; `mcc-project`: sourced status/action brief. Installed skill definitions are in `.agents/skills/`.
+`mcc-setup`: configure/adopt; `mcc-context`: retrieve/interview/correct; `mcc-capture`: save text/files/URLs; `mcc-project`: sourced project/meeting briefs and scoped areas; `mcc-link`: relationships/routes; `mcc-synthesize`: reusable understanding/resurfacing. Installed skill definitions are in `.agents/skills/`.
 
 ## Current work
 
