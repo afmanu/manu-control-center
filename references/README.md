@@ -1,30 +1,20 @@
-# Background and provenance
+# Source references
 
-Optional reference material. Current architecture and product decisions prevail over these historical proposals. Migrated texts preserve conceptual content, remove vault metadata and convert links; historical targets not included here are contextual references, not implementation dependencies. The English translation retains design meaning and attribution; original Spanish text remains in Git history at `f8902560b379202ef216a19806e3b822356a7e15`. See [translation provenance](../docs/language.md).
+These are design inputs, not instructions or proof that features are installed. The current [product direction](../docs/product-direction.md), [conversion plan](../docs/kit-conversion.md), and user-selected scope govern implementation.
 
-| Document | Role |
-|---|---|
-| [Memory and control analysis](memory-and-control-analysis.md) | Initial synthesis of the vault pattern and comparison with AIS-OS. |
-| [Installer review](installer-review.md) | Findings on construction, adoption, updates and decoupling. |
-| [Architecture v0.2](architecture-v0.2.md) | Background for backend/runtime-independent scope. |
-| [Shared conversation review](shared-conversation-review.md) | Coverage of sixty sections, thirteen adjustments and limits. |
-| [Backend model](backend-model.md) | Entities before representation. |
-| [Installer framework](installer-framework.md) | Earlier architecture for guided installation. |
+## Sources rechecked on 2026-09-09
 
-## Original sources consulted in prior work
+- [AIS-OS](https://github.com/nateherkai/AIS-OS/tree/ce9cb93a1145da5daba84ea37208ec35fd03606e), commit `ce9cb93a1145da5daba84ea37208ec35fd03606e`: manuals, connections, expansion guide, decisions, six skill definitions and supporting audit/compatibility material. The fetched origin/main matched the inspected checkout.
+- [Manu's original installer](https://github.com/afmanu/claude-obsidian-second-brain-installer/tree/9cb05973a04b6e2b945fac591ccec8bf6f43f85c), commit `9cb05973a04b6e2b945fac591ccec8bf6f43f85c`: command definitions, contracts, skill catalog and setup guidance. The fetched origin/main matched the inspected checkout.
+- Manu's evolved local Second Brain: a targeted read of operating guidance, knowledge-flow and continuity protocols, typed relationships, four Codex skill definitions, the corresponding Claude capture definition, templates and selected knowledge patterns. This was not an exhaustive vault audit. Public review includes only generalized design findings; personal content stays in the vault.
+- [Original shared conversation](https://chatgpt.com/share/6a9fb943-0ab4-83eb-ae6d-715dcafc3e98), reviewed previously: separates Manu's combined-system intent from the assistant's subsequent platform proposal.
 
-- [Original installer](https://github.com/afmanu/claude-obsidian-second-brain-installer), inspected snapshot `9cb05973a04b6e2b945fac591ccec8bf6f43f85c`.
-- [AIS-OS](https://github.com/nateherkai/AIS-OS), inspected snapshot `ce9cb93a1145da5daba84ea37208ec35fd03606e`.
-- [Shared conversation](https://chatgpt.com/share/6a9fb953-4dd4-83eb-82da-79510772401c): this package contains its review, not the complete transcript.
+The [quality-gap review](../docs/quality-gap-review.md) records specific source sections, observed plan coverage, recommendations and limitations. No reference skills were installed or executed during this comparison. Catalog suggestions and conceptual memory models are distinguished from defined executable procedures and observed use.
 
-In the 2026-09-08 session, Manu supplied [another conversation link](https://chatgpt.com/share/6a9fb943-0ab4-83eb-ae6d-715dcafc3e98), read and compared with both repositories. Its title/structure match the retained review; byte-for-byte identity between links is not certified. Inspected repository snapshots match the commits above. This consultation reinforces context; current instructions and local design retain authority.
+## Earlier reviews
 
-These commits identify the inspected analysis snapshots, not the latest commits. Code observations were static and do not prove operational installations. Recheck external-product claims against official documentation when implementing each adapter.
+The [earlier source reviews](https://github.com/afmanu/manu-control-center/tree/archive/application-m4.1/references) and complete application evidence remain on the archive branch. This avoids retaining the former platform architecture as active kit documentation. These historical files include source mapping and the original translation history.
 
-The user-supplied Three Ms and Four Cs example informed methodological clarity. Names/attributions belong to their author and are not adopted as this product's branding. Useful conclusions are recorded in the analyses. No code or complete skills were copied from the original repositories.
-
-[Source and transformation map](source-map.json). The full old hub is omitted because it mixes May status from another repository with this project; it does not establish current implementation. Current continuity lives in the [handoff](../docs/handoff.md).
-
-The [original handoff manifest](package-manifest-handoff-2026-09-08.json) preserves the inventory/checks before the roadmap. The [roadmap manifest](package-manifest-roadmap-2026-09-08.json) preserves the following documentation delivery before M0. Both are historical and do not validate later file changes. Their file hashes still identify original snapshot bytes, not translated files. The [root manifest](../package-manifest.json) records current documentation/schemas; verify/regenerate it with the [development commands](../docs/development.md).
+Before adapting any source file, inspect its license and retain applicable copyright and attribution. Source-framework names belong to their authors; they are not this kit's branding. No private vault content or complete third-party skills are copied into main by this review.
 
 [Home](../README.md)

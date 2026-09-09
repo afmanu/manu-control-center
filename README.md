@@ -2,7 +2,7 @@
 
 An agent-operated Second Brain kit combining guided setup, context and improvement practices from AIS-OS with Manu's capture, knowledge connections, synthesis and project continuity.
 
-**Status: conversion prepared; the file-based kit is not yet implemented.** The active [conversion plan](docs/kit-conversion.md) defines the deliverables and practical checks. The application previously developed here is preserved separately in the [legacy application guide](docs/legacy-application.md).
+**Status: conversion prepared; the file-based kit is not yet implemented.** The active [conversion plan](docs/kit-conversion.md) defines the deliverables and practical checks. The complete former application is preserved on [`archive/application-m4.1`](https://github.com/afmanu/manu-control-center/tree/archive/application-m4.1). Main is dedicated to the kit and contains no application code, database adapters, npm package or application test suite.
 
 ## The intended experience
 
@@ -31,6 +31,7 @@ Read [START-HERE.md](START-HERE.md) to continue development. There is not yet an
 - [Current handoff](docs/handoff.md) and [decisions](docs/decisions.md).
 - [Repository development instructions](AGENTS.md) and [development checks](docs/development.md).
 - [Reference sources and recorded attribution](references/README.md).
-- [Preserved application, commands and historical milestones](docs/legacy-application.md).
+- [Quality-gap review: proposed additions from both source systems](docs/quality-gap-review.md).
+- [Application branch: code, dependencies, tests and historical evidence](https://github.com/afmanu/manu-control-center/tree/archive/application-m4.1).
 
-The original [MIT license](LICENSE) and Git history are preserved. Source adaptations will retain applicable licenses and attribution. No personal data is included. The [documentation inventory](package-manifest.json) checks repository documentation; it is not a personal-workspace manifest.
+The original [MIT license](LICENSE) and Git history are preserved. Source adaptations will retain applicable licenses and attribution. No personal data is included. Run `python3 scripts/check_docs.py` to check the kit documentation. The gap review identifies proposed refinements; no kit capabilities are implemented yet.

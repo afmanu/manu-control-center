@@ -1,6 +1,6 @@
 # Repository kit conversion
 
-Status: **prepared, implementation pending**. This is the active delivery plan following [product direction](product-direction.md) and D33–D34 in [decisions](decisions.md). It replaces the previous infrastructure sequence. Preparation does not make the kit installable or establish reference-feature parity.
+Status: **prepared, implementation pending**. This is the active delivery plan following [product direction](product-direction.md) and D33–D35 in [decisions](decisions.md). It replaces the previous infrastructure sequence. Preparation does not make the kit installable or establish reference-feature parity.
 
 ## User experience to deliver
 
@@ -27,13 +27,13 @@ manu-control-center/
     scripts/                     Only needed setup, sync and validation helpers
     THIRD-PARTY-NOTICES.md        Adapted sources, versions and applicable notices
   docs/kit-conversion.md          Active conversion plan and completion evidence
-  docs/legacy-application.md      Entry to the preserved technical application
-  core/, adapters/, cli/, ...     Existing implementation retained in place
+  docs/quality-gap-review.md      Additional source-based recommendations
+  scripts/check_docs.py           Dependency-free documentation check
 ```
 
 A new personal workspace starts with a small entry/index, the selected agent's instructions, relevant context and a first useful project or note. Capture, reusable knowledge, project and session locations are created as needed. An existing workspace keeps its own names and metadata; a concise local route map explains their roles. Setup saves a readable record of the kit version, destination and completed steps so it can resume without an installation engine.
 
-Root repository instructions remain development guidance. Installed workspace instructions are for daily use and must not route users through the old implementation plan. Agent-specific skills are generated or copied from `kit/skills/`; never maintain independently edited copies. The existing `.agents/skills/manu-control-center` operates the legacy application and must not be used as the new kit's entry.
+Root repository instructions remain development guidance. Installed workspace instructions are for daily use and must not route users through the old implementation plan. Agent-specific skills are generated or copied from `kit/skills/`; never maintain independently edited copies. The application operating skill exists only on the archive branch and must not be restored as the new kit's entry.
 
 ## Reuse and preservation
 
@@ -43,12 +43,12 @@ Root repository instructions remain development guidance. Installed workspace in
 | Original installers and AIS-OS skills | Inspect the exact source files and license at implementation time, adapt relevant procedures, retain attribution and record the source revision. No source skills have been copied in this preparation. |
 | Capture, meaning, provenance and continuity rules | Express them in shared operating guidance, templates and skills. |
 | Meeting brief and project-status examples | Adapt their useful scenarios to ordinary files in K2. Reuse synthetic inputs and evaluation lessons, not the database/coordinator API. Neither scenario is a user-mandated business priority. |
-| Existing application operating skill | Preserve for legacy instances; do not rename, install or modify it incidentally as part of kit setup. |
-| TypeScript code, database adapters and historical evidence | Keep in place, reachable through the legacy guide. Do not import them into the kit or require their completion. |
+| Former application operating skill | Preserved on the archive branch for legacy instances; excluded from main and kit setup. |
+| TypeScript code, database adapters and historical evidence | Preserved on `archive/application-m4.1`, removed from main. Do not import them into the kit or require their completion. |
 | Original vault and installed personal instance | Leave untouched during conversion tests. Real adoption is a separate use of the completed setup path at a user-selected destination. |
-| Documentation inventory and development checks | Retain; extend their coverage when kit files exist. Separate kit-use evidence from the old application's passing tests. |
+| Documentation and development checks | Use the dependency-free Markdown check on main. Keep npm checks and the former generated inventory with the application branch. Add kit-use evidence when capabilities ship. |
 
-There is no immediate move of `core/`, `adapters/`, `builder/`, `cli/` or their tests, no history rewrite and no migration of personal data. A later repository cleanup is justified only by a concrete maintenance benefit. The distributable kit must exclude private content and the legacy application's dependencies.
+Following the explicit branch-separation request, all application code, tests, dependencies, schemas and historical implementation documentation live on [archive/application-m4.1](https://github.com/afmanu/manu-control-center/tree/archive/application-m4.1). Main no longer includes them. Git history is preserved; no personal data is migrated. The kit distribution will contain only kit material.
 
 ## Four delivery stages
 
@@ -114,4 +114,4 @@ Implement K1 next; do not initiate another requirements interview or create addi
 
 For each stage, update its status here and the [handoff](handoff.md) with the delivered paths, actual commands/sessions, observed result and material gaps. Use disposable synthetic workspaces for checks. The old application's test count does not prove any row above is complete. Do not add a generic test framework or custom agent runner to perform these bounded checks.
 
-The current preparation changes documentation and navigation only. It preserves the legacy application and establishes the concrete next implementation target; no personal installation, skill installation or kit release is claimed.
+The current main tree contains kit preparation, the [quality-gap review](quality-gap-review.md) and lightweight documentation tooling. The application is preserved on its archive branch. No personal installation, skill installation or kit release is claimed. Quality-review recommendations await selection; they have not silently expanded K1–K4.

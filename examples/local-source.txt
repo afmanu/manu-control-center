@@ -1,5 +1,0 @@
-Synthetic project update
-
-The team is preparing a prototype for internal review.
-An offline mode was suggested; no decision has been approved.
-The review date and responsible person remain open questions.

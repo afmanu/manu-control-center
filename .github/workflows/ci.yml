@@ -1,4 +1,4 @@
-name: Verify
+name: Verify kit documentation
 
 on:
   push:
@@ -8,14 +8,9 @@ permissions:
   contents: read
 
 jobs:
-  verify:
+  docs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
-        with:
-          node-version-file: .nvmrc
-          cache: npm
-      - run: npm ci --ignore-scripts --no-audit --no-fund
-      - run: npm run check
-      - run: npm run smoke:install
+      - run: python3 scripts/check_docs.py
+      - run: git diff --check

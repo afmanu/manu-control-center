@@ -12,7 +12,7 @@ The product is a usable repository of context, operating instructions, skills, t
 
 The [exact conversation originally supplied by Manu](https://chatgpt.com/share/6a9fb943-0ab4-83eb-ae6d-715dcafc3e98) was reopened for this review. Manu asked how to combine the strengths of both repositories and make the result usable across agent ecosystems, then requested an explanation of the approved concept's components and foundations. The assistant introduced a different architecture with a canonical kernel, independent state and runtime adapters. Later implementation planning turned that proposal into mandatory infrastructure.
 
-The conversation did contain that broader architecture, and Manu approved developing its conceptual explanation. However, it does not justify retaining every proposed mechanism after his explicit product correction. Preserve the useful behavior and portability goal; do not treat the assistant's component list as a binding platform backlog. The earlier [conversation review](../references/shared-conversation-review.md) cites a different share URL and remains historical background, not a substitute for the exact source or the current instruction.
+The conversation did contain that broader architecture, and Manu approved developing its conceptual explanation. However, it does not justify retaining every proposed mechanism after his explicit product correction. Preserve the useful behavior and portability goal; do not treat the assistant's component list as a binding platform backlog. The earlier [conversation review](https://github.com/afmanu/manu-control-center/blob/archive/application-m4.1/references/shared-conversation-review.md) cites a different share URL and remains historical background, not a substitute for the exact source or the current instruction.
 
 **Delivery objective:** publish a reusable, agent-operated repository that combines AIS-OS's guided context, routing and improvement cycle with Manu's personalized setup and deeper knowledge capture, connections, synthesis and continuity. A user opens it with an existing agent, creates or adopts a personal workspace, and starts using it. Codex is the first verified agent; other environments need their own practical compatibility checks.
 
@@ -53,7 +53,7 @@ Three different capabilities must not be conflated: conceptual links explain how
 
 AIS-OS already includes memory, continuity, source authority and action limits. The combined kit improves the fit and depth of knowledge work; it must not claim those qualities were absent from the reference.
 
-Source basis: [AIS-OS](https://github.com/nateherkai/AIS-OS), [Manu's installer](https://github.com/afmanu/claude-obsidian-second-brain-installer), the [installer and evolved-workspace review](../references/installer-review.md), and the [memory comparison](../references/memory-and-control-analysis.md). Source inspection establishes available definitions and design evidence, not successful execution in this kit.
+Source basis: [AIS-OS](https://github.com/nateherkai/AIS-OS), [Manu's installer](https://github.com/afmanu/claude-obsidian-second-brain-installer), the [installer and evolved-workspace review](https://github.com/afmanu/manu-control-center/blob/archive/application-m4.1/references/installer-review.md), and the [memory comparison](https://github.com/afmanu/manu-control-center/blob/archive/application-m4.1/references/memory-and-control-analysis.md). Source inspection establishes available definitions and design evidence, not successful execution in this kit.
 
 ## What is no longer a prerequisite
 
@@ -64,7 +64,7 @@ Source basis: [AIS-OS](https://github.com/nateherkai/AIS-OS), [Manu's installer]
 
 In practical terms, describe work steps in a skill instead of implementing an execution coordinator; retain decisions and source references in notes instead of requiring an entity-control API; and express continuity in project notes instead of requiring a database-backed job ledger. Small scripts remain appropriate where an actual user task benefits from deterministic handling.
 
-Preserve existing code, evidence, Git history and private data while restructuring. Existing technical work is retained as prior implementation, not a dependency that the kit must justify or consume. Reuse only the pieces that simplify an actual kit capability. Do not delete or migrate the installed personal instance as an incidental cleanup.
+The complete prior application, its documentation and evidence are preserved on [archive/application-m4.1](https://github.com/afmanu/manu-control-center/tree/archive/application-m4.1). Main contains only kit work. Preserve Git history and private data; do not restore the platform or migrate the installed personal instance as incidental cleanup.
 
 ## Immediate development direction
 
@@ -72,6 +72,8 @@ The [kit conversion plan](kit-conversion.md) now defines the target layout, reus
 
 The next implementation should establish the kit's ordinary file-based entry and workspace structure, bring over the reference capabilities and Manu's improvements, and verify an installation/adoption and useful end-to-end session. Keep an explicit feature comparison so that user-facing capabilities are not replaced by infrastructure milestones. Reuse existing source material and preserve applicable licenses and attribution.
 
-The existing application and its operating skill remain available, but they do not yet constitute this kit. Do not describe this direction correction as a completed product conversion. The previous M4.2 export/import milestone is no longer the next task.
+The previous application and its operating skill remain available on the archive branch; neither is part of main or a kit dependency. Do not describe this direction correction as a completed product conversion. The previous M4.2 export/import milestone is no longer the next task.
 
 Success is a user opening the repository with a compatible agent, using their context and knowledge, producing useful results, resuming later, and improving the workspace without losing personal content. Verification must support the capabilities actually delivered; a large mechanism-test count is not a substitute for that experience.
+
+The [quality-gap review](quality-gap-review.md) records further source-based recommendations for discussion. Those recommendations are not yet added to the implementation scope.
