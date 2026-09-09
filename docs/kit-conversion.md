@@ -1,6 +1,6 @@
 # AI OS repository implementation
 
-Status: **full reviewed scope adopted; implementation pending**. This is the active delivery plan following [product direction](product-direction.md) and D33–D37 in [decisions](decisions.md). Manu approved integrating all reviewed improvements on 2026-09-09. They are assigned to the same four stages below. Scope integration does not make the kit installable or establish reference-feature parity.
+Status: **K1 implemented and verified with Codex; K2 next**. This is the active delivery plan following [product direction](product-direction.md) and D33–D38 in [decisions](decisions.md). Manu approved integrating all reviewed improvements on 2026-09-09. They are assigned to the same four stages below. The first usable kit is available; K1 does not establish full reference-feature parity.
 
 ## User experience to deliver
 
@@ -10,7 +10,7 @@ The distribution contains reusable instructions, skills, templates and small hel
 
 ## Target layout
 
-The paths below are implementation destinations, not existing capabilities. Do not generate empty folders merely to match this diagram.
+K1 provides the entry, four skills, minimal templates, Codex entry and setup helper below. Other capabilities remain implementation destinations. Do not generate empty folders merely to match this diagram.
 
 ```text
 manu-control-center/
@@ -48,9 +48,9 @@ Use the planned skills to expose related modes instead of adding a separate skil
 | Existing material | Conversion treatment |
 |---|---|
 | Product direction and reference analyses | Use for source mapping and behavior; do not import their entire historical component taxonomy. |
-| Original installers and AIS-OS skills | Inspect the exact source files and license at implementation time, adapt relevant procedures, retain attribution and record the source revision. No source skills have been copied in this preparation. |
+| Original installers and AIS-OS skills | Inspect the exact source files and license at implementation time, adapt relevant procedures, retain attribution and record the source revision. K1 uses newly written adaptations; exact source revisions and notices are in `kit/THIRD-PARTY-NOTICES.md`. |
 | Capture, meaning, provenance and continuity rules | Express them in shared operating guidance, templates and skills. |
-| Meeting brief and project-status examples | Adapt their useful scenarios to ordinary files in K2. Reuse synthetic inputs and evaluation lessons, not the database/coordinator API. Neither scenario is a user-mandated business priority. |
+| Meeting brief and project-status examples | K1 delivers the minimal project status/action brief; K2 expands both scenarios. Reuse synthetic inputs and evaluation lessons, not the database/coordinator API. Neither scenario is a user-mandated business priority. |
 | Former application operating skill | Preserved on the archive branch for legacy instances; excluded from main and kit setup. |
 | TypeScript code, database adapters and historical evidence | Preserved on `archive/application-m4.1`, removed from main. Do not import them into the kit or require their completion. |
 | Original vault and installed personal instance | Leave untouched during conversion tests. Real adoption is a separate use of the completed setup path at a user-selected destination. |
@@ -61,6 +61,8 @@ Following the explicit branch-separation request, all application code, tests, d
 ## Four delivery stages
 
 ### K1 — Set up the AI OS and complete a first workflow
+
+Status: **complete**, 2026-09-09. Four actual Codex sessions verified new setup, sourced work, fresh-session revision, customized adoption, repetition and no-save behavior. See [the K1 evidence](k1-verification.md).
 
 **Deliver:** the user entry, shared operating guide, minimal templates, Codex entry, setup/context/capture skills, a first project-workflow procedure and a synthetic example. The entry identifies operating priorities, available tools/sources and callable capabilities, then routes a concrete request to useful work. Bring a minimal project-status/action-brief workflow forward from K2 so K1 delivers a result beyond storing information; this is an implementation example, not a user-selected business priority. Setup supports both a new directory and adoption of an existing folder. Reuse known answers, inspect relevant existing instructions and map existing locations before adding anything. Preserve custom text and metadata. Repeated setup should recognize completed work and continue; it must not overwrite a personalized file with its template.
 
@@ -124,25 +126,25 @@ A missing bundled resource is detected, a duplicate skill identity is resolved o
 
 ## Reference coverage and current status
 
-Names in the implementation column are proposed canonical skill directories, not currently installed commands. Users may request the capabilities in natural language; the host determines invocation syntax.
+K1 ships the four named setup/context/capture/project skill directories. The other names are proposed implementation destinations. Users may request the capabilities in natural language; the host determines invocation syntax.
 
 | Source capability | Kit implementation | Stage | Current status |
 |---|---|---|---|
-| AIS-OS onboarding; Manu's guided installer | `mcc-setup`, context and workspace templates | K1 | Pending |
-| AIS-OS saved context interviews | `mcc-context` with saved answers and resumable interviews | K1–K2 | Pending |
-| Manu's capture | `mcc-capture` with sources, meaning and duplicate checks | K1–K2 | Pending |
+| AIS-OS onboarding; Manu's guided installer | `mcc-setup`, context and workspace templates | K1 | Delivered and checked |
+| AIS-OS saved context interviews | `mcc-context` with saved answers and resumable interviews | K1–K2 | K1 delivered; K2 expansion pending |
+| Manu's capture | `mcc-capture` with sources, meaning and duplicate checks | K1–K2 | K1 delivered; K2 expansion pending |
 | AIS-OS `/link`; Manu's link finder and Activation Map | `mcc-link`, source routes and semantic connections | K2 | Pending |
 | Manu's synthesis | `mcc-synthesize`, selective consolidation and source links | K2 | Pending |
-| Work execution supported by Manu's next steps/project hubs; both existing example workflows | `mcc-project`, first work procedure in K1, richer project/session/output templates in K2 | K1–K2 | Pending |
-| Manu's skill discovery and construction | Entry index plus `mcc-improve` inspect/adapt/build mode and shared extension recipe | K1, K3–K4 | Pending |
+| Work execution supported by Manu's next steps/project hubs; both existing example workflows | `mcc-project`, first work procedure in K1, richer project/session/output templates in K2 | K1–K2 | K1 delivered; K2 expansion pending |
+| Manu's skill discovery and construction | Entry index plus `mcc-improve` inspect/adapt/build mode and shared extension recipe | K1, K3–K4 | K1 capability entry delivered; build/audit/discovery expansion pending |
 | AIS-OS `/audit` | `mcc-audit`, retrieval checks and findings/history | K3 | Pending |
 | AIS-OS `/level-up` | `mcc-improve`, verified repair and useful maintenance | K3 | Pending |
 | AIS-OS `/3d-brain` | `mcc-brain`, optional reference-derived local explorer | K4 | Pending |
-| Shared agent instructions and portability | Canonical skills, generated host entries and clean kit export | K1, K4 | Pending |
+| Shared agent instructions and portability | Canonical skills, generated host entries and clean kit export | K1, K4 | Codex entry and canonical resources checked; K4 pending |
 
 ## Quality coverage and delivery mapping
 
-All rows are adopted requirements. **Implementation status: pending for every row.** Optional use means the capability is available without being enabled or imposed on every user. The source rationale and original coverage assessment remain in [quality-gap-review.md](quality-gap-review.md).
+All rows are adopted requirements. **K1 delivers source registration and the no-save/project-scope portion of retention. Their later audit/public-output extensions and all other rows remain pending.** Optional use means the capability is available without being enabled or imposed on every user. The source rationale and original coverage assessment remain in [quality-gap-review.md](quality-gap-review.md).
 
 | Adopted item | Delivery location or mode | Stage | Completion evidence |
 |---|---|---|---|
@@ -165,8 +167,8 @@ All rows are adopted requirements. **Implementation status: pending for every ro
 
 ## Execution and evidence
 
-Implement K1 next; do not initiate another requirements interview or create additional architecture phases before it. The existing documented objective is enough to begin. A missing personal destination does not block synthetic implementation and verification.
+Implement K2 next; do not initiate another requirements interview or create additional architecture phases before it. The existing documented objective is enough to begin. A missing personal destination does not block synthetic implementation and verification.
 
 For each stage, update its status here and the [handoff](handoff.md) with the delivered paths, actual commands/sessions, observed result and material gaps. Use disposable synthetic workspaces for checks. The old application's test count does not prove any row above is complete. Do not add a generic test framework or custom agent runner to perform these bounded checks.
 
-The current main tree contains the adopted kit scope, the [quality-gap review](quality-gap-review.md) and lightweight documentation tooling. The application is preserved on its archive branch. The approved improvements are integrated into K1–K4; no personal installation, skill installation or kit release is claimed. Implement K1 next using the expanded requirements above without reopening scope selection.
+The current main tree contains the K1 kit, [practical verification](k1-verification.md), adopted scope, source review and lightweight checks. The application remains on its archive branch. K1 skills were installed and exercised in disposable synthetic workspaces; no personal installation, real account connection or full K4 release is claimed. Continue K2 without reopening scope selection.

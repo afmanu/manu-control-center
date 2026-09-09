@@ -1,15 +1,15 @@
 # Start here
 
-## Kit availability
+## Use your AI OS
 
-Main is dedicated to a repository-distributed AI OS like Nate's, enhanced with Manu's Second Brain systems. All reviewed improvements are now included in the scope; K1–K4 remain unimplemented. Read the [product direction](docs/product-direction.md), [conversion plan](docs/kit-conversion.md) and [quality-gap review](docs/quality-gap-review.md).
+Read the [kit setup entry](kit/START-HERE.md), then ask Codex to set up a separate personal workspace or adopt a folder you select. Include the absolute destination and a first task/source if available. The agent follows [mcc-setup](kit/skills/mcc-setup/SKILL.md), reuses known context and preserves existing names, metadata and instructions.
 
-The complete former application is on [`archive/application-m4.1`](https://github.com/afmanu/manu-control-center/tree/archive/application-m4.1). Its installation and npm commands do not apply to main.
+After setup, open the personal folder for daily work. Ask to capture a source, find project context, or prepare/continue a sourced project action brief. Use your preferred language. The [synthetic example](kit/examples/README.md) provides a first task without personal information.
+
+K1 provides four skills, shared operating guidance, templates and a dependency-free Python copy helper. Setup is complete only after personalization and route checks; the first workflow needs an actual saved result. See [current delivery status](README.md#conversion-delivery). No external connections or schedules are activated by copying files.
+
+The complete former application stays on [archive/application-m4.1](https://github.com/afmanu/manu-control-center/tree/archive/application-m4.1); its npm commands do not apply here.
 
 ## Continue development
 
-Open this repository and use this prompt:
-
-> Read AGENTS.md, README.md, docs/handoff.md, docs/decisions.md and docs/kit-conversion.md. We are building an AI OS like AIS-OS, distributed as an agent-operated repository, with Manu's Second Brain systems integrated as its memory and knowledge capabilities. Deliver context, connections, skills/workflows, recurring-operation support and improvement. The former application is preserved on archive/application-m4.1 and must stay out of main. K1 is the next implementation stage and must demonstrate a first useful workflow and deliverable, not just note capture and retrieval. D36 adopts all ten quality improvements and six additional capabilities from docs/quality-gap-review.md. Follow their delivery mapping and checks in docs/kit-conversion.md. Optional use does not remove a capability from delivery scope. Implement K1 next without reopening selection or restarting discovery. Use ordinary files and existing host capabilities, maintain English repository content and allow Spanish interaction. Verify on disposable synthetic workspaces. Preserve private content, existing workspace conventions, licenses and Git history. GitHub delivery is authorized; do not activate external integrations or modify the original vault as incidental development work.
-
-The [handoff](docs/handoff.md) records the completed separation, approved scope integration and next implementation action. No personal installation or data migration has occurred.
+Read [AGENTS.md](AGENTS.md), [the handoff](docs/handoff.md), [decisions](docs/decisions.md) and [the conversion plan](docs/kit-conversion.md). Keep the AI OS purpose, all D36 improvements, English distribution content, source attribution and personal-workspace separation. The handoff identifies the next milestone and actual evidence; do not restart discovery or restore the archived application.
