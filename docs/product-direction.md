@@ -76,4 +76,12 @@ The previous application and its operating skill remain available on the archive
 
 Success is a user opening the repository with a compatible agent, using their context and knowledge, producing useful results, resuming later, and improving the workspace without losing personal content. Verification must support the capabilities actually delivered; a large mechanism-test count is not a substitute for that experience.
 
-The [quality-gap review](quality-gap-review.md) records further source-based recommendations for discussion. Those recommendations are not yet added to the implementation scope.
+## Adopted quality improvements
+
+Manu approved integrating all reviewed improvements on 2026-09-09 (D36). The [quality-gap review](quality-gap-review.md) preserves the source rationale and pre-adoption coverage assessment. The [conversion plan](kit-conversion.md#quality-coverage-and-delivery-mapping) assigns every improvement to a delivery stage, concrete procedure/template and completion check.
+
+The kit scope now explicitly includes source/connection registers; memory corrections and supersession; typed relationships; complete navigation; consolidation; skill inspection/adaptation/construction; reusable artifacts and revisions; scoped retention; decision-outcome review; and effective skill discovery/resource/output checks.
+
+It also includes relevant-old-knowledge resurfacing, URL/resource capture, daily/weekly reviews, tool usage notes and recurring SOPs, native-scheduling guidance, and scoped specialist workspaces. These are available modes or recipes using the existing skills and host capabilities. They need not be enabled for every user, but their delivery is part of the approved scope. Review outcomes remain evidence-based; file age alone proves neither unread knowledge nor stalled work.
+
+There are still four stages, K1–K4. Scope adoption is complete; implementation remains pending. No account connections, personal schedules or specialist agents are installed by this approval, and the previous application remains exclusively on its archive branch.

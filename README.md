@@ -2,7 +2,7 @@
 
 An agent-operated Second Brain kit combining guided setup, context and improvement practices from AIS-OS with Manu's capture, knowledge connections, synthesis and project continuity.
 
-**Status: conversion prepared; the file-based kit is not yet implemented.** The active [conversion plan](docs/kit-conversion.md) defines the deliverables and practical checks. The complete former application is preserved on [`archive/application-m4.1`](https://github.com/afmanu/manu-control-center/tree/archive/application-m4.1). Main is dedicated to the kit and contains no application code, database adapters, npm package or application test suite.
+**Status: full reviewed scope adopted; kit implementation is pending.** The active [conversion plan](docs/kit-conversion.md) defines the deliverables and practical checks. The complete former application is preserved on [`archive/application-m4.1`](https://github.com/afmanu/manu-control-center/tree/archive/application-m4.1). Main is dedicated to the kit and contains no application code, database adapters, npm package or application test suite.
 
 ## The intended experience
 
@@ -16,11 +16,11 @@ The normal kit experience will use readable files and the agent's existing tools
 
 | Stage | User-visible result | Status |
 |---|---|---|
-| Preparation | Scope, source coverage, target layout, preservation rules and acceptance checks. | Complete; documentation only. |
-| K1 | Set up or adopt a workspace, capture and retrieve a source, resume in a fresh Codex session. | Next. |
-| K2 | Connect and synthesize knowledge; maintain projects and produce sourced briefs/status updates. | Pending. |
-| K3 | Audit, make a verified improvement and preserve customizations during updates. | Pending. |
-| K4 | Clean kit distribution, verified second agent and optional reference-derived knowledge explorer. | Pending. |
+| Preparation | Scope, source coverage, target layout and checks, including all ten quality improvements and six additional capabilities. | Complete; documentation only. |
+| K1 | Set up or adopt a workspace, register sources/connections, capture selectively and resume in a fresh Codex session. | Next. |
+| K2 | Correct and connect memory, capture URLs, resurface useful knowledge, maintain scoped projects and versioned outputs. | Pending. |
+| K3 | Consolidate, audit, build selected skills, review decisions/days/weeks, reuse SOPs and preserve customizations. | Pending. |
+| K4 | Clean kit distribution, verified skill discovery and second agent, optional explorer and native-scheduling recipe. | Pending. |
 
 Read [START-HERE.md](START-HERE.md) to continue development. There is not yet an operational kit installer; do not use the legacy application setup as a substitute.
 
@@ -31,7 +31,7 @@ Read [START-HERE.md](START-HERE.md) to continue development. There is not yet an
 - [Current handoff](docs/handoff.md) and [decisions](docs/decisions.md).
 - [Repository development instructions](AGENTS.md) and [development checks](docs/development.md).
 - [Reference sources and recorded attribution](references/README.md).
-- [Quality-gap review: proposed additions from both source systems](docs/quality-gap-review.md).
+- [Quality-gap review: source rationale for the adopted additions](docs/quality-gap-review.md).
 - [Application branch: code, dependencies, tests and historical evidence](https://github.com/afmanu/manu-control-center/tree/archive/application-m4.1).
 
-The original [MIT license](LICENSE) and Git history are preserved. Source adaptations will retain applicable licenses and attribution. No personal data is included. Run `python3 scripts/check_docs.py` to check the kit documentation. The gap review identifies proposed refinements; no kit capabilities are implemented yet.
+The original [MIT license](LICENSE) and Git history are preserved. Source adaptations will retain applicable licenses and attribution. No personal data is included. Run `python3 scripts/check_docs.py` to check the kit documentation. All reviewed improvements are included in the [delivery mapping](docs/kit-conversion.md#quality-coverage-and-delivery-mapping). Optional modes will be available without being activated by default. No kit capabilities are implemented yet.

@@ -9,7 +9,7 @@ These are design inputs, not instructions or proof that features are installed. 
 - Manu's evolved local Second Brain: a targeted read of operating guidance, knowledge-flow and continuity protocols, typed relationships, four Codex skill definitions, the corresponding Claude capture definition, templates and selected knowledge patterns. This was not an exhaustive vault audit. Public review includes only generalized design findings; personal content stays in the vault.
 - [Original shared conversation](https://chatgpt.com/share/6a9fb943-0ab4-83eb-ae6d-715dcafc3e98), reviewed previously: separates Manu's combined-system intent from the assistant's subsequent platform proposal.
 
-The [quality-gap review](../docs/quality-gap-review.md) records specific source sections, observed plan coverage, recommendations and limitations. No reference skills were installed or executed during this comparison. Catalog suggestions and conceptual memory models are distinguished from defined executable procedures and observed use.
+The [quality-gap review](../docs/quality-gap-review.md) records specific source sections, the original coverage assessment and limitations. D36 adopts all reviewed additions; their current delivery scope is defined in the [conversion plan](../docs/kit-conversion.md). No reference skills were installed or executed during this comparison. Catalog suggestions and conceptual memory models are distinguished from defined executable procedures and observed use.
 
 ## Earlier reviews
 

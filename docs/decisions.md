@@ -2,6 +2,8 @@
 
 Current user instructions take precedence. D33 and D34 below are retained history; D35 supersedes their decision to keep application files on main. The complete earlier decision log is preserved on the [application branch](https://github.com/afmanu/manu-control-center/blob/archive/application-m4.1/docs/decisions.md).
 
+**Current scope: D36 adopts all reviewed improvements.** Their delivery requirements are integrated into K1–K4. Earlier statements that recommendations await selection describe the state before this approval.
+
 ### D33 — Restore the intended repository-kit product
 
 Status: **adopted by explicit user correction**, 2026-09-09. Manu clarified that the objective was the same type of repository system as Nate Herk's, integrating improvements from his own, rather than building databases and entity controls. The implementation had overemphasized infrastructure. This correction changes the delivery target, not merely the priority of another infrastructure milestone.
@@ -27,3 +29,13 @@ Status: **adopted by explicit user instruction**, 2026-09-09. Manu requested tha
 The branch `archive/application-m4.1` was created and published at `9fdf92ff919615c0efdf3b71710038b699b57404` before removal. It preserves the full application, dependencies, CI, tests, schemas, operating skill, historical documentation and evidence. Its remote ref was verified against that exact commit. Main retains kit direction, planning, source review, instructions, license and a small documentation check. Application-specific instructions and CI are replaced accordingly. No force push, history rewrite, private-instance migration or source-vault edits are authorized or performed by this separation.
 
 The [quality-gap review](quality-gap-review.md) compares source definitions with the prepared kit plan. Recommendations are for discussion; they are not implemented capabilities or authorization to install connections, activate schedules or expand the plan automatically. Existing planned functions remain pending. Preserve this distinction when the user chooses what to integrate.
+
+### D36 — Integrate every reviewed quality improvement into K1–K4
+
+Status: **adopted by explicit user approval**, 2026-09-09. After the review, Manu instructed us to integrate all of it. Adopt Q1–Q10 and all six additional capabilities; no further feature-selection approval is needed. Optional use is preserved without treating those capabilities as optional development scope.
+
+The [updated conversion plan](kit-conversion.md#quality-coverage-and-delivery-mapping) assigns each improvement to an existing stage, a procedure/template or skill mode, and observable completion evidence. K1 adds source/connection registration and scoped retention. K2 adds memory correction, relationship/navigation quality, reusable/revised outputs, URL intake, resurfacing and scoped work areas. K3 adds consolidation, skill construction, decision/daily/weekly reviews, reusable tool/SOP guidance and deeper capability auditing. K4 verifies effective discovery/resources across hosts and ships the opt-in native-scheduling recipe alongside the existing explorer and clean distribution.
+
+Use existing planned skills for related modes and ordinary files for their records. Avoid a new skill for every variation, extra architecture stages, a generic runtime runner or any restoration of the former application. Native scheduling depends on an existing host and a working manual workflow; published support requires actual bounded evidence. Deliver guidance without configuring Manu's accounts or personal schedules during scope integration. No specialist agents, connections or original-vault changes are implied.
+
+This change integrates scope, stage deliverables, acceptance cases and handoff instructions. All implementation rows remain pending; source definitions are not runtime evidence. K1 is next under the expanded scope. The archive branch, Git history, English repository policy and private content remain unchanged.

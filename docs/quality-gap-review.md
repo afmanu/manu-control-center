@@ -1,6 +1,6 @@
 # Kit quality gaps: AIS-OS and Manu's Second Brain
 
-Reviewed: 2026-09-09. **Recommendations for discussion, not adopted scope or implemented features.** The comparison baseline is the prepared K1–K4 [conversion plan](kit-conversion.md) at `9fdf92f`. The application is preserved on [`archive/application-m4.1`](https://github.com/afmanu/manu-control-center/tree/archive/application-m4.1) and is not counted as kit functionality.
+Reviewed: 2026-09-09. **All reviewed improvements adopted by Manu on 2026-09-09 under D36; implementation pending.** The comparison baseline is the prepared K1–K4 [conversion plan](kit-conversion.md) at `9fdf92f`. The application is preserved on [`archive/application-m4.1`](https://github.com/afmanu/manu-control-center/tree/archive/application-m4.1) and is not counted as kit functionality.
 
 ## Conclusion
 
@@ -8,7 +8,7 @@ The plan covers the headline capabilities but loses some important operating det
 
 Nothing in K1–K4 has yet shipped as an operational kit. In this review, **covered** means present in the plan; **partial** means the intention exists but a useful behavior or check is unspecified; **missing** means the plan omits or narrows the source capability. An absent optional feature is not a runtime defect. Recommendations below are not evidence that either reference system always executes its instructions correctly.
 
-## Already covered in the plan
+## Coverage before adoption
 
 | Capability | Planned delivery | Remaining implementation work |
 |---|---|---|
@@ -20,13 +20,13 @@ Nothing in K1–K4 has yet shipped as an operational kit. In this review, **cove
 | Customized updates, shared skill source and second-agent checks | K3–K4 | Implement and verify packaging, discovery and useful behavior. |
 | Optional 3D explorer | K4 | Adapt and run the reference package; no need for a second visualization application. |
 
-These are not new recommendations; they should not become another requirements interview.
+These capabilities were already planned. The review below explains the gaps in that earlier baseline; D36 now adopts all additions through the [updated delivery mapping](kit-conversion.md#quality-coverage-and-delivery-mapping). No new requirements interview is needed.
 
-## Recommended quality additions
+## Adopted quality additions and original rationale
 
 ### Q1 — Source and connection register
 
-**Coverage: partial. Recommend for K1 guidance, expanded in K3 checks.** The plan distinguishes live connections from links but leaves connections as a general optional extension. AIS-OS supplies a concrete registry and checks its evidence [N1, N2].
+**Baseline coverage: partial. Recommend for K1 guidance, expanded in K3 checks.** The plan distinguishes live connections from links but leaves connections as a general optional extension. AIS-OS supplies a concrete registry and checks its evidence [N1, N2].
 
 Add a small workspace register recording the system, information it owns, access route, capability (read/write), checked date, limitations and a link to a short usage guide. Record connection status without copying credentials. A listed service may be unavailable; do not imply it is connected merely because a row exists. Actual connection installation remains user-specific.
 
@@ -34,7 +34,7 @@ Add a small workspace register recording the system, information it owns, access
 
 ### Q2 — Correct and supersede memory explicitly
 
-**Coverage: partial. Recommend for K2.** Current context plus session history is planned, but later corrections, contradictory sources and affected summaries lack a clear procedure. AIS-OS's interview skill preserves corrected answers and marks supersession; its audit distinguishes source authority and stale caches. Manu's Compiled Truth + Timeline separates current understanding from explanatory history [N2, N3, M3].
+**Baseline coverage: partial. Recommend for K2.** Current context plus session history is planned, but later corrections, contradictory sources and affected summaries lack a clear procedure. AIS-OS's interview skill preserves corrected answers and marks supersession; its audit distinguishes source authority and stale caches. Manu's Compiled Truth + Timeline separates current understanding from explanatory history [N2, N3, M3].
 
 Keep a compact current statement and a dated explanation of a meaningful change, linked to its source. Flag unresolved contradictions instead of choosing whichever file was edited last. When a source changes, inspect the directly linked conclusions relevant to the task; do not claim a globally refreshed knowledge base. Live status, stable preferences, old captures and generated summaries can have different authority. Do not create a second mutable summary of every file.
 
@@ -42,7 +42,7 @@ Keep a compact current statement and a dated explanation of a meaningful change,
 
 ### Q3 — Typed relationships with direction and noise controls
 
-**Coverage: partial. Recommend for K2.** The Activation Map and conceptual links are named, but the plan does not specify when a relationship is meaningful. Manu's Neural Vault Protocol and connection auditor distinguish useful, weak, premature and sensitive links [M1, M2].
+**Baseline coverage: partial. Recommend for K2.** The Activation Map and conceptual links are named, but the plan does not specify when a relationship is meaningful. Manu's Neural Vault Protocol and connection auditor distinguish useful, weak, premature and sensitive links [M1, M2].
 
 Represent an optional relationship as source → type → target, with a brief reason and proposed/applied status where necessary. Useful types include extends, depends on, exemplifies, contradicts, updates and questions. An ordinary link is enough when a type adds no value. A mention or shared keyword is not proof of a meaningful relationship; a reference to evidence does not certify that the evidence validates a claim.
 
@@ -50,7 +50,7 @@ Represent an optional relationship as source → type → target, with a brief r
 
 ### Q4 — Complete navigation, including the way back
 
-**Coverage: partial. Recommend for K2 and K3 audit checks.** The plan tests retrieval, but important-target-to-index coverage, ambiguous note names and useful return paths are not explicit. AIS-OS checks both route-to-target and important-target-to-route; Manu's hubs link parent/section/notes and use aliases or wikilinks [N4, N5, M1, M4].
+**Baseline coverage: partial. Recommend for K2 and K3 audit checks.** The plan tests retrieval, but important-target-to-index coverage, ambiguous note names and useful return paths are not explicit. AIS-OS checks both route-to-target and important-target-to-route; Manu's hubs link parent/section/notes and use aliases or wikilinks [N4, N5, M1, M4].
 
 Follow manual → relevant hub/index → exact target, and ensure an important output or note is discoverable through that chain. Use explicit relative paths when two notes share a name; preserve existing aliases and heading references. Give a useful return link to the parent hub where appropriate. Do not force backlinks onto every file or load the entire vault.
 
@@ -58,7 +58,7 @@ Follow manual → relevant hub/index → exact target, and ensure an important o
 
 ### Q5 — Consolidation as a distinct maintenance task
 
-**Coverage: partial. Recommend as a mode of K3 audit/improvement, not a separate service.** The plan checks duplication and routes, but Manu's Dream Cycle also finds conceptual overlap, undistilled resources, repeated insights, unlinked decisions and hubs without a meaningful next step [M2].
+**Baseline coverage: partial. Recommend as a mode of K3 audit/improvement, not a separate service.** The plan checks duplication and routes, but Manu's Dream Cycle also finds conceptual overlap, undistilled resources, repeated insights, unlinked decisions and hubs without a meaningful next step [M2].
 
 Add a bounded consolidation review for a project, area or chosen folder. Return useful reuse, distillation, connection and hub-update proposals. Keep uncertain links and possible merges as proposals. Apply routine edits already authorized by the task; obtain specific authorization for destructive restructuring when it is absent.
 
@@ -66,7 +66,7 @@ Add a bounded consolidation review for a project, area or chosen folder. Return 
 
 ### Q6 — Skill discovery must include building useful new skills
 
-**Coverage: missing/narrowed. Recommend for K3, using a compact extension procedure.** The previous plan mapped Manu's `explore-skills` to a task-to-skill index. The source also lets the user inspect, adapt and build a selected capability from a catalog or their own idea. Nate's improvement skill can produce a selected workflow artifact rather than only repair a defect [S1, N6].
+**Baseline coverage: missing/narrowed. Recommend for K3, using a compact extension procedure.** The previous plan mapped Manu's `explore-skills` to a task-to-skill index. The source also lets the user inspect, adapt and build a selected capability from a catalog or their own idea. Nate's improvement skill can produce a selected workflow artifact rather than only repair a defect [S1, N6].
 
 Keep discovery, but add an extension recipe: purpose, trigger, inputs, source routes, output location, required tools, boundaries, failure behavior and one useful example. Search existing skills first; improve an existing one where it fits. Save new definitions in the shared source and distribute their supporting resources together. Follow current user authorization without repeating approvals that are already explicit.
 
@@ -74,7 +74,7 @@ Keep discovery, but add an extension recipe: purpose, trigger, inputs, source ro
 
 ### Q7 — Artifacts have a location, lifecycle and reuse path
 
-**Coverage: partial. Recommend for K2.** Sourced drafts are planned, but a broader output convention is missing. Manu's project protocol separates outputs, contextual research, decisions and sessions. His artifact pattern favors reviewable intermediate results for complex work. Nate's expansions include reusable templates, voice examples and brand assets [M4, M5, N7].
+**Baseline coverage: partial. Recommend for K2.** Sourced drafts are planned, but a broader output convention is missing. Manu's project protocol separates outputs, contextual research, decisions and sessions. His artifact pattern favors reviewable intermediate results for complex work. Nate's expansions include reusable templates, voice examples and brand assets [M4, M5, N7].
 
 Record an output's purpose, source links, current draft/final status and project entry. Preserve accepted content when making a new revision, and retain a link to its predecessor where needed. A report is not automatically a permanent belief or a user decision. Reuse appropriate templates and user-provided voice/assets without forcing a brand package into every workspace. Intermediate outlines or research summaries are useful for complex work, not mandatory ceremony for every note.
 
@@ -82,7 +82,7 @@ Record an output's purpose, source links, current draft/final status and project
 
 ### Q8 — Scoped memory and permission to retain less
 
-**Coverage: partial. Recommend for shared K1–K2 guidance.** Personal-workspace separation is planned, but project-specific context, selective retention and sensitive cross-linking need explicit rules. Nate's expansions allow scoped work areas; interviews limit canonical promotion to requested context work. Manu's resolver/capture protocol selects relevant regions, avoids noise and honors a request not to save [N3, N7, M1, M2, M4].
+**Baseline coverage: partial. Recommend for shared K1–K2 guidance.** Personal-workspace separation is planned, but project-specific context, selective retention and sensitive cross-linking need explicit rules. Nate's expansions allow scoped work areas; interviews limit canonical promotion to requested context work. Manu's resolver/capture protocol selects relevant regions, avoids noise and honors a request not to save [N3, N7, M1, M2, M4].
 
 Keep global preferences distinct from project-specific facts and temporary thinking. Consult relevant sources on demand. Do not save every conversation or treat a brainstorming hypothesis as memory. A request not to save overrides normal capture behavior. Public outputs must not gain private facts just because they are linked internally. These are agent procedures, not a claim of file-system access isolation.
 
@@ -90,7 +90,7 @@ Keep global preferences distinct from project-specific facts and temporary think
 
 ### Q9 — Review decisions by their reasons and observed outcomes
 
-**Coverage: missing beyond decision capture. Recommend as an optional K3 review mode.** Nate's decision format preserves reasons, alternatives and conditions that would change the decision. Manu's installer catalog proposes a decision tracker with outcome review [N8, S2]. The catalog is a proposed capability, not an executed tracker.
+**Baseline coverage: missing beyond decision capture. Recommend as an optional K3 review mode.** Nate's decision format preserves reasons, alternatives and conditions that would change the decision. Manu's installer catalog proposes a decision tracker with outcome review [N8, S2]. The catalog is a proposed capability, not an executed tracker.
 
 Extend the decision template with rationale, alternatives and a review condition when useful. A later review can add an observed outcome and what was learned. Keep pending outcomes unknown; do not calculate success/failure statistics from missing data or turn model judgments into the owner's verdict.
 
@@ -98,15 +98,15 @@ Extend the decision template with rationale, alternatives and a review condition
 
 ### Q10 — Capability quality includes discovery, resources and useful output
 
-**Coverage: partial. Recommend for K3–K4 verification.** The plan already includes shared sources and a second agent. Nate's compatibility guide goes further: duplicate skill identities, effective discovery/precedence, supporting files, scoped overrides and intentional host differences [N5].
+**Baseline coverage: partial. Recommend for K3–K4 verification.** The plan already includes shared sources and a second agent. Nate's compatibility guide goes further: duplicate skill identities, effective discovery/precedence, supporting files, scoped overrides and intentional host differences [N5].
 
 Distinguish a definition on disk, a skill discovered by a host and a workflow actually exercised. Check bundled templates/scripts/assets and the instructions the active host really reads. Check representative wrong or missing inputs and explain recovery. Do not create a generic agent test platform to do these bounded checks.
 
 **Value/check:** a skill missing its required template fails the package check even if its main file matches; a duplicate identity is reported as ambiguous until effective discovery is established. Successful invocation still needs a useful output check.
 
-## Useful optional additions
+## Adopted optional-use capabilities
 
-| Candidate | Source and current gap | Recommendation |
+| Capability | Source and pre-adoption gap | Delivery approach |
 |---|---|---|
 | Resurface relevant old knowledge | Installer catalog's forgotten-notes; vault synthesis. Not explicit in the plan. | Add a synthesis/retrieval mode when useful. Rank by current relevance; modification age does not prove that the user has not read a note. |
 | URL/resource capture | Installer catalog; K1 source capture does not yet specify web intake. | Add an input recipe using available host access. Preserve URL/date and distinguish a source summary from validated knowledge. No crawler or automatic permanent promotion. |
@@ -125,9 +125,11 @@ Distinguish a definition on disk, a skill discovered by a host and a workflow ac
 - Mandatory automation, revenue-only improvement metrics or a literal copy of every framework question. Adapt improvement to the user's purpose, including knowledge quality and continuity [N2, N6].
 - A second knowledge-view application alongside the planned reference explorer without a demonstrated need. Keep views optional and derived from selected sources.
 
-## Proposed selection
+## Adopted selection
 
-Recommend Q1–Q8 and Q10 as refinements to the existing K1–K4 scope, with Q9 and the optional table available according to use. This does not require more stages. Preserve the two current workflow examples as examples, not the only permitted artifact types. This selection is a recommendation awaiting Manu's decision; the conversion plan has not been silently expanded and none of these features is implemented by this review.
+Manu authorized integrating all of this review. Q1–Q10 and all six additional capabilities are now included in K1–K4 under [D36](decisions.md). The optional capabilities remain optional to use or activate; delivering their procedures, templates and checks is part of the approved scope. The two current workflow examples remain examples, not the only permitted artifact types.
+
+The [conversion plan](kit-conversion.md#quality-coverage-and-delivery-mapping) records the implementation destination, stage and completion evidence for every item. Original recommendation and baseline-coverage wording above explains why the change was proposed; it no longer indicates a pending selection. Adoption changes scope, not operational status: no feature is marked implemented and no live service or personal schedule is activated.
 
 ## Evidence and limits
 
