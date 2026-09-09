@@ -1,0 +1,4 @@
+{
+  "observe": "Retoma este proyecto y dime en español su propósito, decisiones vigentes, propuestas pendientes, resultados disponibles y el siguiente paso, con referencias. No cambies ningún estado.",
+  "continue": "Continúa hasta completar los trabajos que ya tienen revisión guardada. No emitas nuevas aprobaciones, no regeneres borradores y no envíes nada. Al terminar, dime en español qué queda pendiente y cita las referencias."
+}

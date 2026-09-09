@@ -16,7 +16,7 @@ const run = (command, args, cwd) => execFileSync(command, args, { cwd, encoding:
 try {
   mkdirSync(source);
   mkdirSync(consumer);
-  for (const name of ['package.json', 'package-lock.json', 'tsconfig.json', '.npmrc', 'README.md', 'LICENSE', 'core', 'cli', 'adapters', 'evals', 'builder', 'schemas', 'examples', 'tests', 'docs', 'references']) {
+  for (const name of ['package.json', 'package-lock.json', 'tsconfig.json', '.npmrc', 'README.md', 'LICENSE', 'core', 'cli', 'adapters', 'evals', 'builder', 'schemas', 'examples', 'tests', 'docs', 'references', '.agents/skills']) {
     cpSync(join(root, name), join(source, name), { recursive: true });
   }
   process.stdout.write(run(npm, ['ci', '--offline', ...common], source));
@@ -69,10 +69,14 @@ try {
   run(process.execPath, ['--input-type=module', '-e', "import {CodexRuntime} from 'manu-control-center/codex'; if(typeof CodexRuntime!=='function') throw new Error('Missing Codex export');"], consumer);
   const agentDemo = JSON.parse(run(process.execPath, [join(installed, 'examples', 'agent-demo.mjs')], consumer));
   assert.equal(agentDemo.ok, true); assert.equal(agentDemo.real_runtime_invoked, false);
+  const sessionDemo = JSON.parse(run(process.execPath, [join(installed, 'examples', 'session-demo.mjs')], consumer));
+  assert.equal(sessionDemo.ok, true); assert.equal(sessionDemo.fresh_process_resume, true);
+  assert.equal(run(process.execPath, [join(installed, '.agents', 'skills', 'manu-control-center', 'scripts', 'mcc.mjs'), '--version'], consumer).trim(), version);
+  run(process.execPath, ['--input-type=module', '-e', "import {readLocalSession} from 'manu-control-center/session';import {SqliteSessionBackend} from 'manu-control-center/sqlite-session';if(typeof readLocalSession!=='function'||typeof SqliteSessionBackend!=='function')throw new Error('Missing session exports');"], consumer);
   if (process.platform !== 'win32') {
     assert.equal(run(join(consumer, 'node_modules', '.bin', 'manu-control-center'), ['--version'], consumer).trim(), version);
   }
-  process.stdout.write(JSON.stringify({ ok: true, clean_source_install: true, source_tests: true, packed_cli_install: true, packed_instance_create_verify: true, packed_knowledge_capture_query: true, packed_authority_time_review: true, packed_local_human_workflows: true, packed_coordinator_and_simulated_effects: true, packed_agent_contracts_with_mock: true, version }) + '\n');
+  process.stdout.write(JSON.stringify({ ok: true, clean_source_install: true, source_tests: true, packed_cli_install: true, packed_instance_create_verify: true, packed_knowledge_capture_query: true, packed_authority_time_review: true, packed_local_human_workflows: true, packed_coordinator_and_simulated_effects: true, packed_agent_contracts_with_mock: true, packed_session_continuity: true, version }) + '\n');
 } catch (error) {
   process.stderr.write(error.stdout?.toString() ?? '');
   process.stderr.write(error.stderr?.toString() ?? '');

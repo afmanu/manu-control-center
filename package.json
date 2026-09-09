@@ -1,6 +1,6 @@
 {
   "name": "manu-control-center",
-  "version": "0.1.0-dev.8",
+  "version": "0.1.0-dev.9",
   "private": true,
   "description": "Portable builder for AI knowledge and work systems.",
   "type": "module",
@@ -31,7 +31,9 @@
     "./coordinator": "./dist/adapters/interfaces/local/coordinator.js",
     "./sqlite-coordinator": "./dist/adapters/backends/sqlite/coordinator.js",
     "./simulated-mailbox": "./dist/adapters/effects/simulated-mailbox.js",
-    "./codex": "./dist/adapters/runtimes/codex.js"
+    "./codex": "./dist/adapters/runtimes/codex.js",
+    "./session": "./dist/adapters/interfaces/local/session.js",
+    "./sqlite-session": "./dist/adapters/backends/sqlite/session.js"
   },
   "types": "dist/core/index.d.ts",
   "files": [
@@ -43,7 +45,8 @@
     "docs",
     "references",
     "dist/evals",
-    "dist/builder"
+    "dist/builder",
+    ".agents/skills"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",

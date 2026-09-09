@@ -127,3 +127,5 @@ Codex is the first candidate and Claude Code the second because their executable
 ## Codex synthesis development
 
 The optional `./codex` export implements RuntimeAdapter for the pinned Codex CLI. `node examples/agent-demo.mjs` and clean package checks use a marked mock; `npm run verify:codex -- /absolute/evidence-directory [model]` and `node examples/codex-demo.mjs /absolute/new-directory [model]` invoke the real runtime and retain synthetic drafts for independent review. They are opt-in and are not part of credential-free CI. See the [runtime guide](codex-runtime.md) and [M3.5 evidence](m3.5-verification.json).
+
+M3.6 adds `./session` and `./sqlite-session` public exports and packages the Codex operating skill. `node examples/session-demo.mjs` checks fresh CLI continuity without a model. `node scripts/verify-session-codex.mjs prepare|observe|continue /absolute/evidence-directory [model]` is an explicit real-runtime evaluator; continuation requires independently recorded synthetic review. See [sessions](sessions.md).

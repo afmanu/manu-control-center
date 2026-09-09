@@ -1,6 +1,6 @@
 # Development handoff
 
-Updated: 2026-09-08. Primary repository: [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). **M0–M2 and M3.1–M3.5 local profiles complete; next step: M3.6.**
+Updated: 2026-09-09. Primary repository: [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). **M0–M2 and M3.1–M3.6 local profiles complete; next step: M3.7.**
 
 ## Current instruction
 
@@ -8,13 +8,13 @@ Manu requests a system he can use and has selected this repository as its destin
 
 Manu authorized the next roadmap step after the English-repository update. M3.1–M3.4 are delivered for the local human/coordinator profiles, including the explicitly authorized continuation into coordination and simulated effect control. Keep repository content in English; runtime interaction and user content may remain Spanish (D24 and [language.md](language.md)).
 
-Manu explicitly authorized M3.5 with Codex as the first agent. The runtime integration is implemented and tested; M3.6 conversational continuity is next.
+Manu explicitly authorized M3.5 with Codex as the first agent. The runtime integration and authorized M3.6 conversational continuity are implemented and tested; M3.7 personal activation is next.
 
 M3 delivers first agent use; M4 demonstrates another representation and runtime; M5 adds maintenance. Essential M6 integrations may be brought forward from M3.
 
 ## Executable status
 
-Private package `manu-control-center@0.1.0-dev.8`, TypeScript/Node 24, exact dependencies and a lockfile. M3.2 adds no dependencies or database migration. Claim validity is an optional draft-schema addition; prior records remain readable. The 22 M1 contracts, SQLite backend with access/revisions/history, and A27 harness remain in place.
+Private package `manu-control-center@0.1.0-dev.9`, TypeScript/Node 24, exact dependencies and a lockfile. M3.2 adds no dependencies or database migration. Claim validity is an optional draft-schema addition; prior records remain readable. The 22 M1 contracts, SQLite backend with access/revisions/history, and A27 harness remain in place.
 
 M2 adds the `project-knowledge-foundation@0.1.0-draft` catalog, two modules, validated request, resolver and reproducible plan. The adapter checks the real backend in disposable databases, inspects destinations without writes, and applies operations with atomic checkpoints. Adoption reuses MCC SQLite projects with pinned revisions and ownership, preserving content/history.
 
@@ -128,6 +128,18 @@ The four known category fixtures passed after calibration. Earlier classificatio
 
 Token counts are observed after completed turns. Hard token/cost caps are unavailable and numeric limits remain rejected; interrupted usage can be unknown. Statement generation is English in this profile, preserving original source quotes; broader conversational localization and generated session handoff remain M3.6. Runtime evidence is distinct from M2 foundation verification, and Manu's original instance remains unchanged and unactivated for personal use until M3.7.
 
+## M3.6 verification and implementation
+
+`session` generates a bounded read-only handoff from project purpose, sourced decisions/claims, source excerpts, pending standalone captures and the latest coordinator attempt of each job. Exact artifact references/hashes, review presence, step/effect status and the next suggested operation support continuation without chat history. Current dependency access is rechecked; revoked run context is redacted. Pages use independent ascending-ID cursors, and artifact omission/total byte limits are explicit. No second canonical state file, schema migration or dependency.
+
+`session-continue` accepts a current run reference and executor identity, claims via the existing coordinator and advances one knowledge-workflow step. It rejects stale snapshots, active leases, pending review, failed/blocked/expired work and delivery profiles. Source freshness, grants, budgets and fencing are revalidated by coordinator handlers. An already persisted review can complete without asking again or repeating inference. A process failure after claiming leaves ordinary lease recovery semantics.
+
+The packaged Codex skill under `.agents/skills/manu-control-center` routes capture, query, execution, review and resumption. The relocatable helper works in a checkout or installed package; copied skills can use PATH or a host-configured CLI path. No global installation or personal profile is implied. Spanish interaction translates explanations, preserving protocol fields, original data and exact approved bytes.
+
+249 deterministic tests and clean package checks pass, including ten new session tests. A separate synthetic instance runs both workflows through real Codex synthesis. One fresh ephemeral Codex session reads the skill and retrieves purpose, active decision, unaccepted proposal, exact drafts and pending review in Spanish without changing database bytes. It treats a malicious source instruction as data. After independent inspection and synthetic test-owner review, another fresh Codex session completes the same reviewed runs without new approvals, model synthesis or changed artifact hashes. These checks are scoped observations, not a blind accuracy benchmark or universal injection guarantee.
+
+The conversational agent is a trusted shell-capable CLI host, distinct from the restricted M3.5 inference subprocess. Its skill does not confine host tools. The public evidence records hashes and English summaries; unchanged Spanish test interactions remain in explicit locale evidence. Personal user approval is not implied. Manu's foundation, original request/plan/catalog, database bytes and directory entries remain unchanged; personal activation is M3.7. [Guide](sessions.md), [verification](m3.6-verification.json), [actual results](m3.6-runtime-evaluation.json).
+
 ## Boundaries M3 must preserve
 
 - The host authenticates and sets `AccessScope`, `can_authorize` and construction authority. These arguments never come from sources or LLM responses. The CLI is a trusted local host without remote authentication.
@@ -138,13 +150,12 @@ Token counts are observed after completed turns. Hard token/cost caps are unavai
 - Replanning does not change ownership or overwrite different managed configurations. M3 must explicitly define any foundation evolution needed to activate capabilities; M5 expands general maintenance.
 - `node:sqlite` emits an experimental warning in Node 24.14.1. Other platforms' path rules do not prove compatibility: local evidence is macOS; CI records its own runs.
 
-D20–D29 record these choices, initial deployment and language policy in [decisions.md](decisions.md).
+D20–D30 record these choices, initial deployment and language policy in [decisions.md](decisions.md).
 
 ## Next work: M3
 
-1. M3.6: create the compatible-agent conversational entry point and generated handoff from persisted state; verify fresh-session project retrieval and resumption without conversation reconstruction.
-2. M3.7: first use of Manu's foundation without replacing its saved plan or importing unrequested personal material.
-3. Check M3 scenarios in the [roadmap](implementation-plan.md), extending A15/A19/A27 to the actually invoked target.
+1. M3.7: first use of Manu's foundation without replacing its saved plan or importing unrequested personal material.
+2. Check M3 scenarios in the [roadmap](implementation-plan.md), extending A15/A19/A27 to the actually invoked target.
 
 At session completion, record the phase, actual commands, results and limits; update handoff, decisions and evidence, and regenerate the documentation inventory. Keep user knowledge and instance state outside the distribution.
 

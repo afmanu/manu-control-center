@@ -2,7 +2,7 @@
 
 A builder for AI knowledge and work systems. It creates and maintains instances with context, sources, decisions, capabilities and durable state through storage and agent adapters.
 
-**M0–M2 and M3.1–M3.5 are complete for the local profiles.** Capture sources, manage authority and complete human-reviewed meeting briefs or project status through a durable coordinator. Leases, fencing, budgets, cancellation, source invalidation and effect receipts are enforced; external delivery is simulated. Codex now synthesizes cited drafts for both workflows; conversational entry points and first personal use are next.
+**M0–M2 and M3.1–M3.6 are complete for the local profiles.** Capture sources, manage authority and complete human-reviewed meeting briefs or project status through a durable coordinator. Leases, fencing, budgets, cancellation, source invalidation and effect receipts are enforced; external delivery is simulated. Codex now synthesizes cited drafts for both workflows; conversational entry points and persisted session handoff are available; first personal use is next.
 
 Primary repository: [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). The original repository's [MIT license](LICENSE) is preserved.
 
@@ -35,15 +35,16 @@ Entities and contracts define the core. Obsidian, files, databases, Codex, Claud
 | M0 | Complete | Executable repository, tooling and technical decisions. |
 | M1 | Complete | Contracts, reference persistence and evaluator separation. |
 | M2 | Complete | Instance creation, adoption, verification and recovery. |
-| M3 | In progress: M3.1–M3.5 complete | Codex synthesis and coordinated workflows available; continuity and first personal use next. |
+| M3 | In progress: M3.1–M3.6 complete | Codex synthesis, session handoff and continuation available; first personal use next. |
 | M4 | Pending | A real second backend and second runtime. |
 | M5 | Pending | Updates, repair, auditing and maintainable distribution. |
 | M6 | As needed, from M3 | Integrations, recurrence and additional interfaces. |
 
-The [roadmap](docs/implementation-plan.md) defines tasks and completion criteria. M3.5 passes 239 mechanism tests and clean package installation. Actual Codex CLI runs cover both workflows, four calibrated meeting fixtures and a separate new-transcript CLI path. Model drafts retain exact citations and require owner review; deterministic checks enforce coverage and permissions. Installation tests use a declared mock, separate from real model evidence. A01, A02, A16 and A17 pass for local construction; A19 also covers scoped source and derived-knowledge retrieval; A05/A06/A22 pass for the local review profile. A15 construction verification remains foundation-scoped; runtime invocation and A27 calibration evidence are recorded separately. Full session continuity and personal activation remain pending. See [acceptance](docs/acceptance.md), [M3.5 evidence](docs/m3.5-verification.json) and the [handoff](docs/handoff.md).
+The [roadmap](docs/implementation-plan.md) defines tasks and completion criteria. M3.6 passes 249 mechanism tests and clean package installation. Actual Codex CLI runs cover both workflows, four calibrated meeting fixtures and a separate new-transcript CLI path. Model drafts retain exact citations and require owner review; deterministic checks enforce coverage and permissions. Installation tests use a declared mock, separate from real model evidence. A01, A02, A16 and A17 pass for local construction; A19 also covers scoped source and derived-knowledge retrieval; A05/A06/A22 pass for the local review profile. A15 construction verification remains foundation-scoped; runtime invocation and A27 calibration evidence are recorded separately. Fresh-session Codex retrieval and resumption are verified for the documented local profile. Personal activation remains pending. See [acceptance](docs/acceptance.md), [M3.6 evidence](docs/m3.6-verification.json), [runtime evaluation](docs/m3.6-runtime-evaluation.json) and the [handoff](docs/handoff.md).
 
 ## Documentation
 
+- [Open and resume an instance session](docs/sessions.md).
 - [Capture text/files and query sources](docs/knowledge.md).
 - [Review decisions, query time and preserve approved artifacts](docs/review.md).
 - [Run and review local meeting briefs and project status](docs/workflows.md).
@@ -61,6 +62,6 @@ The [roadmap](docs/implementation-plan.md) defines tasks and completion criteria
 
 ## Status and distribution
 
-`0.1.0-dev.8` is a development release with npm publication disabled. The `foundation` profile installs storage, configuration and a project; its `verified` state certifies that scope. Personal activation is pending. `node:sqlite` emits an experimental warning in the pinned Node version. Codex CLI 0.146.0 is tested for the documented synthesis profile; Claude Code remains the second-runtime candidate.
+`0.1.0-dev.9` is a development release with npm publication disabled. The `foundation` profile installs storage, configuration and a project; its `verified` state certifies that scope. Personal activation is pending. `node:sqlite` emits an experimental warning in the pinned Node version. Codex CLI 0.146.0 is tested for the documented synthesis profile; Claude Code remains the second-runtime candidate.
 
 Private data and secrets stay outside Git and the package. Sources were integrated from the earlier documentation folder; subsequent decisions and implementation changes are maintained in this repository.

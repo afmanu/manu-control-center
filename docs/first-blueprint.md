@@ -63,4 +63,4 @@ Initial data: [synthetic meeting](../examples/meeting.json). Illustrative config
 
 [Home](../README.md)
 
-The [M3.5 Codex profile](codex-runtime.md) now synthesizes drafts for both reference workflows. Conversational continuity and Manu's operational activation remain M3.6–M3.7.
+The [M3.5 Codex profile](codex-runtime.md) now synthesizes drafts for both reference workflows. [M3.6 sessions](sessions.md) provide conversational retrieval and continuation; Manu's operational activation remains M3.7.

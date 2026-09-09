@@ -35,6 +35,10 @@ async function main(args: string[]): Promise<void> {
     const { runWorkflow } = await import('./workflows.js');
     output(runWorkflow(args)); return;
   }
+  if (['session', 'session-continue'].includes(args[0]!)) {
+    const { runSession } = await import('./session.js');
+    output(await runSession(args)); return;
+  }
   if (args[0]?.startsWith('coordinator-')) {
     const { runCoordinator } = await import('./coordinator.js');
     output(await runCoordinator(args)); return;

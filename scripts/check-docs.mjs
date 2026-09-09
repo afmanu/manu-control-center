@@ -13,7 +13,7 @@ const list = directory => readdirSync(directory, { withFileTypes: true }).flatMa
   return entry.isDirectory() ? list(path) : entry.isFile() && entry.name !== '.DS_Store' ? [path] : [];
 });
 const files = ['README.md', 'AGENTS.md', 'START-HERE.md', 'LICENSE'].map(name => join(root, name));
-for (const directory of ['docs', 'examples', 'references', 'schemas']) files.push(...list(join(root, directory)));
+for (const directory of ['docs', 'examples', 'references', 'schemas', '.agents/skills']) files.push(...list(join(root, directory)));
 files.sort();
 let links = 0;
 let jsonFiles = 0;

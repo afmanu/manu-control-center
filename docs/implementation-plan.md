@@ -1,6 +1,6 @@
 # Implementation roadmap
 
-Updated: 2026-09-08. **Status: M0–M2 and M3.1–M3.5 local profiles complete; M3 in progress; M4–M6 pending.** Development in [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). Identifiers remain stable for architecture/component/acceptance traceability. [M2 evidence](m2-verification.json) and the [handoff](handoff.md) record current scope; historical [M0](m0-verification.json) and [M1](m1-verification.json) evidence is preserved.
+Updated: 2026-09-09. **Status: M0–M2 and M3.1–M3.6 local profiles complete; M3 in progress; M4–M6 pending.** Development in [afmanu/manu-control-center](https://github.com/afmanu/manu-control-center). Identifiers remain stable for architecture/component/acceptance traceability. [M2 evidence](m2-verification.json) and the [handoff](handoff.md) record current scope; historical [M0](m0-verification.json) and [M1](m1-verification.json) evidence is preserved.
 
 ## Intended delivery
 
@@ -113,6 +113,8 @@ Work, in order:
 
 **M3.5 completed for the pinned Codex synthesis profile:** actual Codex CLI 0.146.0 invocation for both existing workflows, bounded authorized packets, exact runtime grants, durable inference checkpoints, closed output/citation validation, snapshot consistency, fresh-context guards and required owner review. 239 mechanism tests and clean package checks pass. Seven final synthetic runs were independently inspected and completed with test-owner approval; four known classification fixtures passed after documented calibration, with a separate new transcript through fresh CLI processes. These small checks are not a blind accuracy benchmark or general runtime sandbox proof. Hard model token/cost caps remain unavailable. [Guide](codex-runtime.md), [D29](decisions.md), [verification](m3.5-verification.json), [model evidence](m3.5-runtime-evaluation.json).
 
+**M3.6 completed for the local Codex session profile:** packaged operating skill, read-only persisted-state handoff, paginated current knowledge and latest coordinator attempts, exact review/result references and guarded one-step continuation. 249 mechanism tests and clean installation cover both workflows. Actual fresh Codex sessions retrieve the project without chat history and complete already-reviewed results with unchanged artifact hashes. Conversational responses support Spanish without rewriting English artifacts. The shell-capable session is a trusted host, not the tool-disabled synthesis profile. [Guide](sessions.md), [D30](decisions.md), [verification](m3.6-verification.json), [model evidence](m3.6-runtime-evaluation.json).
+
 **Delivery:** usable local pilot: install → add a source → query → run a workflow → review a result → resume another day. Includes real-runtime evidence, known limits and verified usage steps. Personal-data use does not imply migrating the entire vault.
 
 ## M4 — Demonstrated portability
@@ -179,4 +181,4 @@ Add code when it has useful behavior: `core` defines contracts; `builder`, `life
 
 Each completion updates [handoff.md](handoff.md) with version/commit if available, completed tasks, actual commands, results, evidence, limits, decisions and next task. A phase may be pending, in progress, partially verified or complete. Completion requires all applicable criteria to pass; a simulation never proves a real integration.
 
-**Next development action: M3.6.** Add the compatible-agent conversational entry point and generate handoff from persisted project/run state. Verify a fresh session can retrieve purpose, evidence, pending review and the next permitted action without reconstructing context from conversation history. Then complete first personal use in M3.7. Preserve the existing instance and original construction plan; keep the repository in English (D24).
+**Next development action: M3.7.** Complete first personal use of Manu's existing foundation with an editable operational profile and short guide. Validate with synthetic material first, then make explicitly authorized source ingestion available. Preserve the original construction plan, catalog and instance identity; do not import personal material implicitly. Keep the repository in English (D24).

@@ -15,3 +15,5 @@ export { localWorkflowDefinition } from './workflow-definitions.js';
 export * from './coordinator.js';
 
 export * from './agent-workflows.js';
+
+export * from './session.js';
